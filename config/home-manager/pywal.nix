@@ -7,6 +7,7 @@
   home.packages = [
     pkgs.pywal16
     pkgs.pywalfox-native  # do pywalfox install
+    # pkgs.highlight
     pkgs.libsForQt5.full  # bloat only for rcc :(
     pkgs.catppuccin-whiskers  # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum
@@ -14,11 +15,16 @@
     # Plasma Style: Utterly-Round (follows color scheme)
     # utterly-round-plasma-style # manually set
     # Window Decorations: Utterly-Round-Dark (also follows color scheme)
-    # manually install and set
-    # papirus-icon-theme
     # in kde settings 
     # Set Application Style to Kvantum if not already
+    # pkgs.papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
     pkgs.papirus-folders  # cli tool
+    # pkgs.nerd-fonts.jetbrains-mono
+    # pkgs.nerd-fonts.roboto-mono
+    # pkgs.nerd-fonts.fira-mono
+    # pkgs.nerd-fonts.fira-code
+    # pkgs.nerd-fonts.inconsolata
+    # pkgs.nerd-fonts.symbols-only
   ];
 
   home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -36,6 +42,7 @@
 
     ln -sf "${config.xdg.cacheHome}/wal/custom-yazi.toml" "${config.xdg.configHome}/yazi/theme.toml"
     ln -sf "${config.xdg.cacheHome}/wal/custom-kitty.conf" "${config.xdg.configHome}/kitty/custom-kitty.conf"
+    ln -sf "${config.xdg.cacheHome}/wal/custom-tmux.conf" "${config.xdg.configHome}/tmux/pywal.conf"
     ln -sf "${config.xdg.cacheHome}/wal/colors-zathura" "${config.xdg.configHome}/zathura/zathurarc"
     ln -sf "${config.xdg.cacheHome}/wal/colors-waybar.css" "${config.xdg.configHome}/waybar/colors-waybar.css"
     ln -sf "${config.xdg.cacheHome}/wal/colors-alacritty.toml" "${config.xdg.configHome}/alacritty/colors-alacritty.toml"
@@ -96,17 +103,24 @@
       ln -sf "$HOME/.build/shyfox/icons" \
           "$HOME/.mozilla/firefox/mshnwq.default/chrome/icons"
     fi
+
+    if [ ! -d "$HOME/.config/nvim/pywal" ]; then
+      /usr/bin/git clone https://github.com/nvchad/pywal $HOME/.config/nvim/pywal
+    fi
+
+    #if [ ! -d "$HOME/.local/share/icons/Papirus" ]; then
+      # TODO: /usr/bin/curl -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh
+    #fi
   '';
 
   # TODO:
   # Gnome Apps # https://github.com/catppuccin/gtk
   # Veracrypt    (nix)
-  # Virt-Manager (ostree)
+  # Virt-Manager (nix)
   # DistroShelf  (flatpak)
   # FlatSeal     (flatpak)
   # Warehouse    (flatpak)
   # Other:
-  # Obsidian  (flatpak)  # https://github.com/Schweem/Pywal-Obsidian
-  # Discord   (flatpak)  # https://github.com/franekxtb/pywal-discord
+  # Obsidian  (nix)      # https://github.com/Schweem/Pywal-Obsidian
 }
 # https://nix.catppuccin.com/getting-started/flakes/
