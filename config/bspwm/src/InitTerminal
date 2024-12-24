@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+tmux send-keys -t init:1 'xdotool key "ctrl+space"' Enter
+tmux send-keys -t init:1 'xdotool key "ctrl+r"' Enter
+tmux source-file ~/.tmux.conf
+exec zsh
+#tmux kill-session -t init
+'''

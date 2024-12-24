@@ -1,0 +1,14 @@
+// Rofi colors for Daniela
+
+* {
+    font: "JetBrainsMono Nerd Font 12";
+    background: #181825;
+    bg-alt: #1e1e2e;
+    background-alt: #181825E0;
+    foreground: #CDD6F4;
+    selected: #CBA6F7;
+    active: #A6E3A1;
+    urgent: #F38BA8;
+
+    img-background: url("~/.config/bspwm/rices/catppuccin/rofi.webp", width);
+}

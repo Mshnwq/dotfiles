@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+#   █████╗ ██████╗ ██████╗ ███████╗    ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗███████╗██████╗
+#  ██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║██╔════╝██╔══██╗
+#  ███████║██████╔╝██████╔╝███████╗    ██║     ███████║██║   ██║██╔██╗ ██║██║     ███████║█████╗  ██████╔╝
+#  ██╔══██║██╔═══╝ ██╔═══╝ ╚════██║    ██║     ██╔══██║██║   ██║██║╚██╗██║██║     ██╔══██║██╔══╝  ██╔══██╗
+#  ██║  ██║██║     ██║     ███████║    ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║███████╗██║  ██║
+#  ╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝    ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+#	Script to control prefered apps to launch for all themes
+#	Author: z0mbi3
+#	url:    https://github.com/gh0stzk/dotfiles
+
+WIDGET_DIR="$HOME/.config/bspwm/eww"
+export PATH="$HOME/.cargo/bin:$PATH"
+#export PATH="$HOME/.local/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/bin:$PATH"
+
+case "$1" in
+    --menu)
+        rofi -show drun -theme "$HOME"/.config/bspwm/src/rofi-themes/Launcher.rasi
+        ;;
+    --rice)
+        RiceSelector
+        ;;
+    --execute)
+        Executer.sh
+        ;;
+    --terminal)
+        Term --terminal
+        ;;
+    --terminal-init)
+        bspc desktop -f 2 | Term --init
+        ;;
+    --floating)
+        Term --floating
+        ;;
+    --update)
+        Term --update
+        ;;
+    --checkupdates)
+        Term --checkupdates 
+        ;;
+    --htop)
+        Term --htop
+        ;;
+    --netmanager)
+	# sudo apt-get install meld gnome-icon-theme gir1.2-nm-1.0
+	NetManagerDM
+	;;
+    --my-net)
+	#MyNet
+        eww -c "$WIDGET_DIR" open --toggle mynet
+	;;
+    --bluetooth)
+	rofi-bluetooth
+	;;
+    --buku)
+	rofi-buku
+	;;
+    --clipboard)
+	rofi -modi "clipboard:greenclip print" -theme "$HOME"/.config/bspwm/src/rofi-themes/Clipboard.rasi -show clipboard -run-command '{cmd}'
+	;;
+    --screenshot)
+	ScreenShoTer
+	;;
+    --powermenu)
+        PowerMenu
+        ;;
+    --android)
+	AndroidMount
+	;;
+    --keyboard)
+	KeyBoardL
+	;;
+    --tdrop)
+	tdrop -a -w 70% -h 35% -y 0 -x 15%  --class scratch alacritty --class=scratch
+	;;
+    --xqp)
+	xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/src/config/jgmenu.txt --config-file=~/.config/bspwm/src/config/jgmenurc
+	;;
+    --nvim)
+        bspc desktop -f 3 | Term --nvim
+        ;;
+    --files-term)
+        bspc desktop -f 4 | kitty --class=FileTerm -e yazi
+        #bspc desktop -f 4 | Term --file-term
+        ;;
+    --yazi)
+        kitty -e yazi
+        #Term --yazi
+        ;;
+    --music)
+        Term --music
+        ;;
+    --fetch)
+        Term --fetch
+        ;;
+        # Apps
+    --firefox)
+        firefox -P mshnwq
+        ;;
+    --chrome)
+        bspc desktop -f 6 | google-chrome --force-device-scale-factor=1.25
+	;;
+    --keepass)
+        bspc desktop -f 5 | sh -c 'export QT_QPA_PLATFORMTHEME="qt5ct"; keepassxc;'
+        ;;
+    --files)
+        thunar
+        ;;
+    --geany)
+        geany
+        ;;
+    --telegram)
+        telegram-desktop
+        ;;
+    --whatsapp)
+        firefox -P mshnwq -new-tab https://web.whatsapp.com/
+        ;;
+    --soundcontrol)
+        pavucontrol
+        ;;
+    --redlight)
+        redslide.sh
+        ;;
+    --redlight-up)
+        dunstify "redlight F5555"
+        ;;
+    --redlight-down)
+        dunstify "redlight F5555"
+        ;;
+    --redlight-reset)
+        redshift -x
+        ;;
+    --tailscale)
+       	eww -c "$WIDGET_DIR" open --toggle mynet
+	      ;;
+        # Eww Widgets
+        --KeyHelp)
+      	eww -c "$WIDGET_DIR" open --toggle csheet
+	      ;;
+    --usercard)
+        eww -c "$WIDGET_DIR" open --toggle launchermenu
+        ;;
+    --player)
+        eww -c "$WIDGET_DIR" open --toggle music
+        ;;
+    --calendar)
+        eww -c "$WIDGET_DIR" open --toggle date
+        ;;
+    *)
+        echo "Invalid Option"
+        ;;
+esac

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+setup_touchpad() {
+	touchpad_id=$(xinput list | grep 'Touchpad' | awk -F'id=' '{print $2}' | awk '{print $1}' | xargs)
+  tapping_id=$(xinput list-props 18 | grep 'Tapping Enabled (' | awk -F'[()]' '{print $2}' | xargs)
+  scrolling_id=$(xinput list-props 18 | grep 'Natural Scrolling Enabled (' | awk -F'[()]' '{print $2}' | xargs)
+
+	xinput set-prop $touchpad_id $tapping_id 1
+	xinput set-prop $touchpad_id $scrolling_id 1
+}
+
+setup_touchpad

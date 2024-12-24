@@ -1,0 +1,244 @@
+#  ███████╗██╗  ██╗██╗  ██╗██╗  ██╗██████╗ ██████╗  ██████╗
+#  ██╔════╝╚██╗██╔╝██║  ██║██║ ██╔╝██╔══██╗██╔══██╗██╔════╝
+#  ███████╗ ╚███╔╝ ███████║█████╔╝ ██║  ██║██████╔╝██║
+#  ╚════██║ ██╔██╗ ██╔══██║██╔═██╗ ██║  ██║██╔══██╗██║
+#  ███████║██╔╝ ██╗██║  ██║██║  ██╗██████╔╝██║  ██║╚██████╗
+#  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝
+#	z0mbi3			https://github.com/gh0stzk/dotfiles
+#
+
+# Show help
+super + F7
+	OpenApps --KeyHelp
+
+############################
+# ----- Applications ----- #
+############################
+
+# ----- Main Apps ----- #
+
+# Open Terminal (Normal & Floating)
+super + Return
+	OpenApps --terminal
+
+super + alt + Return
+	OpenApps --floating
+
+super + ctrl + Return
+	OpenApps --terminal-init
+
+# App launcher
+super + A
+	OpenApps --menu
+
+# Theme Selector
+super + R
+	OpenApps --rice
+
+# My Executer
+super + alt + x
+	OpenApps --execute
+
+# ----- Your Apps ----- #
+
+# Apps (browser)
+super + {b,B}
+	OpenApps --{firefox,chrome}
+super + alt + b
+	OpenApps --buku
+
+# Apps (geany, thunar)
+super + {g,E}
+	OpenApps --{editor,files}
+
+# Terminal apps (yazi, nvim, ncmpcpp)
+super + {e,n,m}
+	OpenApps --{yazi,nvim,music}
+super + alt + e
+	OpenApps --files-term
+
+# Media apps (Telegram, Whatsapp)
+super + alt + {t,w}
+	OpenApps --{telegram,whatsapp}
+
+# Media apps (Pavucontrol)
+super + F9
+	OpenApps --soundcontrol
+
+# Other apps
+super + alt + c
+	OpenApps --keepass
+
+# ----- Rofi Applets ----- #
+
+# Wallpaper selector
+super + alt + l
+	WallSelect
+
+# Mount Android phones
+super + alt + d
+	OpenApps --android
+
+# Network Manager
+super + F2
+	OpenApps --netmanager
+super + alt + F2
+	OpenApps --tailscale
+
+# Bluetooth
+super + F8
+	OpenApps --bluetooth
+
+# Clipboard
+super + v
+	OpenApps --clipboard
+
+# Screenshot
+super + alt + s
+	OpenApps --screenshot
+
+# PowerMenu
+super + alt + p
+	OpenApps --powermenu
+
+# SystemMonitor
+super + alt + m
+	OpenApps --htop
+
+# Keyboard Layout Applet
+super + alt + k
+	OpenApps --keyboard
+
+# ----- Environment Apps ----- #
+
+# Scratchpad
+super + alt + o
+	OpenApps --tdrop
+
+# (right click) jgmenu
+~button3
+        OpenApps --xqp
+
+# Power off, Reboot, Log out, Lockscreen, kill an app
+ctrl + super + alt + {p,r,q,l,k}
+	{systemctl poweroff,systemctl reboot,bspc quit,ScreenLocker,xkill}
+
+# Hide/Show Bar (Polybar and/or eww)
+super + alt + {h,u}
+	HideBar {-h,-u}
+
+super + shift + {h,u}
+	FlipBar {-h,-u}
+
+# Change transparency on focused window
+ctrl + alt + {plus,minus,t}
+	picom-trans {-c -o +3,-c -o -1,-c -d}
+
+# Manage brightness
+F3
+	Brightness down
+F4
+	Brightness up 
+F5
+	OpenApps --redlight
+alt + F3
+	OpenApps --redlight-up
+alt + F4
+	OpenApps --redlight-down
+alt + F5
+	OpenApps --redlight-reset
+
+# Volume control
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+	Volume{ --inc, --dec, --toggle}
+
+# Music Control
+XF86Audio{Next,Prev,Play,Stop}
+	MediaControl {--next,--previous,--toggle,--stop}
+
+#####################
+# ----- Bspwm ----- #
+#####################
+
+# Reload BSPWM
+super + alt + r
+	bspc wm -r
+
+# Close/Kill node
+super + Q
+	bspc node -k
+super + W
+	bspc node -c
+
+# Reload sxhkd Keybinds
+super + X
+	pkill -USR1 -x sxhkd; dunstify -u low -i ~/.config/bspwm/src/assets/reload.svg 'sxhkd' 'The configuration file has been reloaded successfully!'
+
+# ----- Node states and flags ----- #
+
+# Set the node state
+alt + {t,T,a,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Set the node flags
+alt + {m,x,s,p}
+	bspc node -g {marked,locked,sticky,private}
+  # sticky: will move with you accross windows
+  # locked: wont be killed
+  # private: wont be change on new node
+
+# Hide/Unhide node
+alt + h
+	BspHideNode
+
+# ----- Focus/Swap Nodes ----- #
+
+# Focus Nodes
+super + {Left,Down,Up,Right}
+	bspc node -f {west,south,north,east}
+
+# Rotate desktop
+super + shift + Tab
+	bspc node @/ --rotate {90,-90}
+
+# Switch workspace
+super + {comma,period}
+	bspc desktop -f {prev,next}.local
+
+# Focus or send to the given desktop
+super + {_,ctrl + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Send focused Node to workspace directionally
+super + shift + {comma,period}
+	bspc node -d {prev,next} '--follow'
+
+# Cycle focus through nodes.
+super + Tab
+	bspc node -f next.local.!hidden.window
+
+# Swap Nodes
+super + ctrl + {Left,Down,Up,Right}
+	bspc node -s {west,south,north,east}
+
+# Focus the last node/desktop
+super + space
+	bspc desktop -f last
+
+# Preselect the direction (horizontal, vertical or cancel)
+super + ctrl {h,v,q}
+	bspc node -p {east,south,cancel}
+
+# ----- Expand/Shrink Nodes ----- #
+
+# Expand node
+super + alt {Left,Down,Up,Right}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Shrink node
+super + shift {Left,Down,Up,Right}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Move floating window
+alt + shift {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}

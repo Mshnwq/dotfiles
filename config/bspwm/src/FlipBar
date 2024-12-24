@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# Configuration
+read -r current_rice < "$HOME"/.config/bspwm/.rice
+read -r bar_position < "$HOME"/.config/bspwm/rices/$current_rice/.bar-position
+if [ "$bar_position" = "down" ]; then
+    CONF_FILE="$HOME/.config/bspwm/rices/$current_rice/.bar-position-down/Theme.sh"
+else
+    CONF_FILE="$HOME/.config/bspwm/rices/$current_rice/Theme.sh"
+fi
+
+# Function to set BSPWM padding
+set_padding() {
+    bspc config top_padding $1
+    bspc config bottom_padding $2
+    bspc config left_padding $3
+    bspc config right_padding $4
+}
+
+# Main function to hide or unhide bars
+poly_bar() {
+    if [ "$1" = "down" ]; then
+	if [ "$bar_position" = "down" ]; then
+	    echo 'nothing'
+	    exit
+    	else
+	   echo 'calling launch'
+	   launch_bar down
+	fi
+    else
+	if [ "$bar_position" = "up" ]; then
+	    echo 'nothing'
+	    exit
+    	else
+	   echo 'calling launch'
+	   launch_bar up
+	fi
+    fi
+}
+
+# Launch polybar
+launch_bar() {
+    polybar-msg cmd quit >/dev/null 2>&1
+    # Wait for Polybar to terminate completely
+    while pgrep -x "polybar" > /dev/null; do
+        sleep 0.2
+    done
+    set_padding 2 2 2 2
+    if [ "$1" = "down" ]; then
+	echo 'launch down'
+	for mon in $(polybar --list-monitors | cut -d":" -f1); do
+            MONITOR=$mon polybar -q dani -c "${HOME}"/.config/bspwm/rices/$current_rice/.bar-position-down/config.ini &
+	done
+    else
+	echo 'launch up'
+        for mon in $(polybar --list-monitors | cut -d":" -f1); do
+            MONITOR=$mon polybar -q dani -c "${HOME}"/.config/bspwm/rices/$current_rice/config.ini &
+	done
+    fi
+    echo "$1" > "${HOME}"/.config/bspwm/rices/$current_rice/.bar-position  
+    exit
+}
+
+# Parse command line argument
+case $1 in
+    -h|--down) poly_bar down ;;
+    -u|--up) poly_bar up ;;
+    *) echo "Usage: $0 {-h|--down|-u|--up}" ;;
+esac

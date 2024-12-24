@@ -1,0 +1,43 @@
+#!/bin/env bash
+
+
+internal_ip() {
+    ni=$(cat ./config/system.ini | grep 'sys_network_interface = ' | awk '{print $3}')
+    ip address show $ni | grep 'inet 192' | awk '{print $2}' | xargs
+}
+external_ip() {
+    dig +tries=1 +short -4 A myip.opendns.com @resolver1.opendns.com
+}
+
+
+tailscale_status() {
+   # Check if Tailscale is active
+    tailscale_status=$(tailscale status)
+    if [[ $tailscale_status = "Tailscale is stopped." ]]; then
+      echo "Offline"
+    else
+      is_online=$(tailscale status --json | jq '.Self.Online')
+      if [[ $is_online = "true" ]]; then
+	echo "Online"
+      else
+        echo "Error"
+      fi
+    fi
+}
+
+exit_node_status() {
+   exit_node_status=$(tailscale status --json | jq '.ExitNodeStatus.Online')
+   if [[ $exit_node_status = "true" ]]; then
+      echo "true"
+   else
+      echo "false"
+   fi
+}
+
+# Parse command line argument
+case $1 in
+    --internal-ip) internal_ip  ;;
+    --external-ip) external_ip  ;;
+    --tailscale-status) tailscale_status  ;;
+    --exit-node-status) exit_node_status  ;;
+esac
