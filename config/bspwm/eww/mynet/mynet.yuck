@@ -1,0 +1,54 @@
+;; Vars ;;
+(defpoll internal_ip :interval "3s" "MyNet --internal-ip")
+(defpoll external_ip :interval "3s" "MyNet --external-ip")
+(defpoll tailscale_status :interval "3s" "MyNet --tailscale-status")
+(defpoll exit_node_status :interval "3s" "MyNet --exit-node-status")
+
+
+;; Widegets ;;
+
+(defwidget mynet []
+     (box :class "mynet"
+          :orientation "v"
+          (internal-ip)
+          (external-ip)
+          (tailscale-status)
+     )
+)
+
+(defwidget internal-ip []
+  (box :orientation "v" 
+       :space-evenly "true"
+    (label :class "title" :text "Internal IP")
+    (label :class "text" :text internal_ip)
+  )
+)
+(defwidget external-ip []
+  (box :orientation "v" 
+       :space-evenly "true"
+    (label :class "title" :text "External IP")
+    (label :class {exit_node_status == "true" ? "text good" : "text bad"} 
+           :text external_ip
+    )
+  )
+)
+(defwidget tailscale-status []
+  (box :orientation "v" 
+       :space-evenly "true"
+    (label :class "title" :text "Tailscale Status")
+    (label :class {
+            tailscale_status == "Offline" ? "text off" :
+            tailscale_status == "Online" ? "text on" :
+            tailscale_status == "Error" ? "text error" : "text"
+        }
+        :text tailscale_status
+    )
+  )
+)
+
+;; Windows ;;
+(defwindow mynet
+    :geometry (geometry :x "0px" :y "0px" :anchor "center center")
+    :wm-ignore true
+    (mynet)
+)

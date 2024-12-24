@@ -1,0 +1,36 @@
+.mynet {
+    border-radius: 0.5rem;
+    margin: 0.8rem 0.8rem;
+    min-width: 18rem;
+    background-color: $bg;
+}
+
+.title {
+    font-family: "JetBrainsMono Nerd Font";
+    min-width: 18rem;
+    font-size: 1.8rem;
+    color: $fg;
+}
+
+.text {
+    font-family: "JetBrainsMono Nerd Font";
+    min-width: 18rem;
+    font-size: 1.1rem;
+    color: $fg;
+    
+    &.good {
+        color: $green;
+    }
+    &.bad {
+        color: $yellow;
+    }
+    &.on {
+        color: $green;
+    }
+    &.off {
+        color: $yellow;
+    }
+    &.error {
+        color: $red;
+    }
+}
