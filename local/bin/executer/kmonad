@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+CONF="$HOME/.config/kmonad/config.kbd"
+[[ -s $CONF ]] || exit 1
+
+case $1 in
+# --kill | --start) pgrep -f config.kbd ;;&
+--kill | --start) pkill -f config.kbd ;;&
+--start) kmonad "$CONF" & ;;
+*) exit 2 ;;
+esac
