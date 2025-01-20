@@ -1,0 +1,11 @@
+session_name: Caishen
+windows:
+  - window_name: Frontend
+    shell_command_before:
+      - ~/Desktop/Caishen/Frontend
+  - window_name: Backend
+    shell_command_before:
+      - ~/Desktop/Caishen/Backend
+  - window_name: Manifest
+    shell_command_before:
+      - ~/Desktop/Caishen/Manifest
