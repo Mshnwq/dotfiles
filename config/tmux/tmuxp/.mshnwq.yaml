@@ -1,0 +1,26 @@
+session_name: Mshnwq
+windows:
+  - window_name: Website
+    shell_command_before:
+      - ~/Desktop/Mshnwq/Website
+  - window_name: Blog
+    shell_command_before:
+      - ~/Desktop/Mshnwq/Blog
+  - window_name: Helm
+    shell_command_before:
+      - ~/Desktop/Mshnwq/Helm
+  - window_name: Manifest
+    shell_command_before:
+      - ~/Desktop/Mshnwq/Manifest
+  - window_name: OS
+    shell_command_before:
+      - ~/Desktop/Mshnwq/OS
+  - window_name: Nvim
+    shell_command_before:
+      - ~/.config/nvim
+  - window_name: dotfiles
+    shell_command_before:
+      - ~/.dotfiles/config
+  - window_name: HomeManager
+    shell_command_before:
+      - ~/.dotfiles/config/home-manager
