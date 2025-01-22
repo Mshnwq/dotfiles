@@ -1,0 +1,18 @@
+session_name: Coom
+windows:
+  - window_name: vpn
+    shell_command_before:
+      - ~/.config/dots/scripts/executer/.vpn_on.sh
+  - window_name: browser
+    shell_command_before:
+      - firefox -P mshnwq -private-window "$(buku --stag 'coom,simp' --sreg 'SimpCity' -j | jq -r '.[].uri')"
+  - window_name: eyes
+    shell_command_before:
+      - ~/.config/dots/scripts/Term --yazi-tmux-project coom &
+    panes:
+      - shell_command:
+          - l
+          - pass coom/simp-user | wl-copy
+          - sleep 1
+          - pass coom/simp-pass | wl-copy
+
