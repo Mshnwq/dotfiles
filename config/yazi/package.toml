@@ -1,5 +1,5 @@
 [plugin]
-deps = []
+deps = [{ use = "dedukun/relative-motions", rev = "df97039" }, { use = "yazi-rs/plugins:jump-to-char", rev = "71c4fc2" }, { use = "dedukun/bookmarks", rev = "35da107" }, { use = "h-hg/yamb", rev = "108347b" }]
 
 [flavor]
 deps = [{ use = "yazi-rs/flavors:catppuccin-mocha", rev = "8458d25" }]
