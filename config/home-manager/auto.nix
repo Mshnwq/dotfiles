@@ -4,5 +4,7 @@
     pkgs.gallery-dl
     pkgs.jdupes
     pkgs.nurl
+    pkgs.buku
+    pkgs.nmap
   ];
 }
