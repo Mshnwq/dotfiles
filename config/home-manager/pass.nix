@@ -9,7 +9,7 @@
   # TODO: fix blurry
   home.file.".local/bin/pinentry-wofi".text = ''
     #!/usr/bin/env bash
-    exec ${pkgs.pinentry-rofi} "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
+    exec ${pkgs.pinentry-rofi}/bin/pinentry-rofi "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
   '';
   home.file.".local/bin/pinentry-wofi".executable = true;
 
@@ -18,11 +18,20 @@
     PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
   };
+  # https://wiki.archlinux.org/title/XDG_Base_Directory
+  # OpenSSH 		      ~/.ssh 	will not fix 	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH. 
+  # SSH folder 		    ~/.ssh 			700 	drwx------
+  # Public key 		    ~/.ssh/id_rsa.pub 	644 	-rw-r--r--
+  # Private key 	    ~/.ssh/id_rsa 		600 	-rw-------
+  # Authorized Keys 	~/.ssh/authorized_keys 	600 	-rw-------
+  # Config 		        ~/.ssh/config 		600 	-rw-------
 
   # Ensure directory exists with secure permissions
   home.activation.ensureGnuPGDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p ${config.xdg.dataHome}/gnupg
     chmod 700 ${config.xdg.dataHome}/gnupg
+    mkdir -p ${config.xdg.dataHome}/pass
+    chmod 700 ${config.xdg.dataHome}/pass
   '';
 
   # Override gpg-agent systemd user unit to pass GNUPGHOME
