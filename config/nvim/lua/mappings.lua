@@ -5,20 +5,43 @@ require("nvchad.mappings")
 -- <A-tab>
 
 local map = vim.keymap.set
--- Disable mappings
 local nomap = vim.keymap.del
 
 vim.api.nvim_set_keymap("n", "S", "A", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "A", "I", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "s", "a", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "a", "i", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "E", "W", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "e", "w", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "W", "B", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "w", "b", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "E", "W", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "e", "w", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "W", "B", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "w", "b", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "J", "L", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "J", "L", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "K", "H", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "K", "H", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "L", "$", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "L", "$", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "H", "^", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "H", "^", { noremap = true, silent = true })
+
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
-map("n", "<C-w>.", "<cmd> tabnext <cr>", { desc = "Next Tab" })
-map("n", "<C-w>,", "<cmd> tabprev <cr>", { desc = "Prev Tab" })
---nomap("n", "<C-w>c", true)
--- vim.keymap.del("n", "<C-w>c")
-map("n", "<C-w>C", "<cmd> tabedit <cr>", { desc = "New Tab", noremap = true })
+map("n", "<A-k>", "<cmd>t-1<CR>")
+map("n", "<A-j>", "<cmd>t.<CR>")
+
+map({ "n", "i" }, "<C-x>", "<cmd>d<CR>")
+
+nomap("n", "<leader>n")
+nomap("n", "<leader>rn")
+map("n", "<leader>nn", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+map("n", "<leader>nr", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 
 map("n", "<leader>mp", function()
   require("conform").format({
@@ -26,7 +49,8 @@ map("n", "<leader>mp", function()
     async = false,
     timeout_ms = 500,
   })
-end, { desc = "Format file or range (in visual mode)" })
+end, { desc = "Format file or range" })
+map("v", "<leader>mp", "<cmd>FormatYaml<CR>", { desc = "Format yaml range" })
 
 map("n", "<leader>tt", function()
   require("base46").toggle_transparency()
@@ -34,51 +58,107 @@ end, { desc = "Toggle transparency" })
 
 map("n", "<leader>do", "<cmd> lua vim.diagnostic.open_float() <cr>", { desc = "Show diagnostic" })
 
--- nomap("n", "<C-w>s")
--- nomap("n", "<C-w>v")
-map("n", "<C-w>c", "<cmd> sp <cr>", { desc = "Split window horizontally" })
-map("n", "<C-w>-", "<cmd> sp <cr>", { desc = "Split window horizontally" })
-map("n", "<C-w>\\", "<cmd> vsp <cr>", { desc = "Split window vertically" })
+nomap("n", "<leader>ma")
+nomap("n", "<leader>fm")
+map("n", "<leader>fm", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
+nomap("n", "<leader>cm")
+map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
 
--- nomap("n", "<C-e>")
+-- Tabs
+map("n", "<leader><A-.>", "<cmd> tabnext <cr>", { desc = "Next Tab" })
+map("n", "<leader><A-,>", "<cmd> tabprev <cr>", { desc = "Prev Tab" })
+map("n", "<leader><A-c>", "<cmd> tabnew <cr>", { desc = "New Tab" })
+map("n", "<leader><A-C>", "<cmd> tabedit % <cr>", { desc = "New Tab on file" })
+map("n", "<leader><A-q>", "<cmd> tabclose <cr>", { desc = "Close Tab" })
+
+-- Windows
+map("n", "<leader><A-->", "<cmd> sp <cr>", { desc = "Split window horizontally" })
+map("n", "<leader><A-\\>", "<cmd> vsp <cr>", { desc = "Split window vertically" })
+map("n", "<leader><A-w>", "<C-w>q", { desc = "Close Window" })
+
+-- Navigate windows
+vim.keymap.set({ "n", "t" }, "<A-Left>", function()
+  if vim.fn.mode() == "t" then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n><C-w>h", true, false, true), "n", true)
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>h", true, false, true), "n", true)
+  end
+end, { desc = "Switch window left" })
+vim.keymap.set({ "n", "t" }, "<A-Right>", function()
+  if vim.fn.mode() == "t" then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n><C-w>l", true, false, true), "n", true)
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>l", true, false, true), "n", true)
+  end
+end, { desc = "Switch window right" })
+vim.keymap.set({ "n", "t" }, "<A-Down>", function()
+  if vim.fn.mode() == "t" then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n><C-w>j", true, false, true), "n", true)
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>j", true, false, true), "n", true)
+  end
+end, { desc = "Switch window down" })
+vim.keymap.set({ "n", "t" }, "<A-Up>", function()
+  if vim.fn.mode() == "t" then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n><C-w>k", true, false, true), "n", true)
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>k", true, false, true), "n", true)
+  end
+end, { desc = "Switch window up" })
+
+-- NvimTree
+nomap("n", "<C-n>")
 map("n", "<C-e>", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
 
+-- Notifications
+map("n", "<leader>cn", "<cmd>lua require('notify').dismiss()<CR>", { desc = "Dismiss notifications" })
+
+-- Terminal mappings
+nomap("n", "<leader>h")
+nomap("n", "<leader>v")
+nomap({ "n", "t" }, "<A-v>")
+nomap({ "n", "t" }, "<A-h>")
+nomap({ "n", "t" }, "<A-i>")
+nomap("n", "<leader>pt")
+
+map("n", "<A-=>", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
+map({ "n", "t" }, "<A-\\>", function()
+  require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
+end, { desc = "vterm" })
+map({ "n", "t" }, "<A-->", function()
+  require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
+end, { desc = "hterm" })
+map({ "n", "t" }, "<A-f>", function()
+  require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+end, { desc = "floating term" })
+
 -- NeoGit
-map("n", "<leader>gs", "<cmd>Neogit<CR>", { desc = "Open NeoGit" })
+map("n", "<leader>gn", "<cmd>Neogit<CR>", { desc = "Open NeoGit" })
+-- Worktree
+require("telescope").load_extension("worktrees")
+map("n", "<leader>gws", "<cmd>lua require('telescope').extensions.worktrees.list_worktrees(opts)<CR>",
+  { desc = "Manage Worktree" })
+map("n", "<leader>gwb", "<cmd>GitWorktreeCreateExisting<CR>", { desc = "Create Existing Worktree" })
+map("n", "<leader>gwc", "<cmd>GitWorktreeCreate<CR>", { desc = "Create New Worktree" })
 
+-- ScratchPad Term
+map("n", "<leader>tc", "<cmd>ScratchTermCreate<CR>", { desc = "Create ScratchTerm" })
+map("n", "<leader>gb", "<cmd>ScratchTermBranch<CR>", { desc = "Serie Branch ScratchTerm" })
+map("n", "<leader>gl", "<cmd>ScratchTermLazyGit<CR>", { desc = "LazyGit ScratchTerm" })
 
--- Terraform
--- map("n", "<leader>ti", ":!terraform init<CR>", { desc = "Terraform Init" })
--- map("n", "<leader>tv", ":!terraform validate<CR>", { desc = "Terraform Validate" })
--- map("n", "<leader>tf", ":!terraform fmt<CR>", { desc = "Terraform Format" })
--- map("n", "<leader>tp", ":!terraform plan<CR>", { desc = "Terraform Plan" })
--- map("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { desc = "Terraform Apply" })
+-- Copilot
+map("n", "<leader>cs", "<cmd>Copilot<CR>", { desc = "Coplit Status" })
+map("n", "<leader>cd", "<cmd>Copilot disable<CR>", { desc = "Disable Coplit" })
+map("n", "<leader>ce", "<cmd>Copilot enable<CR>", { desc = "Enable Coplit" })
 
--- K
-local kube_utils_mappings = {
-  { "<leader>k",   group = "Kubernetes" }, -- Main title for all Kubernetes related commands
-  -- Helm Commands
-  { "<leader>kh",  group = "Helm" },
-  { "<leader>khT", "<cmd>HelmDryRun<CR>",                     desc = "Helm DryRun Buffer" },
-  { "<leader>khb", "<cmd>HelmDependencyBuildFromBuffer<CR>",  desc = "Helm Dependency Build" },
-  { "<leader>khd", "<cmd>HelmDeployFromBuffer<CR>",           desc = "Helm Deploy Buffer to Context" },
-  { "<leader>khr", "<cmd>RemoveDeployment<CR>",               desc = "Helm Remove Deployment From Buffer" },
-  { "<leader>kht", "<cmd>HelmTemplateFromBuffer<CR>",         desc = "Helm Template From Buffer" },
-  { "<leader>khu", "<cmd>HelmDependencyUpdateFromBuffer<CR>", desc = "Helm Dependency Update" },
-  -- Kubectl Commands
-  { "<leader>kk",  group = "Kubectl" },
-  { "<leader>kkC", "<cmd>SelectSplitCRD<CR>",                 desc = "Download CRD Split" },
-  { "<leader>kkD", "<cmd>DeleteNamespace<CR>",                desc = "Kubectl Delete Namespace" },
-  { "<leader>kkK", "<cmd>OpenK9s<CR>",                        desc = "Open K9s" },
-  { "<leader>kka", "<cmd>KubectlApplyFromBuffer<CR>",         desc = "Kubectl Apply From Buffer" },
-  { "<leader>kkc", "<cmd>SelectCRD<CR>",                      desc = "Download CRD" },
-  { "<leader>kkk", "<cmd>OpenK9sSplit<CR>",                   desc = "Split View K9s" },
-  { "<leader>kkl", "<cmd>ToggleYamlHelm<CR>",                 desc = "Toggle YAML/Helm" },
-  -- Logs Commands
-  { "<leader>kl",  group = "Logs" },
-  { "<leader>klf", "<cmd>JsonFormatLogs<CR>",                 desc = "Format JSON" },
-  { "<leader>klv", "<cmd>ViewPodLogs<CR>",                    desc = "View Pod Logs" },
-}
+map("n", "]t", function()
+  require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+map("n", "[t", function()
+  require("todo-comments").jump_prev()
+end, { desc = "Previous todo comment" })
+map("n", "<leader>tdt", "<cmd>TodoTelescope<CR>", { desc = "Telescope TODO" })
+map("n", "<leader>tdl", "<cmd>TodoLocList<CR>", { desc = "Local TODO" })
+map("n", "<leader>tdg", "<cmd>TodoQuickFix<CR>", { desc = "Global TODO" })
 
--- Register the Kube Utils keybindings
-require('which-key').add(kube_utils_mappings)
+require('configs.autocmd')
