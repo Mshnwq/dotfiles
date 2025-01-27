@@ -7,7 +7,7 @@
   home.packages = [
     pkgs.pywal16
     pkgs.pywalfox-native  # do pywalfox install
-    # pkgs.highlight
+    pkgs.highlight
     pkgs.libsForQt5.full  # bloat only for rcc :(
     pkgs.catppuccin-whiskers  # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum
@@ -19,12 +19,12 @@
     # Set Application Style to Kvantum if not already
     # pkgs.papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
     pkgs.papirus-folders  # cli tool
-    # pkgs.nerd-fonts.jetbrains-mono
-    # pkgs.nerd-fonts.roboto-mono
-    # pkgs.nerd-fonts.fira-mono
-    # pkgs.nerd-fonts.fira-code
-    # pkgs.nerd-fonts.inconsolata
-    # pkgs.nerd-fonts.symbols-only
+    pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.roboto-mono
+    pkgs.nerd-fonts.fira-mono
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.inconsolata
+    pkgs.nerd-fonts.symbols-only
   ];
 
   home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
