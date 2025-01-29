@@ -59,21 +59,67 @@ return {
 
   -- My Plugins --
   {
-    "h4ckm1n-dev/kube-utils-nvim",
+    "folke/todo-comments.nvim",
     event = "VeryLazy",
-    dependencies = { "telescope.nvim" },
-    config = function()
-      require("kube-utils-nvim").setup()
-    end,
+    dependencies = { "nvim-lua/plenary.nvim" },
+    -- config = function()
+    --   require("todo-comments").setup()
+    -- end,
+    opts = {
+      signs = true,      -- show icons in the signs column
+      sign_priority = 8, -- sign priority
+      -- keywords recognized as todo comments
+      keywords = {
+        FIX = {
+          icon = " ", -- icon used for the sign, and in search results
+          color = "error", -- can be a hex color, or a named color (see below)
+          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords
+          -- signs = false, -- configure signs for some keywords individually
+        },
+        TODO = { icon = " ", color = "info" },
+        WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+        HACK = { icon = " ", color = "hint" },
+        PERF = { icon = " ", color = "hint", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+        NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+        TEST = { icon = "󰂓 ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+      },
+      colors = {
+        error = { "TodoError" },
+        warning = { "TodoWarn" },
+        info = { "TodoInfo" },
+        hint = { "TodoHint" },
+        test = { "TodoTest" },
+        default = { "TodoDefault" },
+      },
+    },
   },
   {
-    "diogo464/kubernetes.nvim",
-    dependencies = { "nvim-lspconfig" },
-    event = "VeryLazy",
-    config = function()
-      require("kubernetes").setup()
-    end,
+    'towolf/vim-helm',
+    ft = 'helm'
   },
+  {
+    "folke/ts-comments.nvim",
+    event = "VeryLazy",
+    enabled = vim.fn.has("nvim-0.10.0") == 1,
+    opts = {
+      lang = {
+        terraform = { "# %s" },
+        yuck = { "; %s" },
+      },
+    },
+  },
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
+    },
+    event = "LspAttach",
+    config = function()
+      require('tiny-code-action').setup()
+    end
+  },
+
   -- https://github.com/b0o/nvim-tree-preview.lua
 
   {
@@ -82,6 +128,27 @@ return {
 
   {
     require("configs.neominimap")
+  },
+
+  {
+    "rcarriga/nvim-notify",
+    config = function()
+      require("notify").setup({
+        background_colour = "#000000",
+      })
+    end
+  },
+  {
+    "folke/noice.nvim",
+    enabled = true,
+    lazy = false, -- NOTE: NO NEED to Lazy load
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = function()
+      return require("configs.noice")
+    end,
   },
 
   {
@@ -96,8 +163,13 @@ return {
       require('neogit').setup()
     end,
   },
-
-
+  {
+    "Juksuu/worktrees.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("worktrees").setup()
+    end,
+  },
 
   {
     "hrsh7th/nvim-cmp",
