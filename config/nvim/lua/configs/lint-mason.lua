@@ -2,7 +2,9 @@ local lint = package.loaded["lint"]
 
 -- List of linters to ignore during install
 local ignore_install = {
-  "kube_linter",
+  "kubelint",
+  "helmlint",
+  "dclint",
 }
 
 -- Helper function to find if value is in table.

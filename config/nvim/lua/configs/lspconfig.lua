@@ -1,31 +1,59 @@
 -- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 local nvlsp = require("nvchad.configs.lspconfig")
-
 local lspconfig = require("lspconfig")
+
+local map = vim.keymap.set
+local nomap = vim.keymap.del
+local custom_on_attach = function(_, bufnr)
+  local function opts(desc)
+    return { buffer = bufnr, desc = "LSP " .. desc }
+  end
+  map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
+  map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
+  map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
+  map("n", "gs", vim.lsp.buf.hover, opts "Show Info")
+  map("n", "gh", vim.lsp.buf.signature_help, opts "Show signature help")
+  map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
+  map("n", "<leader>wd", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
+  map("n", "<leader>wl", function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, opts "List workspace folders")
+  map("n", "gt", vim.lsp.buf.type_definition, opts "Go to type definition")
+  map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
+  -- map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+  map("n", "<leader>ca", function()
+    require("tiny-code-action").code_action()
+  end, opts "Code action")
+  map("i", "<A-Return>", function()
+    require("tiny-code-action").code_action()
+  end, opts "Code action")
+  map("n", "gr", vim.lsp.buf.references, opts "Show references")
+end
 
 -- list of all servers configured.
 lspconfig.servers = {
   "lua_ls",
   "bashls",
   "pyright",
-  "terraformls",
-  "yamlls",
   "gopls",
-  "gitlab_ci_ls",
   -- "nginx_language_server", -- needs python 3.12 or below
   "lemminx",
-  "helm_ls",
-  "dockerls",
-  "docker_compose_language_service",
-  -------
+  -- WebDev
   "svelte",
   "eslint",
   "ts_ls",
+  -- DevOps
+  "yamlls",
+  "helm_ls",
+  "gitlab_ci_ls",
+  "docker_compose_language_service",
+  "dockerls",
+  "terraformls",
 }
 
 lspconfig.lua_ls.setup({
-  on_attach = nvlsp.on_attach,
+  on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
 
@@ -51,7 +79,7 @@ lspconfig.lua_ls.setup({
 })
 
 -- lspconfig.pyright.setup({
---   on_attach = nvlsp.on_attach,
+--   on_attach = custom_on_attach,
 --   on_init = nvlsp.on_init,
 --   capabilities = nvlsp.capabilities,
 --   -- settings = {
@@ -63,18 +91,38 @@ lspconfig.lua_ls.setup({
 --   -- },
 -- })
 
--- lspconfig.terraformls.setup({
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- })
-
-lspconfig.yamlls.setup {
-  on_attach = nvlsp.on_attach,
+lspconfig.gopls.setup({
+  on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
-  -- #TODO: 
-  --filetypes = { 'yaml' },
+  -- no reason garbage
+  --   on_attach = function(client, bufnr)
+  --     client.server_capabilities.documentFormattingProvider = false
+  --     client.server_capabilities.documentRangeFormattingProvider = false
+  --     custom_on_attach(client, bufnr)
+  --   end,
+  --   on_init = nvlsp.on_init,
+  --   capabilities = nvlsp.capabilities,
+  --   cmd = { "gopls" },
+  --   filetypes = { "go", "gomod", "gotmpl", "gowork" },
+  --   root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+  --   settings = {
+  --     gopls = {
+  --       analyses = {
+  --         unusedparams = true,
+  --       },
+  --       completeUnimported = true,
+  --       usePlaceholders = true,
+  --       staticcheck = true,
+  --     },
+  --   },
+})
+
+lspconfig.yamlls.setup {
+  on_attach = custom_on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  filetypes = { "yaml" },
   settings = {
     yaml = {
       schemaStore = {
@@ -83,15 +131,11 @@ lspconfig.yamlls.setup {
       },
       schemas = {
         -- use this if you want to match all '*.yaml' files
-        [require('kubernetes').yamlls_schema()] = "*manifest.yaml",
-        -- or this to only match '*.<resource>.yaml' files. ex: 'app.deployment.yaml', 'app.argocd.yaml', ...
-        -- [require('kubernetes').yamlls_schema()] = require('kubernetes').yamlls_filetypes()
+        [require('kubernetes').yamlls_schema()] = { "*manifest.yaml", "*/manifests/*.yaml" },
         -- ArgoCD ApplicationSet CRD
-        -- ["https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/applicationset-crd.yaml"] =
-        -- "/home/h4ckm1n/Documents/K8s/apps/templates/*.yaml",
-        -- -- ArgoCD Application CRD
-        -- ["https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml"] =
-        -- "/home/h4ckm1n/Documents/K8s/apps/templates/*.yaml",
+        -- ["https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/applicationset-crd.yaml"] = "*/argo/*.yaml",
+        -- ArgoCD Application CRD
+        ["https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml"] = "*/argo/*.yaml",
         -- -- Kubernetes strict schemas
         -- ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json"] = "",
       },
@@ -125,48 +169,52 @@ lspconfig.yamlls.setup {
   },
 }
 
--- lspconfig.gopls.setup({
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
---   -- no reason garbage
---   --   on_attach = function(client, bufnr)
---   --     client.server_capabilities.documentFormattingProvider = false
---   --     client.server_capabilities.documentRangeFormattingProvider = false
---   --     nvlsp.on_attach(client, bufnr)
---   --   end,
---   --   on_init = nvlsp.on_init,
---   --   capabilities = nvlsp.capabilities,
---   --   cmd = { "gopls" },
---   --   filetypes = { "go", "gomod", "gotmpl", "gowork" },
---   --   root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
---   --   settings = {
---   --     gopls = {
---   --       analyses = {
---   --         unusedparams = true,
---   --       },
---   --       completeUnimported = true,
---   --       usePlaceholders = true,
---   --       staticcheck = true,
---   --     },
---   --   },
--- })
+-- Handeled from vim-helm plugin
+lspconfig.helm_ls.setup({
+  on_attach = custom_on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  -- settings = {
+  --   ['helm-ls'] = {
+  --     yamlls = {
+  --       path = "yaml-language-server",
+  --     }
+  --   }
+  -- }
+  -- filetypes = { "yaml.helm" },
+  -- cmd = { "helm_ls", "serve" },
+  -- root_dir = function(fname)
+  --   return require('lspconfig.util').root_pattern("Chart.yaml")(fname)
+  -- end,
+})
 
 lspconfig.gitlab_ci_ls.setup({
-  on_attach = nvlsp.on_attach,
+  on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
   cmd = { "gitlab-ci-ls" },
-  filetypes = { "yaml.gitlab", "gitlab-ci.yml" },  -- Ensure it only applies to .gitlab-ci.yml
-  root_dir = lspconfig.util.root_pattern(".gitlab*", ".git"),
+  filetypes = { "yaml.gitlab" },
 })
 
 lspconfig.docker_compose_language_service.setup({
-  on_attach = nvlsp.on_attach,
+  on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
   cmd = { "docker-compose-langserver", "--stdio" },
   filetypes = { "yaml.docker-compose" },
+})
+
+
+lspconfig.dockerls.setup({
+  on_attach = custom_on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+})
+
+lspconfig.terraformls.setup({
+  on_attach = custom_on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
 })
 
 
@@ -175,14 +223,10 @@ local default_servers = {
   -- "html",
   -- "cssls",
   "pyright",
-  "terraformls",
   "gopls",
   "bashls",
   -- "nginx_language_server", -- needs python 3.12 or below
   "lemminx",
-  "helm_ls",
-  "dockerls",
-  ----------
   "svelte",
   -- "eslint",
   "ts_ls",
@@ -191,7 +235,7 @@ local default_servers = {
 -- lsps with default config
 for _, lsp in ipairs(default_servers) do
   lspconfig[lsp].setup({
-    on_attach = nvlsp.on_attach,
+    on_attach = custom_on_attach,
     on_init = nvlsp.on_init,
     capabilities = nvlsp.capabilities,
   })
