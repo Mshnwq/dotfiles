@@ -1,6 +1,27 @@
 {
   description = "Home Manager configuration of mshnwq";
 
+  nixConfig = {
+    # https://wiki.hypr.land/Nix/Cachix/
+    extra-substituters = [
+      # "https://hyprland.cachix.org"
+      # "https://yazi.cachix.org"
+      "https://devenv.cachix.org"
+    ];
+    extra-trusted-substituters = [
+      # "https://hyprland.cachix.org"
+      # "https://yazi.cachix.org"
+      "https://devenv.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      # "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+    ];
+    trusted-users = [ "root" "@wheel" ];
+    allowed-users = [ "@wheel" ];
+  };
+
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -12,7 +33,8 @@
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nixgl.url = "github:nix-community/nixGL";
     nur.url = "github:nix-community/NUR";
-    # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
+    devenv.url = "github:cachix/devenv";
+    # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: 
@@ -31,19 +53,19 @@
         ];
       };
       modules = [ 
-        ./hypr.nix
         ./home.nix
         ./yazi.nix
         ./rust.nix
         ./tmux.nix
+        ./shell.nix
+        ./hypr.nix
         ./auto.nix
         ./pass.nix
         ./infra.nix
         ./music.nix
         ./pywal.nix
-        ./shell.nix
-        ./wrap.nix
         ./mime.nix
+        ./flat.nix
         ./nvim.nix
         ({config, pkgs, ...}: {
           imports = [
