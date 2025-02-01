@@ -44,6 +44,12 @@ case "$1" in
   --k9s)
     Term --override-term alacritty --k9s
     ;;
+  --lazydocker)
+    Term --override-term alacritty --lazydocker
+    ;;
+  --disk)
+    Term --override-term alacritty --disk
+    ;;
   --netmanager)
     NetManagerDM
     ;;
@@ -101,9 +107,6 @@ case "$1" in
     ;;
   --files)
     dolphin
-    ;;
-  --whatsapp)
-    Firefox -P mshnwq -new-tab https://web.whatsapp.com/
     ;;
   --gpt)
     Firefox -P mshnwq -new-tab https://chatgpt.com/
