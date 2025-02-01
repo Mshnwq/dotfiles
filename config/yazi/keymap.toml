@@ -418,22 +418,22 @@ run = "plugin yamb --args=save"
 desc = "Add bookmark"
 
 [[manager.prepend_keymap]]
-on = [ "<A-b>", "g" ]
+on = [ "<A-b>", "G" ]
 run = "plugin yamb --args=jump_by_key"
 desc = "Jump bookmark by key"
 
 [[manager.prepend_keymap]]
-on = [ "<A-b>", "G" ]
+on = [ "<A-b>", "g" ]
 run = "plugin yamb --args=jump_by_fzf"
 desc = "Jump bookmark by fzf"
 
 [[manager.prepend_keymap]]
-on = [ "<A-b>", "d" ]
+on = [ "<A-b>", "D" ]
 run = "plugin yamb --args=delete_by_key"
 desc = "Delete bookmark by key"
 
 [[manager.prepend_keymap]]
-on = [ "<A-b>", "D" ]
+on = [ "<A-b>", "d" ]
 run = "plugin yamb --args=delete_by_fzf"
 desc = "Delete bookmark by fzf"
 
@@ -443,11 +443,11 @@ run = "plugin yamb --args=delete_all"
 desc = "Delete all bookmarks"
 
 [[manager.prepend_keymap]]
-on = [ "<A-b>", "r" ]
+on = [ "<A-b>", "R" ]
 run = "plugin yamb --args=rename_by_key"
 desc = "Rename bookmark by key"
 
 [[manager.prepend_keymap]]
-on = [ "<A-b>", "R" ]
+on = [ "<A-b>", "r" ]
 run = "plugin yamb --args=rename_by_fzf"
 desc = "Rename bookmark by fzf"
