@@ -1,69 +1,102 @@
 #!/usr/bin/env bash
 
 # Configuration
-read -r current_rice < "$HOME"/.config/bspwm/.rice
-read -r bar_position < "$HOME"/.config/bspwm/rices/$current_rice/.bar-position
-if [ "$bar_position" = "down" ]; then
-    CONF_FILE="$HOME/.config/bspwm/rices/$current_rice/.bar-position-down/Theme.sh"
-else
-    CONF_FILE="$HOME/.config/bspwm/rices/$current_rice/Theme.sh"
-fi
-
-# Function to set BSPWM padding
-set_padding() {
-    bspc config top_padding $1
-    bspc config bottom_padding $2
-    bspc config left_padding $3
-    bspc config right_padding $4
-}
+read -r current_rice <"$HOME"/.config/bspwm/.rice
+read -r bar_position <"$HOME"/.config/bspwm/rices/"$current_rice"/.bar-position
 
 # Main function to hide or unhide bars
 poly_bar() {
-    if [ "$1" = "down" ]; then
-	if [ "$bar_position" = "down" ]; then
-	    echo 'nothing'
-	    exit
-    	else
-	   echo 'calling launch'
-	   launch_bar down
-	fi
+  if [ "$force_flag" = true ]; then
+    echo 'force flag enabled, launching bar...'
+    launch_bar "$1"
+    exit
+  fi
+
+  if [ "$1" = "down" ]; then
+    if [ "$bar_position" = "down" ]; then
+      echo 'nothing'
+      exit
     else
-	if [ "$bar_position" = "up" ]; then
-	    echo 'nothing'
-	    exit
-    	else
-	   echo 'calling launch'
-	   launch_bar up
-	fi
+      echo 'calling launch'
+      launch_bar down
     fi
+  else
+    if [ "$bar_position" = "up" ]; then
+      echo 'nothing'
+      exit
+    else
+      echo 'calling launch'
+      launch_bar up
+    fi
+  fi
 }
 
 # Launch polybar
 launch_bar() {
-    polybar-msg cmd quit >/dev/null 2>&1
-    # Wait for Polybar to terminate completely
-    while pgrep -x "polybar" > /dev/null; do
-        sleep 0.2
+  polybar-msg cmd quit >/dev/null 2>&1
+  # Wait for Polybar to terminate completely
+  while pgrep -x "polybar" >/dev/null; do
+    sleep 0.2
+  done
+  bar_config_file="$HOME/.config/bspwm/rices/$current_rice/config.ini"
+  if [ "$1" = "down" ]; then
+    echo 'launch down'
+    sed -i "$bar_config_file" -e '/; bar-position/!b;n;c\bottom = true'
+    for mon in $(polybar --list-monitors | cut -d":" -f1); do
+      for bar in $(cat "$bar_config_file" | grep '\[bar/' | cut -d '/' -f2 | cut -d ']' -f1); do
+        MONITOR=$mon polybar -q "$bar" -c "$bar_config_file" &
+      done
     done
-    set_padding 2 2 2 2
-    if [ "$1" = "down" ]; then
-	echo 'launch down'
-	for mon in $(polybar --list-monitors | cut -d":" -f1); do
-            MONITOR=$mon polybar -q dani -c "${HOME}"/.config/bspwm/rices/$current_rice/.bar-position-down/config.ini &
-	done
-    else
-	echo 'launch up'
-        for mon in $(polybar --list-monitors | cut -d":" -f1); do
-            MONITOR=$mon polybar -q dani -c "${HOME}"/.config/bspwm/rices/$current_rice/config.ini &
-	done
-    fi
-    echo "$1" > "${HOME}"/.config/bspwm/rices/$current_rice/.bar-position  
-    exit
+  else
+    echo 'launch up'
+    sed -i "$bar_config_file" -e '/; bar-position/!b;n;c\bottom = false'
+    for mon in $(polybar --list-monitors | cut -d":" -f1); do
+      for bar in $(cat "$bar_config_file" | grep '\[bar/' | cut -d '/' -f2 | cut -d ']' -f1); do
+        MONITOR=$mon polybar -q "$bar" -c "$bar_config_file" &
+      done
+    done
+  fi
+  HideBar --hide
+  CONF_FILE="$HOME/.config/bspwm/rices/$current_rice/theme-config.bash"
+  echo "" >"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+  left_padding=$(grep "bspc_left_padding=" "$CONF_FILE" | awk -F'=' '{gsub(/"/, "", $2); print $2}')
+  echo "bspc config left_padding $left_padding" >>"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+  right_padding=$(grep "bspc_right_padding=" "$CONF_FILE" | awk -F'=' '{gsub(/"/, "", $2); print $2}')
+  echo "bspc config right_padding $right_padding" >>"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+  bar_padding=$(grep "bspc_bar_padding=" "$CONF_FILE" | awk -F'=' '{gsub(/"/, "", $2); print $2}')
+  if [ "$1" = "up" ]; then
+    echo "bspc config top_padding $bar_padding" >>"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+    echo "bspc config bottom_padding 2" >>"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+  else
+    echo "bspc config bottom_padding $bar_padding" >>"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+    echo "bspc config top_padding 2" >>"${HOME}"/.config/bspwm/rices/"${current_rice}"/.padding
+  fi
+  HideBar --unhide
+  echo "$1" >"${HOME}"/.config/bspwm/rices/"$current_rice"/.bar-position
+  return
 }
 
 # Parse command line argument
-case $1 in
-    -h|--down) poly_bar down ;;
-    -u|--up) poly_bar up ;;
-    *) echo "Usage: $0 {-h|--down|-u|--up}" ;;
-esac
+force_flag=false
+position=""
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -h | --down) position="down" ;;
+    -u | --up) position="up" ;;
+    -f | --force) force_flag=true ;;
+    *)
+      echo "Usage: $0 {-h|--down|-u|--up} [-f|--force]"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+# Execute with force flag handling
+if [[ -z "$position" ]]; then
+  echo "Error: Missing position argument. Use -h|--down or -u|--up."
+  exit 1
+fi
+
+poly_bar "$position"
