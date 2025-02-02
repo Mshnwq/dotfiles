@@ -6,9 +6,11 @@
 local M = {}
 
 M.base46 = {
-  theme = "catppuccin",
   transparency = true,
 
+  -- start replace from rice
+
+  theme = "catppuccin",
   hl_override = {
     St_NormalMode = { bg = "cyan" },
     St_NormalModeSep = { fg = "cyan" },
@@ -38,6 +40,9 @@ M.base46 = {
     TodoTest = { fg = "cyan" },
     TodoDefault = { fg = "grey_fg" },
   },
+  
+  -- end replace from rice
+  -- print(dofile(vim.g.base46_cache .. "colors").yellow)
 }
 
 _G.sep_ul = ""
@@ -102,6 +107,13 @@ M.ui = {
         local name = " " .. x[2] .. " "
         return "%#St_file# " .. x[1] .. name .. "%#St_file_sep#" .. sep_dr
       end,
+      lint = function()
+        local linters = require("lint").get_running()
+        if #linters == 0 then
+          return "%#St_Lint# 󰦕 "
+        end
+        return "%#St_Lint# 󱉶 " .. table.concat(linters, ", ")
+      end,
       cursor = function()
         if vim.bo.filetype == "alpha" then
           return ""
@@ -113,13 +125,6 @@ M.ui = {
             .. "%#St_pos_sep#"
             .. sep_dl
             .. "%#St_pos_icon#  "
-      end,
-      lint = function()
-        local linters = require("lint").get_running()
-        if #linters == 0 then
-          return "%#St_Lint# 󰦕 "
-        end
-        return "%#St_Lint# 󱉶 " .. table.concat(linters, ", ")
       end,
     },
   },
