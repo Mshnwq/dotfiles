@@ -2,19 +2,15 @@
 #  ├─┤│  │├─┤└─┐
 #  ┴ ┴┴─┘┴┴ ┴└─┘
 
-alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-
-alias vm-on="sudo systemctl start libvirtd.service"
-alias vm-off="sudo systemctl stop libvirtd.service"
-
-alias musica="ncmpcpp"
-
-alias sctl='systemctl'
-alias svc='service'
+alias music="ncmpcpp"
+alias upd="sudo apt update"
+alias upg="sudo apt upgrade"
+alias chmox='chmod +x'
 
 # Program renames
 alias py='python3'
-alias vi="nvim"
+alias n="nvim"
+alias v="vim"
 alias ghidra="ghidraRun"
 alias flt="flutter"
 # ALIAS COMMANDS
@@ -24,7 +20,7 @@ alias grep='grep --color'
 # -------------------------------------------------------------------
 # List
 # -------------------------------------------------------------------
-alias l='/bin/ls -CF'
+#alias l='/bin/ls -CF'
 alias ll='/bin/ls -alF'
 alias la='exa --all --icons'
 alias ls='exa --icons'
@@ -32,7 +28,8 @@ alias lg='exa --icons --git'
 alias lgt='exa --icons --git --tree -L=3'
 alias lt='exa --icons --tree -L=3'
 alias lta='exa --all --icons --tree -L=3'
-alias llc='exa -al --icons'
+#alias llc='exa -al --icons'
+alias l='exa -al --icons'
 
 # ----
 # Cat
