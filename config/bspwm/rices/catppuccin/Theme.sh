@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-#  ██████╗  █████╗ ███╗   ██╗██╗███████╗██╗      █████╗     ██████╗ ██╗ ██████╗███████╗
-#  ██╔══██╗██╔══██╗████╗  ██║██║██╔════╝██║     ██╔══██╗    ██╔══██╗██║██╔════╝██╔════╝
-#  ██║  ██║███████║██╔██╗ ██║██║█████╗  ██║     ███████║    ██████╔╝██║██║     █████╗
-#  ██║  ██║██╔══██║██║╚██╗██║██║██╔══╝  ██║     ██╔══██║    ██╔══██╗██║██║     ██╔══╝
-#  ██████╔╝██║  ██║██║ ╚████║██║███████╗███████╗██║  ██║    ██║  ██║██║╚██████╗███████╗
-#  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝ ╚═════╝╚══════╝
 #  Author  :  z0mbi3
 #  Url     :  https://github.com/gh0stzk/dotfiles
 #  About   :  This file will configure and launch the rice.
-#
 
 # Current Rice
 read -r RICE <"$HOME"/.config/bspwm/.rice
@@ -21,11 +14,6 @@ read -r RICE <"$HOME"/.config/bspwm/.rice
 # Set bspwm configuration
 set_bspwm_config() {
   bspc config border_width ${BORDER_WIDTH}
-  # need match bar height + one
-  bspc config top_padding 56
-  bspc config bottom_padding 1
-  bspc config left_padding 1
-  bspc config right_padding 1
   bspc config normal_border_color "${NORMAL_BC}"
   bspc config focused_border_color "${FOCUSED_BC}"
   bspc config presel_feedback_color "${magenta}"
@@ -143,6 +131,83 @@ set_term_config() {
 	EOF
 
   pidof -q kitty && killall -USR1 kitty
+}
+
+# Set p10k color
+set_p10k_config() {
+  p10k_file="$HOME/.p10k.zsh"
+  theme_block='
+  local white='#F1F1F0'
+  local bg='#181825'
+  local fg='#cdd6f4'
+  local red='#f38ba8'
+  local pink='#f5c2e7'
+  local purple='#cba6f7'
+  local blue='#89b4fa'
+  local cyan='#94e2d5'
+  local green='#a6e3a1'
+  local yellow='#f9e2af'
+  local lavander='#b4befe'
+  local peach='#f2d5cf'
+  local amber='#ff77a0'
+  local orange='#fab387'
+  local brown='#f2cdcd'
+  local grey='#73739c'
+  local indigo='#9399b2'
+  ' # Use sed to delete lines between the markers
+  sed -i '/# -- start replace from rice/,/# -- end replace from rice/{
+    /# -- start replace from rice/!{/# -- end replace from rice/!d}
+  }' "$p10k_file"
+  # Insert the new block after "-- start replace from rice"
+  sed -i "/-- start replace from rice/r /dev/stdin" "$p10k_file" <<<"$theme_block"
+}
+
+# Set nvim color
+set_nvim_config() {
+  nvim_file="$HOME/.config/nvim/lua/chadrc.lua"
+  theme_block='
+  theme = "catppuccin",
+  hl_override = {
+    St_NormalMode = { bg = "cyan" },
+    St_NormalModeSep = { fg = "cyan" },
+    St_InsertMode = { bg = "'${purple}'" },
+    St_InsertModeSep = { fg = "'${purple}'" },
+    St_VisualMode = { bg = "green" },
+    St_VisualModeSep = { fg = "green" },
+    St_CommandMode = { bg = "yellow" },
+    St_CommandModeSep = { fg = "yellow" },
+    -- St_pos_text = { bg = "none" }
+  },
+  hl_add = {
+    St_Lint = { fg = "yellow", bg = "none" },
+    NotifyINFOIcon = { fg = "green" },
+    NotifyINFOTitle = { fg = "green" },
+    NotifyINFOBorder = { fg = "grey_fg" },
+    NotifyERRORIcon = { fg = "red" },
+    NotifyERRORTitle = { fg = "red" },
+    NotifyERRORBorder = { fg = "grey_fg" },
+    NotifyWARNIcon = { fg = "yellow" },
+    NotifyWARNTitle = { fg = "yellow" },
+    NotifyWARNBorder = { fg = "grey_fg" },
+    TodoError = { fg = "red" },
+    TodoWarn = { fg = "'${purple}'" },
+    TodoInfo = { fg = "yellow" },
+    TodoHint = { fg = "green" },
+    TodoTest = { fg = "cyan" },
+    TodoDefault = { fg = "grey_fg" },
+  },
+  '
+
+  # Use sed to delete lines between the markers
+  sed -i '/-- start replace from rice/,/-- end replace from rice/{
+    /-- start replace from rice/!{/-- end replace from rice/!d}
+  }' "$nvim_file"
+  # Insert the new block after "-- start replace from rice"
+  sed -i "/-- start replace from rice/r /dev/stdin" "$nvim_file" <<<"$theme_block"
+  # then loop over all nvim instances and send the function!
+  for addr in $XDG_RUNTIME_DIR/nvim.*; do
+    nvim --server $addr --remote-send ':lua require("nvchad.utils").reload() <cr>'
+  done
 }
 
 # Set tmux color
@@ -297,45 +362,46 @@ set_launchers() {
     -e "s/verify=.*/verify=${green:1}/"
 }
 
-set_appearance() {
-  # Set the gtk theme corresponding to rice
-  sed -i "$HOME"/.config/bspwm/src/config/xsettingsd \
-    -e "s|Net/ThemeName .*|Net/ThemeName \"$gtk_theme\"|" \
-    -e "s|Net/IconThemeName .*|Net/IconThemeName \"$gtk_icons\"|" \
-    -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"$gtk_cursor\"|"
-
-  sed -i -e "s/Inherits=.*/Inherits=$gtk_cursor/" "$HOME"/.icons/default/index.theme
-
-  # Reload daemon and apply gtk theme
-  pkill -1 xsettingsd
-  xsetroot -cursor_name left_ptr
-}
+# set_appearance() {
+#   # Set the gtk theme corresponding to rice
+#   sed -i "$HOME"/.config/bspwm/src/config/xsettingsd \
+#     -e "s|Net/ThemeName .*|Net/ThemeName \"$gtk_theme\"|" \
+#     -e "s|Net/IconThemeName .*|Net/IconThemeName \"$gtk_icons\"|" \
+#     -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"$gtk_cursor\"|"
+#
+#   sed -i -e "s/Inherits=.*/Inherits=$gtk_cursor/" "$HOME"/.icons/default/index.theme
+#
+#   # Reload daemon and apply gtk theme
+#   pkill -1 xsettingsd
+#   xsetroot -cursor_name left_ptr
+# }
 
 # Apply Geany Theme
-set_geany() {
-  sed -i ${HOME}/.config/geany/geany.conf \
-    -e "s/color_scheme=.*/color_scheme=$geany_theme.conf/g"
-}
+# set_geany() {
+#   sed -i ${HOME}/.config/geany/geany.conf \
+#     -e "s/color_scheme=.*/color_scheme=$geany_theme.conf/g"
+# }
 
 # Launch theme
 launch_theme() {
   # Launch polybar
-  for mon in $(polybar --list-monitors | cut -d":" -f1); do
-    MONITOR=$mon polybar -q dani -c "${HOME}"/.config/bspwm/rices/"${RICE}"/config.ini &
-  done
-  echo "up" >"${HOME}"/.config/bspwm/rices/${RICE}/.bar-position
+  FlipBar --up --force
 }
 
 ### Apply Configurations
 
 set_bspwm_config
 set_term_config
+set_p10k_config
+set_nvim_config
 set_tmux_config
 set_yazi_config
 set_picom_config
-set_appearance
 set_dunst_config
 set_eww_colors
 set_launchers
-set_geany
+# set_geany
+# TODO: firefox, gtk, qt
+# set_firefox
+# set_appearance
 launch_theme
