@@ -37,26 +37,27 @@
   # Zsh >= 5.1 is required.
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
-  # Prompt colors.
-  local white='#F1F1F0'
+  # -- start replace from rice 
 
-  local bg='#181825'
-  local fg='#cdd6f4'
-
-  local red='#f38ba8'
-  local pink='#f5c2e7'
-  local purple='#cba6f7'
-  local blue='#89b4fa'
-  local cyan='#94e2d5'
-  local green='#a6e3a1'
-  local yellow='#f9e2af'
-  local lavander='#b4befe'
-  local peach='#f2d5cf'
-  local amber='#ff77a0'
-  local orange='#fab387'
-  local brown='#f2cdcd'
-  local grey='#73739c'
-  local indigo='#9399b2'
+  local white=#F1F1F0
+  local bg=#181825
+  local fg=#cdd6f4
+  local red=#f38ba8
+  local pink=#f5c2e7
+  local purple=#cba6f7
+  local blue=#89b4fa
+  local cyan=#94e2d5
+  local green=#a6e3a1
+  local yellow=#f9e2af
+  local lavander=#b4befe
+  local peach=#f2d5cf
+  local amber=#ff77a0
+  local orange=#fab387
+  local brown=#f2cdcd
+  local grey=#73739c
+  local indigo=#9399b2
+  
+  # -- end replace from rice 
 
   # Left prompt segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
