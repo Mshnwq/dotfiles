@@ -1,6 +1,7 @@
 require("mason-conform").setup({
   ignore_install = {
     "isort",
-    "ruff",
+    -- "ruff",
+    -- "ruff_format",
   },
 })

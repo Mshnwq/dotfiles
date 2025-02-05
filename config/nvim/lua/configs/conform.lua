@@ -50,14 +50,16 @@ conform.formatters.shfmt = {
 }
 
 local venv = vim.env.HOME .. "/.local/venv/nvim/bin/"
-conform.formatters_by_ft.python = { "isort", "ruff" }
+conform.formatters_by_ft.python = { "isort", "ruff_format" }
 conform.formatters.isort = {
   command = venv .. "isort",
 }
-conform.formatters.ruff = {
-  command = venv .. "ruff",
-  args = { "format", "$FILENAME" },
-}
+-- conform.formatters.ruff = {
+  -- command = venv .. "ruff",
+  -- args = { "format", "-s", "$FILENAME" },
+  -- args = { "format", "--diff", "$FILENAME" }, -- Use --diff to show output
+  -- stdin = false,                              -- Make sure ruff reads the file directly
+-- }
 
 -- use the lsp
 -- conform.formatters["goimports-reviser"] = {
