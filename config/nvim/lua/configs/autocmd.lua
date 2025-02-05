@@ -93,7 +93,10 @@ local function init_term()
     })
 
     local job = uv.spawn("kitty", {
-      args = { "--listen-on", "unix:" .. socket_path },
+      args = {
+        "--listen-on", "unix:" .. socket_path,
+        "--config", vim.env.HOME .. "/.config/kitty/kitty-scratch.conf",
+      },
       stdio = { nil, nil, nil },
       detached = true
     }, function(code, signal)
@@ -123,7 +126,7 @@ local function init_term()
       vim.fn.system({
         "kitty", "@", "--to",
         "unix:" .. socket_path,
-        "set-font-size", 14,
+        "set-font-size", 15,
       })
 
       vim.fn.system({
@@ -141,7 +144,7 @@ local function init_term()
       vim.fn.system({
         "kitty", "@", "--to",
         "unix:" .. socket_path,
-        "send-text", "bspc node -z top 0 -570\n",
+        "send-text", "bspc node -z top 0 -600\n",
       })
     else
       print("Failed to spawn Kitty terminal.")
@@ -315,5 +318,12 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt.spelllang = "en_us"
   end,
 })
-vim.opt.spell = true
-vim.opt.spelllang = "en_us"
+-- vim.opt.spell = true
+-- vim.opt.spelllang = "en_us"
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
