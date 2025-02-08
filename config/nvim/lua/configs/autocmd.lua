@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
     vim.bo.filetype = "yaml.gitlab"
   end
 })
--- Handeled from vim-helm plugin
+-- Handled from vim-helm plugin
 -- vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 --   pattern = { "*/templates/*.yaml", "helmfile*.yaml" },
 --   group = ft_lsp_group,
@@ -313,14 +313,7 @@ vim.api.nvim_create_autocmd("FileType", {
     -- have to "re-enable" spellchecking for these files
     vim.opt.spell = true
     vim.opt.spelllang = "en_us"
-    -- vim.api.nvim_set_hl(0, "SpellBad", { undercurl = true, sp = "red" })     -- Undercurl for bad spelling
-    -- vim.api.nvim_set_hl(0, "SpellCap", { undercurl = true, sp = "yellow" })  -- Undercurl for capitalization mistakes
-    -- vim.api.nvim_set_hl(0, "SpellRare", { undercurl = true, sp = "blue" })   -- Undercurl for rare words
   end,
 })
 vim.opt.spell = true
 vim.opt.spelllang = "en_us"
--- vim.api.nvim_set_hl(0, "SpellLocal", { undercurl = true, sp = "green" }) -- Undercurl for local region words
--- vim.cmd [[highlight SpellBad]]
--- vim.cmd [[highlight SpellCap]]
--- vim.cmd [[highlight SpellRare]]

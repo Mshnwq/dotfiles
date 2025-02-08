@@ -163,3 +163,5 @@ map("n", "<leader>tdl", "<cmd>TodoLocList<CR>", { desc = "Local TODO" })
 map("n", "<leader>tdg", "<cmd>TodoQuickFix<CR>", { desc = "Global TODO" })
 
 require('configs.autocmd')
+
+map("n", "<leader>mv", "<cmd>Markview toggle<CR>", { desc = "Toggle Markview" })

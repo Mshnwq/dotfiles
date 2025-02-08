@@ -4,6 +4,7 @@ local options = {
     "lua",
     "luadoc",
     "markdown",
+    "markdown_inline",
     "typescript",
     "javascript",
     "printf",

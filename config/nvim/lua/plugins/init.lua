@@ -95,6 +95,21 @@ return {
     },
   },
   {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    config = function()
+      require("markview").setup({
+        preview = {
+          enable = false,
+        },
+        markdown = {
+          headings = require("markview.presets").headings.glow
+        }
+      });
+      require("markview.extras.checkboxes").setup();
+    end,
+  },
+  {
     'towolf/vim-helm',
     ft = 'helm'
   },
