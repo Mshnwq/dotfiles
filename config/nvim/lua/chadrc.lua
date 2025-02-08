@@ -39,6 +39,10 @@ M.base46 = {
     TodoHint = { fg = "green" },
     TodoTest = { fg = "cyan" },
     TodoDefault = { fg = "grey_fg" },
+    SpellBad = { undercurl = true, fg = "red" },
+    SpellCap = { undercurl = true, fg = "#BFA1FF" },
+    SpellRare = { undercurl = true, fg = "yellow" },
+    SpellLocal = { undercurl = true, fg = "cyan" },
   },
   
   -- end replace from rice

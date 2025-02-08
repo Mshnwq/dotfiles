@@ -285,7 +285,7 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
     if register ~= "" then
       local icon = " "
       local message = " Macro started on register: " .. register
-					vim.notify(message, vim.log.levels.INFO, { icon = icon, title = "Macro Started" })
+      vim.notify(message, vim.log.levels.INFO, { icon = icon, title = "Macro Started" })
     end
   end,
   desc = "Notify macro start",
@@ -298,8 +298,29 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
     if register ~= "" then
       local icon = " "
       local message = " Macro ended on register: " .. register
-			vim.notify(message, vim.log.levels.INFO, { icon = icon, title = "Macro Ended" })
+      vim.notify(message, vim.log.levels.INFO, { icon = icon, title = "Macro Ended" })
     end
   end,
   desc = "Notify macro end",
 })
+
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "txt", "env" },
+  callback = function(opts)
+    -- local cmp = require("cmp")
+    -- cmp.setup.buffer({ enabled = false })
+    -- have to "re-enable" spellchecking for these files
+    vim.opt.spell = true
+    vim.opt.spelllang = "en_us"
+    -- vim.api.nvim_set_hl(0, "SpellBad", { undercurl = true, sp = "red" })     -- Undercurl for bad spelling
+    -- vim.api.nvim_set_hl(0, "SpellCap", { undercurl = true, sp = "yellow" })  -- Undercurl for capitalization mistakes
+    -- vim.api.nvim_set_hl(0, "SpellRare", { undercurl = true, sp = "blue" })   -- Undercurl for rare words
+  end,
+})
+vim.opt.spell = true
+vim.opt.spelllang = "en_us"
+-- vim.api.nvim_set_hl(0, "SpellLocal", { undercurl = true, sp = "green" }) -- Undercurl for local region words
+-- vim.cmd [[highlight SpellBad]]
+-- vim.cmd [[highlight SpellCap]]
+-- vim.cmd [[highlight SpellRare]]
