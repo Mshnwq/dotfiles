@@ -13,8 +13,34 @@ lint.linters_by_ft = {
   helm = { "helmlint" },
 }
 
+require("lint").linters.flake8 = {
+  cmd = vim.env.HOME .. "/.local/venv/nvim/bin/flake8", -- Ensure the correct venv path
+  stdin = true,
+  args = {
+    '--format=%(path)s:%(row)d:%(col)d:%(code)s:%(text)s [https://www.flake8rules.com/rules/%(code)s.html]',
+    '--no-show-source',
+    '--stdin-display-name',
+    function() return vim.api.nvim_buf_get_name(0) end,
+    '-',
+  },
+  ignore_exitcode = true,
+  parser = require("lint.parser").from_pattern(
+    '[^:]+:(%d+):(%d+):(%w+):(.+)',
+    { "lnum", "col", "severity", "message" },
+    {
+      -- https://www.flake8rules.com/rules/XXXX.html
+      ['E501'] = vim.diagnostic.severity.WARN,
+      ['E303'] = vim.diagnostic.severity.ERROR,
+    },
+    {
+      ['source'] = "flake8",
+      ['severity'] = vim.diagnostic.severity.INFO, -- Default severity for unknown codes
+    }
+  ),
+}
+
 lint.linters.dclint = {
-  cmd = '/home/mshnwq/.nvm/versions/node/v20.18.1/bin/dclint',
+  cmd = vim.env.HOME .. '/.nvm/versions/node/v20.18.1/bin/dclint',
   stdin = false,          -- dclint does not take input via stdin
   append_fname = true,    -- Automatically append the filename to args
   args = {},              -- No additional arguments required
@@ -50,8 +76,8 @@ local helm_parser = require('lint.parser').from_pattern(
 )
 lint.linters.helmlint = {
   cmd = '/snap/bin/helm',
-  stdin = false,       -- dclint does not take input via stdin
-  append_fname = true, -- Automatically append the filename to args
+  stdin = false,                                 -- dclint does not take input via stdin
+  append_fname = true,                           -- Automatically append the filename to args
   args_fn = function()
     local bufnr = vim.api.nvim_get_current_buf() -- Get the current buffer number
     local root = find_helm_chart_root(bufnr)     -- Find the Helm chart root directory
@@ -67,7 +93,7 @@ lint.linters.helmlint = {
 }
 
 lint.linters.kubelint = {
-  cmd = '/home/mshnwq/.gvm/pkgsets/go1.23.4/global/bin/kube-linter',
+  cmd = vim.env.HOME .. '/.gvm/pkgsets/go1.23.4/global/bin/kube-linter',
   stdin = false,       -- or false if it doesn't support content input via stdin. In that case the filename is automatically added to the arguments.
   append_fname = true, -- Automatically append the file name to `args` if `stdin = false` (default: true)
   args = {
@@ -101,15 +127,3 @@ vim.api.nvim_create_autocmd({
     lint.try_lint()
   end,
 })
-
--- vim.api.nvim_create_autocmd({
---   "BufEnter",
---   "BufWritePost",
---   "InsertLeave",
--- }, {
---   pattern = { "docker-compose.yaml", "docker-compose.yml" },
---   callback = function()
---     vim.notify("Running dclint for file: " .. vim.fn.expand("%"), vim.log.levels.INFO)
---     lint.try_lint("dclint")
---   end,
--- })
