@@ -278,3 +278,28 @@ local autoCommands = {
 }
 M.nvim_create_augroups(autoCommands)
 
+-- Notification on macro start
+vim.api.nvim_create_autocmd("RecordingEnter", {
+  callback = function()
+    local register = vim.fn.reg_recording()
+    if register ~= "" then
+      local icon = " "
+      local message = " Macro started on register: " .. register
+					vim.notify(message, vim.log.levels.INFO, { icon = icon, title = "Macro Started" })
+    end
+  end,
+  desc = "Notify macro start",
+})
+
+-- Notification on macro end
+vim.api.nvim_create_autocmd("RecordingLeave", {
+  callback = function()
+    local register = vim.fn.reg_recording()
+    if register ~= "" then
+      local icon = " "
+      local message = " Macro ended on register: " .. register
+			vim.notify(message, vim.log.levels.INFO, { icon = icon, title = "Macro Ended" })
+    end
+  end,
+  desc = "Notify macro end",
+})
