@@ -204,7 +204,6 @@ lspconfig.docker_compose_language_service.setup({
   filetypes = { "yaml.docker-compose" },
 })
 
-
 lspconfig.dockerls.setup({
   on_attach = custom_on_attach,
   on_init = nvlsp.on_init,

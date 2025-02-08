@@ -1,7 +1,8 @@
 local lspconfig = package.loaded["lspconfig"]
 
 -- List of servers to ignore during install
-local ignore_install = {}
+local ignore_install = {
+}
 
 -- Helper function to find if value is in table.
 local function table_contains(table, value)

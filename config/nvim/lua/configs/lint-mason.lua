@@ -5,6 +5,7 @@ local ignore_install = {
   "kubelint",
   "helmlint",
   "dclint",
+  "flake8",
 }
 
 -- Helper function to find if value is in table.

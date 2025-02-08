@@ -49,10 +49,14 @@ conform.formatters.shfmt = {
   args = { "-ci", "-i", "2", "-filename", "$FILENAME" },
 }
 
-local venv = "/home/mshnwq/.local/venv/nvim/bin/"
-conform.formatters_by_ft.python = { "isort", "ruff_format" }
+local venv = vim.env.HOME .. "/.local/venv/nvim/bin/"
+conform.formatters_by_ft.python = { "isort", "ruff" }
 conform.formatters.isort = {
   command = venv .. "isort",
+}
+conform.formatters.ruff = {
+  command = venv .. "ruff",
+  args = { "format", "$FILENAME" },
 }
 
 -- use the lsp
