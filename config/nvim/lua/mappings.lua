@@ -75,6 +75,7 @@ map("n", "<leader><A-q>", "<cmd> tabclose <cr>", { desc = "Close Tab" })
 map("n", "<leader><A-->", "<cmd> sp <cr>", { desc = "Split window horizontally" })
 map("n", "<leader><A-\\>", "<cmd> vsp <cr>", { desc = "Split window vertically" })
 map("n", "<leader><A-w>", "<C-w>q", { desc = "Close Window" })
+map("n", "<leader>X", "<cmd> %bd|e# <cr>", { desc = "buffer close all" })
 
 -- Navigate windows
 vim.keymap.set({ "n", "t" }, "<A-Left>", function()
