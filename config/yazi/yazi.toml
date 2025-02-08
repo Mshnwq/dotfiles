@@ -21,6 +21,7 @@ edit = [
 open = [
 	{ run = 'xdg-open "$1"',                desc = "Open", for = "linux" },
   { run = 'feh "$1"', for = "unix", when = '''extension in ["jpeg", "png", "jpg"]''' },
+  { run = 'zathura "$1"', for = "unix", when = '''extension in ["pdf"]''' },
 ]
 reveal = [
 	{ run = 'xdg-open "$(dirname "$1")"',           desc = "Reveal", for = "linux" },
