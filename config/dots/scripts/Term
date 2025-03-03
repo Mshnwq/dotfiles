@@ -59,9 +59,17 @@ case $MY_TERM in
       "--termscp")
 	alacritty --class FloaTerm,TopTerm --title=TopTerm -e termscp
         ;;
+      "--disk")
+	alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
+		-e zsh -ic "~/.local/bin/disk; read -k"
+        ;;
       "--k9s")
         alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
-	       	-e sh -ic "export KUBE_EDITOR=nvim && export TERM=xterm-256color && k9s"
+	       	-e sh -ic "env KUBE_EDITOR=vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
+        ;;
+      "--lazydocker")
+        alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
+	       	-e sh -ic "export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock && lazydocker"
         ;;
       "--shadow")
         alacritty --class ShadowTerm -o window.opacity="0.4"
@@ -74,7 +82,7 @@ case $MY_TERM in
         ;;
       "--music")
         alacritty --class FloaTerm,MusicTerm --title=MusicTerm \
-		-e zsh -i -c ~/.config/dots/scripts/Music
+		-e zsh -ic ~/.config/dots/scripts/Music
         ;;
       "--fetch")
         alacritty --class FloaTerm,FetchTerm --title=FetchTerm \
@@ -95,12 +103,8 @@ case $MY_TERM in
               --watcher tab_focus.py \
 	      --listen-on "$KITTY_SOCKET" \
               --config ~/.config/kitty/kitty-hidden.conf \
-              -e tmux new -s init -c . ~/.config/dots/scripts/InitTerminal &
-        # Wait to ensure dotool actions complete
-        sleep 5
-        # Now kill the other tmux sessions
-        tmux kill-session -t yazi 2>/dev/null
-        tmux kill-session -t floax 2>/dev/null
+              -e tmux new -s init &
+	kitty @ --to "$KITTY_SOCKET" "set-tab-title" "Tmux"
         ;;
       "--floating")
         kitty --name=FloaTerm --title=FloaTerm --class=FloaTerm --config ~/.config/kitty/kitty-hidden.conf
