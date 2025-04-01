@@ -10,3 +10,4 @@
 #tmux
 #wojak
 #yazi
+#album
