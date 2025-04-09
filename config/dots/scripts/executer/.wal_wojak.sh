@@ -28,6 +28,7 @@ else
   cd "$cursor_dir"
   cp "$cursor_dir/src/soy.svg" "$cursor_dir/src/svgs/default.svg"
 
+  export NIX_PATH=nixpkgs=https://github.com/nixos/nixpkgs/archive/master.tar.gz
   if nix-shell --run "just build mocha pywal"; then
     echo "Build successful. Saving to cache."
     mkdir -p "$cache_path"
