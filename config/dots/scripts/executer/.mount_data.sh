@@ -8,13 +8,11 @@ mount_commands() {
   #sleep 1
   #sudo mount -t ntfs-3g -o uid=$(id -u mshnwq),gid=$(id -g mshnwq) /dev/dm-0 /mnt/mshnwq/data
   sudo mount -t ntfs-3g -o uid=$(id -u mshnwq),gid=$(id -g mshnwq) /dev/sda1 /mnt/mshnwq/data
-  ls -la /mnt
-  ls -la /mnt/mshnwq/data
-  duf --theme ansi --only local,fuse --hide-mp /boot/efi
+  disk
   echo "Mounted. Press Enter to close..."
   read
 }
 
 export -f mount_commands
-alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
+alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
   -e bash -c "bash -i -c mount_commands"
