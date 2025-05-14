@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 unmount_commands() {
-  sudo umount /mnt/mshnwq/data
-  #sleep 1
-  #sudo ldmtool remove all
+  sudo umount /mnt/external/backup
   disk
   echo "Unmounted. Press Enter to close..."
   read
