@@ -14,6 +14,8 @@ in {
   programs.yazi = {
     enable = true;
     # package = yazi;  # LATEST VERSION
+    enableZshIntegration = false;
+    enableBashIntegration = false;
 
     plugins = {
       jump-to-char = "${yazi-plugins}/jump-to-char.yazi";
