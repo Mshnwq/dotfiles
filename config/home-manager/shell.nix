@@ -157,11 +157,11 @@
         src = pkgs.zsh-history-substring-search.src;
       }
     ];
-    oh-my-zsh = {
-      enable = false;
-      plugins = [ 
-        "git"
-      ];
-    };
+    # oh-my-zsh = {
+    #   enable = false;
+    #   plugins = [ 
+    #     "git"
+    #   ];
+    # };
   };
 }
