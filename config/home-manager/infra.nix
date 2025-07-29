@@ -13,13 +13,13 @@ in {
   ];
   home.packages = [
     pkgs.kubectl
-    pkgs.kubernetes-helm
+    #pkgs.kubernetes-helm
     pkgs.k9s
     pkgs.velero
-    pkgs.argocd
-    pkgs.rainfrog
+    #pkgs.argocd
+    #pkgs.rainfrog
     pkgs.rclone
-    pkgs.minio-client
+    #pkgs.minio-client
     pkgs.virt-manager
     pkgs.podman-compose
     pkgs.lazydocker
