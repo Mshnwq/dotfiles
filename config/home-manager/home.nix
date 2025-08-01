@@ -7,12 +7,12 @@
 
   home.packages = [
     pkgs.cowsay
+    pkgs.cmatrix
     pkgs.dialog
-    pkgs.zoxide
+    pkgs.qimgv
     pkgs.mtpfs
     pkgs.simple-mtpfs
     pkgs.lm_sensors
-    pkgs.expect
     pkgs.zathura
   ];
 
@@ -36,6 +36,8 @@
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";
     CUDA_CACHE_PATH = "${config.xdg.stateHome}/nv";
     CARGO_HOME = "${config.xdg.dataHome}/cargo";
+    NPM_CONFIG_PREFIX = "${config.xdg.dataHome}";
+    NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
     # GOPATH = "${config.xdg.dataHome}/go";
     # GOBIN = "${GOPATH}/bin";
     # GOMODCACHE = "${config.xdg.cacheHome}/go/mod";
