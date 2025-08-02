@@ -1,6 +1,14 @@
-#!/usr/bin/expect -f
+#!/usr/bin/env expect -f
+# usage: ./add_ssh.exp <passphrase>
+
 set pass [lindex $argv 0]
-spawn ssh-add $env(HOME)/.ssh/github
+
+spawn ssh-add "$env(HOME)/.ssh/github"
+expect "Enter passphrase*:"
+send "$pass\r"
+expect eof
+
+spawn ssh-add "$env(HOME)/.ssh/gitlab"
 expect "Enter passphrase*:"
 send "$pass\r"
 expect eof
