@@ -68,5 +68,5 @@ function echo_in_color() {
 
 function gitd() {
   eval $(ssh-agent)
-  $HOME/.config/zsh/scripts/add_ssh.expect "$(pass show mshnwq/github-ssh-pass)"
+  nix run nixpkgs#expect -- "$HOME/.config/zsh/source/scripts/add_ssh.expect" "$(pass show mshnwq/github-ssh-pass)"
 }
