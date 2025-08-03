@@ -3,13 +3,17 @@
 #  ┴ ┴┴─┘┴┴ ┴└─┘
 
 alias chmox='chmod +x'
+alias dev='devenv shell $SHELL'
 
 # Program renames
 alias py='python'
 alias hm='home-manager'
 alias n="nvim"
 alias v="vim"
+alias gdl="gallery-dl"
+alias ydl="yt-dlp"
 # ALIAS COMMANDS
+alias lsblk='lsblk | bat -l conf --theme ansi -p'
 alias grep='grep --color'
 #alias tmux='tmux -u'
 
