@@ -1,3 +1,7 @@
+to preview
+
+```sudo bootc upgrade --check```
+
 # System Versioning using OSTree:
 
 it only keeps 3 versions by default  
