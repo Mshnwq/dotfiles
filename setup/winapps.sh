@@ -1,4 +1,6 @@
-# TODO:
+# TODO: SOPS CONFIG & .ENV
+# TODO: needs special ext4 partition, btrfs is no good & fix home mounting
+# https://universal-blue.discourse.group/t/winapps-discussion/8161/18
 # https://www.answeroverflow.com/m/1307013565714137200
 
 git clone --recurse-submodules --remote-submodules https://github.com/winapps-org/winapps.git ~/.build/winapps
@@ -23,12 +25,8 @@ cd ~/.build/winapps || exit
 # watch the installation in your browser: "http://127.0.0.1:8006/"
 
 # sudo flatpak override --filesystem=home com.freerdp.FreeRDP 
-# flatpak run --command=xfreerdp com.freerdp.FreeRDP /u:"" /p:"" /v:127.0.0.1 /cert:tofu
+# flatpak run --command=xfreerdp com.freerdp.FreeRDP /u:"$(pass show mshnwq/winapps-user)" /p:"$(pass show mshnwq/winapps-pass)" /v:127.0.0.1 /cert:tofu
 
 # when its finished logout in your Browser and go back to the cloned repo folder
 # podman unshare --rootless-netns
 # ./setup.sh
-#
-#
-# TODO:
-# fix mounting in podman
