@@ -9,10 +9,9 @@ echo "$WALL" > ~/.config/dots/rices/.wall
 # Plasma Style: Utterly-Round (follows color scheme)
 # utterly-round-plasma-style # manually set
 # Window Decorations: Utterly-Round-Dark (also follows color scheme)
-# manually install and set
-# papirus-icon-theme
 # in kde settings 
 # Set Application Style to Kvantum if not already
+wget -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh
 pywalfox install
 pip install watchdog
 ~/.config/dots/scripts/WallColor "$WALL"
