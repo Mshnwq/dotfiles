@@ -1,11 +1,20 @@
+tf() {
+  if command -v tofu >/dev/null 2>&1; then
+    tofu "$@"
+  elif command -v terraform >/dev/null 2>&1; then
+    terraform "$@"
+  else
+    echo "Neither tofu nor terraform found" >&2
+    return 1
+  fi
+}
 
-alias tf='terraform'
-alias tfin='terraform init'
-alias tfap='terraform apply'
-alias tfds='terraform destroy'
-alias tfvd='terraform validate'
-alias tfmt='terraform fmt'
-alias tfpl='terraform plan'
-alias tfst='terraform state'
-alias tfstls='terraform state list'
-alias tfmv='terraform mv'
+alias tfin='tf init'
+alias tfap='tf apply'
+alias tfds='tf destroy'
+alias tfvd='tf validate'
+alias tfmt='tf fmt'
+alias tfpl='tf plan'
+alias tfst='tf state'
+alias tfstls='tf state list'
+alias tfmv='tf mv'
