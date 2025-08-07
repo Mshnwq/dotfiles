@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 HOST="192.168.0.200"
 MediaControl --stop

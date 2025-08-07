@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 MediaControl --stop
 systemctl --user stop mpd.service 

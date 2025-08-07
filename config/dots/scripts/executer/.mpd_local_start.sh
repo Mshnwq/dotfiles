@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 STATUS_FILE="$HOME/.config/dots/.mpd_status"
 if [[ -f "$STATUS_FILE" && "$(cat "$STATUS_FILE")" == "remote" ]]; then

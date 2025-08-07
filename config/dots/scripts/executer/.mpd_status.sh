@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 STATUS=$(cat "$HOME/.config/dots/.mpd_status")
 if [[ -n $STATUS ]]; then
