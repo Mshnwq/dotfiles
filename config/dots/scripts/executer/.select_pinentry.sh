@@ -3,7 +3,8 @@
 notify-send "Pass Pin Entry" "Selecting Pass Pin Entry Program"
 
 ROFI_THEME="$HOME/.config/rofi/SelectorPin.rasi"
-BIN_DIRS=("$HOME/.local/bin" "$HOME/.nix-profile/bin")
+#BIN_DIRS=("$HOME/.local/bin" "$HOME/.nix-profile/bin")
+BIN_DIRS=("$HOME/.local/bin" "/usr/bin")
 export PATH="$HOME/.local/bin:$PATH"
 
 # Collect all pinentry binaries from BIN_DIRS
