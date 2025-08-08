@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
 gpu_commands() {
-  nvidia-smi -l
-  echo "Mounted. Press Enter to close..."
-  read
+  nvtop
 }
 
 export -f gpu_commands
-alacritty --option 'font.size=14' \
+alacritty --option 'font.size=12' \
   --class FloaTerm,TopTerm --title=TopTerm \
   -e bash -c "bash -i -c gpu_commands"

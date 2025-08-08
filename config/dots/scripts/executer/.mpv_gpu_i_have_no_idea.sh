@@ -5,7 +5,8 @@ cat > "$CONF_FILE" <<EOF
 osd-level=0
 title='\${filename}'
 vo=gpu-next
-hwdec=auto
+gpu-api=d3d11
+hwdec=d3d11va
 EOF
 
 #vo=gpu
