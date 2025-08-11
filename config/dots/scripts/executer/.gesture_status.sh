@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if pgrep -f libinput-gestures > /dev/null; then 
   if [ "$1" == "--quiet" ]; then
     echo "on"
