@@ -71,13 +71,11 @@ if grep -q "#WRAP" "$script"; then
     # TODO: find way to theme the bat
     ACTIONS="$actions" PROMPT="$prompt_name" BASE_DIR="$base_dir" BASE_NAME="$base_name" TMPFILE="$tmpfile" \
     alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
-      -e zsh -c '
+      -e bash -c '
         source "$HOME/.cache/wal/custom-fzf.sh"
-        printf "%s\n" "$ACTIONS" | fzf --ansi \
-          --prompt="${PROMPT}: " \
-          --preview="bat ${BASE_DIR}/.${BASE_NAME}_{}.sh" \
-          --preview-window=right:85%:wrap \
-          > "$TMPFILE"
+        printf "%s\n" "$ACTIONS" | fzf --prompt="${PROMPT}: " \
+          --preview="highlight -O ansi ${BASE_DIR}/.${BASE_NAME}_{}.sh" \
+          --preview-window=right:85%:wrap > "$TMPFILE"
       '
 
     # Read result from temp file
