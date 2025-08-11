@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 export PATH="$HOME/.config/dots/scripts/executer:$PATH"
 
@@ -8,3 +8,4 @@ export PATH="$HOME/.config/dots/scripts/executer:$PATH"
 .waybar_start.sh
 .dunst_start.sh
 .ydotool_start.sh
+.clean_k.sh
