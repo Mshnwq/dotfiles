@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if systemctl is-active --quiet tailscaled.service; then
   if [ "$1" == "--quiet" ]; then
     echo "on"
