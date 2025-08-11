@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Fetch running socket and their descriptions
 services=$(systemctl list-units --type=socket --no-pager --no-legend |

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Fetch running services and their descriptions
 services=$(systemctl list-units --type=service --no-pager --no-legend |

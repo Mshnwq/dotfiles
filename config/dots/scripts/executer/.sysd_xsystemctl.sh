@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get all service units and their states
 services=$(systemctl list-unit-files --no-pager --no-legend |
