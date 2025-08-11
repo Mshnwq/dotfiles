@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 #INPUT_REQUIRED
 
 venv_path="$HOME/.local/venv/yt"
