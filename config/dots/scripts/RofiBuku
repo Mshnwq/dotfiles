@@ -26,7 +26,6 @@ help_color="#2d7ed8"
 if [[ -f "$HOME/.config/dots/config/rofi-buku.config" ]]
 then
   source "$HOME/.config/dots/config/rofi-buku.config"
-  source "$HOME/.local/venv/buku/bin/activate"
 fi
 
 main () {
