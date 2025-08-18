@@ -2,7 +2,7 @@
 
 options=(
     "󰍁"
-    ""
+    ""
     "󰗽"
     "󰜉"
     "󰐥"
@@ -28,9 +28,8 @@ case $chosen in
     "󰍁")
         hyprlock
         ;;
-    "")
-        ~/.config/waybar/scripts/volume-control.sh -o m
-        ~/.config/dots/scripts/MediaControl --stop
+    "")
+	~/.config/dots/scripts/MediaControl --stop
         systemctl suspend
         ;;
     "󰗽")
