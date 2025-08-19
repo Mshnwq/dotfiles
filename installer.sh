@@ -7,7 +7,9 @@ mkdir -p ~/Music
 
 ./setup/sddm.sh
 ./setup/cpu.sh
+
 ./setup/getnf.sh
+# ./setup/asdf.sh
 
 # ./setup/stow.sh
 ./setup/dots.sh

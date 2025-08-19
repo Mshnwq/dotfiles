@@ -40,9 +40,13 @@
   };
 }
 
+# TEST: 
+# run ~/.dotfiles/setup/test/pass.sh
+
+# INFO:
 # https://wiki.archlinux.org/title/XDG_Base_Directory
 # export GNUPGHOME="$XDG_DATA_HOME"/gnupg, gpg2 --homedir "$XDG_DATA_HOME"/gnupg
-#
+
 # Note that this currently does not work out-of-the-box using systemd user units and socket-based activation, since the socket directory changes based on the hash of $GNUPGHOME. You can get the new socket directory using gpgconf --list-dirs socketdir and have to modify the systemd user units to listen on the correct sockets accordingly. You also have to use the following gpg-agent.service drop-in file (or otherwise pass the GNUPGHOME env var to the agent running in systemd), or you might experience issues with "missing" private keys:
 #
 # [Service]

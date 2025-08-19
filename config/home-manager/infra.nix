@@ -13,7 +13,7 @@ in {
     pkgs.k9s
     pkgs.velero
     pkgs.minio-client
-    # terraform
+    # terraform  # too SLOW!
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {

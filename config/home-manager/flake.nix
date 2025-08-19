@@ -10,6 +10,7 @@
     # hyprland.url = "github:hyprwm/hyprland";
     # hyprnix.url = "github:hyprland-community/hyprnix";
     # hyprnix.inputs.hyprland.follows = "hyprland";
+    nixgl.url = "github:nix-community/nixGL";
     # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
   };
   # nixConfig = {
@@ -18,9 +19,14 @@
   #     "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
   #   ];
   # };
-  outputs = { nixpkgs, home-manager, ... }: {
+  # outputs = { nixpkgs, home-manager, ... }: {
+  outputs = { nixpkgs, home-manager, nixgl, ... }: {
     homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      # pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [ nixgl.overlay ];
+      };
       modules = [ 
         ./home.nix
         # ./yazi.nix

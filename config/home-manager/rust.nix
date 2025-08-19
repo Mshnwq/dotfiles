@@ -16,7 +16,7 @@
     # })
     pkgs.eza
     pkgs.bat
-    # pkgs.tldr
+    pkgs.tldr
     # pkgs.serie
     # pkgs.termscp 
     # pkgs.catppuccin-whiskers

@@ -18,7 +18,6 @@ in {
       jump-to-char = "${yazi-plugins}/jump-to-char.yazi";
 
       # nurl helps alot
-      # cargo install nurl 
       relative-motions = pkgs.fetchFromGitHub {
         owner = "dedukun";
         repo = "relative-motions.yazi";

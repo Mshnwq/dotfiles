@@ -6,4 +6,3 @@ for i in {1..3}; do
 done
 sudo ~/.build/auto-cpufreq/auto-cpufreq-installer --install
 sudo /usr/local/bin/auto-cpufreq --install
-# systemctl enable auto-cpufreq
