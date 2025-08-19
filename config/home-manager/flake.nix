@@ -19,8 +19,7 @@
   #     "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
   #   ];
   # };
-  # outputs = { nixpkgs, home-manager, ... }: {
-  outputs = { nixpkgs, home-manager, nixgl, ... }: {
+  outputs = { nixgl, nixpkgs, home-manager, ... }: {
     homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
       # pkgs = nixpkgs.legacyPackages.x86_64-linux;
       pkgs = import nixpkgs {
@@ -29,17 +28,17 @@
       };
       modules = [ 
         ./home.nix
-        # ./yazi.nix
-        # ./rust.nix
-        # ./tmux.nix
+        ./yazi.nix
+        ./rust.nix
+        ./tmux.nix
         # ./auto.nix
-        # ./pass.nix
+        ./pass.nix
         # ./nvim.nix
         ./hypr.nix
         # ./infra.nix
         # ./music.nix
-        # ./pywal.nix
-        # ./shell.nix
+        ./pywal.nix
+        ./shell.nix
       ];
       # extraSpecialArgs = {
       #   yazi = yazi.packages.${pkgs.system}.default;

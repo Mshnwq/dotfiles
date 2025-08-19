@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }: {
   # imports = [ inputs.hyprnix.homeManagerModules.default ];
   home.packages = [
-    pkgs.nixgl.nixGLDefault
+    pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     pkgs.hyprland
     pkgs.waybar
     # pkgs.eww
