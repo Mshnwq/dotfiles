@@ -1,8 +1,14 @@
 { config, pkgs, lib, ... }: let
   hyprWorkspaceLayouts = pkgs.callPackage ./lib/hyprWorkspaceLayouts.nix {};
 in {
+  wayland.windowManager.hyprland = {
+    enable = true;
+    plugins = [
+      (pkgs.callPackage ./lib/hyprWorkspaceLayouts.nix { })
+    ];
+  };
   home.packages = [
-    hyprWorkspaceLayouts
+    # hyprWorkspaceLayouts
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     pkgs.hyprland
     pkgs.hyprsunset
@@ -42,7 +48,7 @@ in {
     fi
   '';
   home.file."${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''
-    exec-once = hyprctl plugin load ~/.nix-profile/lib/workspaceLayoutPlugin.so
+    # exec-once = hyprctl plugin load ~/.nix-profile/lib/workspaceLayoutPlugin.so
     plugin {
         wslayout {
             default_layout=dwindle
