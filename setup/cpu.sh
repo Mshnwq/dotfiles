@@ -4,7 +4,6 @@ for i in {1..3}; do
   rm -rf ~/.build/auto-cpufreq
   sleep 3
 done
-cd ~/.build/auto-cpufreq || exit
-sudo ./auto-cpufreq-installer --install
+sudo ~/.build/auto-cpufreq/auto-cpufreq-installer --install
 sudo /usr/local/bin/auto-cpufreq --install
-sytemctl enable auto-cpufreq
+# systemctl enable auto-cpufreq
