@@ -3,7 +3,8 @@ for dir in ~/.dotfiles/config/*; do
     if [ "$name" = "hypr" ]; then
         continue
     fi
-    cd $dir && stow --target=$HOME/.config/$name .
+    mkdir -p "$HOME/.config/$name"
+    cd "$dir" && stow --target="$HOME/.config/$name" .
 done
 
-cp -r ~/.dotfiles/config/hypr ~/.config/
+cp -r "$HOME/.dotfiles/config/hypr" "$HOME/.config/"

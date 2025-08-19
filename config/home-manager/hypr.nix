@@ -6,6 +6,8 @@
     plugins = [
       (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
     ];
+    # Extra Hyprland config lines (like exec-once)
+    extraConfig = builtins.readFile "${config.xdg.configHome}/hypr/hyprland-extra.conf";
   };
   home.packages = [
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
@@ -24,9 +26,23 @@
   ];
   # Custom wrapper for Hyprland
   home.file.".local/bin/Hyprland-Nix".text = ''
-    ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.hyprland}/bin/Hyprland
+    ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL \
+      hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
   '';
+    # ${pkgs.hyprland}/bin/Hyprland
   home.file.".local/bin/Hyprland-Nix".executable = true;
+
+  home.file."${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''
+    plugin {
+      wslayout {
+        default_layout=dwindle
+      }
+    }
+    general {
+      layout=workspacelayout
+    }
+  '';
+
   home.activation.buildNiflVeil = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if [ ! -x "$HOME/.local/bin/niflveil" ]; then
       echo ">>> Building NiflVeil (first time only)..."
@@ -44,16 +60,5 @@
       ${pkgs.cargo}/bin/cargo build --release -j 2
       cp target/release/niflveil "$HOME/.local/bin/"
     fi
-  '';
-  home.file."${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''
-    # exec-once = hyprctl plugin load ~/.nix-profile/lib/workspaceLayoutPlugin.so
-    plugin {
-        wslayout {
-            default_layout=dwindle
-        }
-    }
-    general {
-        layout=workspacelayout
-    }
   '';
 }
