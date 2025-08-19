@@ -37,7 +37,7 @@ pass init "$KEY_FPR"
 
 # Insert dummy secret
 echo "[+] Inserting test entry into pass..."
-echo "supersecretpassword" | pass insert -f test
+echo "supersecretpassword" | pass insert -m test
 
 echo "[+] Retrieving test entry..."
 echo "pass show test"
