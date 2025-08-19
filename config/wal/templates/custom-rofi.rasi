@@ -1,0 +1,12 @@
+* {{
+    font: "JetBrainsMono Nerd Font 10";
+    background: {background};
+    bg-alt: {color8};
+    background-alt: {background}A0;
+    bg-altf: {color8}AA;
+    foreground: {foreground};
+    selected: {color1};
+    active: {color2};
+    urgent: {color3};
+    img-background: url("{wallpaper}", width);
+}}

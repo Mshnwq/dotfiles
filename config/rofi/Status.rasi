@@ -1,0 +1,35 @@
+configuration {
+    show-icons:                 false;
+    drun-display-format:        "{name}";
+    hover-select:               true;
+    me-select-entry:            "";
+    me-accept-entry:            "MousePrimary";
+}
+
+@import "shared.rasi"
+
+* {
+    background-color: @background-alt;
+    text-color:       @active;
+    font:             "JetBrainsMono NF Bold 8";
+}
+
+window {
+    location:                    center;
+    anchor:                      center;
+    transparency:                "real";
+    border-radius:               6px;
+    width:                       68%;
+    height:                      62%;
+    padding:                     4px;
+    background-color:            @background-alt;
+}
+
+mainbox {
+    spacing: 10px; /* Adds spacing between widgets */
+}
+
+textbox {
+    text-color: @active; /* Default color for normal text */
+    background-color: inherit;
+}

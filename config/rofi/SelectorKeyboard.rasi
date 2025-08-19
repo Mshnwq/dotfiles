@@ -1,0 +1,9 @@
+// # z0mbi3 - https://github.com/gh0stzk/dotfiles
+
+@import "Selector.rasi"
+
+
+listview {
+    columns:                     2;
+    lines:                       2;
+}

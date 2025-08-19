@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+#   █████╗ ██████╗ ██████╗ ███████╗    ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗███████╗██████╗
+#  ██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║██╔════╝██╔══██╗
+#  ███████║██████╔╝██████╔╝███████╗    ██║     ███████║██║   ██║██╔██╗ ██║██║     ███████║█████╗  ██████╔╝
+#  ██╔══██║██╔═══╝ ██╔═══╝ ╚════██║    ██║     ██╔══██║██║   ██║██║╚██╗██║██║     ██╔══██║██╔══╝  ██╔══██╗
+#  ██║  ██║██║     ██║     ███████║    ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║███████╗██║  ██║
+#  ╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝    ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+#	Script to control prefered apps to launch for all themes
+#	Author: z0mbi3
+#	url:    https://github.com/gh0stzk/dotfiles
+
+WIDGET_DIR="$HOME/.config/dots/eww"
+export PATH="$HOME/.config/dots/scripts/executer:$PATH"
+export PATH="$HOME/.config/dots/scripts:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/bin:$PATH"
+
+case "$1" in
+  --menu)
+    rofi -show drun -theme "$HOME"/.config/rofi/Launcher.rasi
+    ;;
+  --rice)
+    RiceSelector
+    ;;
+  --execute)
+    Executer
+    ;;
+  --terminal)
+    Term --terminal
+    ;;
+  --terminal-init)
+    Term --override-term kitty --init
+    ;;
+  --floating)
+    Term --override-term alacritty --floating
+    ;;
+  --fetch)
+    Term --override-term alacritty --fetch
+    ;;
+  --top)
+    Term --override-term alacritty --top
+    ;;
+  --k9s)
+    Term --override-term alacritty --k9s
+    ;;
+  --netmanager)
+    NetManagerDM
+    ;;
+  --bluetooth)
+    RofiBluetooth
+    ;;
+  --buku)
+    RofiBuku
+    ;;
+  --clipboard)
+    cliphist list | rofi -theme "$HOME/.config/rofi/Clipboard.rasi" -dmenu | cliphist decode | wl-copy
+    ;;
+  --screenshot-menu)
+    ScreenShoTer
+    ;;
+  --screenshot-now)
+    ScreenShoTer --override now
+    ;;
+  --screenshot-sel)
+    ScreenShoTer --override sel
+    ;;
+  --powermenu)
+    PowerMenu
+    ;;
+  --android)
+    AndroidMount
+    ;;
+  --keyboard)
+    KeyBoardL
+    ;;
+  --wall)
+    WallSelect
+    ;;
+  --nvim)
+    Term --nvim
+    ;;
+  --termscp)
+    Term --override-term alacritty --termscp
+    ;;
+  --yazi)
+    Term --override-term kitty --yazi
+    ;;
+  --yazi-tmux)
+    Term --override-term kitty --yazi-tmux
+    ;;
+  --music)
+    Term --override-term kitty --music
+    ;;
+  --fetch)
+    Term --fetch
+    ;;
+    # Apps
+  --firefox)
+    firefox -P mshnwq
+    ;;
+  --keepass)
+    sh -c 'export QT_QPA_PLATFORMTHEME="qt5ct"; keepassxc;'
+    ;;
+  --files)
+    # XDG_CONFIG_HOME="$HOME/.gtk-config" thunar
+    thunar
+    ;;
+  --veracrypt)
+    # XDG_CONFIG_HOME="$HOME/.gtk-config" veracrypt
+    veracrypt 
+    ;;
+  --torrent)
+    sh -c 'export QT_QPA_PLATFORMTHEME="qt6ct"; qbittorrent;'
+    ;;
+  --telegram)
+    Telegram
+    ;;
+  --whatsapp)
+    firefox -P mshnwq -new-tab https://web.whatsapp.com/
+    ;;
+  --gpt)
+    firefox -P mshnwq -new-tab https://chatgpt.com/
+    ;;
+  --soundcontrol)
+    pavucontrol
+    ;;
+  --soundgraph)
+    sh -c 'export QT_QPA_PLATFORMTHEME="qt6ct"; qpwgraph;'
+    ;;
+  --soundmixer)
+    Term --override-term alacritty --soundmixer
+    ;;
+  # Eww Widgets
+  --tailscale)
+    eww -c "$WIDGET_DIR" open --toggle mynet
+    ;;
+  --KeyHelp)
+    eww -c "$WIDGET_DIR" open --toggle csheet
+    ;;
+  --launchermenu)
+    eww -c "$WIDGET_DIR" open --toggle launchermenu
+    ;;
+  --my-net)
+    eww -c "$WIDGET_DIR" open --toggle mynet
+    ;;
+  *)
+    echo "Invalid Option"
+    ;;
+esac

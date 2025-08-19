@@ -1,0 +1,11 @@
+
+alias tf='terraform'
+alias tfin='terraform init'
+alias tfap='terraform apply'
+alias tfds='terraform destroy'
+alias tfvd='terraform validate'
+alias tfmt='terraform fmt'
+alias tfpl='terraform plan'
+alias tfst='terraform state'
+alias tfstls='terraform state list'
+alias tfmv='terraform mv'

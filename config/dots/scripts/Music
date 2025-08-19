@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+CFG_MUSIC="$HOME/.config/dots/.music"
+CFG_MPD="$HOME/.config/dots/.mpd_status"
+REMOTE_MPD="$HOME/.config/dots/.mpd_host"
+DEFAULT_MUSIC="ncmpcpp"
+ROFI_THEME="$HOME/.config/rofi/Selector.rasi"
+
+# Creating config file if not exists.
+[ ! -f "$CFG_MUSIC" ] && echo "$DEFAULT_MUSIC" >"$CFG_MUSIC"
+
+# Function to choose the music using rofi
+choose_music() {
+  local options=("rmpc" "ncmpcpp")
+  local current_music=$(tr '[:upper:]' '[:lower:]' <"$CFG_MUSIC")
+  local selected_index=$(printf '%s\n' "${options[@],,}" | awk -v cur="$current_music" '$0==cur {print NR-1; exit}')
+  local chosen
+  chosen=$(printf '%s\n' "${options[@]}" | rofi -theme "$ROFI_THEME" -mesg "[ Your current music is $MY_MUSIC ]" -dmenu -selected-row "$selected_index")
+  [[ -n "$chosen" ]] && echo "${chosen,,}" >"$CFG_MUSIC"
+}
+
+# Terminal selector
+[ "$1" = "--selectmusic" ] && choose_music
+
+# Main var
+MY_MUSIC=$(<"$CFG_MUSIC")
+MY_MPD=$(<"$CFG_MPD")
+MPD_HOST=$(<"$REMOTE_MPD")
+
+# Launch the terminal with appropriate options
+case $MY_MUSIC in
+  "ncmpcpp")
+    case $MY_MPD in
+      "remote")
+        ncmpcpp --host $MPD_HOST --port 6600
+        ;;
+      "local")
+        ncmpcpp --host 127.0.0.1 --port 6600
+        ;;
+      *)
+        dunstify "Music is not running or not configured properly."
+        ;;
+    esac
+    ;;
+  "rmpc")
+    case $MY_MPD in
+      "remote")
+        rmpc --address $MPD_HOST:6600
+        ;;
+      "local")
+        rmpc --address 127.0.0.1:6600
+        ;;
+      *)
+        dunstify "Music is not running or not configured properly."
+        ;;
+    esac
+    ;;
+esac

@@ -1,0 +1,12 @@
+
+alias vlr='velero'
+alias vlrbk='velero backup'
+alias vlrbkg='velero backup get'
+alias vlrbkd='velero backup describe'
+alias vlrbkcr='velero backup create'
+alias vlrbkrm='velero backup delete'
+alias vlrrs='velero restore'
+alias vlrrsg='velero restore get'
+alias vlrrsd='velero restore describe'
+alias vlrrscr='velero restore create'
+alias vlrrsrm='velero restore delete'

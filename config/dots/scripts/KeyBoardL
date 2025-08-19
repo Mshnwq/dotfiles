@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+keyboard=$(hyprctl devices -j | jq '.keyboards[] | select(.main == true)')
+
+# Extract details
+keyboard_name=$(echo "$keyboard" | jq -r '.name')
+active_keymap=$(echo "$keyboard" | jq -r '.active_keymap')
+caps_state=$(echo "$keyboard" | jq -r '.capsLock')
+num_state=$(echo "$keyboard" | jq -r '.numLock')
+layouts_csv=$(echo "$keyboard" | jq -r '.layout')
+
+# Convert CSV layouts to array
+IFS=',' read -ra layout_list <<< "$layouts_csv"
+#
+# Layout labels and mapping
+declare -A LAYOUTS=(
+    ["US English"]="us"
+    ["AR العربية"]="ara"
+#    ["RO Romanian"]="ro"
+    ["RU Россия"]="ru"
+)
+
+# Show layout chooser with rofi
+show_rofi_menu() {
+    local options=""
+    for label in "${!LAYOUTS[@]}"; do
+        options+="$label\n"
+    done
+    local message="Current Layout: $active_keymap"$'\n\n'
+    message+="Caps Lock: $caps_state"$'\n'
+    message+="Num Lock: $num_state"
+    echo -e "${options%\\n}" | rofi \
+        -dmenu \
+        -p "Keyboard Layout" \
+        -mesg "$message" \
+        -markup-rows \
+        -theme "$HOME/.config/rofi/SelectorKeyboard.rasi"
+}
+
+# Layout switcher
+selected=$(show_rofi_menu)
+if [[ -n "$selected" && -n "${LAYOUTS[$selected]}" ]]; then
+    target_layout="${LAYOUTS[$selected]}"
+    for i in "${!layout_list[@]}"; do
+        if [[ "${layout_list[$i]}" == "$target_layout" ]]; then
+            hyprctl switchxkblayout "$keyboard_name" "$i"
+            break
+        fi
+    done
+fi

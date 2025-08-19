@@ -1,0 +1,42 @@
+@import "colors-waybar.css";
+
+/* 
+  bg - background
+  fg - foreground
+  br - border
+*/
+
+/* Main Colors */
+
+@define-color shadow          shade(@color14, 0.2); /* Using color15 as crust */
+@define-color main-fg         @color7; /* Using color7 as text */
+@define-color main-bg         @color0; /* Using color15 as crust */
+@define-color main-br         @color7; /* Using color7 as text */
+
+@define-color active-bg       @color3; /* Using color3 as overlay2 */
+@define-color active-fg       @color15; /* Using color15 as crust */
+
+@define-color hover-bg        @color8; /* Using color8 as surface0 */
+@define-color hover-fg        alpha(@color7, 0.75); /* Using color7 as text */
+
+/* Module Colors */
+
+@define-color module-fg       @color0; /* Using color7 as text */
+@define-color workspaces      @color10; /* Using color10 as mantle */
+
+@define-color temperature     @color10; /* Using color10 as mantle */
+@define-color memory          @color9; /* Using color9 as base */
+@define-color cpu             @color9; /* Using color8 as surface0 */
+@define-color distro-fg       @color0; /* Using color0 as black */
+@define-color distro-bg       @color3; /* Using color3 as overlay2 */
+@define-color time            @color8; /* Using color8 as surface0 */
+@define-color date            @color9; /* Using color9 as base */
+@define-color tray            @color10; /* Using color10 as mantle */
+
+@define-color pulseaudio      @color10; /* Using color10 as mantle */
+@define-color backlight       @color9; /* Using color9 as base */
+@define-color power           @color3; /* Using color3 as overlay2 */
+@define-color battery         @color8; /* Using color8 as surface0 */
+@define-color critical        @hover-fg; /* Using color8 as surface0 */
+@define-color warning         @hover-fg; /* Using color8 as surface0 */
+@define-color charging        @hover-fg; /* Using color8 as surface0 */

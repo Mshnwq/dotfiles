@@ -1,0 +1,391 @@
+@import "theme.css";
+* {
+  min-height: 0;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+window#waybar {
+  background: @shadow;
+}
+window#waybar > box {
+  background: @main-bg;
+  margin: 2px;
+}
+tooltip {
+  background: @main-bg;
+  border: 1.5px solid @shadow;
+  border-radius: 8px;
+}
+tooltip label {
+  color: @main-fg;
+  margin: -1.5px 3px;
+}
+#custom-theme,
+#workspaces,
+#custom-temperature,
+#memory,
+#idle_inhibitor,
+#clock,
+#custom-wifi,
+#bluetooth,
+#custom-keyboard,
+#custom-update,
+#backlight,
+#battery,
+#custom-power {
+  opacity: 1;
+  color: @module-fg;
+  padding: 0 4px;
+}
+#cpu {
+  opacity: 1;
+  color: @module-fg;
+  padding: 0 4px 0 4px;
+}
+#mpris,
+#window {
+  opacity: 1;
+  color: @main-fg;
+  padding: 0 4px;
+}
+#custom-left1,
+#custom-left2,
+#custom-left3,
+#custom-left4,
+#custom-left5,
+#custom-left6,
+#custom-left06,
+#custom-left7,
+#custom-left8 {
+  margin-bottom: 0;
+  text-shadow: -2px 0 2px rgba(0, 0, 0, 0.3);
+}
+#custom-right1,
+#custom-right01,
+#custom-right05,
+#custom-right2,
+#custom-right3,
+#custom-right4,
+#custom-right5 {
+  margin-bottom: 0;
+  padding-right: 3px;
+  text-shadow: 2.25px 0 2.25px rgba(0, 0, 0, 0.25);
+}
+#custom-theme {
+  background: @main-bg;
+}
+#custom-theme:hover {
+  color: @hover-fg;
+}
+#custom-left1 {
+  color: @workspaces;
+  background: @main-bg;
+  margin-bottom: 0;
+  padding-left: 2px;
+}
+#workspaces {
+  background: @workspaces;
+}
+#workspaces button {
+  color: @hover-fg;
+  border-radius: 8px;
+  box-shadow: none;
+  transition: none;
+  margin: 0 4px; 
+  padding: 0 4px;
+}
+#workspaces button:hover {
+  color: @hover-fg;
+  background: @workspaces;
+  text-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+}
+#workspaces button.empty {
+  color: @module-fg;
+  text-shadow: none;
+}
+#workspaces button.active {
+  color: @active-fg;
+  background: @active-bg;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  margin: 1px 4px; 
+  padding: 0 4px 0 1.9px;
+}
+
+#custom-right1 {
+  color: @workspaces;
+  background: @main-bg;
+  text-shadow: 3px 0 2px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0;
+}
+#custom-right01 {
+  color: @shadow;
+  background: @main-bg;
+  text-shadow: 3px 0 2px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0;
+}
+#custom-paddc {
+  padding-right: 22px;
+}
+#custom-left2 {
+  color: @temperature;
+  background: @main-bg;
+  padding-left: 3px;
+}
+#custom-temperature {
+  background: @temperature;
+  padding: 0;
+}
+#custom-left3 {
+  color: @memory;
+  background: @temperature;
+  padding-left: 3px;
+}
+#memory {
+  background: @memory;
+  padding: 0 2px 0 2px;
+}
+#memory.warning {
+  color: @warning;
+}
+#memory.critical {
+  color: @critical;
+}
+#custom-left4 {
+  color: @cpu;
+  background: @memory;
+  padding-left: 3px;
+}
+#cpu {
+  background: @cpu;
+}
+#disk {
+  background: @cpu;
+  opacity: 1;
+  color: @module-fg;
+}
+#custom-leftin1 {
+  color: @time;
+  margin-bottom: -1px;
+}
+#custom-left5 {
+  color: @distro-bg;
+  background: @main-bg;
+  text-shadow: none;
+  margin-bottom: -2px;
+  padding-left: 3px;
+}
+#custom-distro {
+  color: @main-bg;
+  background: @distro-bg;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  margin: 0px 0px 0px 4px;
+  padding: 0 6px 0 9px;
+}
+#custom-distro:hover {
+  color: @hover-fg;
+  background: @hover-bg;
+  text-shadow: none;
+  box-shadow: none;
+}
+#custom-right2 {
+  color: @distro-bg;
+  background: @main-bg;
+  text-shadow: none;
+  margin-bottom: -2px;
+}
+#custom-rightin1 {
+  color: @time;
+  margin-bottom: -1px;
+}
+#custom-right3 {
+  color: @time;
+  background: @date;
+}
+#clock.date {
+  background: @time;
+}
+#clock.date:hover {
+  color: @hover-fg;
+}
+#custom-right4 {
+  color: @date;
+  background: @tray;
+}
+#custom-wifi {
+  background: @tray;
+  padding: 0 8px 0 5px;
+}
+#custom-wifi:hover {
+  color: @hover-fg;
+}
+#bluetooth {
+  background: @tray;
+  padding-right: 5px;
+}
+#bluetooth:hover {
+  color: @hover-fg;
+}
+#custom-keyboard {
+  background: @tray;
+  padding-right: 5px;
+}
+#custom-keyboard:hover {
+  color: @hover-fg;
+}
+#custom-update {
+  padding-right: 8px;
+  background: @tray;
+}
+#custom-update:hover {
+  color: @hover-fg;
+}
+#custom-right5 {
+  color: @tray;
+  background: @main-bg;
+}
+#custom-right05 {
+  color: @tray;
+  background: @shadow;
+}
+#custom-left6 {
+  color: @pulseaudio;
+  background: @main-bg;
+  padding-left: 3px;
+}
+#custom-left06 {
+  color: @pulseaudio;
+  background: @shadow;
+  padding-left: 3px;
+}
+#pulseaudio {
+  background: @backlight;
+  opacity: 1;
+  color: @module-fg;
+  padding: 0 3px 0 1px;
+}
+#pulseaudio:hover {
+  color: @hover-fg;
+}
+#custom-left7 {
+  color: @backlight;
+  background: @pulseaudio;
+  padding-left: 2px;
+}
+#backlight {
+  background: @backlight;
+}
+#backlight:hover {
+  color: @hover-fg;
+}
+#custom-left8 {
+  color: @battery;
+  background: @backlight;
+  padding-left: 2px;
+}
+#battery {
+  color: @module-fg;
+  background: @battery;
+}
+#battery.warning {
+  color: @warning;
+}
+#battery.critical {
+  color: @critical;
+}
+#battery.charging {
+  color: @charging;
+}
+#custom-leftin2 {
+  color: @battery;
+  background: @main-bg;
+  margin-bottom: -1px;
+}
+#custom-power {
+  color: @main-bg;
+  background: @power;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  margin: 0px 4px 0px 0px;
+  padding: 0 6px 0 9px;
+}
+#custom-power:hover {
+  color: @hover-fg;
+  background: @hover-bg;
+  text-shadow: none;
+  box-shadow: none;
+}
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 10px;
+  font-weight: bold;
+}
+tooltip label {
+  font-weight: normal;
+  color: @active-bg;
+}
+#window label {
+  font-size: 9.8px;
+  font-weight: normal;
+  color: @active-bg;
+}
+#custom-left1,
+#custom-left2,
+#custom-left3,
+#custom-left4,
+#custom-left5,
+#custom-left6,
+#custom-left06,
+#custom-left7,
+#custom-left8,
+#custom-right1,
+#custom-right01,
+#custom-right05,
+#custom-right2,
+#custom-right3,
+#custom-right4,
+#custom-right5 {
+  font-size: 14.68px;
+}
+#custom-leftin1,
+#custom-leftin2,
+#custom-rightin1 {
+  font-size: 15.5px;
+}
+#custom-distro {
+  font-size: 14.6px;
+}
+#custom-left5,
+#custom-right2 {
+  font-size: 15.68px;
+}
+#custom-power {
+  border-radius: 10px;
+  padding: 0 6px 0 9px;
+}
+#custom-left08 {
+  margin-bottom: 0;
+  color: @shadow;
+  padding-left: 2px;
+  font-size: 14.68px;
+  text-shadow: -2.25px 0 2.25px rgba(0, 0, 0, 0.5);
+}
+#cava {
+    margin-bottom: -6px;
+    padding: 0px 5px;
+    background: @shadow;
+    color: @active-bg;
+}
+#mpd {
+    background: @shadow;
+    color: @active-bg;
+}
+#custom-niflveil {
+    padding: 0px 0px 0px 2px;
+    color: @active-bg;
+}

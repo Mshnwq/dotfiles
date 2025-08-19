@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+LOG_FILE="$HOME/.cache/wal/log.txt"
+mkdir -p "$(dirname "$LOG_FILE")"
+echo "=== Wal Color Apply Start: $(date) ===" >"$LOG_FILE"
+
+log() {
+  echo "[$(date '+%F %T')] $*" >>"$LOG_FILE"
+}
+
+color_kitty() {
+  log "Starting color_kitty"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-kitty.sh" >>"$LOG_FILE"
+  log "Finished color_kitty"
+}
+
+color_hyprland() {
+  log "Starting color_hyprland"
+  sed -i "s/^    col.active_border =.*/    col.active_border = rgba(${color7:1}ff) rgba(${color4:1}ff) 90deg/" $HOME/.config/hypr/hyprland.conf
+  sed -i "s/^    col.inactive_border =.*/    col.inactive_border = rgba(${color2:1}aa)/" $HOME/.config/hypr/hyprland.conf
+  log "Finished color_hyprland"
+}
+
+color_cursor() {
+  log "Starting color_cursor (background)"
+  zsh -c "$HOME/.config/dots/scripts/executer/wal-cursor.sh" &
+  log "color_cursor launched in background"
+}
+
+color_waybar() {
+  log "Starting color_waybar"
+  sed -i "/\/\/-clock-date/s|\"<span color='#.*'><b>{}</b></span>\"|\"<span color='${cursor}'><b>{}</b></span>\"|" $HOME/.config/waybar/config.jsonc
+  sh -c "$HOME/.config/dots/scripts/executer/waybar_start.sh" >>"$LOG_FILE"
+  log "Finished color_waybar"
+}
+
+color_dunst() {
+  log "Starting color_dunst"
+  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 ""' "$HOME/.config/dots/config/assets/brightness.png"
+  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰕾"' "$HOME/.config/dots/config/assets/volume_high.png"
+  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰖀"' "$HOME/.config/dots/config/assets/volume_medium.png"
+  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰕿"' "$HOME/.config/dots/config/assets/volume_low.png"
+  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰝟"' "$HOME/.config/dots/config/assets/volume_mute.png"
+  sh -c "$HOME/.config/dots/scripts/executer/dunst_start.sh" >>"$LOG_FILE"
+  log "Finished color_dunst"
+}
+
+color_firefox() {
+  log "Starting color_firefox"
+  pywalfox update >>"$LOG_FILE"
+  log "Finished color_firefox"
+}
+
+color_nvchad() {
+  log "Starting color_nvchad"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-nvchad.sh" >>"$LOG_FILE"
+  log "Finished color_nvchad"
+}
+
+color_p10k() {
+  log "Starting color_p10k"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-p10k.sh" >>"$LOG_FILE"
+  log "Finished color_p10k"
+}
+
+color_tmux() {
+  log "Starting color_tmux"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-tmux.sh" >>"$LOG_FILE"
+  log "Finished color_tmux"
+}
+
+color_rmpc() {
+  log "Starting color_rmpc"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-rmpc.sh" >>"$LOG_FILE"
+  log "Finished color_rmpc"
+}
+color_btop() {
+  log "Starting color_btop"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-btop.sh" >>"$LOG_FILE"
+  log "Finished color_btop"
+}
+color_yazi() {
+  log "Starting color_yazi"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-yazi.sh" >>"$LOG_FILE"
+  log "Finished color_yazi"
+}
+color_sddm() {
+  log "Starting color_sddm"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-sddm.sh" >>"$LOG_FILE"
+  log "Finished color_sddm"
+}
+
+# Main
+log "Running wal..."
+wal --out-dir "$HOME/.cache/wal" -s -t -i "$1" >>"$LOG_FILE" 2>&1
+source "$HOME/.cache/wal/colors.sh"
+log "Loaded colors from wal"
+
+#AUTO:
+color_hyprland
+
+#MANUAL
+color_cursor #BACKGROUND
+color_waybar
+color_dunst
+color_kitty #BUG TAB BAR
+color_p10k
+color_rmpc
+color_btop
+color_yazi
+color_tmux
+color_nvchad
+color_firefox
+color_sddm
+
+log "All theming complete"

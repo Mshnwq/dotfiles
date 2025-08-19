@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# Verifies if xdpyinfo and imagemagick are installed
+for app in xdpyinfo magick; do
+  if ! which $app >/dev/null 2>&1; then
+    dunstify "Missing package" "Please install the $app package to continue" -u critical
+    exit 1
+  fi
+done
+
+# Set some variables
+read -r current_rice <"$HOME"/.config/dots/.rice
+wall_dir="$HOME/.config/dots/rices/$current_rice/walls"
+cacheDir="$HOME/.cache/$USER/$current_rice"
+# Create cache dir if not exists
+mkdir -p "${cacheDir}"
+
+# Trying to adapt the images and menu to your screen resolution.
+monitor_res=$(($(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1) * 14 / $(xdpyinfo | awk '/resolution/{print $2}' | cut -d 'x' -f1)))
+rofi_override="element-icon{size:${monitor_res}px;}"
+rofi_command="rofi -dmenu -theme $HOME/.config/rofi/WallSelect.rasi -theme-str $rofi_override"
+
+# Convert images in directory and save to cache dir
+for imagen in "$wall_dir"/*.{jpg,jpeg,png,webp}; do
+  [ -f "$imagen" ] || continue
+  nombre_archivo=$(basename "$imagen")
+  cache_file="${cacheDir}/${nombre_archivo}"
+  md5_file="${cacheDir}/.${nombre_archivo}.md5"
+
+  # Generar MD5 del archivo original
+  current_md5=$(md5sum "$imagen" | cut -d' ' -f1)
+
+  # Comprobar si el archivo de caché existe y si el contenido ha cambiado
+  if [ ! -f "$cache_file" ] || [ ! -f "$md5_file" ] || [ "$current_md5" != "$(cat "$md5_file")" ]; then
+    magick "$imagen" -resize 500x500^ -gravity center -extent 500x500 "$cache_file"
+    echo "$current_md5" >"$md5_file"
+  fi
+done
+
+# Find currently selected wallpaper name
+current_wallpaper=$(basename "$(cat "$HOME/.config/dots/rices/.wall" 2>/dev/null)")
+
+# Build wallpaper list
+wall_list=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -exec basename {} \; | sort)
+
+# Find index of current wallpaper
+selected_index=0
+i=0
+while IFS= read -r wallpaper; do
+    if [[ "$wallpaper" == "$current_wallpaper" ]]; then
+        selected_index=$i
+        break
+    fi
+    ((i++))
+done <<< "$wall_list"
+
+echo "Selected index: $selected_index"
+
+# Launch rofi
+wall_selection=$(echo "$wall_list" | while read -r A; do
+    echo -en "$A\x00icon\x1f${cacheDir}/$A\n"
+done | $rofi_command -selected-row "$selected_index")
+
+# Set wallpaper
+if [[ -n "$wall_selection" ]]; then
+  echo "${wall_dir}/${wall_selection}" >"$HOME/.config/dots/rices/.wall"
+  read -r new_wallpaper <"$HOME"/.config/dots/rices/.wall
+  #swww img $new_wallpaper \
+  #  --transition-type="random" \
+  #  --transition-pos="top-right"
+  ~/.config/dots/scripts/WallColor $new_wallpaper
+fi

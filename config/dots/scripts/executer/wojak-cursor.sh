@@ -1,0 +1,39 @@
+#!/usr/bin/zsh
+
+
+cursor_dir="$HOME/.built/cursors"
+cursor_file="$cursor_dir/src/templates/svgs.tera"
+cache_dir="$HOME/.cache/wal/cursors"
+
+# Get current wallpaper (assuming pywal stores it here)
+WALLPAPER="$(< ~/.cache/wal/wal)"
+
+# Create a unique hash or name from the wallpaper path
+wallpaper_hash=$(echo "$WALLPAPER" | sha256sum | cut -d' ' -f1)
+cache_path="$cache_dir/soy-$wallpaper_hash"
+
+# Load pywal colors
+source "$HOME/.cache/wal/colors.sh"
+
+# Replace FF0000 with pywal color3 in cursor template
+sed -i -E 's|(replace\(from="FF0000", to=")[^"]*(")|\1'"${color3#\#}"'\2|' "$cursor_file"
+
+# Use cached build if available
+if [[ -d "$cache_path" ]]; then
+  echo "Cached cursor found. Using it."
+  rm -r "$cursor_dir/dist/"
+  cp -r "$cache_path/" "$cursor_dir/dist/"
+else
+  echo "No cache found. Building new cursor."
+  cd "$cursor_dir"
+  source "$cursor_dir/.venv/bin/activate"
+  cp "$cursor_dir/src/soy.svg" "$cursor_dir/src/svgs/default.svg"
+  just build mocha pywal
+
+  # Save build to cache
+  mkdir -p "$cache_path"
+  cp -r "$cursor_dir/dist/catppuccin-mocha-pywal-cursors" "$cache_path"
+fi
+
+# Set the cursor theme
+hyprctl setcursor 'Catppuccin Mocha Pywal' 24

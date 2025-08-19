@@ -1,0 +1,100 @@
+k9s:
+  body:
+    fgColor: '{foreground}'
+    bgColor: default
+    logoColor: '{color3}'
+  prompt:
+    fgColor: '{foreground}'
+    bgColor: default
+    suggestColor: '{color4}'
+  help:
+    fgColor: '{foreground}'
+    bgColor: default
+    sectionColor: '{color1}'
+    keyColor: '{color4}'
+    numKeyColor: '{color3}'
+  frame:
+    title:
+      fgColor: '{color5}'
+      bgColor: default
+      highlightColor: '{color6}'
+      counterColor: '{color7}'
+      filterColor: '{color1}'
+    border:
+      fgColor: '{color7}'
+      focusColor: '{color2}'
+    menu:
+      fgColor: '{foreground}'
+      keyColor: '{color4}'
+      numKeyColor: '{color3}'
+    crumbs:
+      fgColor: '{background}'
+      bgColor: default
+      activeColor: '{color2}'
+    status:
+      newColor: '{color4}'
+      modifyColor: '{color2}'
+      addColor: '{color1}'
+      pendingColor: '{color4}'
+      errorColor: '{color1}'
+      highlightColor: '{color3}'
+      killColor: '{color7}'
+      completedColor: '{color8}'
+  info:
+    fgColor: '{color4}'
+    sectionColor: '{foreground}'
+  views:
+    table:
+      fgColor: '{foreground}'
+      bgColor: default
+      cursorFgColor: '{color0}'
+      cursorBgColor: '{color8}'
+      markColor: '{color6}'
+      header:
+        fgColor: '{color7}'
+        bgColor: default
+        sorterColor: '{color6}'
+    xray:
+      fgColor: '{foreground}'
+      bgColor: default
+      cursorColor: '{color8}'
+      cursorTextColor: '{background}'
+      graphicColor: '{color6}'
+    charts:
+      bgColor: default
+      chartBgColor: default
+      dialBgColor: default
+      defaultDialColors:
+        - '{color1}'
+        - '{color1}'
+      defaultChartColors:
+        - '{color1}'
+        - '{color1}'
+      resourceColors:
+        cpu:
+          - '{color7}'
+          - '{color4}'
+        mem:
+          - '{color7}'
+          - '{color4}'
+    yaml:
+      keyColor: '{color4}'
+      valueColor: '{foreground}'
+      colonColor: '{color2}'
+    logs:
+      fgColor: '{foreground}'
+      bgColor: default
+      indicator:
+        fgColor: '{color2}'
+        bgColor: default
+        toggleOnColor: '{color1}'
+        toggleOffColor: '{color2}'
+  dialog:
+    fgColor: '{color7}'
+    bgColor: default
+    buttonFgColor: '{background}'
+    buttonBgColor: default
+    buttonFocusFgColor: '{background}'
+    buttonFocusBgColor: '{color6}'
+    labelFgColor: '{color6}'
+    fieldFgColor: '{foreground}'
