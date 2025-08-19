@@ -11,6 +11,8 @@
     pkgs.alacritty
     pkgs.swww
     pkgs.cliphist
+    pkgs.grim
+    pkgs.swappy
     pkgs.gcc
   ];
   # Custom wrapper for Hyprland
