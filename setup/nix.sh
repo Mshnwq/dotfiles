@@ -6,4 +6,4 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 #
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 nix run home-manager -- init --switch ~/.config/home-manager --impure
-# sudo usermod --shell $HOME/.nix-profile/bin/zsh $USER
+sudo usermod --shell $HOME/.nix-profile/bin/zsh $USER
