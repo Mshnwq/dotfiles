@@ -1,7 +1,8 @@
-{ config, pkgs, lib, ... }: {
-  # imports = [ inputs.hyprnix.homeManagerModules.default ];
+{ config, pkgs, lib, ... }: let
+  hyprWorkspaceLayouts = pkgs.callPackage ./lib/hyprWorkspaceLayouts.nix {};
+in {
   home.packages = [
-    (import ./lib/hyprWorkspaceLayouts.nix { inherit pkgs; })
+    hyprWorkspaceLayouts
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     pkgs.hyprland
     pkgs.hyprsunset
@@ -40,7 +41,7 @@
       cp target/release/niflveil "$HOME/.local/bin/"
     fi
   '';
-  "${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''
+  home.file."${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''
     exec-once = hyprctl plugin load ~/.nix-profile/lib/workspaceLayoutPlugin.so
     plugin {
         wslayout {
