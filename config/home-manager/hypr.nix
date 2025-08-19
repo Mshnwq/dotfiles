@@ -1,8 +1,10 @@
 { config, pkgs, lib, ... }: {
   # imports = [ inputs.hyprnix.homeManagerModules.default ];
   home.packages = [
+    (import ./lib/hyprWorkspaceLayouts.nix { inherit pkgs; })
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     pkgs.hyprland
+    pkgs.hyprsunset
     pkgs.waybar
     # pkgs.eww
     pkgs.rofi-wayland
@@ -37,5 +39,16 @@
       ${pkgs.cargo}/bin/cargo build --release -j 2
       cp target/release/niflveil "$HOME/.local/bin/"
     fi
+  '';
+  "${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''
+    exec-once = hyprctl plugin load ~/.nix-profile/lib/workspaceLayoutPlugin.so
+    plugin {
+        wslayout {
+            default_layout=dwindle
+        }
+    }
+    general {
+        layout=workspacelayout
+    }
   '';
 }

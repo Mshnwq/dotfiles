@@ -18,7 +18,5 @@ mkdir -p ~/Music
 
 ./setup/theme.sh
 
-# ./setup/hypr.sh
-
 ./setup/paru.sh
 # ./setup/flat.sh
