@@ -1,17 +1,16 @@
 { config, pkgs, lib, ... }: let
-  hyprWorkspaceLayouts = pkgs.callPackage ./lib/hyprWorkspaceLayouts.nix {};
 in {
   wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     plugins = [
       (pkgs.callPackage ./lib/hyprWorkspaceLayouts.nix { })
     ];
   };
   home.packages = [
-    # hyprWorkspaceLayouts
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
-    pkgs.hyprland
-    pkgs.hyprsunset
+    # pkgs.hyprsunset
     pkgs.waybar
     # pkgs.eww
     pkgs.rofi-wayland
