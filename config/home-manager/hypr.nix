@@ -11,6 +11,7 @@
     pkgs.alacritty
     pkgs.swww
     pkgs.cliphist
+    pkgs.gcc
   ];
   # Custom wrapper for Hyprland
   home.file.".local/bin/Hyprland-Nix".text = ''
@@ -29,7 +30,9 @@
       cd "$HOME/.build/NiflVeil/niflveil" || exit 1
       sed -i '341c\        println!("{{\\"text\\":\\" \\",\\"class\\":\\"empty\\",\\"tooltip\\":\\"No minimized windows\\"}}");' src/main.rs
       . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-      cargo build --release -j 2
+      # Force gcc from Nix
+      export CC=${pkgs.gcc}/bin/cc
+      ${pkgs.cargo}/bin/cargo build --release -j 2
       cp target/release/niflveil "$HOME/.local/bin/"
     fi
   '';
