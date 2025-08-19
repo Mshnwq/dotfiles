@@ -1,7 +1,6 @@
 {
   description = "Home Manager configuration of mshnwq";
 
-  # Cachix binary cache settings
   nixConfig = {
     # https://wiki.hypr.land/Nix/Cachix/
     extra-substituters = [
