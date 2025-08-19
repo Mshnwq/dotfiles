@@ -22,7 +22,7 @@
       echo ">>> Building NiflVeil (first time only)..."
       mkdir -p "$HOME/.build"
       for i in {1..3}; do
-        git clone https://github.com/Mauitron/NiflVeil.git "$HOME/.build/NiflVeil" && break
+        /usr/bin/git clone https://github.com/Mauitron/NiflVeil.git "$HOME/.build/NiflVeil" && break
         rm -rf "$HOME/.build/NiflVeil"
         sleep 3
       done

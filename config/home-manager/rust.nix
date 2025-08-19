@@ -1,7 +1,7 @@
 { pkgs, lib, ... }: {
   home.packages = [
-    # pkgs.cargo
-    # pkgs.rustc
+    pkgs.cargo
+    pkgs.rustc
     # OVERKILL TOO SLOW 
     # (pkgs.rustPlatform.buildRustPackage rec {
     #   pname = "eza";
