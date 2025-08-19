@@ -7,7 +7,9 @@
       (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
     ];
     # Extra Hyprland config lines (like exec-once)
-    extraConfig = builtins.readFile "${config.xdg.configHome}/hypr/hyprland-extra.conf";
+    extraConfig = ''
+      source "${config.xdg.configHome}/hypr/hyprland-extra.conf";
+    '';
   };
   home.packages = [
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
@@ -27,7 +29,7 @@
   # Custom wrapper for Hyprland
   home.file.".local/bin/Hyprland-Nix".text = ''
     ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL \
-      hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
+      ${hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/Hyprland
   '';
     # ${pkgs.hyprland}/bin/Hyprland
   home.file.".local/bin/Hyprland-Nix".executable = true;
