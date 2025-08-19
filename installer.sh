@@ -9,13 +9,14 @@ mkdir -p ~/Music
 ./setup/cpu.sh
 
 ./setup/getnf.sh
-# ./setup/asdf.sh
+./setup/asdf.sh
 
 # ./setup/stow.sh
 ./setup/dots.sh
-# ./setup/nix.sh
 
-# ./setup/hypr.sh
+./setup/nix.sh
 
-# ./setup/paru.sh
-# ./setup/flat.sh
+./setup/hypr.sh
+
+./setup/paru.sh
+./setup/flat.sh

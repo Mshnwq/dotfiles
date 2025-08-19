@@ -16,19 +16,20 @@
 # mkdir -p ~/.config/home-manager
 # cp /mnt/shared/home-manager/*.nix ~/.config/home-manager/
 
-cp -r $HOME/.dotfiles/config/alacritty ~/.config/
-cp -r $HOME/.dotfiles/config/btop ~/.config/
-cp -r $HOME/.dotfiles/config/dots ~/.config/
-cp -r $HOME/.dotfiles/config/kitty ~/.config/
-cp -r $HOME/.dotfiles/config/k9s ~/.config/
-cp -r $HOME/.dotfiles/config/rofi ~/.config/
-cp -r $HOME/.dotfiles/config/rmpc ~/.config/
-cp -r $HOME/.dotfiles/config/wal ~/.config/
-cp -r $HOME/.dotfiles/config/waybar ~/.config/
-cp -r $HOME/.dotfiles/config/tmux ~/.config/
-cp -r $HOME/.dotfiles/config/yazi ~/.config/
-cp -r $HOME/.dotfiles/config/zsh ~/.config/
-cp $HOME/.dotfiles/config/zsh/.p10k.zsh ~/.config/zsh/
-# cp -r $HOME/.dotfiles/config/hypr ~/.config/
+cp -r ~/.dotfiles/config/alacritty ~/.config/
+cp -r ~/.dotfiles/config/btop ~/.config/
+cp -r ~/.dotfiles/config/dots ~/.config/
+cp -r ~/.dotfiles/config/kitty ~/.config/
+cp -r ~/.dotfiles/config/k9s ~/.config/
+cp -r ~/.dotfiles/config/rofi ~/.config/
+cp -r ~/.dotfiles/config/rmpc ~/.config/
+cp -r ~/.dotfiles/config/wal ~/.config/
+cp -r ~/.dotfiles/config/waybar ~/.config/
+cp -r ~/.dotfiles/config/tmux ~/.config/
+cp -r ~/.dotfiles/config/yazi ~/.config/
+cp -r ~/.dotfiles/config/zsh ~/.config/
+cp ~/.dotfiles/config/zsh/.p10k.zsh ~/.config/zsh/
+#
+# cp -r ~/.dotfiles/config/hypr ~/.config/
 mkdir -p ~/.config/home-manager
-cp $HOME/.dotfiles/config/home-manager/*.nix ~/.config/home-manager/
+cp ~/.dotfiles/config/home-manager/*.nix ~/.config/home-manager/
