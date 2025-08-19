@@ -9,7 +9,6 @@
     pkgs.cowsay
     pkgs.btop
     pkgs.fastfetch
-    # pkgs.stow
     pkgs.zoxide
     # pkgs.zathura
   ];

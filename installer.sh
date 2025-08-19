@@ -12,7 +12,7 @@ mkdir -p ~/Music
 # ./setup/asdf.sh
 
 ./setup/stow.sh
-./setup/dots.sh
+# ./setup/dots.sh
 
 ./setup/nix.sh
 

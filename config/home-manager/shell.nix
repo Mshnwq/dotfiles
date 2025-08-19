@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }: {
   home.packages = [
-    pkgs.asdf
     pkgs.zsh
     pkgs.zsh-powerlevel10k
     pkgs.oh-my-zsh
+    pkgs.asdf-vm
   ];
 
   home.sessionVariables = {
