@@ -1,11 +1,10 @@
-{ config, pkgs, lib, ... }: let
-in {
+{ config, pkgs, lib, hyprland, ... }:  {
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     plugins = [
-      (pkgs.callPackage ./hyprWorkspaceLayouts.nix { })
+      (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
     ];
   };
   home.packages = [

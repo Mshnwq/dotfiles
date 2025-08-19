@@ -40,6 +40,7 @@ hyprlandPlugins.mkHyprlandPlugin hyprland {
   src = fetchFromGitHub {
     owner = "zakk4223";
     repo = "hyprWorkspaceLayouts";
+    # NOTE: must match hyprland version and incluse commit pin in hyprpm.toml
     rev = "760df97c3a9ba3991419a2885a4aa69503a599f1";
     hash = "sha256-aKsmvyhjlnHrVu4R25AJ4xB4B1mhgBL1Jdl106ItqHc=";
   };

@@ -40,9 +40,10 @@
         # ./pywal.nix
         # ./shell.nix
       ];
-      # extraSpecialArgs = {
-      #   yazi = yazi.packages.${pkgs.system}.default;
-      # };
+      extraSpecialArgs = {
+        inherit hyprland;
+        # yazi = yazi.packages.${pkgs.system}.default;
+      };
     };
   };
 }
