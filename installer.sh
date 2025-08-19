@@ -16,7 +16,7 @@ mkdir -p ~/Music
 
 ./setup/nix.sh
 
-./setup/theme.sh
+#./setup/theme.sh
 
 ./setup/paru.sh
 # ./setup/flat.sh

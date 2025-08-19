@@ -6,9 +6,8 @@
     plugins = [
       (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
     ];
-    # Extra Hyprland config lines (like exec-once)
     extraConfig = ''
-      source "${config.xdg.configHome}/hypr/hyprland-extra.conf";
+      source = ${config.xdg.configHome}/hypr/custom.conf
     '';
   };
   home.packages = [
