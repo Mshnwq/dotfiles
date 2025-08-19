@@ -6,10 +6,10 @@ set -euo pipefail
 KEY_NAME="TestPassKey"
 KEY_EMAIL="test-pass@example.com"
 KEY_COMMENT="Temporary test key"
+KEY_PASSPHRASE="123"
 
-# Create batch file for RSA key (safe & portable)
 cat > gen-key-batch <<EOF
-%no-protection
+%echo Generating a test RSA key
 Key-Type: RSA
 Key-Length: 2048
 Subkey-Type: RSA
@@ -18,7 +18,9 @@ Name-Real: $KEY_NAME
 Name-Comment: $KEY_COMMENT
 Name-Email: $KEY_EMAIL
 Expire-Date: 0
+Passphrase: $KEY_PASSPHRASE
 %commit
+%echo done
 EOF
 
 echo "[+] Generating dummy GPG key..."
@@ -35,10 +37,10 @@ pass init "$KEY_FPR"
 
 # Insert dummy secret
 echo "[+] Inserting test entry into pass..."
-echo "supersecretpassword" | pass insert -f test/example
+echo "supersecretpassword" | pass insert -f test
 
 echo "[+] Retrieving test entry..."
-echo "pass show test/example"
+echo "pass show test"
 
 # Run cleanup script
 # echo "[+] Running cleanup..."
