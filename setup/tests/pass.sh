@@ -7,16 +7,17 @@ KEY_NAME="TestPassKey"
 KEY_EMAIL="test-pass@example.com"
 KEY_COMMENT="Temporary test key"
 
-# Create temporary GPG key batch file
+# Create batch file for RSA key (safe & portable)
 cat > gen-key-batch <<EOF
 %no-protection
-Key-Type: default
+Key-Type: RSA
 Key-Length: 2048
-Subkey-Type: default
+Subkey-Type: RSA
+Subkey-Length: 2048
 Name-Real: $KEY_NAME
 Name-Comment: $KEY_COMMENT
 Name-Email: $KEY_EMAIL
-Expire-Date: 1d
+Expire-Date: 0
 %commit
 EOF
 
