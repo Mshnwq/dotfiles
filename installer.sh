@@ -16,6 +16,8 @@ mkdir -p ~/Music
 
 ./setup/nix.sh
 
+./setup/theme.sh
+
 ./setup/hypr.sh
 
 ./setup/paru.sh
