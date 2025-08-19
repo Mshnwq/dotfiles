@@ -6,11 +6,11 @@
   targets.genericLinux.enable = true;  # ENABLE THIS ON NON NIXOS
 
   home.packages = [
-    # pkgs.cowsay
+    pkgs.cowsay
     pkgs.btop
     pkgs.fastfetch
     # pkgs.stow
-    # pkgs.zoxide
+    pkgs.zoxide
     # pkgs.zathura
   ];
 

@@ -6,9 +6,9 @@
     pkgs.waybar
     # pkgs.eww
     pkgs.rofi-wayland
-    # pkgs.dunst
+    pkgs.dunst
     pkgs.kitty
-    # pkgs.alacritty
+    pkgs.alacritty
     pkgs.swww
     pkgs.cliphist
   ];
