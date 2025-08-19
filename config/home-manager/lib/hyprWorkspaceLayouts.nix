@@ -1,23 +1,22 @@
-{ pkgs ? import <nixpkgs> {} }:
-
+{ lib, stdenv, fetchFromGitHub, pkg-config, gnumake, gcc
+, hyprland, hyprgraphics, pixman, wayland, libdrm }:
 pkgs.stdenv.mkDerivation {
   pname = "hyprWorkspaceLayouts";
   version = "0.50.1";
-
   src = pkgs.fetchFromGitHub {
     owner = "zakk4223";
     repo = "hyprWorkspaceLayouts";
-    rev = "760df97";
-    hash = "sha256-";
+    rev = "760df97c3a9ba3991419a2885a4aa69503a599f1";
+    hash = "sha256-aKsmvyhjlnHrVu4R25AJ4xB4B1mhgBL1Jdl106ItqHc=";
   };
-
-  nativeBuildInputs = [ pkgs.pkg-config pkgs.gcc pkgs.makeWrapper ];
-  buildInputs = [ pkgs.hyprland pkgs.wlroots pkgs.libdrm pkgs.libinput pkgs.xorg.libX11 ];
-
+  nativeBuildInputs = [ pkg-config gnumake gcc ];
+  buildInputs = [ hyprland hyprgraphics pixman wayland libdrm ];
   buildPhase = ''
-    make all
+    g++ -shared -Wall -fPIC --no-gnu-unique \
+      ./main.cpp ./workspaceLayout.cpp -g -std=c++23 \
+      `pkg-config --cflags pixman-1 libdrm wayland-server hyprland` \
+      -o workspaceLayoutPlugin.so
   '';
-
   installPhase = ''
     mkdir -p $out/lib
     cp workspaceLayoutPlugin.so $out/lib/
