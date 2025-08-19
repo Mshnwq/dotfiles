@@ -12,4 +12,9 @@
     pkgs.swww
     pkgs.cliphist
   ];
+  # Custom wrapper for Hyprland
+  home.file.".local/bin/Hyprland-Nix".text = ''
+    ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.hyprland}/bin/Hyprland
+  '';
+  home.file.".local/bin/Hyprland-Nix".executable = true;
 }

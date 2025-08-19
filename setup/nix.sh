@@ -5,5 +5,5 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 # --extra-conf="use-xdg-base-directories = true"
 #
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-nix run home-manager -- init --switch ~/.config/home-manager
-# sudo usermod --shell $HOME/.nix-profile/bin/zsh $USER
+nix run home-manager -- init --switch ~/.config/home-manager --impure
+sudo usermod --shell $HOME/.nix-profile/bin/zsh $USER
