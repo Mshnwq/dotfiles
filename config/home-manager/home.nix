@@ -34,7 +34,6 @@
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";
     CUDA_CACHE_PATH = "${config.xdg.stateHome}/nv";
     CARGO_HOME = "${config.xdg.dataHome}/cargo";
-    ASDF_DATA_DIR = "${config.xdg.dataHome}/asdf";
     # GOPATH = "${config.xdg.dataHome}/go";
     # GOBIN = "${GOPATH}/bin";
     # GOMODCACHE = "${config.xdg.cacheHome}/go/mod";

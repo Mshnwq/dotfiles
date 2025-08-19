@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }: {
   home.packages = [
+    pkgs.asdf
     pkgs.zsh
     pkgs.zsh-powerlevel10k
     pkgs.oh-my-zsh
@@ -7,6 +8,7 @@
 
   home.sessionVariables = {
     FZF_PATH = "${config.xdg.configHome}/fzf";
+    ASDF_DATA_DIR = "${config.xdg.dataHome}/asdf";
   };
   home.file = {
     "${config.xdg.configHome}/fzf/shell".source = 
@@ -104,7 +106,7 @@
       enable = true;
       plugins = [ 
         "git"
-        # "asdf"
+        "asdf"
       ];
     };
   };

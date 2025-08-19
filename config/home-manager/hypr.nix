@@ -17,4 +17,20 @@
     ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL ${pkgs.hyprland}/bin/Hyprland
   '';
   home.file.".local/bin/Hyprland-Nix".executable = true;
+  home.activation.buildNiflVeil = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -x "$HOME/.local/bin/niflveil" ]; then
+      echo ">>> Building NiflVeil (first time only)..."
+      mkdir -p "$HOME/.build"
+      for i in {1..3}; do
+        git clone https://github.com/Mauitron/NiflVeil.git "$HOME/.build/NiflVeil" && break
+        rm -rf "$HOME/.build/NiflVeil"
+        sleep 3
+      done
+      cd "$HOME/.build/NiflVeil/niflveil" || exit 1
+      sed -i '341c\        println!("{{\\"text\\":\\" \\",\\"class\\":\\"empty\\",\\"tooltip\\":\\"No minimized windows\\"}}");' src/main.rs
+      . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      cargo build --release -j 2
+      cp target/release/niflveil "$HOME/.local/bin/"
+    fi
+  '';
 }
