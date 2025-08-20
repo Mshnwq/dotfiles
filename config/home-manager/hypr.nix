@@ -6,6 +6,7 @@
     # plugins = [
     #   (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
     # ];
+      # source = ${config.xdg.configHome}/hypr/workspaceLayouts.conf
     extraConfig = ''
       source = ${config.xdg.configHome}/hypr/hyprextra.conf
     '';

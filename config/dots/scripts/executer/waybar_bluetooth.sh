@@ -5,12 +5,12 @@ CONFIG="${HOME}/.config/waybar/config.jsonc"  # Adjust path if needed
 # Functions
 enable_bluetooth() {
   sed -i 's|^\(\s*\)// "bluetooth",\s*// - replace|\1"bluetooth", // - replace|' "$CONFIG"
-  echo "Cava module enabled."
+  echo "Bluetooth module enabled."
 }
 
 disable_bluetooth() {
   sed -i 's|^\(\s*\)"bluetooth",\s*// - replace|\1// "bluetooth", // - replace|' "$CONFIG"
-  echo "Cava module disabled."
+  echo "Bluetooth module disabled."
 }
 
 toggle_bluetooth() {

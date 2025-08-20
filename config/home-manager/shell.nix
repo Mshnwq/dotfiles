@@ -3,12 +3,12 @@
     pkgs.zsh
     pkgs.zsh-powerlevel10k
     pkgs.oh-my-zsh
-    pkgs.asdf-vm
+    # pkgs.asdf-vm
   ];
 
   home.sessionVariables = {
     FZF_PATH = "${config.xdg.configHome}/fzf";
-    ASDF_DATA_DIR = "${config.xdg.dataHome}/asdf";
+    # ASDF_DATA_DIR = "${config.xdg.dataHome}/asdf";
   };
   home.file = {
     "${config.xdg.configHome}/fzf/shell".source = 
@@ -62,14 +62,6 @@
 
       # export PATH=$HOME/.local/share/nvim/mason/bin"
       export PATH="$HOME/.local/bin:$PATH"
-      # (( ! $+commands[asdf] )) && return
-      # path=("$ASDF_DATA_DIR/shims" $path)
-      # if [[ ! -f "$ZSH_CACHE_DIR/completions/_asdf" ]]; then
-      #   typeset -g -A _comps
-      #   autoload -Uz _asdf
-      #   _comps[asdf]=_asdf
-      # fi
-      # asdf completion zsh >| "$ZSH_CACHE_DIR/completions/_asdf" &|
 
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       source $ZDOTDIR/.p10k.zsh
@@ -106,7 +98,7 @@
       enable = true;
       plugins = [ 
         "git"
-        "asdf"
+        # "asdf"
       ];
     };
   };

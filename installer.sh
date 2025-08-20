@@ -9,12 +9,11 @@ mkdir -p ~/Music
 # ./setup/cpu.sh
 
 ./setup/getnf.sh
-# ./setup/asdf.sh
 
 ./setup/stow.sh
-# ./setup/dots.sh
+#./setup/dots.sh
 
-# ./setup/nix.sh
+#./setup/nix.sh
 
 #./setup/theme.sh
 

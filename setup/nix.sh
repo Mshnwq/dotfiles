@@ -1,5 +1,6 @@
 # NIX for version 42
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install ostree --no-confirm --persistence=/var/lib/nix \
+  --extra-conf "trusted-users = root @wheel" \
   --extra-conf "extra-substituters = https://hyprland.cachix.org" \
   --extra-conf "extra-trusted-substituters = https://hyprland.cachix.org" \
   --extra-conf "extra-trusted-public-keys = hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
