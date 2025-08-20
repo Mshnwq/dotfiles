@@ -55,7 +55,6 @@
       done
       cd "$HOME/.build/NiflVeil/niflveil" || exit 1
       sed -i '341c\        println!("{{\\"text\\":\\" \\",\\"class\\":\\"empty\\",\\"tooltip\\":\\"No minimized windows\\"}}");' src/main.rs
-      . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
       # Force gcc from Nix
       export RUSTFLAGS="-C linker=${pkgs.gcc}/bin/cc"
       ${pkgs.cargo}/bin/cargo build --release -j 2

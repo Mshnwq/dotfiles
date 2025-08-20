@@ -1,4 +1,4 @@
-sed -i "$HOME/.config/hypr/hyprland.conf" \
+sed -i "$HOME/.config/hypr/hyprextra.conf" \
 	-e "/#-toggle-blur/s/.*#-/	enabled = false \t#-/" \
 	-e "/#-toggle-animation/s/.*#-/    enabled = false \t#-/" \
 	-e "/#-toggle-ws-animation/s/.*#-/    workspace_wraparound = false \t#-/" \
