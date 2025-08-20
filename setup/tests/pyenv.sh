@@ -45,3 +45,5 @@ echo
 echo "✅ Setup complete!"
 echo "Now run: nix develop"
 echo "This will drop you into a shell with Python 3.10.x and .venv auto-activated."
+
+https://github.com/dtgoitia/nix-python

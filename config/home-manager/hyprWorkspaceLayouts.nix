@@ -15,10 +15,10 @@ hyprlandPlugins.mkHyprlandPlugin hyprland {
     repo = "hyprWorkspaceLayouts";
     # NOTE: must match hyprland version and incluse commit pin in hyprpm.toml
     # https://github.com/zakk4223/hyprWorkspaceLayouts/issues/27
-    # rev = "760df97c3a9ba3991419a2885a4aa69503a599f1";
-    # hash = "sha256-aKsmvyhjlnHrVu4R25AJ4xB4B1mhgBL1Jdl106ItqHc=";
-    rev = "d74fa07f4484e7934a26c26cdbe168533451935d";
-    hash = "sha256-1dxRcryNRh0zPiuO5EusPY0Qazh6Ogca41C+/gvs15g=";
+    rev = "760df97c3a9ba3991419a2885a4aa69503a599f1";
+    hash = "sha256-aKsmvyhjlnHrVu4R25AJ4xB4B1mhgBL1Jdl106ItqHc=";
+    #rev = "d74fa07f4484e7934a26c26cdbe168533451935d";
+    #hash = "sha256-1dxRcryNRh0zPiuO5EusPY0Qazh6Ogca41C+/gvs15g=";
   };
 
   nativeBuildInputs = [ pkg-config gcc ];

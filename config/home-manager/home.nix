@@ -8,8 +8,9 @@
   home.packages = [
     pkgs.cowsay
     pkgs.btop
-    pkgs.fastfetch
     pkgs.zoxide
+    pkgs.fastfetch
+    pkgs.lm_sensors
     # pkgs.zathura
   ];
 

@@ -9,7 +9,8 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 # --extra-conf="use-xdg-base-directories = true"
 #
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-nix run home-manager -- init --switch ~/.config/home-manager --impure
+nix run home-manager -- init --switch ~/.config/home-manager --impure --accept-flake-config
+# nix run home-manager -- init --switch ~/.config/home-manager --impure
 
 if [ -x "$HOME/.nix-profile/bin/zsh" ]; then
     sudo usermod --shell "$HOME/.nix-profile/bin/zsh" "$USER"
