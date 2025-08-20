@@ -15,14 +15,16 @@ in {
   };
 
   home.packages = [
-    hyprPkgs.hyprsunset
-    hyprPkgs.hyprlock
+    # pkgs.hyprwayland-scanner
+    pkgs.hyprpolkitagent
+    pkgs.hyprsunset
+    pkgs.hyprlock
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
+    pkgs.rofi-wayland
     pkgs.waybar
     # pkgs.eww
-    pkgs.rofi-wayland
     pkgs.dunst
-    pkgs.kitty
+    # pkgs.kitty
     pkgs.alacritty
     pkgs.swww
     pkgs.cliphist
