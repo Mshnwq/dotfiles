@@ -3,7 +3,7 @@
 CFG_MUSIC="$HOME/.config/dots/.music"
 CFG_MPD="$HOME/.config/dots/.mpd_status"
 REMOTE_MPD="$HOME/.config/dots/.mpd_host"
-DEFAULT_MUSIC="ncmpcpp"
+DEFAULT_MUSIC="rmpc"
 ROFI_THEME="$HOME/.config/rofi/Selector.rasi"
 
 # Creating config file if not exists.

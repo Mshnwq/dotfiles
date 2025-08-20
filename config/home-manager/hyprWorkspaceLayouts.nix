@@ -28,12 +28,12 @@ hyprlandPlugins.mkHyprlandPlugin hyprland {
     g++ -shared -Wall -fPIC --no-gnu-unique \
       ./main.cpp ./workspaceLayout.cpp -g -std=c++23 -DWLR_USE_UNSTABLE \
       `pkg-config --cflags pixman-1 libdrm wayland-server hyprland` \
-      -o hyprWorkspaceLayouts.so
+      -o libhyprWorkspaceLayouts.so
   '';
 
   installPhase = ''
     mkdir -p $out/lib
-    cp hyprWorkspaceLayouts.so $out/lib/
+    cp libhyprWorkspaceLayouts.so $out/lib/
   '';
 
   meta = {

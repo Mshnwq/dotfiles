@@ -7,6 +7,10 @@
       "https://hyprland.cachix.org"
       # "https://yazi.cachix.org"
     ];
+    extra-trusted-substituters = [
+      "https://hyprland.cachix.org"
+      # "https://yazi.cachix.org"
+    ];
     extra-trusted-public-keys = [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       # "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
@@ -23,8 +27,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixgl.url = "github:nix-community/nixGL";
-    # hyprland.url = "github:hyprwm/hyprland";  # Latest commit
-    hyprland.url = "github:hyprwm/hyprland?ref=v0.50.0";  # pin version
+    hyprland.url = "github:hyprwm/hyprland";  # Latest commit
+    # hyprland.url = "github:hyprwm/hyprland?ref=v0.50.0";  # pin version ! does not build plugin
     # hyprnix.url = "github:hyprland-community/hyprnix";
     # hyprnix.inputs.hyprland.follows = "hyprland";
     # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
@@ -43,10 +47,10 @@
         ./rust.nix
         ./tmux.nix
         # ./auto.nix
-        # ./pass.nix
+        ./pass.nix
         # ./nvim.nix
         # ./infra.nix
-        # ./music.nix
+        ./music.nix
         ./pywal.nix
         ./shell.nix
       ];

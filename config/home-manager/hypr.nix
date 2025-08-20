@@ -3,9 +3,9 @@
     enable = true;
     package = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     portalPackage = hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    plugins = [
-      (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
-    ];
+    # plugins = [
+    #   (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
+    # ];
     extraConfig = ''
       source = ${config.xdg.configHome}/hypr/hyprextra.conf
     '';
