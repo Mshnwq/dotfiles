@@ -13,7 +13,7 @@ mkdir -p ~/Music
 ./setup/stow.sh
 #./setup/dots.sh
 
-#./setup/nix.sh
+./setup/nix.sh
 
 #./setup/theme.sh
 
