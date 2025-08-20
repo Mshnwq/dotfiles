@@ -5,7 +5,7 @@ mkdir -p ~/Videos
 mkdir -p ~/Pictures
 mkdir -p ~/Music
 
-# ./setup/sddm.sh
+./setup/sddm.sh
 # ./setup/cpu.sh
 
 ./setup/getnf.sh
@@ -14,9 +14,9 @@ mkdir -p ~/Music
 ./setup/stow.sh
 # ./setup/dots.sh
 
-./setup/nix.sh
+# ./setup/nix.sh
 
 #./setup/theme.sh
 
-./setup/paru.sh
+# ./setup/paru.sh
 # ./setup/flat.sh

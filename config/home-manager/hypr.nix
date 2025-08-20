@@ -10,6 +10,7 @@
       source = ${config.xdg.configHome}/hypr/hyprextra.conf
     '';
   };
+
   home.packages = [
     pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     # pkgs.hyprsunset
@@ -25,6 +26,7 @@
     pkgs.swappy
     pkgs.gcc
   ];
+
   # Custom wrapper for Hyprland
   home.file.".local/bin/Hyprland-Nix".text = ''
     ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL \
