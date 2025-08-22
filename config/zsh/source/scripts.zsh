@@ -65,3 +65,8 @@ function echo_in_color() {
   # Use ANSI escape code for 24-bit color
   echo -e "\033[38;2;${red};${green};${blue}m$text\033[0m"
 }
+
+function gitd() {
+  eval $(ssh-agent)
+  $HOME/.config/zsh/scripts/add_ssh.expect "$(pass show mshnwq/github-ssh-pass)"
+}
