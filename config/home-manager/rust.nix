@@ -19,6 +19,6 @@
     pkgs.tldr
     # pkgs.serie
     # pkgs.termscp 
-    # pkgs.catppuccin-whiskers
+    pkgs.catppuccin-whiskers
   ];
 }

@@ -2,7 +2,7 @@
   hyprPkgs = hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in {
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = false;
     package = hyprPkgs.hyprland;
     portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
     plugins = [
@@ -15,19 +15,10 @@ in {
   };
 
   home.packages = [
-    # pkgs.hyprwayland-scanner
-    pkgs.hyprpolkitagent
-    pkgs.hyprsunset
-    pkgs.hyprlock
-    pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
+    #pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     pkgs.rofi-wayland
-    pkgs.waybar
-    # pkgs.eww
-    pkgs.dunst
-    # pkgs.kitty
+    pkgs.dunst # remove
     pkgs.alacritty
-    pkgs.swww
-    pkgs.cliphist
     pkgs.grim
     pkgs.swappy
     pkgs.gcc

@@ -11,7 +11,8 @@
     pkgs.zoxide
     pkgs.fastfetch
     pkgs.lm_sensors
-    # pkgs.zathura
+    pkgs.expect
+    pkgs.zathura
   ];
 
   xdg.enable = true;  # https://wiki.archlinux.org/title/XDG_Base_Directory
