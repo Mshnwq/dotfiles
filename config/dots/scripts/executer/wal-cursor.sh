@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cursor_dir="$HOME/.built/cursors"
+cursor_dir="$HOME/.build/cursors"
 cursor_file="$cursor_dir/src/templates/svgs.tera"
 cache_dir="$HOME/.cache/wal/cursors"
 
@@ -25,9 +25,8 @@ if [[ -d "$cache_path" ]]; then
 else
   echo "No cache found. Building new cursor."
   cd "$cursor_dir"
-  source "$cursor_dir/.venv/bin/activate"
   cp "$cursor_dir/src/default.svg" "$cursor_dir/src/svgs/default.svg"
-  just build mocha pywal
+  nix-shell --run "just build mocha pywal"
 
   # Save build to cache
   mkdir -p "$cache_path"

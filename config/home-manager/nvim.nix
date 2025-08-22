@@ -1,5 +1,5 @@
 { pkgs, ... }: {
   home.packages = [
-    pkgs.nvim
+    pkgs.neovim
   ];
 }

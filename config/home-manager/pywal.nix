@@ -27,18 +27,13 @@
 
     ln -sf "${config.xdg.cacheHome}/wal/custom-dunstrc" "${config.xdg.configHome}/dots/config/dunstrc"
 
-    mkdir -p "${config.xdg.dataHome}/icons"
+    if [ ! -d "$HOME/.build/cursors" ]; then
+        /usr/bin/git clone https://github.com/mshnwq/cursors $HOME/.build/cursors
+    fi
     mkdir -p "$HOME/.build/cursors/dist"
+    mkdir -p "${config.xdg.dataHome}/icons"
     ln -sf "$HOME/.build/cursors/dist/catppuccin-mocha-pywal-cursors" \
-      "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
-    mkdir -p ${config.xdg.cacheHome}/wal/cursors"
+        "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
+    mkdir -p "${config.xdg.cacheHome}/wal/cursors"
   '';
-
-  home.file."$HOME/.build/cursors".source =
-    pkgs.fetchFromGitHub {
-      owner = "mshnwq";
-      repo = "cursors";
-      rev = "6032da3";
-      hash = "sha256-/N4VGQzkr4rV6/C2Y3MPX3jqlNMUxdeBfpQNeH3p9E4=";
-    };
 }

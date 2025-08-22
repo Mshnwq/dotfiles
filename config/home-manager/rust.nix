@@ -22,6 +22,6 @@
     pkgs.tldr
     pkgs.serie
     # pkgs.termscp 
-    pkgs.catppuccin-whiskers
+    # pkgs.catppuccin-whiskers  # no need cursors has a *.nix
   ];
 }

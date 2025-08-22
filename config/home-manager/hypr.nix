@@ -21,9 +21,4 @@
       cp target/release/niflveil "$HOME/.local/bin/"
     fi
   '';
-  home.activation.hyprPlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    hyprpm update
-    hyprpm add 'https://github.com/zakk4223/hyprWorkspaceLayouts' --verbose
-    hyprpm enable hyprWorkspaceLayouts
-  '';
 }

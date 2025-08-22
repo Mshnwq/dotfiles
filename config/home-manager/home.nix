@@ -9,7 +9,7 @@
     pkgs.cowsay
     # pkgs.btop
     pkgs.zoxide
-    pkgs.fastfetch
+    # pkgs.fastfetch
     pkgs.lm_sensors
     pkgs.expect
     pkgs.zathura
