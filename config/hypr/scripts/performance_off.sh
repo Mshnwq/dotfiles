@@ -1,4 +1,4 @@
-sed -i "$HOME/.config/hypr/hyprextra.conf" \
+sed -i "$HOME/.config/hypr/conf.d/general.conf" \
   -e "/#-toggle-blur/s/.*#-/	enabled = true \t#-/" \
   -e "/#-toggle-animation/s/.*#-/    enabled = true \t#-/" \
   -e "/#-toggle-ws-animation/s/.*#-/    workspace_wraparound = true \t#-/" \
