@@ -89,7 +89,7 @@ case $MY_TERM in
         ;;
       "--init")
         tmux kill-server 2>/dev/null
-        KITTY_SOCKET="unix:/tmp/init-term-kitty.sock"
+        KITTY_SOCKET="unix:$XDG_RUNTIME_DIR/init-term-kitty.sock"
         # Launch Kitty + tmux InitTerminal in background
         kitty --class=InitTerm \
               --watcher tab_focus.py \

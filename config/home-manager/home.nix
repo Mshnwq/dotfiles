@@ -7,7 +7,7 @@
 
   home.packages = [
     pkgs.cowsay
-    pkgs.btop
+    # pkgs.btop
     pkgs.zoxide
     pkgs.fastfetch
     pkgs.lm_sensors

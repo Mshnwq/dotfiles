@@ -26,5 +26,19 @@
     ln -sf "${config.xdg.cacheHome}/wal/custom-k9s.yaml" "${config.xdg.configHome}/k9s/skins/pywal.yaml"
 
     ln -sf "${config.xdg.cacheHome}/wal/custom-dunstrc" "${config.xdg.configHome}/dots/config/dunstrc"
+
+    mkdir -p "${config.xdg.dataHome}/icons"
+    mkdir -p "$HOME/.build/cursors/dist"
+    ln -sf "$HOME/.build/cursors/dist/catppuccin-mocha-pywal-cursors" \
+      "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
+    mkdir -p ${config.xdg.cacheHome}/wal/cursors"
   '';
+
+  home.file."$HOME/.build/cursors".source =
+    pkgs.fetchFromGitHub {
+      owner = "mshnwq";
+      repo = "cursors";
+      rev = "6032da3";
+      hash = "sha256-/N4VGQzkr4rV6/C2Y3MPX3jqlNMUxdeBfpQNeH3p9E4=";
+    };
 }

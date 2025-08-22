@@ -1,14 +1,14 @@
 { config, pkgs, lib, ... }: {
   home.packages = [
     pkgs.pass
-    pkgs.pinentry-all
-    pkgs.pinentry-rofi
+    #pkgs.pinentry-all
+    #pkgs.pinentry-rofi
   ];
 
   # Custom wrapper for pinentry
   home.file.".local/bin/pinentry-wofi".text = ''
     #!/usr/bin/env bash
-    exec ${pkgs.pinentry-rofi}/bin/pinentry-rofi "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
+    exec /usr/bin/pinentry-rofi "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
   '';
   home.file.".local/bin/pinentry-wofi".executable = true;
 

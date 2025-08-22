@@ -16,8 +16,9 @@ color_kitty() {
 
 color_hyprland() {
   log "Starting color_hyprland"
-  sed -i "s/^    col.active_border =.*/    col.active_border = rgba(${color7:1}ff) rgba(${color4:1}ff) 90deg/" $HOME/.config/hypr/hyprland.conf
-  sed -i "s/^    col.inactive_border =.*/    col.inactive_border = rgba(${color2:1}aa)/" $HOME/.config/hypr/hyprland.conf
+  hyprland_file="$HOME/.config/hypr/conf.d/general.conf"
+  sed -i "s/^    col.active_border =.*/    col.active_border = rgba(${color7:1}ff) rgba(${color4:1}ff) 90deg/" $hyprland_file
+  sed -i "s/^    col.inactive_border =.*/    col.inactive_border = rgba(${color2:1}aa)/" $hyprland_file
   log "Finished color_hyprland"
 }
 
@@ -84,11 +85,6 @@ color_yazi() {
   sh -c "$HOME/.config/dots/scripts/executer/wal-yazi.sh" >>"$LOG_FILE"
   log "Finished color_yazi"
 }
-color_sddm() {
-  log "Starting color_sddm"
-  sh -c "$HOME/.config/dots/scripts/executer/wal-sddm.sh" >>"$LOG_FILE"
-  log "Finished color_sddm"
-}
 
 # Main
 log "Running wal..."
@@ -111,6 +107,5 @@ color_yazi
 color_tmux
 color_nvchad
 color_firefox
-color_sddm
 
 log "All theming complete"

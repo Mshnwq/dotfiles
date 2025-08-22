@@ -47,7 +47,7 @@
         ./yazi.nix
         ./rust.nix
         ./tmux.nix
-        # ./auto.nix
+        ./auto.nix
         ./pass.nix
         # ./nvim.nix
         # ./infra.nix
