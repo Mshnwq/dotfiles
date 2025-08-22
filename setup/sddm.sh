@@ -9,7 +9,8 @@ done
 sudo sed -i 's/HourFormat="HH:mm"/HourFormat="hh:mm AP"/' "/opt/sddm/themes/simple_sddm_2/theme.conf"
 sudo rm -rf /opt/sddm/themes/simple_sddm_2/.git
 
-sudo tee /etc/sddm.conf.d/theme-dir.conf <<'EOL'
+sudo tee /etc/sddm.conf.d/theme.conf <<'EOL'
 [Theme]
 ThemeDir=/opt/sddm/themes
+Current=simple_sddm_2
 EOL

@@ -15,10 +15,7 @@ in {
   };
 
   home.packages = [
-    #pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
-    pkgs.rofi-wayland
-    pkgs.dunst # remove
-    pkgs.alacritty
+    # pkgs.nixgl.auto.nixGLDefault  # NOTE: run with --impure flag
     pkgs.grim
     pkgs.swappy
     pkgs.gcc

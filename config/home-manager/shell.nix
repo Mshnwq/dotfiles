@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
   home.packages = [
-    pkgs.zsh
+    # pkgs.zsh
     pkgs.zsh-powerlevel10k
     pkgs.oh-my-zsh
     # pkgs.asdf-vm

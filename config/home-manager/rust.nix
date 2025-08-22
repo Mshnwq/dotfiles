@@ -16,8 +16,11 @@
     # })
     pkgs.eza
     pkgs.bat
+    pkgs.duf # GO lang ! 
+    pkgs.dfrs # has colors
+    pkgs.dysk # better info
     pkgs.tldr
-    # pkgs.serie
+    pkgs.serie
     # pkgs.termscp 
     pkgs.catppuccin-whiskers
   ];

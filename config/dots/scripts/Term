@@ -78,7 +78,7 @@ case $MY_TERM in
         ;;
       "--fetch")
         alacritty --class FloaTerm,FetchTerm --title=FetchTerm \
-		-e zsh -c 'fastfetch; read -k'
+        	-o font.size="10" -e zsh -c 'fastfetch; read -k'
         ;;
     esac
     ;;
@@ -89,7 +89,7 @@ case $MY_TERM in
         ;;
       "--init")
         tmux kill-server 2>/dev/null
-        KITTY_SOCKET="unix:$XDG_RUNTIME_DIR/init-term-kitty.sock"
+        KITTY_SOCKET="unix:/tmp/init-term-kitty.sock"
         # Launch Kitty + tmux InitTerminal in background
         kitty --class=InitTerm \
               --watcher tab_focus.py \
@@ -153,8 +153,17 @@ case $MY_TERM in
         kitty --name=SoundTerm --title=SoundTerm --class=FloaTerm -e pulsemixer
         ;;
       "--music")
-        kitty --name=MusicTerm --title=MusicTerm --class=FloaTerm --override font_size=10 \
-          --config ~/.config/kitty/kitty-hidden.conf -e ~/.config/dots/scripts/Music
+        alacritty --class FloaTerm,CavaTerm --title=CavaTerm \
+		-o window.opacity="0.01" -e cava &
+	PINNED_PID=$!
+	kitty --name MusicTerm --title MusicTerm --class FloaTerm \
+	      --override font_size=10 \
+	      --config ~/.config/kitty/kitty-hidden.conf \
+	      -e ~/.config/dots/scripts/Music &
+	MUSIC_PID=$!
+	hyprctl dispatch focuswindow title:MusicTerm
+	wait $MUSIC_PID
+	kill $PINNED_PID 2>/dev/null
         ;;
       "--fetch")
         kitty --name=FetchTerm --title=FetchTerm --class=FloaTerm \
