@@ -3,8 +3,9 @@
     pkgs.mpd
     pkgs.mpc
     pkgs.rmpc
-    pkgs.cava  # TODO: doesnt work on waybar
+    pkgs.cava  # TODO: doesnt work on waybar ?
     pkgs.beets
+    pkgs.pulsemixer
   ];
 
   # https://github.com/nix-community/home-manager/blob/master/modules/services/mpd.nix
