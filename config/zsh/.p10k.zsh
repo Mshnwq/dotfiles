@@ -76,6 +76,7 @@
     # =========================[ Line #1 ]=========================
     status                  # exit code of the last command
     command_execution_time  # previous command duration
+    nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
     virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
     go_version              # go environment (https://github.com/syndbg/goenv)
     node_version            # node.js version
@@ -836,7 +837,19 @@
   typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='󱌃'
   # Custom prefix.
   # typeset -g POWERLEVEL9K_CONTEXT_PREFIX='%fwith '
+  
+  #[ nix_shell: nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html) ]##
+  # Nix shell color.
+  typeset -g POWERLEVEL9K_NIX_SHELL_FOREGROUND=$blue
 
+  # Display the icon of nix_shell if PATH contains a subdirectory of /nix/store.
+  typeset -g POWERLEVEL9K_NIX_SHELL_INFER_FROM_PATH=false
+
+  # Tip: If you want to see just the icon without "pure" and "impure", uncomment the next line.
+  typeset -g POWERLEVEL9K_NIX_SHELL_CONTENT_EXPANSION=
+
+  # Custom icon.
+  typeset -g POWERLEVEL9K_NIX_SHELL_VISUAL_IDENTIFIER_EXPANSION='󱄅'
 
   # If p10k is already loaded, reload configuration.
   # This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.
