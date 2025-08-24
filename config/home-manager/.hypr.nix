@@ -8,10 +8,10 @@ in {
     plugins = [
       (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
     ];
-    extraConfig = ''
-      source = ${config.xdg.configHome}/hypr/workspaceLayouts.conf
-      source = ${config.xdg.configHome}/hypr/hyprextra.conf
-    '';
+    # extraConfig = ''
+    #   source = ${config.xdg.configHome}/hypr/workspaceLayouts.conf
+    #   source = ${config.xdg.configHome}/hypr/hyprextra.conf
+    # '';
   };
 
   home.packages = [

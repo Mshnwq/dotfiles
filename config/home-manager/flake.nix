@@ -28,8 +28,7 @@
     };
     nixgl.url = "github:nix-community/nixGL";
     # hyprland.url = "github:hyprwm/hyprland";  # Latest commit
-    # hyprland.url = "github:hyprwm/hyprland?ref=v0.50.0";  # pin version ! does not build plugin
-    hyprland.url = "github:hyprwm/hyprland?ref=v0.50.1";  # pin version ! does not build plugin
+    hyprland.url = "github:hyprwm/hyprland?ref=v0.50.0";  # pin version ! does not build plugin
     # hyprnix.url = "github:hyprland-community/hyprnix";
     # hyprnix.inputs.hyprland.follows = "hyprland";
     # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
@@ -49,7 +48,6 @@
         ./tmux.nix
         ./auto.nix
         ./pass.nix
-        # ./nvim.nix
         # ./infra.nix
         ./music.nix
         ./pywal.nix
