@@ -3,6 +3,9 @@
     pkgs.grim
     pkgs.swappy
     pkgs.gcc
+    pkgs.libinput-gestures  
+    # grep -E '^input:' /usr/lib/group | sudo tee -a /etc/group
+    # sudo usermod -aG input $USER && reboot
   ];
   home.activation.buildNiflVeil = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if [ ! -x "$HOME/.local/bin/niflveil" ]; then
