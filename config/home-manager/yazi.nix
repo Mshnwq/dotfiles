@@ -9,6 +9,7 @@
 in {
   home.packages = [
     pkgs.yazi
+    pkgs.trash-cli
   ];
   programs.yazi = {
     enable = true;

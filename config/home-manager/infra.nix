@@ -12,12 +12,14 @@ in {
     "veracrypt"
   ];
   home.packages = [
-    veracrypt
     pkgs.kubectl
     pkgs.kubernetes-helm
     pkgs.k9s
     pkgs.velero
     pkgs.minio-client
+    pkgs.ktailctl  # needs nixGL wrap
+    pkgs.nixgl.auto.nixGLDefault  # NOTE:run with --impure flag
+    veracrypt
     # terraform  # too SLOW!
   ];
   # https://github.com/hashicorp/terraform/issues/15389
