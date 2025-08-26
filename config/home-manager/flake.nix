@@ -8,10 +8,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixgl.url = "github:nix-community/nixGL";
     # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
   };
 
-  outputs = { nixpkgs, home-manager, ... }: {
+  outputs = { nixgl, nixpkgs, home-manager, ... }: {
     homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
         system = "x86_64-linux";
@@ -29,6 +30,7 @@
         ./music.nix
         ./pywal.nix
         ./shell.nix
+        ./wrap.nix
       ];
       # extraSpecialArgs = {
         # yazi = yazi.packages.${pkgs.system}.default;
