@@ -48,7 +48,8 @@ color_dunst() {
 
 color_firefox() {
   log "Starting color_firefox"
-  pywalfox update >>"$LOG_FILE"
+  # ~/.local/bin/pywalfox update >>"$LOG_FILE"
+  # sh -c "$HOME/.config/dots/scripts/executer/wal-firefox.sh" >>"$LOG_FILE"
   log "Finished color_firefox"
 }
 
@@ -85,6 +86,22 @@ color_yazi() {
   sh -c "$HOME/.config/dots/scripts/executer/wal-yazi.sh" >>"$LOG_FILE"
   log "Finished color_yazi"
 }
+color_telegram() {
+  log "Starting color_telegram"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-telegram.sh" >>"$LOG_FILE"
+  log "Finished color_telegram"
+}
+color_qbit() {
+  log "Starting color_qbit"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-qbit.sh" >>"$LOG_FILE"
+  log "Finished color_qbit"
+}
+
+color_sddm() {
+  log "Starting color_sddm"
+  sh -c "$HOME/.config/dots/scripts/executer/wal-sddm.sh" >>"$LOG_FILE"
+  log "Finished color_sddm"
+}
 
 # Main
 log "Running wal..."
@@ -106,6 +123,9 @@ color_btop
 color_yazi
 color_tmux
 color_nvchad
-color_firefox
+# color_firefox
+color_telegram
+color_qbit
+color_sddm
 
 log "All theming complete"

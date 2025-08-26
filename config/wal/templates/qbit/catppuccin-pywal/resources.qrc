@@ -1,0 +1,19 @@
+<!DOCTYPE RCC><RCC version="1.0">
+	<qresource>
+		<file>stylesheet.qss</file>
+		<file>config.json</file>
+
+    <file>../icons/pywal/checkbox_checked.svg</file>
+    <file>../icons/pywal/checkbox_unchecked.svg</file>
+    <file>../icons/pywal/checkbox_indeterminate.svg</file>
+    <file>../icons/pywal/check.svg</file>
+    <file>../icons/pywal/arrow_down.svg</file>
+    <file>../icons/pywal/arrow_down_disabled.svg</file>
+    <file>../icons/pywal/chevron_up.svg</file>
+    <file>../icons/pywal/chevron_up_disabled.svg</file>
+    <file>../icons/pywal/chevron_down.svg</file>
+    <file>../icons/pywal/chevron_down_disabled.svg</file>
+    <file>../icons/pywal/branch_open.svg</file>
+    <file>../icons/pywal/branch_closed.svg</file>
+  </qresource>
+</RCC>
