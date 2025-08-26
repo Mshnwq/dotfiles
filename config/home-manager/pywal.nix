@@ -1,7 +1,19 @@
 { config, pkgs, lib, ... }: {
   home.packages = [
     pkgs.pywal16
+    pkgs.libsForQt5.full  # only for rcc :(
+    pkgs.catppuccin-whiskers  # no need cursors has a *.nix
   ];
+
+  imports = [
+    ./kvantum.nix
+  ];
+  programs.kvantum = {
+    enable = true;
+    theme.package = pkgs.materia-kde-theme;
+    theme.name = "MateriaDark";
+  };
+
   home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "${config.xdg.configHome}/yazi"
     mkdir -p "${config.xdg.configHome}/kitty"
@@ -27,14 +39,46 @@
     ln -sf "${config.xdg.cacheHome}/wal/custom-btop.theme" "${config.xdg.configHome}/btop/themes/pywal.theme"
     ln -sf "${config.xdg.cacheHome}/wal/custom-k9s.yaml" "${config.xdg.configHome}/k9s/skins/pywal.yaml"
 
+    # mkdir -p "${config.xdg.configHome}/Kvantum
+    mkdir -p "${config.xdg.cacheHome}/wal/Plasma
+    mkdir -p "${config.xdg.cacheHome}/wal/Plasma/Pywal
+    ln -sf "${config.xdg.cacheHome}/wal/Plasma/Pywal" "${config.xdg.configHome}/Kvantum/Pywal"
+    mkdir -p "${config.xdg.dataHome}/colors-schemes"
+    ln -sf "${config.xdg.cacheHome}/wal/Plasma/color-scheme.colors" "${config.xdg.dataHome}/colors-schemes/Pywal.colors"
+
+    if [ ! -x "$HOME/.local/bin/wal-telegram" ]; then
+      curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/wal-telegram > "$HOME/.local/bin/wal-telegram"
+      chmod +x "$HOME/.local/bin/wal-telegram"
+      echo "Dont forget to set in telegram app to ~/.cache/wal-telegram/wal.tdesktop-theme"
+    fi
 
     if [ ! -d "$HOME/.build/cursors" ]; then
-        /usr/bin/git clone https://github.com/mshnwq/cursors $HOME/.build/cursors
+      /usr/bin/git clone https://github.com/mshnwq/cursors $HOME/.build/cursors
     fi
     mkdir -p "$HOME/.build/cursors/dist"
     mkdir -p "${config.xdg.dataHome}/icons"
     ln -sf "$HOME/.build/cursors/dist/catppuccin-mocha-pywal-cursors" \
         "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
     mkdir -p "${config.xdg.cacheHome}/wal/cursors"
+
+    if [ ! -d "$HOME/.build/qbittorrent" ]; then
+      /usr/bin/git clone https://github.com/mshnwq/qbittorrent $HOME/.build/qbittorrent
+      sed -i -e '$d' -e '$d' -e '$d' $HOME/.build/qbittorrent/tools/build
+      echo 'rcc src/catppuccin-pywal/resources.qrc -o dist/catppuccin-pywal.qbtheme -binary' >> $HOME/.build/qbittorrent/tools/build
+    fi
+    mkdir -p "${config.xdg.cacheHome}/wal/qbit"
+    mkdir -p "${config.xdg.cacheHome}/wal/qbit/icons"
+    mkdir -p "${config.xdg.cacheHome}/wal/qbit/icons/pwal"
+    mkdir -p "${config.xdg.cacheHome}/wal/qbit/catppuccin-pywal"
+    ln -sf "${config.xdg.cacheHome}/wal/qbit/catppuccin-pywal" \
+      "$HOME/.build/qbittorrent/src/catppuccin-pywal"
+    ln -sf "${config.xdg.cacheHome}/wal/qbit/icons/pywal" \
+      "$HOME/.build/qbittorrent/src/icons/pywal"
+    # TODO: $HOME/.config/qBittorrent/qBittorrent.conf point to theme
   '';
+  # TODO:
+  # Veracrypt (nix)
+  # Obsidian  (flatpak)  # https://github.com/Schweem/Pywal-Obsidian
+  # Firefox   (flatpak) 
+  # Discord   (flatpak)  # https://github.com/franekxtb/pywal-discord
 }
