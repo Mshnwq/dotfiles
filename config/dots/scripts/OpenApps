@@ -98,22 +98,8 @@ case "$1" in
   --firefox)
     firefox -P mshnwq
     ;;
-  --keepass)
-    sh -c 'export QT_QPA_PLATFORMTHEME="qt5ct"; keepassxc;'
-    ;;
   --files)
-    # XDG_CONFIG_HOME="$HOME/.gtk-config" thunar
-    thunar
-    ;;
-  --veracrypt)
-    # XDG_CONFIG_HOME="$HOME/.gtk-config" veracrypt
-    veracrypt 
-    ;;
-  --torrent)
-    sh -c 'export QT_QPA_PLATFORMTHEME="qt6ct"; qbittorrent;'
-    ;;
-  --telegram)
-    Telegram
+    dolphin
     ;;
   --whatsapp)
     firefox -P mshnwq -new-tab https://web.whatsapp.com/
@@ -123,9 +109,6 @@ case "$1" in
     ;;
   --soundcontrol)
     pavucontrol
-    ;;
-  --soundgraph)
-    sh -c 'export QT_QPA_PLATFORMTHEME="qt6ct"; qpwgraph;'
     ;;
   --soundmixer)
     Term --override-term alacritty --soundmixer
