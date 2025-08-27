@@ -21,6 +21,7 @@
       # Force gcc from Nix
       export RUSTFLAGS="-C linker=${pkgs.gcc}/bin/cc"
       ${pkgs.cargo}/bin/cargo build --release -j 2
+      mkdir -p "$HOME/.local/bin"
       cp target/release/niflveil "$HOME/.local/bin/"
     fi
   '';

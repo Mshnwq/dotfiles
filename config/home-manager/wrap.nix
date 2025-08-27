@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }: {
-  home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.wrapDesktop = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "${config.xdg.dataHome}/applications"
     mkdir -p "${config.xdg.dataHome}/flatpak"
     mkdir -p "${config.xdg.dataHome}/flatpak/overrides"
@@ -15,10 +15,7 @@
     # --- Obsidian Flatpak Override ---
     obsidian_override_file="${config.xdg.dataHome}/flatpak/overrides/md.obsidian.Obsidian"
     if [ ! -f "$obsidian_override_file" ]; then
-      tee "$override_file" <<'EOL'
-      [Context]
-      sockets=wayland
-      EOL
+      echo -e "[Context]\nsockets=wayland" > "$obsidian_override_file"
     fi
 
     # ---- Fix nixGL wrappers ----

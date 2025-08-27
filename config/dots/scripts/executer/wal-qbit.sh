@@ -34,9 +34,7 @@ fi
 
 # ReLaunch qBitTorrent
 pkill -f "qbittorrent"
-# OpenApps --torrent & disown
-# TODO: CHANGE TO FLATPAK
-OpenApps --torrent & disown
+gtk-launch org.qbittorrent.qBittorrent & disown
 
 # Wait for it to appear
 for i in {1..10}; do

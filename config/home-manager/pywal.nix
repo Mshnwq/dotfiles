@@ -39,17 +39,20 @@
     ln -sf "${config.xdg.cacheHome}/wal/custom-btop.theme" "${config.xdg.configHome}/btop/themes/pywal.theme"
     ln -sf "${config.xdg.cacheHome}/wal/custom-k9s.yaml" "${config.xdg.configHome}/k9s/skins/pywal.yaml"
 
-    # mkdir -p "${config.xdg.configHome}/Kvantum
     mkdir -p "${config.xdg.cacheHome}/wal/Plasma
     mkdir -p "${config.xdg.cacheHome}/wal/Plasma/Pywal
     ln -sf "${config.xdg.cacheHome}/wal/Plasma/Pywal" "${config.xdg.configHome}/Kvantum/Pywal"
     mkdir -p "${config.xdg.dataHome}/colors-schemes"
-    ln -sf "${config.xdg.cacheHome}/wal/Plasma/color-scheme.colors" "${config.xdg.dataHome}/colors-schemes/Pywal.colors"
+    ln -sf "${config.xdg.cacheHome}/wal/Plasma/color-scheme.colors" "${config.xdg.dataHome}/color-schemes/Pywal.colors"
+    # Go to System Settings -> Colors & Themes
+    # Set Colors to Pywal
+    # Set Application Style to Kvantum if not already
 
     if [ ! -x "$HOME/.local/bin/wal-telegram" ]; then
-      curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/wal-telegram > "$HOME/.local/bin/wal-telegram"
+      /usr/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/colors.wt-constants > "$HOME/.local/bin/colors.wt-constants"
+      /usr/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/wal-telegram > "$HOME/.local/bin/wal-telegram"
       chmod +x "$HOME/.local/bin/wal-telegram"
-      echo "Dont forget to set in telegram app to ~/.cache/wal-telegram/wal.tdesktop-theme"
+      # Dont forget to set in telegram app to ~/.cache/wal/wal.tdesktop-theme
     fi
 
     if [ ! -d "$HOME/.build/cursors" ]; then
@@ -62,8 +65,8 @@
     mkdir -p "${config.xdg.cacheHome}/wal/cursors"
 
     if [ ! -d "$HOME/.build/qbittorrent" ]; then
-      /usr/bin/git clone https://github.com/mshnwq/qbittorrent $HOME/.build/qbittorrent
-      sed -i -e '$d' -e '$d' -e '$d' $HOME/.build/qbittorrent/tools/build
+      /usr/bin/git clone https://github.com/catppuccin/qbittorrent $HOME/.build/qbittorrent
+      sed -i -e :a -e '$d;N;2,3ba' -e 'P;D' $HOME/.build/qbittorrent/tools/build
       echo 'rcc src/catppuccin-pywal/resources.qrc -o dist/catppuccin-pywal.qbtheme -binary' >> $HOME/.build/qbittorrent/tools/build
     fi
     mkdir -p "${config.xdg.cacheHome}/wal/qbit"
@@ -76,6 +79,7 @@
       "$HOME/.build/qbittorrent/src/icons/pywal"
     # TODO: $HOME/.config/qBittorrent/qBittorrent.conf point to theme
   '';
+
   # TODO:
   # Veracrypt (nix)
   # Obsidian  (flatpak)  # https://github.com/Schweem/Pywal-Obsidian

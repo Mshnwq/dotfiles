@@ -87,7 +87,7 @@
         src = pkgs.fetchFromGitHub {
           owner = "unixorn";
           repo = "fzf-zsh-plugin";
-          rev = "main";
+          rev = "04ae801499a7844c87ff1d7b97cdf57530856c65";
           hash = "sha256-FEGhx36Z5pqHEOgPsidiHDN5SXviqMsf6t6hUZo+I8A=";
         };
       }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# ~/.local/bin/wal-telegram --wal -g
-~/.local/bin/wal-telegram --wal
+# https://legacy.imagemagick.org/Usage/blur/#blur_args.
+~/.local/bin/wal-telegram --wal -d $HOME/.cache/wal -g 1x1
 
 STATE_FILE="/tmp/telegram_state.json"
 WINDOW_CLASS="org.telegram.desktop"

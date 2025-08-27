@@ -26,11 +26,15 @@ else
   echo "No cache found. Building new cursor."
   cd "$cursor_dir"
   cp "$cursor_dir/src/default.svg" "$cursor_dir/src/svgs/default.svg"
-  nix-shell --run "just build mocha pywal"
 
-  # Save build to cache
-  mkdir -p "$cache_path"
-  cp -r "$cursor_dir/dist/catppuccin-mocha-pywal-cursors" "$cache_path"
+  if nix-shell --run "just build mocha pywal"; then
+    echo "Build successful. Saving to cache."
+    mkdir -p "$cache_path"
+    cp -r "$cursor_dir/dist/catppuccin-mocha-pywal-cursors" "$cache_path"
+  else
+    echo "Build failed. Cache not created."
+    exit 1
+  fi
 fi
 
 # Set the cursor theme
