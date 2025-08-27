@@ -1,8 +1,12 @@
 { config, pkgs, lib, ... }: {
   home.packages = [
     pkgs.pywal16
-    pkgs.libsForQt5.full  # only for rcc :(
+    pkgs.libsForQt5.full  # bloat only for rcc :(
     pkgs.catppuccin-whiskers  # no need cursors has a *.nix
+    # Plasma Style: Utterly-Round (follows color scheme)
+    pkgs.utterly-round-plasma-style # manually set
+    # Window Decorations: Utterly-Round-Dark (also follows color scheme)
+    # manually install and set
   ];
 
   imports = [

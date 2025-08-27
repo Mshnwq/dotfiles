@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+QT_STYLE_OVERRIDE=""
 # https://legacy.imagemagick.org/Usage/blur/#blur_args.
 ~/.local/bin/wal-telegram --wal -d $HOME/.cache/wal -g 1x1
 
