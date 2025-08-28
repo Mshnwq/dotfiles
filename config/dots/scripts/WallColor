@@ -109,6 +109,12 @@ color_plasma() {
   log "Finished color_plasma"
 }
 
+color_icons() {
+  log "Starting color_icons"
+  sh -c "$HOME/.config/dots/scripts/executer/.wal_icons.sh" >>"$LOG_FILE"
+  log "Finished color_icons"
+}
+
 # Main
 log "Running wal..."
 wal --out-dir "$HOME/.cache/wal" -s -t -i "$1" >>"$LOG_FILE" 2>&1
@@ -134,5 +140,6 @@ color_nvchad
 color_telegram
 color_qbit
 color_sddm
+color_icons
 
 log "All theming complete"
