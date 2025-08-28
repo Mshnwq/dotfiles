@@ -103,6 +103,12 @@ color_sddm() {
   log "Finished color_sddm"
 }
 
+color_plasma() {
+  log "Starting color_plasma"
+  plasma-apply-colorscheme BreezeDark && plasma-apply-colorscheme Pywal >>"$LOG_FILE" 2>&1
+  log "Finished color_plasma"
+}
+
 # Main
 log "Running wal..."
 wal --out-dir "$HOME/.cache/wal" -s -t -i "$1" >>"$LOG_FILE" 2>&1
@@ -114,6 +120,7 @@ color_hyprland
 
 #MANUAL
 color_cursor #BACKGROUND
+color_plasma 
 color_waybar
 color_dunst
 color_kitty #BUG TAB BAR

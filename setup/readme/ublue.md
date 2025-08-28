@@ -61,3 +61,19 @@ Nix:
     - reboot
     - install nix determinate
     - initialize home-manager (with hyprland or not)
+
+
+
+
+
+
+<!-- https://docs.bazzite.gg/Installing_and_Managing_Software/ -->
+Package formats ranked from most recommended to least recommended for daily usage:¶
+
+    ujust (Convenience Commands) - Custom scripts maintained by Bazzite & Universal Blue contributors that can also install a small subset of applications.
+    Flatpak (Graphical Applications) - Universal package format using a permissions-based model and should be used for most graphical applications.
+    Homebrew (Command-Line Tools) - Install applications intended to run inside of the terminal (CLI/TUI).
+    Quadlet (Services) - Run containerized applications as a systemd service.
+    Distrobox Containers (Linux Packages & Development Workflows) - Access to most Linux package managers for software that do not support Flatpak and Homebrew and for use as development boxes.
+    AppImage (Portable Graphical Applications) - Portable universal package format that relies on specific host libraries at a system-level, usually obtained from a project's website.
+    rpm-ostree (System-Level Packages) - Layer Fedora packages at a system-level (not recommended, use as a last resort)
