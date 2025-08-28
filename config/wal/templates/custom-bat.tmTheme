@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>name</key>
+    <string>pywal</string>
+    <key>semanticClass</key>
+    <string>theme.dark.pywal</string>
+    <key>settings</key>
+    <array>
+      <dict>
+        <key>settings</key>
+        <dict>
+          <key>background</key>
+          <string>{background}</string>
+          <key>foreground</key>
+          <string>{foreground}</string>
+          <key>accent</key>
+          <string>{color2}</string>
+          <key>selection</key>
+          <string>{color3}</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>Parentheses, Brackets, Braces</string>
+        <key>scope</key>
+        <string>punctuation</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>{color2}</string>
+          <key>fontStyle</key>
+          <string/>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>Comments</string>
+        <key>scope</key>
+        <string>comment, punctuation.definition.comment</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>{color1}</string>
+          <key>fontStyle</key>
+          <string>italic</string>
+        </dict>
+      </dict>
+    </array>
+  </dict>
+</plist>

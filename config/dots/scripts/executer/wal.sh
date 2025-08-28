@@ -1,0 +1,12 @@
+#WRAP_Color
+#btop
+#cursor
+#nvchad
+#p10k
+#qbit
+#rmpc
+#sddm
+#telegram
+#tmux
+#wojak
+#yazi

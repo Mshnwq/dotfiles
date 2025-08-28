@@ -1,9 +1,10 @@
 #!/bin/env bash
 
+base_dir="$HOME/.config/dots/scripts/executer"
 
-# Find all executable files and extract their filenames exclude .py duplicates
-scripts=$(find "$HOME/.config/dots/scripts/executer" -type f -executable \
-! -path "*/.venv/*" ! -path "*/.old/*" -printf "%f\n" | \
+# Find all executable files and extract their filenames, excluding hidden .sh files and .py duplicates
+scripts=$(find "$base_dir" -type f -executable \
+! -path "*/.venv/*" ! -path "*/.old/*" -not -name ".*.sh" -not -name "*.py" -printf "%f\n" | \
 awk -F. '{
   if ($2 == "sh") sh_files[$1] = 1;
   else if ($2 == "py") py_files[$1] = 1;
@@ -25,6 +26,68 @@ selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.ras
 
 # Path to the selected script
 script="$HOME/.config/dots/scripts/executer/$selected"
+
+# Check for #WRAP marker
+if grep -q "#WRAP" "$script"; then
+    # Always keep the standard actions
+    standard_actions="status|start|stop|kill|on|off"
+    base_name="${selected%.*}"   # strip .sh or .py
+    prompt_name=$(awk -F'_' '/#WRAP_/ {print $2}' "$script")
+
+    # Collect extra actions listed in the script (lines after #WRAP_…, skip empty/comment lines)
+    mapfile -t extra_options < <(awk '
+        /^#WRAP_/ {flag=1; next}      # start after WRAP line
+        flag && /^#/ {sub(/^#/,""); print}   # strip leading #, print
+        flag && /^[[:space:]]*$/ {exit}     # stop at empty line
+    ' "$script")
+
+
+    # Append optional extras if any
+    if [ ${#extra_options[@]} -gt 0 ]; then
+        extra_regex=$(IFS='|'; echo "${extra_options[*]}")
+        combined="$standard_actions|$extra_regex"
+    else
+        combined="$standard_actions"
+    fi
+
+    # Escape pipes for find -regex
+    regex_suffix="${combined//|/\\|}"
+
+
+    echo $regex_suffix
+
+    # Find matching executable files
+    wrap_files=$(find "$base_dir" -type f -executable \
+        -regex ".*/\.${base_name}_\(${regex_suffix}\)\.sh" -printf "%f\n")
+
+    echo $wrap_files
+
+    # Map to display only the action part for fzf
+    actions=$(echo "$wrap_files" | sed -E "s/^\\.${base_name}_([^.]+)\\.sh$/\1/")
+
+    tmpfile=$(mktemp)
+
+    # Launch floating terminal running fzf with preview
+    # TODO: find way to theme the bat
+    ACTIONS="$actions" PROMPT="$prompt_name" BASE_DIR="$base_dir" BASE_NAME="$base_name" TMPFILE="$tmpfile" \
+    alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
+      -e zsh -c '
+        source "$HOME/.cache/wal/custom-fzf.sh"
+        printf "%s\n" "$ACTIONS" | fzf --ansi \
+          --prompt="${PROMPT}: " \
+          --preview="bat ${BASE_DIR}/.${BASE_NAME}_{}.sh" \
+          --preview-window=right:85%:wrap \
+          > "$TMPFILE"
+      '
+
+    # Read result from temp file
+    chosen_action=$(<"$tmpfile")
+    rm -f "$tmpfile"
+    [ -z "$chosen_action" ] && exit 0
+    chosen_file=".${base_name}_${chosen_action}.sh"
+    "$base_dir/$chosen_file"
+    exit 0
+fi
 
 # Check if the script requires input
 if grep -q "#INPUT_REQUIRED" "$script"; then

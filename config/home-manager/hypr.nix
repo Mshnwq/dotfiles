@@ -6,6 +6,7 @@
     pkgs.libinput-gestures  
     # grep -E '^input:' /usr/lib/group | sudo tee -a /etc/group
     # sudo usermod -aG input $USER && reboot
+    # or ujust add-user-to-input-group
   ];
   home.activation.buildNiflVeil = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if [ ! -x "$HOME/.local/bin/niflveil" ]; then

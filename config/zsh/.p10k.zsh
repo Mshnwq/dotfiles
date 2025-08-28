@@ -520,7 +520,8 @@
 
   #################################[ os_icon: os identifier ]###################################
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=$color_path
-  typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
+  typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='󱄅'
+  #typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
   #typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='󰪄'
   #typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
   #typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='ᛞ'

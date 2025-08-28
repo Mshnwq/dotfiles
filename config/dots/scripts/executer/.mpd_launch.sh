@@ -3,12 +3,12 @@
 export PATH="$HOME/.config/dots/scripts/executer:$PATH"
 
 get_state() {
-  mpd_status.sh --quiet
+  .mpd_status.sh --quiet
 }
 
 disable_mpc() {
   TYPE=$(cat "$HOME/.config/dots/.mpd_status")
-  "mpd_${TYPE}_stop.sh"
+  ".mpd_${TYPE}_stop.sh"
   pkill -f mpc
 }
 
@@ -27,22 +27,22 @@ enable_mpc() {
   case "$CHOICE" in
     "Local")
       notify-send "MPC" "Starting Local"
-      mpd_local_start.sh
-      waybar_mpd.sh "$(<"$MPD_HOST")"
+      .mpd_local_start.sh
+      .waybar_mpd.sh "$(<"$MPD_HOST")"
       sleep 1
-      mpc_notify.sh
+      .mpc_notify.sh
       ;;
     "Remote")
       notify-send "MPC" "Starting Remote"
-      mpd_remote_start.sh
-      waybar_mpd.sh "$(<"$MPD_HOST")"
+      .mpd_remote_start.sh
+      .waybar_mpd.sh "$(<"$MPD_HOST")"
       sleep 2
-      mpc_notify.sh
+      .mpc_notify.sh
       ;;
     "Remote VPN")
       notify-send "MPC" "Starting Remote VPN"
       # TODO: optimize
-      # mpd_remote_vpn_start.sh
+      # .mpd_remote_vpn_start.sh
       ;;
     *)
       exit 1

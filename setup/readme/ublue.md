@@ -32,6 +32,14 @@ ujust install-dotfiles
 ujust install-home-manager
 ujust install-rice
 
+# 4: look into /usr/share/ublue-os/just
+# TODO: ujust 82-waydroid BROKEN!!
+# https://docs.bazzite.gg/Installing_and_Managing_Software/Waydroid_Setup_Guide/
+
+# ujust 84-virt
+add to libvirtgroup
+add to input group
+
 Base: 
     bazzite:
         - DE: KDE "main", Gnome

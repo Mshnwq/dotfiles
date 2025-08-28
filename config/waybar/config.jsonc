@@ -173,7 +173,7 @@
     "max-length": 6
   },
   "custom/distro": {
-    "format": " ",
+    "format": " ",
     "tooltip": false,
     "on-click": "~/.config/dots/scripts/OpenApps --menu"
     //"on-click-right": "~/.config/dots/scripts/OpenApps --rice"
@@ -264,8 +264,8 @@
       "tooltip-format": "{title}\n{album}\n{artist}\n{repeatIcon} {randomIcon} {singleIcon} {consumeIcon} ",
       "tooltip-format-disconnected": "MPD (disconnected)",
       "on-click": "~/.config/dots/scripts/OpenApps --music",
-      "on-click-right": "~/.config/dots/scripts/executer/mpd_launch.sh",
-      "on-click-middle": "~/.config/dots/scripts/executer/waybar_cava.sh"
+      "on-click-right": "~/.config/dots/scripts/executer/.mpd_launch.sh",
+      "on-click-middle": "~/.config/dots/scripts/executer/.waybar_cava.sh"
   },
   "disk": {
     "interval": 30,
@@ -436,7 +436,7 @@
     "noise_reduction": 0.77,
     "input_delay": 2,
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-    "on-click-right": "~/.config/dots/scripts/executer/waybar_cava.sh",
+    "on-click-right": "~/.config/dots/scripts/executer/.waybar_cava.sh",
     "actions": {
     	"on-click": "mode"
     }
