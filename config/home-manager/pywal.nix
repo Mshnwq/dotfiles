@@ -9,14 +9,15 @@
     pkgs.libsForQt5.full  # bloat only for rcc :(
     pkgs.catppuccin-whiskers  # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum
+    # TODO: automate this 
     # Plasma Style: Utterly-Round (follows color scheme)
     # utterly-round-plasma-style # manually set
     # Window Decorations: Utterly-Round-Dark (also follows color scheme)
     # manually install and set
     # papirus-icon-theme
-    pkgs.papirus-folders  # cli tool
     # in kde settings 
     # Set Application Style to Kvantum if not already
+    pkgs.papirus-folders  # cli tool
   ];
 
   home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -90,7 +91,7 @@
   '';
 
   # TODO:
-  # Gnome Apps 
+  # Gnome Apps # https://github.com/catppuccin/gtk
   # Veracrypt    (nix)
   # Virt-Manager (ostree)
   # DistroShelf  (flatpak)
@@ -101,3 +102,4 @@
   # Firefox   (flatpak) 
   # Discord   (flatpak)  # https://github.com/franekxtb/pywal-discord
 }
+# https://nix.catppuccin.com/getting-started/flakes/

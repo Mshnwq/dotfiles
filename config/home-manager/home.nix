@@ -6,7 +6,6 @@
   targets.genericLinux.enable = true;  # ENABLE THIS ON NON NIXOS
 
   home.packages = [
-    # pkgs.xfce.thunar
     pkgs.cowsay
     # pkgs.btop
     pkgs.neovim
@@ -15,8 +14,6 @@
     pkgs.zoxide
     pkgs.mtpfs
     pkgs.simple-mtpfs
-    pkgs.auto-cpufreq
-    pkgs.thermald
     # pkgs.fastfetch
     pkgs.lm_sensors
     pkgs.expect
