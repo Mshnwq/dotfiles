@@ -26,7 +26,7 @@ sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-
 ujust toggle-user-motd
 
 # 3: ujust commands
-# ujust install-cpu-governer
+# ujust install-cpu-governer # migrated to nix
 ujust install-custom-flatpaks
 ujust install-nix
 
