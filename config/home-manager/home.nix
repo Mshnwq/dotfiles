@@ -13,6 +13,10 @@
     pkgs.podman-compose
     pkgs.dialog
     pkgs.zoxide
+    pkgs.mtpfs
+    pkgs.simple-mtpfs
+    pkgs.auto-cpufreq
+    pkgs.thermald
     # pkgs.fastfetch
     pkgs.lm_sensors
     pkgs.expect
