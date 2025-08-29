@@ -31,7 +31,7 @@ color_cursor() {
 color_waybar() {
   log "Starting color_waybar"
   sed -i "/\/\/-clock-date/s|\"<span color='#.*'><b>{}</b></span>\"|\"<span color='${cursor}'><b>{}</b></span>\"|" $HOME/.config/waybar/config.jsonc
-  sh -c "$HOME/.config/dots/scripts/executer/waybar_start.sh" >>"$LOG_FILE"
+  sh -c "$HOME/.config/dots/scripts/executer/.waybar_start.sh" >>"$LOG_FILE"
   log "Finished color_waybar"
 }
 
@@ -42,7 +42,7 @@ color_dunst() {
   magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰖀"' "$HOME/.config/dots/config/assets/volume_medium.png"
   magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰕿"' "$HOME/.config/dots/config/assets/volume_low.png"
   magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰝟"' "$HOME/.config/dots/config/assets/volume_mute.png"
-  sh -c "$HOME/.config/dots/scripts/executer/dunst_start.sh" >>"$LOG_FILE"
+  sh -c "$HOME/.config/dots/scripts/executer/.dunst_start.sh" >>"$LOG_FILE"
   log "Finished color_dunst"
 }
 
@@ -105,7 +105,8 @@ color_sddm() {
 
 color_plasma() {
   log "Starting color_plasma"
-  plasma-apply-colorscheme BreezeDark && plasma-apply-colorscheme Pywal >>"$LOG_FILE" 2>&1
+  plasma-apply-colorscheme BreezeDark >>"$LOG_FILE" 2>&1
+  plasma-apply-colorscheme Pywal >>"$LOG_FILE" 2>&1
   log "Finished color_plasma"
 }
 

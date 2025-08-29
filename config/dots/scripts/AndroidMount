@@ -13,7 +13,7 @@
 #  ██║ ╚═╝ ██║╚██████╔╝╚██████╔╝██║ ╚████║   ██║
 #  ╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝
 
-BASE_MOUNT_POINT="$HOME/Android_Mount"
+BASE_MOUNT_POINT="$HOME/Documents/Android_Mount"
 ROFI_THEME="$HOME/.config/rofi/Android.rasi"
 
 list_devices() {

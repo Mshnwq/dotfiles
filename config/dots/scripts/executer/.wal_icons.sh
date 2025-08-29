@@ -7,10 +7,8 @@ find "$pywal_dir" -type f -path "*/places/*.svg" | while read -r src; do
     rel_path="${src#$pywal_dir/}"    # remove base path
     dest="$papirus_dir/$rel_path"
     mkdir -p "$(dirname "$dest")"   # ensure destination dir exists
-    if [ ! -e "$dest" ]; then
-      ln -sf "$src" "$dest"
-      echo "$src -> $dest"
-    fi
+    cp -f "$src" "$dest"
+    echo "$src -> $dest"
 done
 
 papirus-folders -C cat-mocha-pywal --theme Papirus-Dark

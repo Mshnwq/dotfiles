@@ -10,20 +10,23 @@ If you want to rebase from a Bazzite-KDE Installation to Aurora, you can just sk
 # 1: install Fedora Atomic Kinoite iso (KDE spin)
 
 # 2: Rebase to Bazzite custom image
-sudo bootc ghcr.io/mshnwq/bazzite-hyprland-nix:latest
+
+# FOR AMD do this
+sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix:latest
 reboot
-sudo bootc --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix:latest
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix:latest
 
 # FOR NVIDIA do this
-
-sudo bootc ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
+sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
 reboot
-sudo bootc --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
 
-NOTE: Do not rebase from a Gnome-based image to Aurora or back!
+# NOTE: Do not rebase from a Gnome-based image to Aurora or back!
+
+ujust toggle-user-motd
 
 # 3: ujust commands
-ujust install-cpu-governer
+# ujust install-cpu-governer
 ujust install-custom-flatpaks
 ujust install-nix
 
@@ -31,6 +34,8 @@ ujust install-nix
 ujust install-dotfiles
 ujust install-home-manager
 ujust install-rice
+
+ujust add-user-to-input-group
 
 # 4: look into /usr/share/ublue-os/just
 # https://www.youtube.com/watch?v=dKynTzn1_BY
@@ -67,7 +72,6 @@ ujust setup-waydroid
     - ColorNote (get backup) 
 
 # ujust 84-virt
-ujust add-user-to-input-group
 ujust setup-virtualization
     - add to input group
 

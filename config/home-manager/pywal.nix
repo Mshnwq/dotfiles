@@ -1,25 +1,23 @@
 { config, pkgs, lib, ... }: {
+  
+  nixpkgs.config.permittedInsecurePackages = [
+    "qtwebengine-5.15.19" # for the rcc :(
+  ];
+
   home.packages = [
     pkgs.pywal16
     pkgs.libsForQt5.full  # bloat only for rcc :(
     pkgs.catppuccin-whiskers  # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum
     # Plasma Style: Utterly-Round (follows color scheme)
-    pkgs.utterly-round-plasma-style # manually set
+    # utterly-round-plasma-style # manually set
     # Window Decorations: Utterly-Round-Dark (also follows color scheme)
     # manually install and set
-    pkgs.papirus-icon-theme
+    # papirus-icon-theme
     pkgs.papirus-folders  # cli tool
+    # in kde settings 
+    # Set Application Style to Kvantum if not already
   ];
-
-  # imports = [
-  #   ./kvantum.nix
-  # ];
-  # programs.kvantum = {
-  #   enable = true;
-  #   theme.package = pkgs.materia-kde-theme;
-  #   theme.name = "MateriaDark";
-  # };
 
   home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "${config.xdg.configHome}/yazi"
@@ -46,20 +44,18 @@
     ln -sf "${config.xdg.cacheHome}/wal/custom-btop.theme" "${config.xdg.configHome}/btop/themes/pywal.theme"
     ln -sf "${config.xdg.cacheHome}/wal/custom-k9s.yaml" "${config.xdg.configHome}/k9s/skins/pywal.yaml"
 
-    mkdir -p "${config.xdg.configHome}/Kvantum
-    mkdir -p "${config.xdg.cacheHome}/wal/Plasma
-    mkdir -p "${config.xdg.cacheHome}/wal/Plasma/Pywal
+    mkdir -p "${config.xdg.configHome}/Kvantum"
+    mkdir -p "${config.xdg.cacheHome}/wal/Plasma"
+    mkdir -p "${config.xdg.cacheHome}/wal/Plasma/Pywal"
     ln -sf "${config.xdg.cacheHome}/wal/Plasma/Pywal" "${config.xdg.configHome}/Kvantum/Pywal"
-    mkdir -p "${config.xdg.cacheHome}/wal/Plasma/PywalNT
+    mkdir -p "${config.xdg.cacheHome}/wal/Plasma/PywalNT"
     ln -sf "${config.xdg.cacheHome}/wal/Plasma/PywalNT" "${config.xdg.configHome}/Kvantum/PywalNT"
-    mkdir -p "${config.xdg.dataHome}/colors-schemes"
+    mkdir -p "${config.xdg.dataHome}/color-schemes"
     ln -sf "${config.xdg.cacheHome}/wal/Plasma/color-scheme.colors" "${config.xdg.dataHome}/color-schemes/Pywal.colors"
     kvantum_file="${config.xdg.configHome}/Kvantum/kvantum.kvconfig"
     if [ ! -f "$kvantum_file" ]; then
       echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings, partitionmanager" > "$kvantum_file"
     fi
-    # in kde settings 
-    # Set Application Style to Kvantum if not already
 
     if [ ! -x "$HOME/.local/bin/wal-telegram" ]; then
       /usr/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/colors.wt-constants > "$HOME/.local/bin/colors.wt-constants"
