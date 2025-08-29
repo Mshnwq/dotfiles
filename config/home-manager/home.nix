@@ -10,6 +10,8 @@
     pkgs.cowsay
     # pkgs.btop
     pkgs.neovim
+    pkgs.podman-compose
+    pkgs.dialog
     pkgs.zoxide
     # pkgs.fastfetch
     pkgs.lm_sensors

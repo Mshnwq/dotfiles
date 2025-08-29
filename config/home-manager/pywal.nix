@@ -56,7 +56,7 @@
     ln -sf "${config.xdg.cacheHome}/wal/Plasma/color-scheme.colors" "${config.xdg.dataHome}/color-schemes/Pywal.colors"
     kvantum_file="${config.xdg.configHome}/Kvantum/kvantum.kvconfig"
     if [ ! -f "$kvantum_file" ]; then
-      echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings" > "$kvantum_file"
+      echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings, partitionmanager" > "$kvantum_file"
     fi
     # in kde settings 
     # Set Application Style to Kvantum if not already
@@ -94,7 +94,13 @@
   '';
 
   # TODO:
-  # Veracrypt (nix)
+  # Gnome Apps 
+  # Veracrypt    (nix)
+  # Virt-Manager (ostree)
+  # DistroShelf  (flatpak)
+  # FlatSeal     (flatpak)
+  # Warehouse    (flatpak)
+  # Other:
   # Obsidian  (flatpak)  # https://github.com/Schweem/Pywal-Obsidian
   # Firefox   (flatpak) 
   # Discord   (flatpak)  # https://github.com/franekxtb/pywal-discord
