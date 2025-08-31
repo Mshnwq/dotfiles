@@ -99,7 +99,6 @@
   # Warehouse    (flatpak)
   # Other:
   # Obsidian  (flatpak)  # https://github.com/Schweem/Pywal-Obsidian
-  # Firefox   (flatpak) 
   # Discord   (flatpak)  # https://github.com/franekxtb/pywal-discord
 }
 # https://nix.catppuccin.com/getting-started/flakes/
