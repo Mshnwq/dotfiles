@@ -10,6 +10,7 @@ disable_mpc() {
   TYPE=$(cat "$HOME/.config/dots/.mpd_status")
   ".mpd_${TYPE}_stop.sh"
   pkill -f mpc
+  ".waybar_mpd.sh"
 }
 
 enable_mpc() {
