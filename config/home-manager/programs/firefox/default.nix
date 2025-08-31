@@ -1,8 +1,7 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 let
   profile = "mshnwq.default";
   profileName = "mshnwq";
-  chromeRepo = "https://github.com/mshnwq/shyfox.git";
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
@@ -16,16 +15,6 @@ in {
     (import ./blocking.nix profile)
   ];
 
-  # Clone chrome repo directly into profile
-  home.activation.cloneUserChrome = lib.hm.dag.entryAfter ["firefox"] ''
-    PROFILE_DIR="$HOME/.mozilla/firefox/${profile}"
-    CHROME_DIR="$PROFILE_DIR/chrome"
-    if [ ! -d "$CHROME_DIR" ]; then
-      mkdir -p "$PROFILE_DIR"
-      git clone ${chromeRepo} "$CHROME_DIR"
-    fi
-  '';
-
   home.packages = [ pkgs.firefoxpwa ];
   programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
@@ -34,7 +23,26 @@ in {
     isDefault = true;
     name = profileName;
 
-    # userChrome = pkgs.shyfox;
+    # real bullshit
+    userChrome = ''
+      @import url("ShyFox/shy-variables.css");
+      @import url("ShyFox/shy-global.css");
+      @import url("ShyFox/shy-sidebar.css");
+      @import url("ShyFox/shy-toolbar.css");
+      @import url("ShyFox/shy-navbar.css");
+      @import url("ShyFox/shy-findbar.css");
+      @import url("ShyFox/shy-controls.css");
+      @import url("ShyFox/shy-compact.css");
+      @import url("ShyFox/shy-icons.css");
+      @import url("ShyFox/shy-floating-search.css");
+    '';
+    userContent = ''
+      @import url("ShyFox/content/shy-new-tab.css");
+      @import url("ShyFox/content/shy-sidebery.css");
+      @import url("ShyFox/content/shy-about.css");
+      @import url("ShyFox/content/shy-global-content.css");
+      @import url("ShyFox/shy-variables.css");
+    '';
 
     settings = {
       # Do not require manual intervention to enable extensions.

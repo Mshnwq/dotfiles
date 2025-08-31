@@ -4,6 +4,7 @@ echo "$RICE" > ~/.config/dots/.rice
 WALL="$HOME/.config/dots/rices/$RICE/walls/glacier.png" 
 echo "$WALL" > ~/.config/dots/rices/.wall
 
+pywalfox install
 ~/.config/dots/scripts/WallColor "$WALL"
 
 # tee -a ~/.var/app/org.qbittorrent.qBittorrent/config/qBittorrent.conf <<EOL

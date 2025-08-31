@@ -88,7 +88,14 @@
       "$HOME/.build/qbittorrent/src/catppuccin-pywal"
     ln -sf "${config.xdg.cacheHome}/wal/qbit/icons/pywal" \
       "$HOME/.build/qbittorrent/src/icons/pywal"
-    # TODO: $HOME/.config/qBittorrent/qBittorrent.conf point to theme
+
+    if [ ! -d "$HOME/.build/shyfox" ]; then
+      /usr/bin/git clone https://github.com/mshnwq/shyfox $HOME/.build/shyfox
+      ln -sf "$HOME/.build/shyfox/ShyFox" \
+          "$HOME/.mozilla/firefox/mshnwq.default/chrome/ShyFox"
+      ln -sf "$HOME/.build/shyfox/icons" \
+          "$HOME/.mozilla/firefox/mshnwq.default/chrome/icons"
+    fi
   '';
 
   # TODO:
