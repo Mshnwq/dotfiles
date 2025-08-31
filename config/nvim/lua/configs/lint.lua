@@ -14,7 +14,7 @@ lint.linters_by_ft = {
 }
 
 require("lint").linters.flake8 = {
-  cmd = vim.env.HOME .. "/.local/venv/nvim/bin/flake8", -- Ensure the correct venv path
+  cmd = vim.env.HOME .. "/.nix-profile/bin/flake8", -- Ensure the correct venv path
   stdin = true,
   args = {
     '--format=%(path)s:%(row)d:%(col)d:%(code)s:%(text)s [https://www.flake8rules.com/rules/%(code)s.html]',
@@ -41,9 +41,9 @@ require("lint").linters.flake8 = {
 
 lint.linters.dclint = {
   env = {
-    ["PATH"] = vim.env.HOME .. '/.asdf/installs/nodejs/20.18.1/bin',
+    ["PATH"] = vim.env.HOME .. '/.local/bin' .. os.getenv("PATH"),
   },
-  cmd = vim.env.HOME .. '/.asdf/installs/nodejs/20.18.1/bin/dclint',
+  cmd = vim.env.HOME .. '/.local/bin/dclint',
   stdin = false,          -- dclint does not take input via stdin
   append_fname = true,    -- Automatically append the filename to args
   args = {},              -- No additional arguments required

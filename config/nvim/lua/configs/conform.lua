@@ -46,7 +46,7 @@ conform.formatters.shfmt = {
   args = { "-ci", "-i", "2", "-filename", "$FILENAME" },
 }
 
-local venv = vim.env.HOME .. "/.local/venv/nvim/bin/"
+local venv = vim.env.HOME .. "/.nix-profile/bin/"
 conform.formatters_by_ft.python = { "isort", "ruff_format" }
 conform.formatters.isort = {
   command = venv .. "isort",

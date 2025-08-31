@@ -7,7 +7,10 @@ local M = {}
 
 M.base46 = {
   transparency = true,
-  theme = "chadwal",
+  theme = "tokyonight",
+  -- use tokyonight when initializing
+  -- then python3 ~/.config/nvim/pywal/chadwal.py
+  -- theme = "chadwal", 
 
   -- start replace from rice
   hl_override = {

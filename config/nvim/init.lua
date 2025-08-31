@@ -42,7 +42,7 @@ vim.schedule(function()
   require "mappings"
 end)
 
-os.execute("~/.asdf/shims/python3.13 ~/.config/nvim/pywal/chadwal.py &> /dev/null &")
+os.execute("python3 ~/.config/nvim/pywal/chadwal.py &> /dev/null &")
 
 local autocmd = vim.api.nvim_create_autocmd
 

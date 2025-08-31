@@ -39,6 +39,7 @@
         ./shell.nix
         ./wrap.nix
         ./mime.nix
+        ./nvim.nix
         ({config, pkgs, ...}: {
           imports = [
             (import ./user.nix {
