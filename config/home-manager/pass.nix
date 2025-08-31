@@ -2,7 +2,7 @@
   home.packages = [
     pkgs.pass
     #pkgs.pinentry-all
-    #pkgs.pinentry-rofi
+    pkgs.pinentry-rofi
   ];
 
   # Custom wrapper for pinentry
