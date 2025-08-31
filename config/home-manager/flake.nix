@@ -22,7 +22,7 @@
           packageOverlays = import ./packages/overlays.nix nixpkgs.lib;
         in [
           inputs.nixgl.overlay
-          inputs.nur.overlay
+          inputs.nur.overlays.default
         ] ++ builtins.attrValues packageOverlays;
       };
       modules = [ 
@@ -40,7 +40,7 @@
         ./wrap.nix
         ./mime.nix
         ({config, pkgs, ...}: {
-          import = [
+          imports = [
             (import ./user.nix {
               inherit config pkgs;
               inherit inputs;

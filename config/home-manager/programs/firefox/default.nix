@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   profile = "mshnwq.default";
   profileName = "mshnwq";
+  chromeRepo = "https://github.com/mshnwq/shyfox.git";
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
@@ -15,6 +16,16 @@ in {
     (import ./blocking.nix profile)
   ];
 
+  # Clone chrome repo directly into profile
+  home.activation.cloneUserChrome = lib.hm.dag.entryAfter ["firefox"] ''
+    PROFILE_DIR="$HOME/.mozilla/firefox/${profile}"
+    CHROME_DIR="$PROFILE_DIR/chrome"
+    if [ ! -d "$CHROME_DIR" ]; then
+      mkdir -p "$PROFILE_DIR"
+      git clone ${chromeRepo} "$CHROME_DIR"
+    fi
+  '';
+
   home.packages = [ pkgs.firefoxpwa ];
   programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
@@ -23,7 +34,7 @@ in {
     isDefault = true;
     name = profileName;
 
-    userChrome = pkgs.shyfox;
+    # userChrome = pkgs.shyfox;
 
     settings = {
       # Do not require manual intervention to enable extensions.
@@ -68,22 +79,25 @@ in {
     extensions.packages = with extensions; [
       rycee.sidebery
       rycee.userchrome-toggle-extended
-      rycee.untrap-for-youtube
       rycee.darkreader
       rycee.clearurls
       rycee.sponsorblock
       rycee.return-youtube-dislikes
       rycee.videospeed
       rycee.search-by-image
-      rycee.tampermonkey
       rycee.pwas-for-firefox
       rycee.pywalfox
 
-    # pkgs.nur.repos.rycee.firefox-addons.video-downloadhelper  # unfree
-    # pkgs.nur.repos.rycee.firefox-addons.web-clipper-obsidian
-    # pkgs.nur.repos.rycee.firefox-addons.keepassxc-browser
-    # only missing enhancer-for-youtube
-    # pkgs.nur.repos.rycee.firefox-addons.enhancer-for-youtube
+      # unfree
+      # rycee.untrap-for-youtube
+      # rycee.video-downloadhelper
+      # rycee.tampermonkey
+
+      # TODO:
+      # rycee.web-clipper-obsidian
+      # rycee.keepassxc-browser
+      # only missing enhancer-for-youtube
+
       ### BASICS ###
       # rycee.darkreader
       # # rycee.tree-style-tab

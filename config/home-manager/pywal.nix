@@ -6,6 +6,7 @@
 
   home.packages = [
     pkgs.pywal16
+    pkgs.pywalfox-native  # do pywalfox install
     pkgs.libsForQt5.full  # bloat only for rcc :(
     pkgs.catppuccin-whiskers  # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum

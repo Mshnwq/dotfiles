@@ -20,7 +20,7 @@ args@{ self, config, lib, inputs, pkgs, ... }: {
   # Custom wrapper for firefox 
   home.file.".local/bin/firefox".text = ''
     #!/usr/bin/env bash
-    env MOZ_USE_XINPUT2=1 nixGL firefox "$@"
+    exec env MOZ_USE_XINPUT2=1 nixGL ~/.nix-profile/bin/firefox "$@"
   '';
   home.file.".local/bin/firefox".executable = true;
 

@@ -64,4 +64,4 @@ ujust setup-waydroid
 
 # ujust 84-virt
 ujust setup-virtualization
-    - add to input group
+    - add to libvirt group

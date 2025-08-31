@@ -18,6 +18,7 @@ in {
     pkgs.velero
     pkgs.minio-client
     pkgs.virt-manager
+    pkgs.podman-compose
     pkgs.ktailctl  # needs nixGL wrap
     pkgs.nixgl.auto.nixGLDefault  # NOTE:run with --impure flag
     veracrypt
