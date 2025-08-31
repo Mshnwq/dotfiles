@@ -9,6 +9,7 @@ fi
 
 HOST="192.168.0.200"
 CONF_FILE="$HOME/.config/pipewire/pipewire-pulse.conf.d/mpd-tcp.conf"
+mkdir -p "$(dirname "$CONF_FILE")"
 cat > "$CONF_FILE" <<EOF
 pulse.cmd = [
   { cmd = "load-module" args = "module-native-protocol-tcp auth-ip-acl=$HOST auth-anonymous=1" }
