@@ -96,7 +96,7 @@ in {
       "browser.newtabpage.pinned" = "[{\"url\":\"https://www.youtube.com/\",\"baseDomain\":\"youtube.com\"},{\"url\":\"https://chatgpt.com/\",\"baseDomain\":\"chatgpt.com\"},{\"url\":\"https://github.com/\",\"baseDomain\":\"github.com\"},{\"url\":\"https://www.reddit.com/\",\"baseDomain\":\"reddit.com\"}]";
     };
 
-    extensions = with extensions.rycee; [
+    extensions.packages = with extensions.rycee; [
 
       # MyFox Theme
       pywalfox  # remove shortcut Ctrl+Alt+D

@@ -14,6 +14,7 @@ echo "$WALL" > ~/.config/dots/rices/.wall
 # in kde settings 
 # Set Application Style to Kvantum if not already
 pywalfox install
+pip install watchdog
 ~/.config/dots/scripts/WallColor "$WALL"
 
 # tee -a ~/.var/app/org.qbittorrent.qBittorrent/config/qBittorrent.conf <<EOL
