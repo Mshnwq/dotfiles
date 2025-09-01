@@ -8,7 +8,7 @@ reboot
 sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix:latest
 
 # FOR NVIDIA do this
-sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
+sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia-open:latest
 reboot
 sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
 
