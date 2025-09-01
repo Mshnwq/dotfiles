@@ -9,21 +9,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     bird-nix-lib.url = "github:spikespaz/bird-nix-lib";
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nixgl.url = "github:nix-community/nixGL";
     nur.url = "github:nix-community/NUR";
     # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }: 
+    let 
+      inherit (self) lib;
+    in {
+    lib = nixpkgs.lib.extend (nixpkgs.lib.composeManyExtensions [
+      inputs.bird-nix-lib.lib.overlay
+    ]);
     homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
         system = "x86_64-linux";
-        overlays = let
-          packageOverlays = import ./packages/overlays.nix nixpkgs.lib;
-        in [
+        overlays = [
           inputs.nixgl.overlay
           inputs.nur.overlays.default
-        ] ++ builtins.attrValues packageOverlays;
+        ]
       };
       modules = [ 
         ./hypr.nix
@@ -43,13 +48,7 @@
         ({config, pkgs, ...}: {
           imports = [
             (import ./user.nix {
-              inherit config pkgs;
-              inherit inputs;
-              inherit self;
-              lib = nixpkgs.lib.extend (nixpkgs.lib.composeManyExtensions [
-                inputs.bird-nix-lib.lib.overlay
-                (import ./lib)
-              ]);
+              inherit self config lib inputs pkgs;
             })
           ];
         })

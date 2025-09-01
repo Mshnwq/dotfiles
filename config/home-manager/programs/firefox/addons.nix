@@ -1,5 +1,6 @@
 { lib, buildFirefoxXpiAddon }: {
-  duplicate-tab-shortcut = let fileId = "4142678";
+  duplicate-tab-shortcut = let 
+    fileId = "4142678";
   in buildFirefoxXpiAddon rec {
     pname = "duplicate_tab_shortcut";
     version = "1.6.0";

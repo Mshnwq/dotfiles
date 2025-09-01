@@ -1,11 +1,14 @@
-{ pkgs, ... }:
+{ lib, inputs, pkgs, ... }:
 let
   profile = "mshnwq.default";
   profileName = "mshnwq";
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
-    mshnwq = pkgs.firefox-extensions;
+    customAddons = pkgs.callPackage ./addons.nix {
+      inherit lib;
+      inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
+    };
   };
 in {
 
@@ -94,7 +97,7 @@ in {
       (rycee.video-downloadhelper.override { meta.license.free = true; })
       (rycee.tampermonkey.override { meta.license.free = true; })
 
-      mshnwq.duplicate-tab-shortcut
+      customAddons.duplicate-tab-shortcut
       # TODO:
       # rycee.web-clipper-obsidian
       # rycee.keepassxc-browser
