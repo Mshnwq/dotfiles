@@ -48,6 +48,7 @@
               inherit self;
               lib = nixpkgs.lib.extend (nixpkgs.lib.composeManyExtensions [
                 inputs.bird-nix-lib.lib.overlay
+                (import ./lib)
               ]);
             })
           ];
