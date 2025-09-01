@@ -5,7 +5,7 @@ let
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
-    customAddons = pkgs.callPackage ./addons.nix {
+    custom = pkgs.callPackage ./addons.nix {
       inherit lib;
       inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
     };
@@ -78,30 +78,54 @@ in {
       "widget.gtk.rounded-bottom-corners.enabled" = true;
       "widget.gtk.ignore-bogus-leave-notify" = 1;
       "svg.context-properties.content.enabled" = true;
+
+      # other
+      "browser.tabs.inTitlebar" = 0;
+      "browser.tabs.warnOnClose" = true;
+      "browser.urlbar.placeholderName" = "DuckDuckGo";
+      "browser.urlbar.placeholderName.private" = "DuckDuckGo";
+      "datareporting.usage.uploadEnabled" = "false";
+      "datareporting.healthreport.logging.consoleEnabled" = false;
+      "datareporting.healthreport.service.enabled" = false;
+      "datareporting.healthreport.service.firstRun" = false;
+      "datareporting.healthreport.uploadEnabled" = false;
+      "browser.urlbar.suggest.recentsearches" = false;
+      "browser.urlbar.suggest.searches" = false;
+
+      # TODO: new tab page pin sites SOP secret
+      "browser.newtabpage.pinned" = "[{\"url\":\"https://www.youtube.com/\",\"baseDomain\":\"youtube.com\"},{\"url\":\"https://chatgpt.com/\",\"baseDomain\":\"chatgpt.com\"},{\"url\":\"https://github.com/\",\"baseDomain\":\"github.com\"},{\"url\":\"https://www.reddit.com/\",\"baseDomain\":\"reddit.com\"}]";
     };
 
-    extensions.packages = with extensions; [
-      rycee.sidebery
-      rycee.userchrome-toggle-extended
-      rycee.darkreader
-      rycee.clearurls
-      rycee.sponsorblock
-      rycee.return-youtube-dislikes
-      rycee.videospeed
-      rycee.search-by-image
-      rycee.pwas-for-firefox  # idk
-      rycee.pywalfox
+    extensions = with extensions.rycee; [
+
+      # MyFox Theme
+      pywalfox  # remove shortcut Ctrl+Alt+D
+      sidebery  # remove Ctrl+E and import settings from dotfiles
+      userchrome-toggle-extended  # manually add shortcuts  1: Ctrl+E 2: Ctrl+Alt+S 3: Ctrl+Alt+H 4: Ctrl+Alt+C
+
+      pwas-for-firefox  # idk
+
+      # Useful utilities
+
+      darkreader
+      clearurls
+      sponsorblock
+      return-youtube-dislikes
+      videospeed
+      search-by-image
 
       # unfree extensions - manually allowed
-      (rycee.untrap-for-youtube.override { meta.license.free = true; })
-      (rycee.video-downloadhelper.override { meta.license.free = true; })
-      (rycee.tampermonkey.override { meta.license.free = true; })
+      (untrap-for-youtube.override { meta.license.free = true; })  # import it from dotfiles
+      (video-downloadhelper.override { meta.license.free = true; })  # TODO: install daemon
+      (tampermonkey.override { meta.license.free = true; })  # TODO: import scripts from dotfiles SOP secrets
 
-      customAddons.duplicate-tab-shortcut
       # TODO:
       # rycee.web-clipper-obsidian
       # rycee.keepassxc-browser
-      # only missing enhancer-for-youtube
-    ];
+
+      # only missing enhancer-for-youtube  # Discontinued :(
+    ] ++ (with extensions.custom; [ 
+      duplicate-tab-shortcut  # change default shortcut Ctrl+Alt+D
+    ]);
   };
 }

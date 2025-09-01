@@ -28,7 +28,7 @@
         overlays = [
           inputs.nixgl.overlay
           inputs.nur.overlays.default
-        ]
+        ];
       };
       modules = [ 
         ./hypr.nix
