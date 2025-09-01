@@ -16,6 +16,7 @@ in {
     pkgs.kubernetes-helm
     pkgs.k9s
     pkgs.velero
+    pkgs.rclone
     pkgs.minio-client
     pkgs.virt-manager
     pkgs.podman-compose

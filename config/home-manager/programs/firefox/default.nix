@@ -5,6 +5,7 @@ let
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
+    mshnwq = pkgs.firefox-extensions;
   };
 in {
 
@@ -49,14 +50,22 @@ in {
       # This might be a security hole.
       "extensions.autoDisableScopes" = 0;
 
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-
+      # Hardware
       "gfx.webrender.all" = true;
+      ### from Bazzite Repo ###
+      "media.ffmpeg.vaapi.enabled" = true;
+      # not hw but bazzite still
+      "media.webspeech.synth.enabled" = false;
+      "reader.parse-on-load.enabled" = false;
+      # remove machine learning
+      "extensions.ml.enabled" = false;
+      "browser.ml.chat.enabled" = false;
 
+      # Theme 
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       "browser.download.autohideButton" = false;
-
+      "browser.tabs.groups.smart.enabled" = false;
       ### ShyFox ###
-
       "sidebar.revamp" = false;
       "layout.css.has-selector.enabled" = true;
       "browser.urlbar.suggest.calculator" = true;
@@ -66,22 +75,6 @@ in {
       "widget.gtk.rounded-bottom-corners.enabled" = true;
       "widget.gtk.ignore-bogus-leave-notify" = 1;
       "svg.context-properties.content.enabled" = true;
-
-      # I think `panel_photon` and `panel_full` are mutually exclusive, not sure which to use.
-      # In the hamburger menu, with both enabled, the zoom icon is offset to the left.
-      # "userChrome.icon.panel_photon" = true;
-      "userChrome.icon.panel_full" = true;
-      "userChrome.icon.library" = true;
-      "userChrome.icon.panel" = true;
-      "userChrome.icon.menu" = true;
-      "userChrome.icon.context_menu" = true;
-      "userChrome.icon.global_menu" = true;
-      "userChrome.icon.global_menubar" = true;
-      #"userChrome.icon.1-25px_stroke" = true;
-      "userChrome.icon.account_image_to_right" = true;
-      "userChrome.icon.account_label_to_right" = true;
-      "userChrome.icon.menu.full" = true;
-      "userChrome.icon.global_menu.mac" = true;
     };
 
     extensions.packages = with extensions; [
@@ -93,75 +86,19 @@ in {
       rycee.return-youtube-dislikes
       rycee.videospeed
       rycee.search-by-image
-      rycee.pwas-for-firefox
+      rycee.pwas-for-firefox  # idk
       rycee.pywalfox
 
-      # unfree
-      # rycee.untrap-for-youtube
-      # rycee.video-downloadhelper
-      # rycee.tampermonkey
+      # unfree extensions - manually allowed
+      (rycee.untrap-for-youtube.override { meta.license.free = true; })
+      (rycee.video-downloadhelper.override { meta.license.free = true; })
+      (rycee.tampermonkey.override { meta.license.free = true; })
 
+      mshnwq.duplicate-tab-shortcut
       # TODO:
       # rycee.web-clipper-obsidian
       # rycee.keepassxc-browser
       # only missing enhancer-for-youtube
-
-      ### BASICS ###
-      # rycee.darkreader
-      # # rycee.tree-style-tab
-      # rycee.tab-stash
-      # rycee.translate-web-pages
-      #
-      # ### PERFORMANCE ###
-      # rycee.auto-tab-discard
-      #
-      # ### BLOCKING ###
-      # # Enable "Annoyances" lists in uBO instead
-      # # rycee.i-dont-care-about-cookies
-      # rycee.user-agent-string-switcher
-      # # rycee.gaoptout
-      # # rycee.clearurls
-      # # rycee.disconnect
-      # # rycee.libredirect
-      #
-      # ### GITHUB ###
-      # # bandithedoge.gitako
-      # bandithedoge.sourcegraph
-      # # rycee.enhanced-github
-      # # rycee.refined-github
-      # rycee.lovely-forks
-      # # rycee.octolinker
-      # # rycee.octotree
-      #
-      # ### YOUTUBE ###
-      # rycee.sponsorblock
-      # rycee.return-youtube-dislikes
-      # # rycee.enhancer-for-youtube
-      #
-      # ### TWITCH ###
-      # spikespaz.twitch-auto-clicker
-      # # For Twitch, it is also worth considering removing the extension and just using uBO.
-      # # <https://github.com/pixeltris/TwitchAdSolutions>
-      # spikespaz.ttv-lol-pro
-      # spikespaz.frankerfacez
-      #
-      # ### NEW INTERNET ###
-      # # rycee.ipfs-companion
-      #
-      # ### FIXES ###
-      # # rycee.open-in-browser
-      # # rycee.no-pdf-download
-      # # rycee.don-t-fuck-with-paste
-      #
-      # ### UTILITIES ###
-      # rycee.video-downloadhelper
-      # # rycee.export-tabs-urls-and-titles
-      # # rycee.markdownload
-      # # rycee.flagfox
-      # rycee.keepassxc-browser
-      # rycee.wappalyzer
-      # # slaier.dictionary-anywhere
-      # spikespaz.pwas-for-firefox
     ];
   };
 }
