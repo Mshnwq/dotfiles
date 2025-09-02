@@ -6,9 +6,10 @@
   ];
 
   # Custom wrapper for pinentry
+  # TODO: fix blurry
   home.file.".local/bin/pinentry-wofi".text = ''
     #!/usr/bin/env bash
-    exec /usr/bin/pinentry-rofi "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
+    exec ${pkgs.pinentry-rofi} "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
   '';
   home.file.".local/bin/pinentry-wofi".executable = true;
 
