@@ -4,6 +4,5 @@
     pkgs.gallery-dl
     pkgs.jdupes
     pkgs.nurl
-    pkgs.virt-manager
   ];
 }

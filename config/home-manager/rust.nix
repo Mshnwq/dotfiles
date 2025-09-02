@@ -21,6 +21,6 @@
     pkgs.dysk # better info
     pkgs.tldr
     pkgs.serie
-    # pkgs.termscp 
+    pkgs.termscp 
   ];
 }

@@ -23,7 +23,7 @@ in {
     pkgs.ktailctl  # needs nixGL wrap
     pkgs.nixgl.auto.nixGLDefault  # NOTE:run with --impure flag
     veracrypt
-    # terraform  # too SLOW!
+    terraform  # too SLOW!
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {
