@@ -1,3 +1,5 @@
+lol: https://github.com/ublue-os/main/issues/765
+
 # 1: install Fedora Atomic Kinoite iso (KDE spin)
 
 # 2: Rebase to Bazzite custom image
