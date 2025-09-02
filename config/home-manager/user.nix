@@ -18,11 +18,11 @@ args@{ self, config, lib, inputs, pkgs, ... }: {
   };
 
   # Custom wrapper for firefox 
-  home.file.".local/bin/firefox".text = ''
+  home.file.".local/bin/Firefox".text = ''
     #!/usr/bin/env bash
     exec env MOZ_USE_XINPUT2=1 nixGL ~/.nix-profile/bin/firefox "$@"
   '';
-  home.file.".local/bin/firefox".executable = true;
+  home.file.".local/bin/Firefox".executable = true;
 
   ##########################
   ### PACKAGES & MODULES ###

@@ -12,6 +12,7 @@
 WIDGET_DIR="$HOME/.config/dots/eww"
 export PATH="$HOME/.config/dots/scripts/executer:$PATH"
 export PATH="$HOME/.config/dots/scripts:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/bin:$PATH"
 
@@ -96,16 +97,16 @@ case "$1" in
     ;;
     # Apps
   --firefox)
-    firefox -P mshnwq
+    Firefox -P mshnwq
     ;;
   --files)
     dolphin
     ;;
   --whatsapp)
-    firefox -P mshnwq -new-tab https://web.whatsapp.com/
+    Firefox -P mshnwq -new-tab https://web.whatsapp.com/
     ;;
   --gpt)
-    firefox -P mshnwq -new-tab https://chatgpt.com/
+    Firefox -P mshnwq -new-tab https://chatgpt.com/
     ;;
   --soundcontrol)
     pavucontrol
