@@ -12,6 +12,39 @@ let
   };
 in {
 
+  xdg.desktopEntries.firefox-nix = {
+    name = "Firefox (nix)";
+    exec = "env MOZ_USE_XINPUT2=1 nixGLIntel firefox %u";
+    icon = "firefox";
+    categories = [ "Network" "WebBrowser" ];
+    type = "Application";
+    startupNotify = true;
+    mimeType = [
+      "text/html"
+      "text/xml"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+      "application/xhtml+xml"
+      "application/xhtml_xml"
+      "application/x-extension-htm"
+      "application/x-extension-html"
+      "application/x-extension-shtml"
+      "application/x-extension-xhtml"
+      "application/x-extension-xht"
+    ];
+  };
+
+  # Custom wrapper for firefox 
+  home.file.".local/bin/Firefox".text = ''
+    #!/usr/bin/env bash
+    exec env MOZ_USE_XINPUT2=1 nixGLIntel firefox "$@"
+  '';
+  home.file.".local/bin/Firefox".executable = true;
+
+  home.sessionVariables = {
+    BROWSER = "firefox";
+  };
+
   # only need pywalfax --install and sidebery load addons and untrap
   programs.firefox.enable = true;
 
@@ -107,6 +140,9 @@ in {
 
       # Useful utilities
 
+      # aria2-integration
+      # buster-captcha-solver
+
       darkreader
       clearurls
       sponsorblock
@@ -124,6 +160,66 @@ in {
       # rycee.keepassxc-browser
 
       # only missing enhancer-for-youtube  # Discontinued :(
+    ] ++ (with extensions.custom; [ 
+      duplicate-tab-shortcut  # change default shortcut Ctrl+Alt+D
+    ]);
+  };
+
+  programs.firefox.profiles."mshnwq.job" = {
+    id = 1;
+    isDefault = false;
+    name = "job";
+
+    settings = {
+      # Do not require manual intervention to enable extensions.
+      # This might be a security hole.
+      "extensions.autoDisableScopes" = 0;
+
+      # Hardware
+      "gfx.webrender.all" = true;
+      ### from Bazzite Repo ###
+      "media.ffmpeg.vaapi.enabled" = true;
+      # not hw but bazzite still
+      "media.webspeech.synth.enabled" = false;
+      "reader.parse-on-load.enabled" = false;
+      # remove machine learning
+      "extensions.ml.enabled" = false;
+      "browser.ml.chat.enabled" = false;
+
+      # Theme 
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      "browser.download.autohideButton" = false;
+      "browser.tabs.groups.smart.enabled" = false;
+      ### ShyFox ###
+      "sidebar.revamp" = false;
+      "layout.css.has-selector.enabled" = true;
+      "browser.urlbar.suggest.calculator" = true;
+      "browser.urlbar.unitConversion.enabled" = true;
+      "browser.urlbar.trimHttps" = true;
+      "browser.urlbar.trimURLs" = true;
+      "widget.gtk.rounded-bottom-corners.enabled" = true;
+      "widget.gtk.ignore-bogus-leave-notify" = 1;
+      "svg.context-properties.content.enabled" = true;
+
+      # other
+      "browser.tabs.inTitlebar" = 0;
+      "browser.tabs.warnOnClose" = true;
+      "browser.urlbar.placeholderName" = "DuckDuckGo";
+      "browser.urlbar.placeholderName.private" = "DuckDuckGo";
+      "datareporting.usage.uploadEnabled" = "false";
+      "datareporting.healthreport.logging.consoleEnabled" = false;
+      "datareporting.healthreport.service.enabled" = false;
+      "datareporting.healthreport.service.firstRun" = false;
+      "datareporting.healthreport.uploadEnabled" = false;
+      "browser.urlbar.suggest.recentsearches" = false;
+      "browser.urlbar.suggest.searches" = false;
+    };
+
+    extensions.packages = with extensions.rycee; [
+      sidebery  # remove Ctrl+E and import settings from dotfiles
+      darkreader
+      clearurls
+      search-by-image
     ] ++ (with extensions.custom; [ 
       duplicate-tab-shortcut  # change default shortcut Ctrl+Alt+D
     ]);
