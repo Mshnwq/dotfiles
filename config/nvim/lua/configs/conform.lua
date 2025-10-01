@@ -14,6 +14,7 @@ local options = {
   -- },
   formatters_by_ft = {
     lua = { "stylua" },
+    nix = { "nixfmt" },  -- nixfmt official (haskel), alejandra unofficial (rust)
     -- use the lsp
     -- go = { "gofumpt", "goimports-reviser", "golines" },
     -- gomod = { "gofumpt", "goimports-reviser" },

@@ -4,6 +4,7 @@ lint.linters_by_ft = {
   lua = { "luacheck" },
   python = { "flake8" },
   shell = { "shellcheck" },
+  nix = { "nix" },
   javascript = { "eslint_d" },
   typescript = { "eslint_d" },
   terraform = { "tflint" },

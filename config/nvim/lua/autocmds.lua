@@ -29,7 +29,7 @@ vim.api.nvim_create_user_command(
 local ft_lsp_group = vim.api.nvim_create_augroup("ft_lsp_group", { clear = true })
 
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-  pattern = "*docker-compose*.{yml,yaml}",
+  pattern = "*compose*.{yml,yaml}",
   group = ft_lsp_group,
   desc = "Fix the issue where the LSP does not start with docker-compose.",
   callback = function()

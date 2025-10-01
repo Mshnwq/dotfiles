@@ -32,10 +32,11 @@ end
 
 -- list of all servers configured.
 lspconfig.servers = {
+  "nil_ls",  -- nil_ls (rust) or nixd (c++)
   "lua_ls",
   "bashls",
   "pyright",
-  "gopls",
+  -- "gopls",
   -- "nginx_language_server", -- needs python 3.12 or below
   "lemminx",
   -- WebDev
@@ -50,6 +51,13 @@ lspconfig.servers = {
   "dockerls",
   "terraformls",
 }
+
+
+lspconfig.nil_ls.setup({
+  on_attach = custom_on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+})
 
 lspconfig.lua_ls.setup({
   on_attach = custom_on_attach,
