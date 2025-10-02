@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
   tmux-dracula = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "dracula";
@@ -25,9 +25,6 @@ in {
   home.sessionVariables = {
     TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmux/tmuxp";
   };
-  # ".local/bin/tmux".source = "${pkgs.tmux}/bin/tmux";
-  #   tmux binary order nix > user > system 
-  # };
   programs.tmux = {
     enable = true;
     shell = "/usr/bin/zsh";

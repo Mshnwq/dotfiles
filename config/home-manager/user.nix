@@ -5,6 +5,7 @@ args@{ self, config, lib, inputs, pkgs, ... }: {
   in [
     programs.devenv
     programs.mpv
+    programs.vim
     programs.firefox
     # programs.discord.stable
     programs.discord.canary
