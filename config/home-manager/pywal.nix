@@ -104,9 +104,9 @@
           "$HOME/.mozilla/firefox/mshnwq.default/chrome/icons"
     fi
 
-    if [ ! -d "$HOME/.config/nvim/pywal" ]; then
-      /usr/bin/git clone https://github.com/nvchad/pywal $HOME/.config/nvim/pywal
-    fi
+    # if [ ! -d "$HOME/.config/nvim/pywal" ]; then
+    #   /usr/bin/git clone https://github.com/nvchad/pywal $HOME/.config/nvim/pywal
+    # fi
 
     #if [ ! -d "$HOME/.local/share/icons/Papirus" ]; then
       # TODO: /usr/bin/curl -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh

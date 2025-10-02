@@ -93,7 +93,6 @@
         bindkey '^R' fzf-history-widget
 
         export PATH="$HOME/.local/bin:$PATH"
-        export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source $ZDOTDIR/.p10k.zsh

@@ -1,21 +1,18 @@
 {
-  description = "Home Manager configuration of mshnwq";
+  description = "Mshnwq Home Manager configuration";
 
   nixConfig = {
     # https://wiki.hypr.land/Nix/Cachix/
     extra-substituters = [
       # "https://hyprland.cachix.org"
-      # "https://yazi.cachix.org"
       "https://devenv.cachix.org"
     ];
     extra-trusted-substituters = [
       # "https://hyprland.cachix.org"
-      # "https://yazi.cachix.org"
       "https://devenv.cachix.org"
     ];
     extra-trusted-public-keys = [
       # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      # "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
     trusted-users = [ "root" "@wheel" ];
@@ -34,7 +31,15 @@
     nixgl.url = "github:nix-community/nixGL";
     nur.url = "github:nix-community/NUR";
     devenv.url = "github:cachix/devenv";
-    # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD";
+    nvchad-starter = {
+      url = "github:Mshnwq/nvchad";
+      flake = false;
+    };
+    nix4nvchad = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nvchad-starter.follows = "nvchad-starter";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: 
