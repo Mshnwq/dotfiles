@@ -1,2 +1,4 @@
 
 **/*.swp
+**/.wall
+**/conf.d/general.conf

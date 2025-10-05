@@ -18,14 +18,13 @@ if [[ -z "$1" ]]; then
   error_exit "No link provided for download. Usage: $0 <URL>"
 fi
 
-
 # Assign arguments
 url="$1"
 # downloads_path="${2:-$default_downloads_path}" # Use second argument if provided, otherwise default
 downloads_path="$default_downloads_path" # Use second argument if provided, otherwise default
 use_browser_cookies="$2"
 
-source "$venv_path/bin/activate"
+source "$venv_path"/bin/activate
 
 # Ensure the downloads directory exists
 mkdir -p "$downloads_path" || error_exit "Failed to create downloads directory: $downloads_path."

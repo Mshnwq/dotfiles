@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-nvchad_file="$HOME/.config/nvim/lua/chadrc.lua"
+nvchad_file="$HOME/.config/nvim/lua/chadrc_pywal.lua"
 nvchad_theme="$HOME/.cache/wal/custom-nvchad.sh"
+chadwal_theme="$HOME/.cache/wal/base46-dark.lua"
+base46_theme="$HOME/.local/share/nvim/lazy/base46/lua/base46/themes/chadwal.lua"
+cp $chadwal_theme $base46_theme
 
 # Delete the old block between the markers
 sed -i '/  -- start replace from rice/,/  -- end replace from rice/{
