@@ -3,7 +3,7 @@
   home.homeDirectory = "/home/mshnwq";
   home.stateVersion = "25.05";
 
-  targets.genericLinux.enable = true;  # ENABLE THIS ON NON NIXOS
+  targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS
 
   home.packages = [
     pkgs.cowsay
@@ -16,7 +16,7 @@
     pkgs.zathura
   ];
 
-  xdg.enable = true;  # https://wiki.archlinux.org/title/XDG_Base_Directory
+  xdg.enable = true; # https://wiki.archlinux.org/title/XDG_Base_Directory
   # home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
   home.sessionVariables = {
     # NIX_PROFILE_DIR = "${config.home.homeDirectory}/.nix-profile";
@@ -30,7 +30,8 @@
     TERMINFO = "/usr/share/terminfo/";
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
-    GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
+    GTK2_RC_FILES =
+      "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
     WGETRC = "${config.xdg.configHome}/wget/wgetrc";
     LESSHISTFILE = "${config.xdg.cacheHome}/less_history";
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";

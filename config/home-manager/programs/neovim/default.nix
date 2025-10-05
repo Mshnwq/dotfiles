@@ -1,26 +1,14 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}:
-let
-  builds = pkgs.callPackage ./builds.nix {
-    inherit lib pkgs;
-  };
-in
-{
-  imports = [
-    inputs.nix4nvchad.homeManagerModules.nvchad
-  ];
+{ inputs, pkgs, lib, ... }:
+let builds = pkgs.callPackage ./builds.nix { inherit lib pkgs; };
+in {
+  imports = [ inputs.nix4nvchad.homeManagerModules.nvchad ];
 
   programs.nvchad = {
     enable = true;
     hm-activation = true;
     backup = false;
 
-    extraPackages =
-      with pkgs;
+    extraPackages = with pkgs;
       [
         # lua
         stylua
@@ -55,12 +43,8 @@ in
         # TODO / additional tools
         yamllint
         kics
-      ]
-      ++ (with builds; [
-        dclint
-        dockerfmt
-      ]);
+      ] ++ (with builds; [ dclint dockerfmt ]);
 
-    extraConfig = '''';
+    extraConfig = "";
   };
 }

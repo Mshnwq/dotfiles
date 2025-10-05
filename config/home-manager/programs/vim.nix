@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   programs.vim = {
     enable = true;
     packageConfigurable = pkgs.vim-full;

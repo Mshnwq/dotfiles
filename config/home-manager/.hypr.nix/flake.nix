@@ -40,7 +40,7 @@
         system = "x86_64-linux";
         overlays = [ nixgl.overlay ];
       };
-      modules = [ 
+      modules = [
         ./hypr.nix
         ./home.nix
         ./yazi.nix

@@ -1,16 +1,12 @@
 { config, pkgs, lib, ... }:
 let
-  terraform = pkgs.terraform.overrideAttrs (old: {
-    meta = old.meta // { license = lib.licenses.unfree; };
-  });
-  veracrypt = pkgs.veracrypt.overrideAttrs (old: {
-    meta = old.meta // { license = lib.licenses.unfree; };
-  });
+  terraform = pkgs.terraform.overrideAttrs
+    (old: { meta = old.meta // { license = lib.licenses.unfree; }; });
+  veracrypt = pkgs.veracrypt.overrideAttrs
+    (old: { meta = old.meta // { license = lib.licenses.unfree; }; });
 in {
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
-    "terraform"
-    "veracrypt"
-  ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (pkgs.lib.getName pkg) [ "terraform" "veracrypt" ];
   home.packages = [
     pkgs.kubectl
     #pkgs.kubernetes-helm
@@ -25,13 +21,13 @@ in {
     pkgs.lazydocker
     #pkgs.ktailctl  # needs nixGL wrap # TODO: broken on nvidia # moved to flatpak
     # i have no idea this garbage
-    pkgs.nixgl.auto.nixGLDefault  # NOTE:run with --impure flag
-    pkgs.nixgl.auto.nixGLNvidia  # NOTE:run with --impure flag
-    pkgs.nixgl.auto.nixGLNvidiaBumblebee  # NOTE:run with --impure flag
-    pkgs.nixgl.nixGLIntel  # NOTE:run with --impure flag
+    pkgs.nixgl.auto.nixGLDefault # NOTE:run with --impure flag
+    pkgs.nixgl.auto.nixGLNvidia # NOTE:run with --impure flag
+    pkgs.nixgl.auto.nixGLNvidiaBumblebee # NOTE:run with --impure flag
+    pkgs.nixgl.nixGLIntel # NOTE:run with --impure flag
     #pkgs.nixos-anywhere
     veracrypt
-    terraform  # too SLOW!
+    terraform # too SLOW!
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {

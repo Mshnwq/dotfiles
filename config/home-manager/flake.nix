@@ -42,46 +42,36 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: 
-    let 
-      inherit (self) lib;
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+    let inherit (self) lib;
     in {
-    lib = nixpkgs.lib.extend (nixpkgs.lib.composeManyExtensions [
-      inputs.bird-nix-lib.lib.overlay
-    ]);
-    homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [
-          inputs.nixgl.overlay
-          inputs.nur.overlays.default
+      lib = nixpkgs.lib.extend
+        (nixpkgs.lib.composeManyExtensions [ inputs.bird-nix-lib.lib.overlay ]);
+      homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [ inputs.nixgl.overlay inputs.nur.overlays.default ];
+        };
+        modules = [
+          ./home.nix
+          ./yazi.nix
+          ./rust.nix
+          ./tmux.nix
+          ./shell.nix
+          ./hypr.nix
+          ./auto.nix
+          ./pass.nix
+          ./infra.nix
+          ./music.nix
+          ./pywal.nix
+          ./mime.nix
+          ./flat.nix
+          ({ config, pkgs, ... }: {
+            imports =
+              [ (import ./user.nix { inherit self config lib inputs pkgs; }) ];
+          })
         ];
-      };
-      modules = [ 
-        ./home.nix
-        ./yazi.nix
-        ./rust.nix
-        ./tmux.nix
-        ./shell.nix
-        ./hypr.nix
-        ./auto.nix
-        ./pass.nix
-        ./infra.nix
-        ./music.nix
-        ./pywal.nix
-        ./mime.nix
-        ./flat.nix
-        ({config, pkgs, ...}: {
-          imports = [
-            (import ./user.nix {
-              inherit self config lib inputs pkgs;
-            })
-          ];
-        })
-      ];
-      extraSpecialArgs = {
-        inherit inputs;
+        extraSpecialArgs = { inherit inputs; };
       };
     };
-  };
 }

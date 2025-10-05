@@ -98,7 +98,7 @@ in {
     home.packages = [ cfg.package cfg.theme.package ];
 
     xdg.configFile."Kvantum/kvantum.kvconfig".text =
-    #  lib.generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
+      #  lib.generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
       lib.generators.toINI { } { General.theme = "Pywal"; };
 
     # todo: fix incorrect casing on some keys,

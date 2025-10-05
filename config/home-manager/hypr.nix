@@ -3,7 +3,7 @@
     pkgs.grim
     pkgs.swappy
     pkgs.gcc
-    pkgs.libinput-gestures  
+    pkgs.libinput-gestures
     # pkgs.showmethekey
     # grep -E '^input:' /usr/lib/group | sudo tee -a /etc/group
     # sudo usermod -aG input $USER && reboot

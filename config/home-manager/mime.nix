@@ -11,17 +11,11 @@ in {
   xdg.mimeApps = let
     associations = flipAssocs {
       ### FILE BROWSER ###
-      "org.kde.dolphin" = [ 
-        "inode/directory" "x-directory/normal"
-      ];
+      "org.kde.dolphin" = [ "inode/directory" "x-directory/normal" ];
 
       ### DOCUMENT VIEWER ###
       # "org.kde.okular" = [
-      "zathura" = [
-        "application/pdf"
-        "application/epub"
-        "application/mobi"
-      ];
+      "zathura" = [ "application/pdf" "application/epub" "application/mobi" ];
 
       ### IMAGE VIEWER ###
       "org.kde.gwenview" = [

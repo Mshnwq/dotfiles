@@ -1,13 +1,11 @@
-{ config, pkgs, lib, hyprland, ... }: let
-  hyprPkgs = hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+{ config, pkgs, lib, hyprland, ... }:
+let hyprPkgs = hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in {
   wayland.windowManager.hyprland = {
     enable = false;
     package = hyprPkgs.hyprland;
     portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
-    plugins = [
-      (pkgs.callPackage ./hyprWorkspaceLayouts.nix {})
-    ];
+    plugins = [ (pkgs.callPackage ./hyprWorkspaceLayouts.nix { }) ];
     # extraConfig = ''
     #   source = ${config.xdg.configHome}/hypr/workspaceLayouts.conf
     #   source = ${config.xdg.configHome}/hypr/hyprextra.conf
@@ -24,9 +22,11 @@ in {
   # Custom wrapper for Hyprland
   home.file.".local/bin/Hyprland-Nix".text = ''
     ${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL \
-      ${hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/Hyprland
+      ${
+        hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
+      }/bin/Hyprland
   '';
-    # ${pkgs.hyprland}/bin/Hyprland
+  # ${pkgs.hyprland}/bin/Hyprland
   home.file.".local/bin/Hyprland-Nix".executable = true;
 
   home.file."${config.xdg.configHome}/hypr/workspaceLayouts.conf".text = ''

@@ -12,7 +12,8 @@ args@{ self, lib, pkgs, config, inputs, ... }:
       home.packages = [ pkgs.slurp ];
     };
     devenv = {
-      home.packages = [ pkgs.direnv inputs.devenv.packages.x86_64-linux.devenv ];
+      home.packages =
+        [ pkgs.direnv inputs.devenv.packages.x86_64-linux.devenv ];
     };
     # TODO: hide share one 
     keepassxc = {

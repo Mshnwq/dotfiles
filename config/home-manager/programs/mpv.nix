@@ -4,7 +4,7 @@
 
   home.packages = [
     pkgs.mpv
-    pkgs.jellyfin-mpv-shim  # TODO:
+    pkgs.jellyfin-mpv-shim # TODO:
   ];
 
   xdg.desktopEntries.mpv-nix = {

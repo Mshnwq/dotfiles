@@ -1,5 +1,6 @@
 # {pkgs, yazi, ...}: let
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
@@ -7,10 +8,7 @@
     hash = "sha256-TUS+yXxBOt6tL/zz10k4ezot8IgVg0/2BbS8wPs9KcE=";
   };
 in {
-  home.packages = [
-    pkgs.yazi
-    pkgs.trash-cli
-  ];
+  home.packages = [ pkgs.yazi pkgs.trash-cli ];
   programs.yazi = {
     enable = true;
     # package = yazi;  # LATEST VERSION
@@ -48,7 +46,7 @@ in {
         rev = "a5e33db284ab580de7b549e472bba13a5ba7c7b9";
         hash = "sha256-4VD1OlzGgyeB1jRgPpI4aWnOCHNZQ9vhh40cbU80Les=";
       };
-      
+
       restore = pkgs.fetchFromGitHub {
         owner = "boydaihungst";
         repo = "restore.yazi";

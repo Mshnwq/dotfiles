@@ -1,10 +1,4 @@
-{ lib
-, fetchFromGitHub
-, hyprland
-, hyprlandPlugins
-, pkg-config
-, gcc
-}:
+{ lib, fetchFromGitHub, hyprland, hyprlandPlugins, pkg-config, gcc }:
 
 hyprlandPlugins.mkHyprlandPlugin hyprland {
   pluginName = "hyprWorkspaceLayouts";

@@ -1,15 +1,15 @@
 { config, pkgs, lib, ... }: {
-  
+
   nixpkgs.config.permittedInsecurePackages = [
     "qtwebengine-5.15.19" # for the rcc :(
   ];
 
   home.packages = [
     pkgs.pywal16
-    pkgs.pywalfox-native  # do pywalfox install
+    pkgs.pywalfox-native # do pywalfox install
     pkgs.highlight
-    pkgs.libsForQt5.full  # bloat only for rcc :(
-    pkgs.catppuccin-whiskers  # no need cursors has a *.nix
+    pkgs.libsForQt5.full # bloat only for rcc :(
+    pkgs.catppuccin-whiskers # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum
     # TODO: automate this 
     # Plasma Style: Utterly-Round (follows color scheme)
@@ -18,7 +18,7 @@
     # in kde settings 
     # Set Application Style to Kvantum if not already
     # pkgs.papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
-    pkgs.papirus-folders  # cli tool
+    pkgs.papirus-folders # cli tool
     pkgs.nerd-fonts.jetbrains-mono
     pkgs.nerd-fonts.roboto-mono
     pkgs.nerd-fonts.fira-mono

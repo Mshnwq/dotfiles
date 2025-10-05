@@ -3,7 +3,7 @@
     pkgs.mpd
     pkgs.mpc
     pkgs.rmpc
-    pkgs.cava  # TODO: doesnt work on waybar ?
+    pkgs.cava # TODO: doesnt work on waybar ?
     pkgs.beets
     pkgs.pulsemixer
     pkgs.qpwgraph
@@ -54,7 +54,8 @@
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${config.xdg.configHome}/mpd/mpd.conf";
+      ExecStart =
+        "${pkgs.mpd}/bin/mpd --no-daemon ${config.xdg.configHome}/mpd/mpd.conf";
       Restart = "always";
     };
     Install = { }; # empty so it won’t auto-start
