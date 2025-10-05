@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   programs.vim = {
     enable = true;
     packageConfigurable = pkgs.vim-full;
@@ -18,7 +19,7 @@
     exec ${config.programs.vim.package}/bin/vim "$@"
   '';
   home.file.".local/bin/vim".executable = true;
-  # vim binary order nix > user > system 
+  # vim binary order nix > user > system
 }
 
 # " call plug#begin('~/.vim/plugged')

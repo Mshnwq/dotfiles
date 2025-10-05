@@ -71,7 +71,6 @@
         ./pywal.nix
         ./mime.nix
         ./flat.nix
-        ./nvim.nix
         ({config, pkgs, ...}: {
           imports = [
             (import ./user.nix {
