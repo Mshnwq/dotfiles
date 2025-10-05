@@ -68,19 +68,6 @@
           ];
         };
         modules = [
-          ./home.nix
-          ./yazi.nix
-          ./rust.nix
-          ./tmux.nix
-          ./shell.nix
-          ./hypr.nix
-          ./auto.nix
-          ./pass.nix
-          ./infra.nix
-          ./music.nix
-          ./pywal.nix
-          ./mime.nix
-          ./flat.nix
           (
             { config, pkgs, ... }:
             {

@@ -22,9 +22,9 @@ let
   };
 in
 {
-  home.packages = [
-    pkgs.tmux
-    pkgs.tmuxp
+  home.packages = with pkgs; [
+    tmux
+    tmuxp
   ];
   home.sessionVariables = {
     TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmux/tmuxp";

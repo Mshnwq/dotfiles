@@ -5,14 +5,14 @@
   ...
 }:
 {
-  home.packages = [
-    pkgs.mpd
-    pkgs.mpc
-    pkgs.rmpc
-    pkgs.cava # TODO: doesnt work on waybar ?
-    pkgs.beets
-    pkgs.pulsemixer
-    pkgs.qpwgraph
+  home.packages = with pkgs; [
+    mpd
+    mpc
+    rmpc
+    cava # TODO: doesnt work on waybar ?
+    beets
+    pulsemixer
+    qpwgraph
   ];
 
   # https://github.com/nix-community/home-manager/blob/master/modules/services/mpd.nix

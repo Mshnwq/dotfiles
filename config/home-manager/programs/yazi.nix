@@ -9,9 +9,9 @@ let
   };
 in
 {
-  home.packages = [
-    pkgs.yazi
-    pkgs.trash-cli
+  home.packages = with pkgs; [
+    yazi
+    trash-cli
   ];
   programs.yazi = {
     enable = true;

@@ -26,15 +26,15 @@ args@{
       inputs.devenv.packages.x86_64-linux.devenv
     ];
   };
-  # TODO: hide share one
-  keepassxc = {
-    xdg.desktopEntries.keepassxc-nix = {
-      name = "KeePassXC (nix)";
-      exec = "env QT_SCALE_FACTOR=0.75 /usr/bin/keepassxc";
-      icon = "keepassxc";
-      categories = [ "Utility" ];
-      type = "Application";
-      startupNotify = true;
-    };
+  # automation tools
+  auto = {
+    home.packages = with pkgs; [
+      yt-dlp
+      gallery-dl
+      jdupes
+      nurl
+      buku
+      nmap
+    ];
   };
 }

@@ -5,10 +5,10 @@
   ...
 }:
 {
-  home.packages = [
-    pkgs.pass
-    #pkgs.pinentry-all
-    pkgs.pinentry-rofi
+  home.packages = with pkgs; [
+    pass
+    #pinentry-all
+    pinentry-rofi
   ];
 
   # Custom wrapper for pinentry
@@ -55,6 +55,18 @@
     };
   };
 }
+
+# # TODO: hide share one
+# keepassxc = {
+#   xdg.desktopEntries.keepassxc-nix = {
+#     name = "KeePassXC (nix)";
+#     exec = "env QT_SCALE_FACTOR=0.75 /usr/bin/keepassxc";
+#     icon = "keepassxc";
+#     categories = [ "Utility" ];
+#     type = "Application";
+#     startupNotify = true;
+#   };
+# };
 
 # TEST:
 # run ~/.dotfiles/setup/test/pass.sh

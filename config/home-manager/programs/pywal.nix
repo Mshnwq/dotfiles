@@ -10,27 +10,27 @@
     "qtwebengine-5.15.19" # for the rcc :(
   ];
 
-  home.packages = [
-    pkgs.pywal16
-    pkgs.pywalfox-native # do pywalfox install
-    pkgs.highlight
-    pkgs.libsForQt5.full # bloat only for rcc :(
-    pkgs.catppuccin-whiskers # no need cursors has a *.nix
-    pkgs.kdePackages.qtstyleplugin-kvantum
+  home.packages = with pkgs; [
+    pywal16
+    pywalfox-native # do pywalfox install
+    highlight
+    libsForQt5.full # bloat only for rcc :(
+    catppuccin-whiskers # no need cursors has a *.nix
+    kdePackages.qtstyleplugin-kvantum
     # TODO: automate this
     # Plasma Style: Utterly-Round (follows color scheme)
     # utterly-round-plasma-style # manually set
     # Window Decorations: Utterly-Round-Dark (also follows color scheme)
     # in kde settings
     # Set Application Style to Kvantum if not already
-    # pkgs.papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
-    pkgs.papirus-folders # cli tool
-    pkgs.nerd-fonts.jetbrains-mono
-    pkgs.nerd-fonts.roboto-mono
-    pkgs.nerd-fonts.fira-mono
-    pkgs.nerd-fonts.fira-code
-    pkgs.nerd-fonts.inconsolata
-    pkgs.nerd-fonts.symbols-only
+    # papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
+    papirus-folders # cli tool
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.roboto-mono
+    nerd-fonts.fira-mono
+    nerd-fonts.fira-code
+    nerd-fonts.inconsolata
+    nerd-fonts.symbols-only
   ];
 
   home.activation.linkWalTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

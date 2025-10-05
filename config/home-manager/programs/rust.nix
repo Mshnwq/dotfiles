@@ -1,8 +1,8 @@
 { pkgs, lib, ... }:
 {
-  home.packages = [
-    pkgs.cargo
-    pkgs.rustc
+  home.packages = with pkgs; [
+    cargo
+    rustc
     # OVERKILL TOO SLOW
     # (pkgs.rustPlatform.buildRustPackage rec {
     #   pname = "eza";
@@ -15,17 +15,17 @@
     #   };
     #   cargoHash = "sha256-19PPPrHJ/Vbavr7wQPyMp+/f8fLHrzZwG7roV7rjZc0=";
     # })
-    pkgs.eza
-    pkgs.bat
-    pkgs.dfrs
-    pkgs.ripgrep
-    pkgs.tldr
-    pkgs.serie
-    pkgs.termscp
-    (pkgs.rustPlatform.buildRustPackage rec {
+    eza
+    bat
+    dfrs
+    ripgrep
+    tldr
+    serie
+    termscp
+    (rustPlatform.buildRustPackage rec {
       pname = "glim";
       version = "git-cd53dae";
-      src = pkgs.fetchFromGitHub {
+      src = fetchFromGitHub {
         owner = "junkdog";
         repo = "glim";
         rev = "cd53dae";
@@ -33,8 +33,8 @@
       };
       cargoHash = "sha256-9DxUgv10cSsTlwqTJWtNxcd/hbS6pGZ+XCPjL1wbCh8=";
       # 👇 This fixes the OpenSSL + pkg-config issue
-      nativeBuildInputs = [ pkgs.pkg-config ]; # for build-time discovery
-      buildInputs = [ pkgs.openssl ]; # OpenSSL headers & libs
+      nativeBuildInputs = [ pkg-config ]; # for build-time discovery
+      buildInputs = [ openssl ]; # OpenSSL headers & libs
     })
   ];
 }
