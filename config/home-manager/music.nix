@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   home.packages = [
     pkgs.mpd
     pkgs.mpc
@@ -54,8 +60,7 @@
     };
     Service = {
       Type = "simple";
-      ExecStart =
-        "${pkgs.mpd}/bin/mpd --no-daemon ${config.xdg.configHome}/mpd/mpd.conf";
+      ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${config.xdg.configHome}/mpd/mpd.conf";
       Restart = "always";
     };
     Install = { }; # empty so it won’t auto-start

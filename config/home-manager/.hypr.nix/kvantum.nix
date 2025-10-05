@@ -1,9 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   description = "Home Manager module for the Kvantum Theme Engine";
   inherit (lib) types;
   cfg = config.programs.kvantum;
-in {
+in
+{
   options = {
     programs.kvantum = {
       enable = lib.mkEnableOption description;
@@ -44,13 +50,18 @@ in {
 
       theme.overrides = lib.mkOption {
         type = types.attrs;
-        apply = lib.mapAttrs' (name: value:
-          if name == "General" then {
-            name = "%General";
-            inherit value;
-          } else {
-            inherit name value;
-          });
+        apply = lib.mapAttrs' (
+          name: value:
+          if name == "General" then
+            {
+              name = "%General";
+              inherit value;
+            }
+          else
+            {
+              inherit name value;
+            }
+        );
         default = { };
         example = lib.literalExpression ''
           {
@@ -78,33 +89,40 @@ in {
     };
   };
 
-  config = let
-    unmodifiedPath =
-      "${cfg.theme.package}/share/Kvantum/${cfg.theme.name}/${cfg.theme.name}.kvconfig";
-    modifiedName = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
-    originalTheme = lib.pipe
-      (pkgs.runCommandLocal "convert-kvantum-${cfg.theme.name}-to-json" { } ''
-        mkdir $out
-        cat '${unmodifiedPath}' \
-          | '${lib.getExe pkgs.jc}' --ini \
-          > "$out/${cfg.theme.name}.json"
-      '') [
-        (drv: "${drv}/${cfg.theme.name}.json")
-        builtins.readFile
-        builtins.fromJSON
+  config =
+    let
+      unmodifiedPath = "${cfg.theme.package}/share/Kvantum/${cfg.theme.name}/${cfg.theme.name}.kvconfig";
+      modifiedName = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
+      originalTheme =
+        lib.pipe
+          (pkgs.runCommandLocal "convert-kvantum-${cfg.theme.name}-to-json" { } ''
+            mkdir $out
+            cat '${unmodifiedPath}' \
+              | '${lib.getExe pkgs.jc}' --ini \
+              > "$out/${cfg.theme.name}.json"
+          '')
+          [
+            (drv: "${drv}/${cfg.theme.name}.json")
+            builtins.readFile
+            builtins.fromJSON
+          ];
+      modifiedTheme = lib.recursiveUpdate originalTheme cfg.theme.overrides;
+    in
+    (lib.mkIf cfg.enable {
+      home.packages = [
+        cfg.package
+        cfg.theme.package
       ];
-    modifiedTheme = lib.recursiveUpdate originalTheme cfg.theme.overrides;
-  in (lib.mkIf cfg.enable {
-    home.packages = [ cfg.package cfg.theme.package ];
 
-    xdg.configFile."Kvantum/kvantum.kvconfig".text =
-      #  lib.generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
-      lib.generators.toINI { } { General.theme = "Pywal"; };
+      xdg.configFile."Kvantum/kvantum.kvconfig".text =
+        #  lib.generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
+        lib.generators.toINI { } { General.theme = "Pywal"; };
 
-    # todo: fix incorrect casing on some keys,
-    # jc does not respect this when the INI parser is used.
-    # <https://github.com/kellyjonbrazil/jc/issues/285>
-    xdg.configFile."Kvantum/${modifiedName}".text =
-      lib.generators.toINI { } modifiedTheme;
-  });
+      # todo: fix incorrect casing on some keys,
+      # jc does not respect this when the INI parser is used.
+      # <https://github.com/kellyjonbrazil/jc/issues/285>
+      xdg.configFile."Kvantum/${modifiedName}".text =
+        lib.generators.toINI { }
+          modifiedTheme;
+    });
 }

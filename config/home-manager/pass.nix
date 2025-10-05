@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   home.packages = [
     pkgs.pass
     #pkgs.pinentry-all
@@ -19,7 +25,7 @@
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
   };
   # https://wiki.archlinux.org/title/XDG_Base_Directory
-  # OpenSSH 		      ~/.ssh 	will not fix 	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH. 
+  # OpenSSH 		      ~/.ssh 	will not fix 	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH.
   # SSH folder 		    ~/.ssh 			700 	drwx------
   # Public key 		    ~/.ssh/id_rsa.pub 	644 	-rw-r--r--
   # Private key 	    ~/.ssh/id_rsa 		600 	-rw-------
@@ -50,7 +56,7 @@
   };
 }
 
-# TEST: 
+# TEST:
 # run ~/.dotfiles/setup/test/pass.sh
 
 # INFO:

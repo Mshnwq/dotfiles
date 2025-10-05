@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   home.username = "mshnwq";
   home.homeDirectory = "/home/mshnwq";
   home.stateVersion = "25.05";
@@ -30,8 +36,7 @@
     TERMINFO = "/usr/share/terminfo/";
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
-    GTK2_RC_FILES =
-      "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
+    GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
     WGETRC = "${config.xdg.configHome}/wget/wgetrc";
     LESSHISTFILE = "${config.xdg.cacheHome}/less_history";
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";

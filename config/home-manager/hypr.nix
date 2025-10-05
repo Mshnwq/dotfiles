@@ -1,4 +1,11 @@
-{ config, pkgs, lib, hyprland, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  hyprland,
+  ...
+}:
+{
   home.packages = [
     pkgs.grim
     pkgs.swappy

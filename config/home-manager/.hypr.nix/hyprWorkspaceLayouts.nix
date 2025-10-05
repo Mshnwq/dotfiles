@@ -1,4 +1,11 @@
-{ lib, fetchFromGitHub, hyprland, hyprlandPlugins, pkg-config, gcc }:
+{
+  lib,
+  fetchFromGitHub,
+  hyprland,
+  hyprlandPlugins,
+  pkg-config,
+  gcc,
+}:
 
 hyprlandPlugins.mkHyprlandPlugin hyprland {
   pluginName = "hyprWorkspaceLayouts";
@@ -15,7 +22,10 @@ hyprlandPlugins.mkHyprlandPlugin hyprland {
     #hash = "sha256-1dxRcryNRh0zPiuO5EusPY0Qazh6Ogca41C+/gvs15g=";
   };
 
-  nativeBuildInputs = [ pkg-config gcc ];
+  nativeBuildInputs = [
+    pkg-config
+    gcc
+  ];
   buildInputs = [ ]; # Hyprland + deps already provided by mkHyprlandPlugin
 
   buildPhase = ''

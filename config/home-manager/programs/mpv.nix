@@ -1,4 +1,10 @@
-{ lib, inputs, pkgs, ... }: {
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
+{
 
   # TODO: test out nixGL
 

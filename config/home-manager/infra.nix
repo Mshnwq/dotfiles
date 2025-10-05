@@ -1,12 +1,28 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
-  terraform = pkgs.terraform.overrideAttrs
-    (old: { meta = old.meta // { license = lib.licenses.unfree; }; });
-  veracrypt = pkgs.veracrypt.overrideAttrs
-    (old: { meta = old.meta // { license = lib.licenses.unfree; }; });
-in {
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (pkgs.lib.getName pkg) [ "terraform" "veracrypt" ];
+  terraform = pkgs.terraform.overrideAttrs (old: {
+    meta = old.meta // {
+      license = lib.licenses.unfree;
+    };
+  });
+  veracrypt = pkgs.veracrypt.overrideAttrs (old: {
+    meta = old.meta // {
+      license = lib.licenses.unfree;
+    };
+  });
+in
+{
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (pkgs.lib.getName pkg) [
+      "terraform"
+      "veracrypt"
+    ];
   home.packages = [
     pkgs.kubectl
     #pkgs.kubernetes-helm

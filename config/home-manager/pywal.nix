@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
 
   nixpkgs.config.permittedInsecurePackages = [
     "qtwebengine-5.15.19" # for the rcc :(
@@ -11,11 +17,11 @@
     pkgs.libsForQt5.full # bloat only for rcc :(
     pkgs.catppuccin-whiskers # no need cursors has a *.nix
     pkgs.kdePackages.qtstyleplugin-kvantum
-    # TODO: automate this 
+    # TODO: automate this
     # Plasma Style: Utterly-Round (follows color scheme)
     # utterly-round-plasma-style # manually set
     # Window Decorations: Utterly-Round-Dark (also follows color scheme)
-    # in kde settings 
+    # in kde settings
     # Set Application Style to Kvantum if not already
     # pkgs.papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
     pkgs.papirus-folders # cli tool

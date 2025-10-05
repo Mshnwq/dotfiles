@@ -34,29 +34,37 @@
     # yazi.url = "github:sxyazi/yazi?ref=main&rev=HEAD"";
   };
 
-  outputs = { nixgl, hyprland, nixpkgs, home-manager, ... }: {
-    homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [ nixgl.overlay ];
-      };
-      modules = [
-        ./hypr.nix
-        ./home.nix
-        ./yazi.nix
-        ./rust.nix
-        ./tmux.nix
-        ./auto.nix
-        ./pass.nix
-        ./infra.nix
-        ./music.nix
-        ./pywal.nix
-        ./shell.nix
-      ];
-      extraSpecialArgs = {
-        inherit hyprland;
-        # yazi = yazi.packages.${pkgs.system}.default;
+  outputs =
+    {
+      nixgl,
+      hyprland,
+      nixpkgs,
+      home-manager,
+      ...
+    }:
+    {
+      homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [ nixgl.overlay ];
+        };
+        modules = [
+          ./hypr.nix
+          ./home.nix
+          ./yazi.nix
+          ./rust.nix
+          ./tmux.nix
+          ./auto.nix
+          ./pass.nix
+          ./infra.nix
+          ./music.nix
+          ./pywal.nix
+          ./shell.nix
+        ];
+        extraSpecialArgs = {
+          inherit hyprland;
+          # yazi = yazi.packages.${pkgs.system}.default;
+        };
       };
     };
-  };
 }

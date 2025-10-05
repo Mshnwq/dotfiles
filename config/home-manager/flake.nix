@@ -15,7 +15,10 @@
       # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
-    trusted-users = [ "root" "@wheel" ];
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
     allowed-users = [ "@wheel" ];
   };
 
@@ -42,15 +45,27 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
-    let inherit (self) lib;
-    in {
-      lib = nixpkgs.lib.extend
-        (nixpkgs.lib.composeManyExtensions [ inputs.bird-nix-lib.lib.overlay ]);
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }:
+    let
+      inherit (self) lib;
+    in
+    {
+      lib = nixpkgs.lib.extend (
+        nixpkgs.lib.composeManyExtensions [ inputs.bird-nix-lib.lib.overlay ]
+      );
       homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           system = "x86_64-linux";
-          overlays = [ inputs.nixgl.overlay inputs.nur.overlays.default ];
+          overlays = [
+            inputs.nixgl.overlay
+            inputs.nur.overlays.default
+          ];
         };
         modules = [
           ./home.nix
@@ -66,10 +81,22 @@
           ./pywal.nix
           ./mime.nix
           ./flat.nix
-          ({ config, pkgs, ... }: {
-            imports =
-              [ (import ./user.nix { inherit self config lib inputs pkgs; }) ];
-          })
+          (
+            { config, pkgs, ... }:
+            {
+              imports = [
+                (import ./user.nix {
+                  inherit
+                    self
+                    config
+                    lib
+                    inputs
+                    pkgs
+                    ;
+                })
+              ];
+            }
+          )
         ];
         extraSpecialArgs = { inherit inputs; };
       };

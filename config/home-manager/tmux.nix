@@ -20,8 +20,12 @@ let
       hash = "sha256-s1jUx6HFgtVwTjdiAtMLw42//yfLsCEjqgdyQNF+P7c=";
     };
   };
-in {
-  home.packages = [ pkgs.tmux pkgs.tmuxp ];
+in
+{
+  home.packages = [
+    pkgs.tmux
+    pkgs.tmuxp
+  ];
   home.sessionVariables = {
     TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmux/tmuxp";
   };

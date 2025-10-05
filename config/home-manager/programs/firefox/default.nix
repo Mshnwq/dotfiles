@@ -1,4 +1,9 @@
-{ lib, inputs, pkgs, ... }:
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 let
   profile = "mshnwq.default";
   profileName = "mshnwq";
@@ -10,13 +15,17 @@ let
       inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
     };
   };
-in {
+in
+{
 
   xdg.desktopEntries.firefox-nix = {
     name = "Firefox (nix)";
     exec = "env MOZ_USE_XINPUT2=1 nixGLIntel firefox %u";
     icon = "firefox";
-    categories = [ "Network" "WebBrowser" ];
+    categories = [
+      "Network"
+      "WebBrowser"
+    ];
     type = "Application";
     startupNotify = true;
     mimeType = [
@@ -41,7 +50,9 @@ in {
   '';
   home.file.".local/bin/Firefox".executable = true;
 
-  home.sessionVariables = { BROWSER = "firefox"; };
+  home.sessionVariables = {
+    BROWSER = "firefox";
+  };
 
   # only need pywalfax --install and sidebery load addons and untrap
   programs.firefox.enable = true;
@@ -122,11 +133,12 @@ in {
       "browser.urlbar.suggest.searches" = false;
 
       # TODO: new tab page pin sites SOP secret
-      "browser.newtabpage.pinned" = ''
-        [{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://chatgpt.com/","baseDomain":"chatgpt.com"},{"url":"https://github.com/","baseDomain":"github.com"},{"url":"https://www.reddit.com/","baseDomain":"reddit.com"}]'';
+      "browser.newtabpage.pinned" =
+        ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://chatgpt.com/","baseDomain":"chatgpt.com"},{"url":"https://github.com/","baseDomain":"github.com"},{"url":"https://www.reddit.com/","baseDomain":"reddit.com"}]'';
     };
 
-    extensions.packages = with extensions.rycee;
+    extensions.packages =
+      with extensions.rycee;
       [
 
         # MyFox Theme
@@ -164,10 +176,10 @@ in {
         # rycee.keepassxc-browser
 
         # only missing enhancer-for-youtube  # Discontinued :(
-      ] ++ (with extensions.custom;
-        [
-          duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
-        ]);
+      ]
+      ++ (with extensions.custom; [
+        duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
+      ]);
   };
 
   programs.firefox.profiles."mshnwq.job" = {
@@ -220,15 +232,16 @@ in {
       "browser.urlbar.suggest.searches" = false;
     };
 
-    extensions.packages = with extensions.rycee;
+    extensions.packages =
+      with extensions.rycee;
       [
         sidebery # remove Ctrl+E and import settings from dotfiles
         darkreader
         clearurls
         search-by-image
-      ] ++ (with extensions.custom;
-        [
-          duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
-        ]);
+      ]
+      ++ (with extensions.custom; [
+        duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
+      ]);
   };
 }

@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
 
   dockerfmt = pkgs.stdenv.mkDerivation rec {
     pname = "dockerfmt";
@@ -54,7 +55,10 @@
 
     npmBuildScript = "build";
 
-    nativeBuildInputs = [ pkgs.nodejs pkgs.typescript ];
+    nativeBuildInputs = [
+      pkgs.nodejs
+      pkgs.typescript
+    ];
 
     installPhase = ''
       runHook preInstall
@@ -74,8 +78,7 @@
     '';
 
     meta = with lib; {
-      description =
-        "Docker Compose Linter (DCLint) to analyze, validate, and fix Docker Compose files";
+      description = "Docker Compose Linter (DCLint) to analyze, validate, and fix Docker Compose files";
       license = licenses.mit;
       homepage = "https://github.com/zavoloklom/docker-compose-linter";
     };

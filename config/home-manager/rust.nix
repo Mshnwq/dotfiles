@@ -1,8 +1,9 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   home.packages = [
     pkgs.cargo
     pkgs.rustc
-    # OVERKILL TOO SLOW 
+    # OVERKILL TOO SLOW
     # (pkgs.rustPlatform.buildRustPackage rec {
     #   pname = "eza";
     #   version = "git-97f9f36";
