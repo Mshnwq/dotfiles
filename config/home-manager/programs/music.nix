@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -45,14 +46,16 @@
       format "44100:16:2"
     }
   '';
-  home.activation.ensureMpdDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "${config.xdg.dataHome}/mpd"
-    chmod 700 "${config.xdg.dataHome}/mpd"
-    mkdir -p "${config.xdg.stateHome}/mpd"
-    chmod 700 "${config.xdg.stateHome}/mpd"
-    mkdir -p "${config.xdg.dataHome}/mpd/playlists"
-    mkfifo -m 600 /tmp/mpd.fifo || true
-  '';
+  home.activation.ensureMpdDirs =
+    inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+      ''
+        mkdir -p "${config.xdg.dataHome}/mpd"
+        chmod 700 "${config.xdg.dataHome}/mpd"
+        mkdir -p "${config.xdg.stateHome}/mpd"
+        chmod 700 "${config.xdg.stateHome}/mpd"
+        mkdir -p "${config.xdg.dataHome}/mpd/playlists"
+        mkfifo -m 600 /tmp/mpd.fifo || true
+      '';
   systemd.user.services.mpd = {
     Unit = {
       Description = "Music Player Daemon";

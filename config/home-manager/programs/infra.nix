@@ -23,25 +23,24 @@ in
       "terraform"
       "veracrypt"
     ];
-  home.packages = [
-    pkgs.kubectl
-    #pkgs.kubernetes-helm
-    pkgs.k9s
-    pkgs.velero
-    #pkgs.argocd
-    #pkgs.rainfrog
-    pkgs.rclone
-    #pkgs.minio-client
-    pkgs.virt-manager
-    pkgs.podman-compose
-    pkgs.lazydocker
+  home.packages = with pkgs; [
+    kubectl
+    k9s
+    velero
+    #argocd
+    #rainfrog
+    rclone
+    #minio-client
+    virt-manager
+    podman-compose
+    lazydocker
     #pkgs.ktailctl  # needs nixGL wrap # TODO: broken on nvidia # moved to flatpak
     # i have no idea this garbage
-    pkgs.nixgl.auto.nixGLDefault # NOTE:run with --impure flag
-    pkgs.nixgl.auto.nixGLNvidia # NOTE:run with --impure flag
-    pkgs.nixgl.auto.nixGLNvidiaBumblebee # NOTE:run with --impure flag
-    pkgs.nixgl.nixGLIntel # NOTE:run with --impure flag
-    #pkgs.nixos-anywhere
+    nixgl.auto.nixGLDefault # NOTE:run with --impure flag
+    nixgl.auto.nixGLNvidia # NOTE:run with --impure flag
+    nixgl.auto.nixGLNvidiaBumblebee # NOTE:run with --impure flag
+    nixgl.nixGLIntel # NOTE:run with --impure flag
+    #nixos-anywhere
     veracrypt
     terraform # too SLOW!
   ];

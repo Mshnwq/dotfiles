@@ -1,4 +1,3 @@
-# {pkgs, yazi, ...}: let
 { pkgs, ... }:
 let
   yazi-plugins = pkgs.fetchFromGitHub {

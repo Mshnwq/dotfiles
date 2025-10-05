@@ -25,6 +25,7 @@ in
       pkgs,
       lib,
       config,
+      inputs,
       ...
     }:
     let
@@ -52,7 +53,7 @@ in
         pkgs.betterdiscordctl
       ];
       home.activation.wrapDiscordCanaryNixGL =
-        lib.hm.dag.entryAfter [ "writeBoundary" ]
+        inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
           ''
             mkdir -p "${config.xdg.dataHome}/applications"
             discord_desktop="${config.xdg.dataHome}/applications/discord-canary.desktop"

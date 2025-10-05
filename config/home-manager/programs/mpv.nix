@@ -1,6 +1,4 @@
 {
-  lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -8,9 +6,9 @@
 
   # TODO: test out nixGL
 
-  home.packages = [
-    pkgs.mpv
-    pkgs.jellyfin-mpv-shim # TODO:
+  home.packages = with pkgs; [
+    mpv
+    jellyfin-mpv-shim # TODO:
   ];
 
   xdg.desktopEntries.mpv-nix = {

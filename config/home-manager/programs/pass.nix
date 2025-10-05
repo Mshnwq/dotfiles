@@ -2,9 +2,21 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
+
+  # TODO: hide share one
+  xdg.desktopEntries.keepassxc-nix = {
+    name = "KeePassXC (nix)";
+    exec = "env QT_SCALE_FACTOR=0.75 /usr/bin/keepassxc";
+    icon = "keepassxc";
+    categories = [ "Utility" ];
+    type = "Application";
+    startupNotify = true;
+  };
+
   home.packages = with pkgs; [
     pass
     #pinentry-all
@@ -33,12 +45,14 @@
   # Config 		        ~/.ssh/config 		600 	-rw-------
 
   # Ensure directory exists with secure permissions
-  home.activation.ensureGnuPGDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p ${config.xdg.dataHome}/gnupg
-    chmod 700 ${config.xdg.dataHome}/gnupg
-    mkdir -p ${config.xdg.dataHome}/pass
-    chmod 700 ${config.xdg.dataHome}/pass
-  '';
+  home.activation.ensureGnuPGDir =
+    inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+      ''
+        mkdir -p ${config.xdg.dataHome}/gnupg
+        chmod 700 ${config.xdg.dataHome}/gnupg
+        mkdir -p ${config.xdg.dataHome}/pass
+        chmod 700 ${config.xdg.dataHome}/pass
+      '';
 
   # Override gpg-agent systemd user unit to pass GNUPGHOME
   systemd.user.services."gpg-agent" = {
@@ -55,18 +69,6 @@
     };
   };
 }
-
-# # TODO: hide share one
-# keepassxc = {
-#   xdg.desktopEntries.keepassxc-nix = {
-#     name = "KeePassXC (nix)";
-#     exec = "env QT_SCALE_FACTOR=0.75 /usr/bin/keepassxc";
-#     icon = "keepassxc";
-#     categories = [ "Utility" ];
-#     type = "Application";
-#     startupNotify = true;
-#   };
-# };
 
 # TEST:
 # run ~/.dotfiles/setup/test/pass.sh
