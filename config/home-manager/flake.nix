@@ -32,7 +32,7 @@
     nur.url = "github:nix-community/NUR";
     devenv.url = "github:cachix/devenv";
     nvchad-starter = {
-      url = "github:Mshnwq/nvchad";
+      url = "github:Mshnwq/nvchad?ref=main";
       flake = false;
     };
     nix4nvchad = {
