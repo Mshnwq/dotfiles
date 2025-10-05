@@ -1,4 +1,14 @@
 
 **/*.swp
 **/.wall
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
 **/conf.d/general.conf
