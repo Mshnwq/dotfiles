@@ -2,17 +2,17 @@
 
 function yapt() {
     ( (sleep 0.1; YAZI_ID=$1 ya emit plugin projects "load tmux") &)
-    sh -c "export EDITOR=vim && yazi --client-id $1 ${@:2}" || return $?
+    sh -c "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
 }
 
 function yapp() {
     ( (sleep 0.1; YAZI_ID=$1 ya emit plugin projects "load $2") &)
-    sh -c "export EDITOR=vim && yazi --client-id $1" || return $?
+    sh -c "export EDITOR=~/.local/bin/vim && yazi --client-id $1" || return $?
 }
 
 function yapl() {
     ( (sleep 0.1; YAZI_ID=$1 ya emit plugin projects "load_last") &)
-    sh -c "export EDITOR=vim && yazi --client-id $1 ${@:2}" || return $?
+    sh -c "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
 }
 
 STATUS_FILE="$HOME/.config/dots/.yazi_id"

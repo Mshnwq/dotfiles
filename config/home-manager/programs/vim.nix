@@ -4,8 +4,33 @@
     enable = true;
     packageConfigurable = pkgs.vim-full;
     extraConfig = ''
-      noremap S A
-      noremap A I
+      " Normal mode mappings
+      nnoremap <silent> S A
+      nnoremap <silent> A I
+      nnoremap <silent> s a
+      nnoremap <silent> a i
+
+      nnoremap <silent> E W
+      nnoremap <silent> e w
+      nnoremap <silent> W B
+      nnoremap <silent> w b
+
+      nnoremap <silent> J L
+      nnoremap <silent> K H
+      nnoremap <silent> L $
+      nnoremap <silent> H ^
+
+      " Visual mode mappings
+      vnoremap <silent> E W
+      vnoremap <silent> e w
+      vnoremap <silent> W B
+      vnoremap <silent> w b
+
+      vnoremap <silent> J L
+      vnoremap <silent> K H
+      vnoremap <silent> L $
+      vnoremap <silent> H ^
+
       autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
     '';
     # plugins = with pkgs.vimPlugins; [
