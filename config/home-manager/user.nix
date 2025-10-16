@@ -70,6 +70,7 @@ args@{
     [
       programs.devenv
       programs.mpv
+      programs.qmk
       programs.vim
       programs.neovim
       programs.firefox
@@ -85,6 +86,7 @@ args@{
       programs.mime
       programs.hypr
       programs.flat
+      # programs.anki
       # programs.discord.stable
       programs.discord.canary
     ];

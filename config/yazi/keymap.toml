@@ -162,7 +162,7 @@ keymap = [
 	{ on = "}", run = "tab_swap 1",  desc = "Swap current tab with next tab" },
 
 	# Tasks
-	{ on = "w", run = "tasks_show", desc = "Show task manager" },
+	{ on = "w", run = "tasks:show", desc = "Show task manager" },
 
 	# Help
 	{ on = "~",    run = "help", desc = "Open help" },
@@ -261,9 +261,9 @@ keymap = [
 	{ on = "<C-f>",   run = "move 1",  desc = "Move forward a character" },
 
 	# Word-wise movement
-	{ on = "b",     run = "backward",              desc = "Move back to the start of the current or previous word" },
-	{ on = "w",     run = "forward",               desc = "Move forward to the start of the next word" },
-	{ on = "e",     run = "forward --end-of-word", desc = "Move forward to the end of the current or next word" },
+	# { on = "b",     run = "backward",              desc = "Move back to the start of the current or previous word" },
+	# { on = "w",     run = "forward",               desc = "Move forward to the start of the next word" },
+	# { on = "e",     run = "forward --end-of-word", desc = "Move forward to the end of the current or next word" },
 	# { on = "<A-b>", run = "backward",              desc = "Move back to the start of the current or previous word" },
 	# { on = "<A-f>", run = "forward --end-of-word", desc = "Move forward to the end of the current or next word" },
 
@@ -490,8 +490,34 @@ on = [ "R", "p" ]
 run = "plugin projects 'load tmux'"
 desc = "Load the 'tmux' project"
 
-
 [[mgr.prepend_keymap]]
 on = "u"
 run = "plugin restore"
 desc = "Restore last deleted files/folders"
+
+# mshnwq/dupes.yazi
+
+[[mgr.prepend_keymap]]
+on = ["<A-J>", "i"]
+run = "plugin dupes interactive"
+desc = "Run dupes interactive"
+
+[[mgr.prepend_keymap]]
+on = ["<A-J>", "o"]
+run = "plugin dupes override"
+desc = "Run dupes override"
+
+[[mgr.prepend_keymap]]
+on = ["<A-J>", "d"]
+run = "plugin dupes dry"
+desc = "Run dupes dry"
+
+[[mgr.prepend_keymap]]
+on = ["<A-J>", "a"]
+run = "plugin dupes apply"
+desc = "Run dupes apply"
+
+# [[mgr.prepend_keymap]]
+# on = ["<A-J>", "c"]
+# run = "plugin dupes custom"
+# desc = "Run dupes custom"

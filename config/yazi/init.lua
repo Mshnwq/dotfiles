@@ -153,3 +153,22 @@ Header:children_add(function(state)
     return ui.Line(lines)
 end, 9000, Header.LEFT)
 
+-- mshnwq/dupes.yazi
+require("dupes"):setup {
+	-- global args
+	save_op = false, -- profiles will inherit save_op unless overridden
+	-- auto_confirm = true, -- auto confirms apply operation
+	profiles = {
+		interactive = {
+			-- add extra args
+			args = { "-r" },
+		},
+		apply = {
+			args = { "-r", "-N", "-d" },
+			save_op = true, -- overrides global
+		},
+		-- custom = {
+		-- 	args = { "-r", "-s" },
+		-- },
+	},
+}
