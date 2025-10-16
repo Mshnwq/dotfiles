@@ -22,6 +22,13 @@ in
       jump-to-char = "${yazi-plugins}/jump-to-char.yazi";
 
       # nurl helps alot
+      dupes = pkgs.fetchFromGitHub {
+        owner = "mshnwq";
+        repo = "dupes.yazi";
+        rev = "main";
+        hash = "sha256-2kfjQB8v29VrHbzNzmkZOnOQn+R92rryxcP8YXFKCHc=";
+      };
+
       relative-motions = pkgs.fetchFromGitHub {
         owner = "dedukun";
         repo = "relative-motions.yazi";
