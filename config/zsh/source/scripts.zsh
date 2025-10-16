@@ -70,3 +70,19 @@ function gitd() {
   eval $(ssh-agent)
   nix run nixpkgs#expect -- "$HOME/.config/zsh/source/scripts/add_ssh.expect" "$(pass show mshnwq/github-ssh-pass)"
 }
+
+function vv() {
+  # Find Neovim config directories (~/.config/nvim-*)
+  local configs
+  configs=$(find ~/.config -maxdepth 1 -type d -name "nvim-*")
+
+  # Pipe to fzf for selection
+  local config
+  config=$(echo "$configs" | fzf --prompt="Neovim Configs > " --height=50% --layout=reverse --border --exit-0)
+
+  # Exit if nothing selected
+  [[ -z "$config" ]] && echo "No config selected" && return
+
+  # Launch Neovim with selected config name as NVIM_APPNAME
+  NVIM_APPNAME=$(basename "$config") nvim "$@"
+}
