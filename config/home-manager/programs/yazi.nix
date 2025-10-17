@@ -1,8 +1,6 @@
 { pkgs, inputs, ... }:
 let
   system = pkgs.system;
-
-  # Import your forked nixpkgs for this system
   pkgs-fork = import inputs.nixpkgs-fork {
     inherit system;
   };
@@ -27,10 +25,8 @@ in
     plugins = {
       jump-to-char = "${yazi-plugins}/jump-to-char.yazi";
 
-      # dupes = inputs.nixpkgs-fork.packages.x86_64-linux.yaziPlugins.dupes;
       dupes = pkgs-fork.yaziPlugins.dupes;
 
-      # nurl helps alot
       # dupes = pkgs.fetchFromGitHub {
       #   owner = "mshnwq";
       #   repo = "dupes.yazi";
