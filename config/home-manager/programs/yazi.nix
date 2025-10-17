@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 let
+  system = pkgs.system;
+
+  # Import your forked nixpkgs for this system
+  pkgs-fork = import inputs.nixpkgs-fork {
+    inherit system;
+  };
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
@@ -21,13 +27,16 @@ in
     plugins = {
       jump-to-char = "${yazi-plugins}/jump-to-char.yazi";
 
+      # dupes = inputs.nixpkgs-fork.packages.x86_64-linux.yaziPlugins.dupes;
+      dupes = pkgs-fork.yaziPlugins.dupes;
+
       # nurl helps alot
-      dupes = pkgs.fetchFromGitHub {
-        owner = "mshnwq";
-        repo = "dupes.yazi";
-        rev = "main";
-        hash = "sha256-2kfjQB8v29VrHbzNzmkZOnOQn+R92rryxcP8YXFKCHc=";
-      };
+      # dupes = pkgs.fetchFromGitHub {
+      #   owner = "mshnwq";
+      #   repo = "dupes.yazi";
+      #   rev = "4666b6f299c2257c011f622319ae97fab8adbabe";
+      #   hash = "sha256-v9xuSY/i/trIHHbOPbijd0AmcUb2vufNL9BSjBE6+Vo=";
+      # };
 
       relative-motions = pkgs.fetchFromGitHub {
         owner = "dedukun";

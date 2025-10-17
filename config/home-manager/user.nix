@@ -71,6 +71,7 @@ args@{
       programs.devenv
       programs.mpv
       programs.qmk
+      # programs.obs
       programs.vim
       programs.neovim
       programs.firefox

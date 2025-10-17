@@ -20,6 +20,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-fork.url = "github:mshnwq/nixpkgs/f398b1a1739efd83422a712b8cf708727ca3c944";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
