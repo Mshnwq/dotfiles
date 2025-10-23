@@ -45,7 +45,7 @@ in
         yaml-language-server
         kube-linter
         docker-compose-language-service
-        dockerfile-language-server-nodejs
+        dockerfile-language-server
         hadolint
 
         # TODO / additional tools
