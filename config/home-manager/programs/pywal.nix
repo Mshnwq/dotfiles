@@ -7,15 +7,10 @@
 }:
 {
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "qtwebengine-5.15.19" # for the rcc :(
-  ];
-
   home.packages = with pkgs; [
     pywal16
     pywalfox-native # do pywalfox install
     highlight
-    libsForQt5.full # bloat only for rcc :(
     catppuccin-whiskers # no need cursors has a *.nix
     kdePackages.qtstyleplugin-kvantum
     # TODO: automate this
