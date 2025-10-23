@@ -20,7 +20,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-fork.url = "github:mshnwq/nixpkgs/f398b1a1739efd83422a712b8cf708727ca3c944";
+    #nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,6 +32,7 @@
     devenv.url = "github:cachix/devenv";
     nvchad-starter = {
       url = "github:Mshnwq/nvchad?ref=main";
+      #url = "github:Mshnwq/nvchad?ref=a39d66ea3c8e0ce603e661688164fc4d49a30d16";
       flake = false;
     };
     nix4nvchad = {
