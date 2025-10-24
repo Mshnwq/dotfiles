@@ -159,6 +159,7 @@ in
         return-youtube-dislikes
         videospeed
         search-by-image
+        cookies-txt
 
         # unfree extensions - manually allowed
         (untrap-for-youtube.override {
