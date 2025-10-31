@@ -87,7 +87,7 @@ args@{
       programs.hypr
       programs.flat
       # programs.anki
-      # programs.discord.stable
-      programs.discord.canary
+      programs.discord.stable
+      # programs.discord.canary
     ];
 }

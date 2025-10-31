@@ -10,15 +10,30 @@ let
 in
 {
 
-  # stable = { pkgs, ... }: let
-  #   package = pkgs.discord;
-  #   bdAddons = pkgs.callPackage bdAddonsDrv { };
-  # in {
-  #   home.packages = [
-  #     package
-  #     pkgs.betterdiscordctl
-  #   ];
-  # };
+  stable =
+    { pkgs, ... }:
+    let
+      binaryName = "Discord";
+      package =
+        (pkgs.discord.override {
+          # <https://github.com/GooseMod/OpenAsar>
+          withOpenASAR = true;
+        }).overrideAttrs
+          ({
+            # why is this missing?
+            # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/instant-messengers/discord/linux.nix#L99>
+            postFixup = ''
+              wrapProgram $out/opt/${binaryName}/${binaryName} \
+                --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations" \
+            '';
+          });
+    in
+    {
+      home.packages = [
+        package
+        pkgs.betterdiscordctl
+      ];
+    };
 
   canary =
     {
