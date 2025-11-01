@@ -1,6 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  ...
+}:
 let
-  glim = pkgs.rustPlatform.buildRustPackage rec {
+  glim = pkgs.rustPlatform.buildRustPackage {
     pname = "glim";
     version = "git-cd53dae";
     src = pkgs.fetchFromGitHub {
@@ -10,7 +13,6 @@ let
       hash = "sha256-yAymON+o2slcyCpEq5prkffUelW5jV3I9JSJuQc6+jc=";
     };
     cargoHash = "sha256-9DxUgv10cSsTlwqTJWtNxcd/hbS6pGZ+XCPjL1wbCh8=";
-    # 👇 This fixes the OpenSSL + pkg-config issue
     nativeBuildInputs = [ pkgs.pkg-config ]; # for build-time discovery
     buildInputs = [ pkgs.openssl ]; # OpenSSL headers & libs
   };

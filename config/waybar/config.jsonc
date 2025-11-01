@@ -409,8 +409,8 @@
   },
   "custom/niflveil": {
     "format": "{}",
-    "exec": "~/.local/bin/niflveil show",
-    "on-click": "~/.local/bin/niflveil restore-last",
+    "exec": "niflveil show",
+    "on-click": "niflveil restore-last",
     "return-type": "json",
     "interval": "once",
     "signal": 8,
