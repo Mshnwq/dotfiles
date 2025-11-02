@@ -7,14 +7,15 @@
   home.activation.wrapDesktop =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
-        mkdir -p "${config.xdg.dataHome}/applications"
-        mkdir -p "${config.xdg.dataHome}/flatpak"
-        mkdir -p "${config.xdg.dataHome}/flatpak/overrides"
+        mkdir -p "${config.xdg.dataHome}"/{applications,flatpak/overrides}
 
         # --- Flatpak Override ---
-        winezgui_override_file="${config.xdg.dataHome}/flatpak/overrides/io.github.fastrizwaan.WineZGUI"
-        if [ ! -f "$winezgui_override_file" ]; then
-          echo -e "[Context]\nsockets=wayland" > "$winezgui_override_file"
+        winezgui_override="${config.xdg.dataHome}/flatpak/overrides/io.github.fastrizwaan.WineZGUI"
+        if [ ! -f "$winezgui_override" ]; then
+          cat > "$winezgui_override" <<EOF
+        [Context]
+        sockets=wayland
+        EOF
         fi
       '';
 }

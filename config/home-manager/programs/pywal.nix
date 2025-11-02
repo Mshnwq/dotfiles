@@ -5,103 +5,112 @@
   lib,
   ...
 }:
-{
+let
+  data = config.xdg.dataHome;
+  cfg = config.xdg.configHome;
+  cache = config.xdg.cacheHome;
 
-  home.packages = with pkgs; [
-    pywal16
-    pywalfox-native # do pywalfox install
-    highlight
-    catppuccin-whiskers # no need cursors has a *.nix
-    kdePackages.qtstyleplugin-kvantum
-    # TODO: automate this
-    # Plasma Style: Utterly-Round (follows color scheme)
-    # utterly-round-plasma-style # manually set
-    # Window Decorations: Utterly-Round-Dark (also follows color scheme)
-    # in kde settings
-    # Set Application Style to Kvantum if not already
-    # papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
-    papirus-folders # cli tool
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.roboto-mono
-    nerd-fonts.fira-mono
-    nerd-fonts.fira-code
-    nerd-fonts.inconsolata
-    nerd-fonts.symbols-only
-  ];
+  walCache = "${cache}/wal";
+  walLinks = {
+    "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
+    "kitty/custom-kitty.conf" = "${walCache}/custom-kitty.conf";
+    "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
+    "zathura/zathurarc" = "${walCache}/colors-zathura";
+    "waybar/colors-waybar.css" = "${walCache}/colors-waybar.css";
+    "alacritty/colors-alacritty.toml" = "${walCache}/colors-alacritty.toml";
+    "dunst/dunstrc" = "${walCache}/custom-dunstrc";
+    "cava/config" = "${walCache}/custom-cava";
+    "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
+    "rmpc/themes/custom-rmpc.ron" = "${walCache}/custom-rmpc.ron";
+    "btop/themes/pywal.theme" = "${walCache}/custom-btop.theme";
+    "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
+  };
+
+in
+{
+  home.packages =
+    with pkgs;
+    [
+      pywal16
+      pywalfox-native # do pywalfox install
+      highlight
+      catppuccin-whiskers # no need cursors has a *.nix
+      kdePackages.qtstyleplugin-kvantum
+      # TODO: automate this
+      # Plasma Style: Utterly-Round (follows color scheme)
+      # utterly-round-plasma-style # manually set
+      # Window Decorations: Utterly-Round-Dark (also follows color scheme)
+      # in kde settings
+      # Set Application Style to Kvantum if not already
+      # papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
+      papirus-folders # cli tool
+    ]
+    ++ (with pkgs.nerd-fonts; [
+      jetbrains-mono
+      roboto-mono
+      fira-mono
+      fira-code
+      inconsolata
+      symbols-only
+    ]);
 
   home.activation.linkWalTheme =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
-        mkdir -p "${config.xdg.configHome}/yazi"
-        mkdir -p "${config.xdg.configHome}/kitty"
-        mkdir -p "${config.xdg.configHome}/zathura"
-        mkdir -p "${config.xdg.configHome}/waybar"
-        mkdir -p "${config.xdg.configHome}/alacritty"
-        mkdir -p "${config.xdg.configHome}/dunst"
-        mkdir -p "${config.xdg.configHome}/cava"
-        mkdir -p "${config.xdg.configHome}/rofi"
-        mkdir -p "${config.xdg.configHome}/rmpc/themes"
-        mkdir -p "${config.xdg.configHome}/btop/themes"
-        mkdir -p "${config.xdg.configHome}/k9s/skins"
+        ${builtins.concatStringsSep "\n" (
+          builtins.map (
+            target:
+            let
+              dir = builtins.dirOf "${cfg}/${target}";
+            in
+            ''
+              mkdir -p "${dir}"
+              ln -sf "${walLinks.${target}}" "${cfg}/${target}"
+            ''
+          ) (builtins.attrNames walLinks)
+        )}
 
-        ln -sf "${config.xdg.cacheHome}/wal/custom-yazi.toml" "${config.xdg.configHome}/yazi/theme.toml"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-kitty.conf" "${config.xdg.configHome}/kitty/custom-kitty.conf"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-tmux.conf" "${config.xdg.configHome}/tmux/pywal.conf"
-        ln -sf "${config.xdg.cacheHome}/wal/colors-zathura" "${config.xdg.configHome}/zathura/zathurarc"
-        ln -sf "${config.xdg.cacheHome}/wal/colors-waybar.css" "${config.xdg.configHome}/waybar/colors-waybar.css"
-        ln -sf "${config.xdg.cacheHome}/wal/colors-alacritty.toml" "${config.xdg.configHome}/alacritty/colors-alacritty.toml"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-dunstrc" "${config.xdg.configHome}/dunst/dunstrc"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-cava" "${config.xdg.configHome}/cava/config"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-rofi.rasi" "${config.xdg.configHome}/rofi/shared.rasi"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-rmpc.ron" "${config.xdg.configHome}/rmpc/themes/custom-rmpc.ron"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-btop.theme" "${config.xdg.configHome}/btop/themes/pywal.theme"
-        ln -sf "${config.xdg.cacheHome}/wal/custom-k9s.yaml" "${config.xdg.configHome}/k9s/skins/pywal.yaml"
+        mkdir -p "${cfg}/Kvantum"
+        mkdir -p "${cache}/wal/Plasma"/{Pywal,PywalNT}
+        ln -sf "${cache}/wal/Plasma/Pywal" "${cfg}/Kvantum/Pywal"
+        ln -sf "${cache}/wal/Plasma/PywalNT" "${cfg}/Kvantum/PywalNT"
 
-        mkdir -p "${config.xdg.configHome}/Kvantum"
-        mkdir -p "${config.xdg.cacheHome}/wal/Plasma"
-        mkdir -p "${config.xdg.cacheHome}/wal/Plasma/Pywal"
-        ln -sf "${config.xdg.cacheHome}/wal/Plasma/Pywal" "${config.xdg.configHome}/Kvantum/Pywal"
-        mkdir -p "${config.xdg.cacheHome}/wal/Plasma/PywalNT"
-        ln -sf "${config.xdg.cacheHome}/wal/Plasma/PywalNT" "${config.xdg.configHome}/Kvantum/PywalNT"
-        mkdir -p "${config.xdg.dataHome}/color-schemes"
-        ln -sf "${config.xdg.cacheHome}/wal/Plasma/color-scheme.colors" "${config.xdg.dataHome}/color-schemes/Pywal.colors"
-        kvantum_file="${config.xdg.configHome}/Kvantum/kvantum.kvconfig"
+        mkdir -p "${data}/color-schemes"
+        ln -sf "${cache}/wal/Plasma/color-scheme.colors" "${data}/color-schemes/Pywal.colors"
+        kvantum_file="${cfg}/Kvantum/kvantum.kvconfig"
         if [ ! -f "$kvantum_file" ]; then
           echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings, partitionmanager" > "$kvantum_file"
         fi
 
         if [ ! -x "$HOME/.local/bin/wal-telegram" ]; then
-          /usr/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/colors.wt-constants > "$HOME/.local/bin/colors.wt-constants"
-          /usr/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/wal-telegram > "$HOME/.local/bin/wal-telegram"
+          ${pkgs.curl}/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/colors.wt-constants > "$HOME/.local/bin/colors.wt-constants"
+          ${pkgs.curl}/bin/curl -fsSL https://raw.githubusercontent.com/guillaumeboehm/wal-telegram/refs/heads/master/wal-telegram > "$HOME/.local/bin/wal-telegram"
           chmod +x "$HOME/.local/bin/wal-telegram"
           # Dont forget to set in telegram app to ~/.cache/wal/wal.tdesktop-theme
         fi
 
         if [ ! -d "$HOME/.build/cursors" ]; then
-          /usr/bin/git clone https://github.com/mshnwq/cursors $HOME/.build/cursors
+          ${pkgs.git}/bin/git clone https://github.com/mshnwq/cursors $HOME/.build/cursors
         fi
         mkdir -p "$HOME/.build/cursors/dist"
-        mkdir -p "${config.xdg.dataHome}/icons"
+        mkdir -p "${data}/icons"
         ln -sf "$HOME/.build/cursors/dist/catppuccin-mocha-pywal-cursors" \
             "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
-        mkdir -p "${config.xdg.cacheHome}/wal/cursors"
+        mkdir -p "${cache}/wal/cursors"
 
         if [ ! -d "$HOME/.build/qbittorrent" ]; then
-          /usr/bin/git clone https://github.com/catppuccin/qbittorrent $HOME/.build/qbittorrent
+          ${pkgs.git}/bin/git clone https://github.com/catppuccin/qbittorrent $HOME/.build/qbittorrent
           sed -i -e :a -e '$d;N;2,3ba' -e 'P;D' $HOME/.build/qbittorrent/tools/build
           echo 'rcc src/catppuccin-pywal/resources.qrc -o dist/catppuccin-pywal.qbtheme -binary' >> $HOME/.build/qbittorrent/tools/build
         fi
-        mkdir -p "${config.xdg.cacheHome}/wal/qbit"
-        mkdir -p "${config.xdg.cacheHome}/wal/qbit/icons"
-        mkdir -p "${config.xdg.cacheHome}/wal/qbit/icons/pwal"
-        mkdir -p "${config.xdg.cacheHome}/wal/qbit/catppuccin-pywal"
-        ln -sf "${config.xdg.cacheHome}/wal/qbit/catppuccin-pywal" \
+        mkdir -p "${cache}/wal/qbit"/{icons/pwal,catppuccin-pywal}
+        ln -sf "${cache}/wal/qbit/catppuccin-pywal" \
           "$HOME/.build/qbittorrent/src/catppuccin-pywal"
-        ln -sf "${config.xdg.cacheHome}/wal/qbit/icons/pywal" \
+        ln -sf "${cache}/wal/qbit/icons/pywal" \
           "$HOME/.build/qbittorrent/src/icons/pywal"
 
         if [ ! -d "$HOME/.build/shyfox" ]; then
-          /usr/bin/git clone https://github.com/mshnwq/shyfox $HOME/.build/shyfox
+          ${pkgs.git}/bin/git clone https://github.com/mshnwq/shyfox $HOME/.build/shyfox
           ln -sf "$HOME/.build/shyfox/ShyFox" \
               "$HOME/.mozilla/firefox/mshnwq.default/chrome/ShyFox"
           ln -sf "$HOME/.build/shyfox/icons" \
