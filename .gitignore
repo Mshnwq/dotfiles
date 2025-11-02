@@ -1,6 +1,3 @@
-
-**/*.swp
-**/.wall
 # Devenv
 .devenv*
 devenv.local.nix
@@ -12,5 +9,6 @@ devenv.local.nix
 .pre-commit-config.yaml
 
 **/conf.d/general.conf
-
+**/*.swp
+**/.wall
 .env
