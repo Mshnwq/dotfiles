@@ -82,7 +82,7 @@
                 left: [
                     (kind: Text("█"), style: (fg: "{color2}", modifiers: "Bold")),
                     (kind: Property(Status(StateV2(playing_label: " Playing ", paused_label: " Paused ", stopped_label: " Stopped "))), style: (fg: "{background}", bg: "{color2}", modifiers: "Bold")),
-                    (kind: Text(""), style: (fg: "{color2}" , modifiers: "Bold")),
+                    (kind: Text("█"), style: (fg: "{color2}" , modifiers: "Bold")),
                 ],
                 center: [
                     (kind: Property(Song(Title)), style: (fg: "{color3}", modifiers: "Bold"),
@@ -90,7 +90,7 @@
                     )
                 ],
                 right: [
-                    (kind: Text(""), style: (fg: "{color2}", modifiers: "Bold")),
+                    (kind: Text("█"), style: (fg: "{color2}", modifiers: "Bold")),
                     (kind: Text(" "), style: (bg: "{color2}", modifiers: "Bold")),
                     (kind: Property(Status(Elapsed)), style: (fg: "{background}", bg: "{color2}" , modifiers: "Bold")),
                     (kind: Text(" / "), style: (fg: "{background}", bg: "{color2}" , modifiers: "Bold")),
