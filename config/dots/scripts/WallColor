@@ -103,6 +103,12 @@ color_sddm() {
   log "Finished color_sddm"
 }
 
+color_obsidian() {
+  log "Starting color_obsidian"
+  sh -c "$HOME/.config/dots/scripts/executer/.wal_obsidian.sh" >>"$LOG_FILE"
+  log "Finished color_obsidian"
+}
+
 color_plasma() {
   log "Starting color_plasma"
   plasma-apply-colorscheme BreezeDark >>"$LOG_FILE" 2>&1
@@ -139,6 +145,7 @@ color_tmux
 color_nvchad
 # color_firefox
 color_telegram
+color_obsidian
 color_qbit
 color_sddm
 color_icons

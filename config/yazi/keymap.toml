@@ -139,6 +139,9 @@ keymap = [
 	{ on = [ "g", "t" ],       run = "cd ~/Downloads/Torrent",      desc = "Torrent" },
 	{ on = [ "g", "w" ],       run = "cd ~/.cache/wal",             desc = "Wal" },
 	{ on = [ "g", "n" ],       run = "cd /mnt/external/nas",        desc = "NAS" },
+	{ on = [ "g", "l" ],       run = "cd ~/.local",       		desc = ".local" },
+	{ on = [ "g", "o" ],       run = "cd ~/Documents/Obsidian", 	desc = "Obsidian" },
+	{ on = [ "g", "i" ],       run = "cd ~/Desktop/Infra", 		desc = "Infra" },
 	{ on = [ "g", "h" ],       run = "cd ~/.dotfiles/config/home-manager", desc = "home-manager" },
 	{ on = [ "g", "<Space>" ], run = "cd --interactive",            desc = "Jump interactively" },
 

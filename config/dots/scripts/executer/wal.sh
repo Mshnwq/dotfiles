@@ -7,6 +7,7 @@
 #rmpc
 #sddm
 #telegram
+#obsidian
 #tmux
 #wojak
 #yazi
