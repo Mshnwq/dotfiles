@@ -74,6 +74,7 @@ args@{
       programs.vim
       programs.neovim
       programs.firefox
+      programs.obsidian
       programs.pass
       programs.auto
       programs.music

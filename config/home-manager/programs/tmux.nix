@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
   tmux-dracula = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "dracula";

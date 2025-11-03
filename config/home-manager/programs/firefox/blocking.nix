@@ -13,8 +13,11 @@
 # it is probably not necessary because of the aggregate list that is added,
 # and it is definitely not worth breaking sites for your average user.
 profile:
-{ lib, pkgs, ... }:
-
+{
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (pkgs.nur.repos.rycee) firefox-addons;
 in

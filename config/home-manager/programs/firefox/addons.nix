@@ -1,4 +1,7 @@
-{ lib, buildFirefoxXpiAddon }:
+{
+  lib,
+  buildFirefoxXpiAddon,
+}:
 {
   duplicate-tab-shortcut =
     let

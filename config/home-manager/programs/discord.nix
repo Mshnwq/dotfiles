@@ -11,7 +11,13 @@ in
 {
 
   stable =
-    { pkgs, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      inputs,
+      ...
+    }:
     let
       binaryName = "Discord";
       package =
@@ -33,6 +39,16 @@ in
         package
         pkgs.betterdiscordctl
       ];
+      home.activation.wrapDiscordNixGL =
+        inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+          ''
+            mkdir -p "${config.xdg.dataHome}/applications"
+            discord_desktop="${config.xdg.dataHome}/applications/discord.desktop"
+            if [ ! -f "$discord_desktop" ]; then
+              cp ${package}/share/applications/discord.desktop "$discord_desktop"
+              sed -i 's|^Exec=.*|Exec=nixGLIntel ${binaryName}|' "$discord_desktop"
+            fi
+          '';
     };
 
   canary =
