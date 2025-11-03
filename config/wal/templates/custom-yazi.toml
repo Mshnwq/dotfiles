@@ -18,9 +18,10 @@ border_symbol = "│"
 border_style  = {{ fg = "{foreground}" }}
 syntect_theme = ""
 
+
 [tabs]
-sep_inner = {{ open = "", close = "" }}
-sep_outer = {{ open = "", close = "" }}
+sep_inner = {{ open = "", close = "" }}
+sep_outer = {{ open = "", close = "" }}
 active   = {{ fg = "{background}", bg = "{color11}", bold = true }}
 inactive = {{ fg = "{background}", bg = "{color8}" }}
 
@@ -29,8 +30,8 @@ normal_main = {{ fg = "{background}", bg = "{color11}", bold = true }}
 normal_alt = {{ fg = "{background}", bg = "{color8}" }}
 
 [status]
-sep_right = {{ open = "", close = "" }}
-sep_left = {{ open = "", close = "" }}
+sep_right = {{ open = "", close = "" }}
+sep_left = {{ open = "", close = "" }}
 mode_select = {{ bg = "{color8}", bold = true }}
 mode_unset  = {{ bg = "{color8}", bold = true }}
 progress_label  = {{ bold = true }}
