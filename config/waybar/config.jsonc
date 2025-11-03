@@ -270,7 +270,7 @@
   "disk": {
     "interval": 30,
     "format": "  {percentage_used}%",
-    "path": "/"
+    "path": "/sysroot"
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",

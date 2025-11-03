@@ -100,6 +100,12 @@
           }
           zle -N zle_refresh_p10k
           bindkey "^E" zle_refresh_p10k
+          bindkey -r '^P'
+          function zle_get_cwd {
+              zle_eval "pwd | wl-copy"
+          }
+          zle -N zle_get_cwd
+          bindkey "^P" zle_get_cwd
           bindkey '^[[A' history-substring-search-up
           bindkey '^[[B' history-substring-search-down
           bindkey '^R' fzf-history-widget
