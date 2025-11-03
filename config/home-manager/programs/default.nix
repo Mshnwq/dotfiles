@@ -16,15 +16,29 @@ args@{
       inputs.devenv.packages.x86_64-linux.devenv
     ];
   };
+
   # automation tools
   auto = {
     home.packages = with pkgs; [
       yt-dlp
       gallery-dl
       jdupes
-      nurl
       buku
       nmap
+    ];
+  };
+
+  # keyboard
+  qmk = {
+    home.packages = with pkgs; [
+      vial
+    ];
+  };
+
+  # language
+  anki = {
+    home.packages = with pkgs; [
+      anki
     ];
   };
 }
