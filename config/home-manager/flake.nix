@@ -29,7 +29,7 @@
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nixgl.url = "github:nix-community/nixGL";
     nur.url = "github:nix-community/NUR";
-    devenv.url = "github:cachix/devenv";
+    devenv.url = "github:cachix/devenv/v1.10";
     nvchad-starter = {
       url = "github:Mshnwq/nvchad?ref=main";
       #url = "github:Mshnwq/nvchad?ref=a39d66ea3c8e0ce603e661688164fc4d49a30d16";

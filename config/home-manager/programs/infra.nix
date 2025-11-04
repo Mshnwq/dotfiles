@@ -30,7 +30,6 @@ in
     #argocd
     #rainfrog
     rclone
-    #minio-client
     virt-manager
     podman-compose
     lazydocker
@@ -49,8 +48,6 @@ in
     KUBECONFIG = "${config.xdg.configHome}/kube";
     KUBECACHEDIR = "${config.xdg.cacheHome}/kube";
     # DOCKER_HOST = unix://$XDG_RUNTIME_DIR/podman/podman.sock;
-    # instead of ~/.mc or ~/.mcli
-    # MC_CONFIG_DIR = "${config.xdg.configHome}/minio-client";
     # AZURE_CONFIG_DIR=$XDG_CONFIG_HOME/azure
   };
 }
