@@ -46,7 +46,7 @@ in
   # Custom wrapper for firefox
   home.file.".local/bin/Firefox".text = ''
     #!/usr/bin/env bash
-    exec env MOZ_USE_XINPUT2=1 nixGLIntel firefox "$@"
+    exec env LIBVA_DRIVER_NAME="i965" MOZ_USE_XINPUT2=1 nixGLIntel firefox "$@"
   '';
   home.file.".local/bin/Firefox".executable = true;
 
@@ -56,6 +56,7 @@ in
 
   # only need pywalfax --install and sidebery load addons and untrap
   programs.firefox.enable = true;
+  programs.firefox.package = pkgs.firefox;
 
   imports = [ (import ./blocking.nix profile) ];
 
