@@ -27,6 +27,8 @@ in
     extensions.packages = with firefox-addons; [
       localcdn
       ublock-origin
+      # i-dont-care-about-cookies
+      user-agent-string-switcher
     ];
 
     settings."uBlock0@raymondhill.net" =
@@ -124,7 +126,7 @@ in
             "ublock-filters"
             "ublock-badware"
             "ublock-privacy"
-            "ublock-quick-fixes"
+            # "ublock-quick-fixes" # BUG: broke youtube
             "ublock-unbreak"
             # Ads
             "easylist"
@@ -136,7 +138,11 @@ in
             "urlhaus-1"
             "curben-phishing"
             "curben-pup"
+            # Multipurpose
+            "dpollock-0"
+            "plowe-0"
             # Annoyances
+            # NOTE: i-dont-care-about-cookies addon?
             "adguard-annoyance"
             "adguard-cookies"
             "adguard-mobile-app-banners"
@@ -148,9 +154,6 @@ in
             "fanboy-social"
             "ublock-annoyances"
             "easylist-newsletters"
-            # Multipurpose
-            "dpollock-0"
-            "plowe-0"
             # Custom
             stevenBlackHosts
           ];
