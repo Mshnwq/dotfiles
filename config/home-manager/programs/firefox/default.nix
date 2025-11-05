@@ -58,7 +58,10 @@ in
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox;
 
-  imports = [ (import ./blocking.nix profile) ];
+  imports = [
+    (import ./blocking.nix profile)
+    (import ./shyfox.nix profile)
+  ];
 
   home.packages = [ pkgs.firefoxpwa ];
   programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
@@ -68,26 +71,10 @@ in
     isDefault = true;
     name = profileName;
 
-    # real bullshit
-    userChrome = ''
-      @import url("ShyFox/shy-variables.css");
-      @import url("ShyFox/shy-global.css");
-      @import url("ShyFox/shy-sidebar.css");
-      @import url("ShyFox/shy-toolbar.css");
-      @import url("ShyFox/shy-navbar.css");
-      @import url("ShyFox/shy-findbar.css");
-      @import url("ShyFox/shy-controls.css");
-      @import url("ShyFox/shy-compact.css");
-      @import url("ShyFox/shy-icons.css");
-      @import url("ShyFox/shy-floating-search.css");
-    '';
-    userContent = ''
-      @import url("ShyFox/content/shy-new-tab.css");
-      @import url("ShyFox/content/shy-sidebery.css");
-      @import url("ShyFox/content/shy-about.css");
-      @import url("ShyFox/content/shy-global-content.css");
-      @import url("ShyFox/shy-variables.css");
-    '';
+    # Clobber unconditionally, `./search-engines.nix` is source of truth.
+    search.force = true;
+    search.default = "ddg";
+    search.engines = import ./search-engines.nix { inherit lib; };
 
     settings = {
       # Do not require manual intervention to enable extensions.
@@ -104,21 +91,33 @@ in
       # remove machine learning
       "extensions.ml.enabled" = false;
       "browser.ml.chat.enabled" = false;
+      # Don't show blue dot to notify about AI chat.
+      "sidebar.notification.badge.aichat" = false;
 
-      # Theme
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      # TODO: new tab page pin sites SOP secret
+      "browser.newtabpage.pinned" =
+        ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://chatgpt.com/","baseDomain":"chatgpt.com"},{"url":"https://github.com/","baseDomain":"github.com"},{"url":"https://www.reddit.com/","baseDomain":"reddit.com"}]'';
+
+      "browser.shell.checkDefaultBrowser" = false;
       "browser.download.autohideButton" = false;
-      "browser.tabs.groups.smart.enabled" = false;
-      ### ShyFox ###
-      "sidebar.revamp" = false;
-      "layout.css.has-selector.enabled" = true;
-      "browser.urlbar.suggest.calculator" = true;
-      "browser.urlbar.unitConversion.enabled" = true;
-      "browser.urlbar.trimHttps" = true;
-      "browser.urlbar.trimURLs" = true;
-      "widget.gtk.rounded-bottom-corners.enabled" = true;
-      "widget.gtk.ignore-bogus-leave-notify" = 1;
-      "svg.context-properties.content.enabled" = true;
+
+      # No sponsored suggestions.
+      "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+
+      # Allow playing DRM-controlled content.
+      "media.eme.enabled" = true;
+
+      # Tell websites not to sell or share my data.
+      "privacy.globalprivacycontrol.enabled" = true;
+
+      # Disable "Firefox Labs" because I'm afraid of it messing with extensions and user chrome.
+      # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
+      "app.shield.optoutstudies.enabled" = false;
+
+      # <https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
+      "widget.use-xdg-desktop-portal.file-picker" = 1;
+      "widget.use-xdg-desktop-portal.mime-handler" = 1;
+      "widget.use-xdg-desktop-portal.open-uri" = 1;
 
       # other
       "browser.tabs.inTitlebar" = 0;
@@ -132,10 +131,6 @@ in
       "datareporting.healthreport.uploadEnabled" = false;
       "browser.urlbar.suggest.recentsearches" = false;
       "browser.urlbar.suggest.searches" = false;
-
-      # TODO: new tab page pin sites SOP secret
-      "browser.newtabpage.pinned" =
-        ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://chatgpt.com/","baseDomain":"chatgpt.com"},{"url":"https://github.com/","baseDomain":"github.com"},{"url":"https://www.reddit.com/","baseDomain":"reddit.com"}]'';
     };
 
     extensions.packages =
@@ -174,10 +169,8 @@ in
         }) # TODO: import scripts from dotfiles SOP secrets
 
         # TODO:
-        # rycee.web-clipper-obsidian
-        # rycee.keepassxc-browser
-
-        # only missing enhancer-for-youtube  # Discontinued :(
+        # web-clipper-obsidian
+        # keepassxc-browser
       ]
       ++ (with extensions.custom; [
         duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
