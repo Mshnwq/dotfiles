@@ -1,4 +1,8 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  ...
+}:
 let
   system = pkgs.system;
   #pkgs-fork = import inputs.nixpkgs-fork {
@@ -15,6 +19,7 @@ in
   home.packages = with pkgs; [
     yazi
     trash-cli
+    mediainfo
   ];
   programs.yazi = {
     enable = true;
@@ -26,6 +31,8 @@ in
       jump-to-char = "${yazi-plugins}/jump-to-char.yazi";
 
       dupes = pkgs.yaziPlugins.dupes;
+
+      mediainfo = pkgs.yaziPlugins.mediainfo;
 
       relative-motions = pkgs.fetchFromGitHub {
         owner = "dedukun";
