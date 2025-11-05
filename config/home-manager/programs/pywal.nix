@@ -108,14 +108,6 @@ in
         ln -sf "${cache}/wal/qbit/icons/pywal" \
           "$HOME/.build/qbittorrent/src/icons/pywal"
 
-        if [ ! -d "$HOME/.build/shyfox" ]; then
-          ${pkgs.git}/bin/git clone https://github.com/mshnwq/shyfox $HOME/.build/shyfox
-          ln -sf "$HOME/.build/shyfox/ShyFox" \
-              "$HOME/.mozilla/firefox/mshnwq.default/chrome/ShyFox"
-          ln -sf "$HOME/.build/shyfox/icons" \
-              "$HOME/.mozilla/firefox/mshnwq.default/chrome/icons"
-        fi
-
         #if [ ! -d "$HOME/.local/share/icons/Papirus" ]; then
           # TODO: /usr/bin/curl -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh
         #fi
