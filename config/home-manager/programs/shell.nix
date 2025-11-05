@@ -10,16 +10,9 @@
     zoxide
     util-linux
   ];
-
   home.sessionVariables = {
     FZF_PATH = "${config.xdg.configHome}/fzf";
   };
-  # home.file.".local/bin/fzf".text = ''
-  #   #!/usr/bin/env bash
-  #   FZF_PATH="${config.xdg.configHome}/fzf"
-  #   ${pkgs.fzf}/bin/fzf "$@"
-  # '';
-  # home.file.".local/bin/fzf".executable = true;
   home.file = {
     "${config.xdg.configHome}/fzf/shell".source = pkgs.runCommand "fzf-shell" { } ''
       cp -r ${
@@ -121,6 +114,7 @@
           source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
           source $ZDOTDIR/.p10k.zsh
           source ${config.xdg.cacheHome}/wal/custom-fzf.sh
+          zstyle ':fzf-tab:*' use-fzf-default-opts yes
           # only show error
           export DIRENV_LOG_FORMAT=
           eval "$(direnv hook zsh)"
