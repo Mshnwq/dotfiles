@@ -25,6 +25,7 @@ in
     ];
   home.packages = with pkgs; [
     kubectl
+    kubectx
     k9s
     velero
     #argocd

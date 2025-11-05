@@ -115,6 +115,7 @@
           source $ZDOTDIR/.p10k.zsh
           source ${config.xdg.cacheHome}/wal/custom-fzf.sh
           zstyle ':fzf-tab:*' use-fzf-default-opts yes
+          zstyle ':fzf-tab:*' switch-group '<' '>'
           # only show error
           export DIRENV_LOG_FORMAT=
           eval "$(direnv hook zsh)"

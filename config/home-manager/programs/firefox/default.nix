@@ -169,6 +169,7 @@ in
         }) # TODO: import scripts from dotfiles SOP secrets
 
         # TODO:
+        vimium
         # web-clipper-obsidian
         # keepassxc-browser
       ]
