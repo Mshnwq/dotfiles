@@ -4,6 +4,7 @@
 
 alias chmox='chmod +x'
 alias dev='devenv shell $SHELL'
+alias ...='cd ../..'
 
 # Program renames
 alias py='python'

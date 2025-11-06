@@ -168,8 +168,8 @@ in
           meta.license.free = true;
         }) # TODO: import scripts from dotfiles SOP secrets
 
-        # TODO:
         vimium
+        # TODO:
         # web-clipper-obsidian
         # keepassxc-browser
       ]
