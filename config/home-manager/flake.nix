@@ -31,8 +31,7 @@
     nur.url = "github:nix-community/NUR";
     devenv.url = "github:cachix/devenv/v1.10";
     nvchad-starter = {
-      # url = "github:Mshnwq/nvchad/main";
-      url = "github:Mshnwq/nvchad/33c83cf09f6c8ba47c8a9ed8008e7e974d4c6cd8";
+      url = "github:Mshnwq/nvchad/main";
       flake = false;
     };
     nix4nvchad = {

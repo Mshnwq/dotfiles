@@ -120,7 +120,5 @@ in
   # DistroShelf  (flatpak)
   # FlatSeal     (flatpak)
   # Warehouse    (flatpak)
-  # Other:
-  # Obsidian  (nix)      # https://github.com/Schweem/Pywal-Obsidian
 }
 # https://nix.catppuccin.com/getting-started/flakes/

@@ -68,6 +68,7 @@
     Install = { }; # empty so it won’t auto-start
   };
 
+  # TODO: inject SoPS
   programs.beets = {
     # enable = true;
     enable = false;

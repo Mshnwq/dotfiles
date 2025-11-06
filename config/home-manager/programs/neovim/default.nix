@@ -48,7 +48,7 @@ in
         dockerfile-language-server
         hadolint
 
-        # TODO / additional tools
+        # TODO: additional tools
         yamllint
         kics
       ]

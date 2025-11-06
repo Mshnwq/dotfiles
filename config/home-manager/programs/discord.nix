@@ -1,7 +1,7 @@
 let
   bdAddonsDrv =
-    { pkgs, fetchFromGitHub }:
-    fetchFromGitHub {
+    { pkgs, ... }:
+    pkgs.fetchFromGitHub {
       owner = "mwittrien";
       repo = "BetterDiscordAddons";
       rev = "e3f2e5b27efca0e4893ebb7779b9c28a86d07651";
@@ -9,7 +9,6 @@ let
     };
 in
 {
-
   stable =
     {
       pkgs,
@@ -50,7 +49,6 @@ in
             fi
           '';
     };
-
   canary =
     {
       pkgs,

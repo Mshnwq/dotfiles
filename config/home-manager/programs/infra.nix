@@ -5,11 +5,13 @@
   ...
 }:
 let
+  # TODO: migrate to devenv modulized monorepo opentofu
   terraform = pkgs.terraform.overrideAttrs (old: {
     meta = old.meta // {
       license = lib.licenses.unfree;
     };
   });
+  # TODO: what to do?
   veracrypt = pkgs.veracrypt.overrideAttrs (old: {
     meta = old.meta // {
       license = lib.licenses.unfree;
@@ -28,8 +30,6 @@ in
     kubectx
     k9s
     velero
-    #argocd
-    #rainfrog
     rclone
     virt-manager
     podman-compose

@@ -1,10 +1,10 @@
 {
   pkgs,
-  inputs,
+  # inputs,
   ...
 }:
 let
-  system = pkgs.system;
+  # system = pkgs.system;
   #pkgs-fork = import inputs.nixpkgs-fork {
   #  inherit system;
   #};
