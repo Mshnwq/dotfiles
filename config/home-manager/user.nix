@@ -6,10 +6,16 @@ args@{
   pkgs,
   ...
 }:
+let
+  username = "mshnwq";
+in
 {
-  home.username = "mshnwq";
-  home.homeDirectory = "/home/mshnwq";
+  home.username = username;
+  home.homeDirectory = "/home/${config.home.username}";
   home.stateVersion = "25.05";
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
 
   targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS
 
@@ -24,18 +30,13 @@ args@{
     zathura
   ];
 
-  xdg.enable = true; # https://wiki.archlinux.org/title/XDG_Base_Directory
+  # https://wiki.archlinux.org/title/XDG_Base_Directory
+  xdg.enable = true;
+
   # home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
   home.sessionVariables = {
     # NIX_PROFILE_DIR = "${config.home.homeDirectory}/.nix-profile";
     # NIX_PROFILE_DIR = "$HOME/.local/share/nix/profile";
-    EDITOR = "vim";
-    VISUAL = "vim";
-    LANG = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-    TERM = "xterm-256color";
-    DISABLE_AUTO_TITLE = "true";
-    TERMINFO = "/usr/share/terminfo/";
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
     GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
@@ -54,13 +55,19 @@ args@{
     # XPROFILE = "${config.xdg.configHome}/x11/xprofile";
     # XRESOURCES = "${config.xdg.configHome}/x11/xresources";
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
   # TODO: clean this mess up
-  # https://wiki.archlinux.org/title/XDG_Base_Directory
   # nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings
   # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
+
+  home.sessionVariables = {
+    EDITOR = "vim";
+    VISUAL = "vim";
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    TERM = "xterm-256color";
+    TERMINFO = "/usr/share/terminfo/";
+    DISABLE_AUTO_TITLE = "true";
+  };
 
   imports =
     let
