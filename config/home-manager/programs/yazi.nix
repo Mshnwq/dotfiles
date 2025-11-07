@@ -1,13 +1,8 @@
 {
   pkgs,
-  # inputs,
   ...
 }:
 let
-  # system = pkgs.system;
-  #pkgs-fork = import inputs.nixpkgs-fork {
-  #  inherit system;
-  #};
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";

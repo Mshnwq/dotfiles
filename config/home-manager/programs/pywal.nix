@@ -25,6 +25,10 @@ let
     "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
   };
 
+  system = pkgs.system;
+  pkgs-stable = import inputs.nixpkgs-stable {
+    inherit system;
+  };
 in
 {
   home.packages =
@@ -32,7 +36,6 @@ in
     [
       pywal16
       pywalfox-native # do pywalfox install
-      highlight
       catppuccin-whiskers # no need cursors has a *.nix
       kdePackages.qtstyleplugin-kvantum
       # TODO: automate this
@@ -44,6 +47,7 @@ in
       # papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
       papirus-folders # cli tool
     ]
+    ++ [ pkgs-stable.highlight ]
     ++ (with pkgs.nerd-fonts; [
       jetbrains-mono
       roboto-mono

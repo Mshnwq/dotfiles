@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   ...
 }:
@@ -65,18 +66,23 @@ in
       };
     };
   };
-  xdg.desktopEntries.obsidian-nix = {
-    name = "Obsidian (nix)";
+  xdg.desktopEntries.obsidian = {
+    name = "Obsidian";
     exec = "Obsidian %u";
     icon = "obsidian";
     categories = [ "Utility" ];
     type = "Application";
     startupNotify = true;
+    mimeType = [
+      "x-scheme-handler/obsidian"
+    ];
   };
-  # Custom wrapper for Obsidian
-  home.file.".local/bin/Obsidian".text = ''
-    #!/usr/bin/env bash
-    exec nixGLIntel obsidian "$@" --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations
-  '';
-  home.file.".local/bin/Obsidian".executable = true;
+  imports = [
+    (lib.nixgl.mkNixGLWrapper {
+      name = "Obsidian";
+      command = "obsidian";
+      nixGLVariant = "nixGLIntel";
+      extraArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations";
+    })
+  ];
 }

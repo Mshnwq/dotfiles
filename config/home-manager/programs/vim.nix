@@ -16,12 +16,14 @@
     # ];
   };
   # https://github.com/vim/vim/issues/5157
-  home.file.".local/bin/vim".text = ''
-    #!/usr/bin/env bash
-    unset XDG_SEAT
-    exec ${config.programs.vim.package}/bin/vim "$@"
-  '';
-  home.file.".local/bin/vim".executable = true;
+  home.file.".local/bin/vim" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      unset XDG_SEAT
+      exec ${config.programs.vim.package}/bin/vim "$@"
+    '';
+  };
   # vim binary order nix > user > system
 }
 

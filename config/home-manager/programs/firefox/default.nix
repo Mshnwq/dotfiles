@@ -17,10 +17,9 @@ let
   };
 in
 {
-
   xdg.desktopEntries.firefox-nix = {
-    name = "Firefox (nix)";
-    exec = "env MOZ_USE_XINPUT2=1 nixGLIntel firefox %u";
+    name = "Firefox";
+    exec = "Firefox %u";
     icon = "firefox";
     categories = [
       "Network"
@@ -43,13 +42,6 @@ in
     ];
   };
 
-  # Custom wrapper for firefox
-  home.file.".local/bin/Firefox".text = ''
-    #!/usr/bin/env bash
-    exec env LIBVA_DRIVER_NAME="i965" MOZ_USE_XINPUT2=1 nixGLIntel firefox "$@"
-  '';
-  home.file.".local/bin/Firefox".executable = true;
-
   home.sessionVariables = {
     BROWSER = "firefox";
   };
@@ -61,6 +53,12 @@ in
   imports = [
     (import ./blocking.nix profile)
     (import ./shyfox.nix profile)
+    (lib.nixgl.mkNixGLWrapper {
+      name = "Firefox";
+      command = "firefox";
+      nixGLVariant = "nixGLIntel";
+      envVars = "LIBVA_DRIVER_NAME=\"i965\" MOZ_USE_XINPUT2=1";
+    })
   ];
 
   home.packages = [ pkgs.firefoxpwa ];

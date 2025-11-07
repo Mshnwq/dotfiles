@@ -1,19 +1,16 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
-
-  # TODO: test out nixGL
-
   home.packages = with pkgs; [
     mpv
     jellyfin-mpv-shim # TODO:
   ];
-
-  xdg.desktopEntries.mpv-nix = {
-    name = "MPV (nix)";
-    exec = "nixGL mpv %u";
+  xdg.desktopEntries.mpv = {
+    name = "MPV";
+    exec = "Mpv %u";
     icon = "mpv";
     categories = [ "Utility" ];
     type = "Application";
@@ -141,11 +138,11 @@
       "audio/m3u"
     ];
   };
-
-  # Custom wrapper for mpv
-  home.file.".local/bin/Mpv".text = ''
-    #!/usr/bin/env bash
-    exec nixGL mpv "$@"
-  '';
-  home.file.".local/bin/Mpv".executable = true;
+  imports = [
+    (lib.nixgl.mkNixGLWrapper {
+      name = "Mpv";
+      command = "mpv";
+      extraArgs = "--player-operation-mode=pseudo-gui";
+    })
+  ];
 }
