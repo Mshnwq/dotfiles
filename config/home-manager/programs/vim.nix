@@ -8,6 +8,7 @@
     enable = true;
     packageConfigurable = pkgs.vim-full;
     extraConfig = ''
+      set viminfo+=n~/.config/viminfo
       autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
     '';
     # plugins = with pkgs.vimPlugins; [

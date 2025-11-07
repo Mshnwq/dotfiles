@@ -9,6 +9,7 @@ let
   cfg = config.programs.firefox;
 in
 {
+  # home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.shyfox;
   home.activation.shyfoxTheme =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
