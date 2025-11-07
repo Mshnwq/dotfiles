@@ -77,10 +77,8 @@ in
       user = lib.importDir' ./. "user.nix";
       programs = user.programs args;
     in
+    with programs;
     [
-      inputs.sops-nix.homeManagerModules.sops
-    ]
-    ++ (with programs; [
       devenv
       mpv
       qmk
@@ -103,14 +101,19 @@ in
       # anki
       discord.stable
       # discord.canary
-    ]);
+    ]
+    ++ [
+      inputs.sops-nix.homeManagerModules.sops
+    ];
 
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
-      glim-token = { };
+      glim-token = {
+        mode = "0400";
+      };
     };
   };
 }
