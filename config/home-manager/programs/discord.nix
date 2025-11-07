@@ -7,6 +7,48 @@ let
       rev = "e3f2e5b27efca0e4893ebb7779b9c28a86d07651";
       hash = "sha256-TJjTUpk4BnPbghYjqEj/goTryqWqi8O82TSoDUlPiTc=";
     };
+
+  # Reusable function to wrap Discord variants
+  mkDiscordVariant =
+    {
+      pkgs,
+      config,
+      inputs,
+      binaryName,
+      desktopFileName,
+      iconName,
+      basePackage,
+      packageOverrides ? { },
+    }:
+    let
+      package = (basePackage.override packageOverrides).overrideAttrs ({
+        postFixup = ''
+          wrapProgram $out/opt/${binaryName}/${binaryName} \
+            --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations"
+        '';
+      });
+    in
+    {
+      home.packages = [
+        package
+        pkgs.betterdiscordctl
+      ];
+
+      # Create desktop entry with nixGL wrapper
+      xdg.desktopEntries.${desktopFileName} = {
+        name = binaryName;
+        exec = "nixGLIntel ${binaryName} %u";
+        icon = "${iconName}";
+        type = "Application";
+        categories = [
+          "Network"
+          "InstantMessaging"
+        ];
+        settings = {
+          StartupWMClass = binaryName;
+        };
+      };
+    };
 in
 {
   stable =
@@ -17,38 +59,17 @@ in
       inputs,
       ...
     }:
-    let
+    mkDiscordVariant {
+      inherit pkgs config inputs;
       binaryName = "Discord";
-      package =
-        (pkgs.discord.override {
-          # <https://github.com/GooseMod/OpenAsar>
-          withOpenASAR = true;
-        }).overrideAttrs
-          ({
-            # why is this missing?
-            # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/instant-messengers/discord/linux.nix#L99>
-            postFixup = ''
-              wrapProgram $out/opt/${binaryName}/${binaryName} \
-                --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations" \
-            '';
-          });
-    in
-    {
-      home.packages = [
-        package
-        pkgs.betterdiscordctl
-      ];
-      home.activation.wrapDiscordNixGL =
-        inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
-          ''
-            mkdir -p "${config.xdg.dataHome}/applications"
-            discord_desktop="${config.xdg.dataHome}/applications/discord.desktop"
-            if [ ! -f "$discord_desktop" ]; then
-              cp ${package}/share/applications/discord.desktop "$discord_desktop"
-              sed -i 's|^Exec=.*|Exec=nixGLIntel ${binaryName}|' "$discord_desktop"
-            fi
-          '';
+      desktopFileName = "discord";
+      iconName = "discord";
+      basePackage = pkgs.discord;
+      packageOverrides = {
+        withOpenASAR = true;
+      };
     };
+
   canary =
     {
       pkgs,
@@ -57,42 +78,19 @@ in
       inputs,
       ...
     }:
-    let
+    mkDiscordVariant {
+      inherit pkgs config inputs;
       binaryName = "DiscordCanary";
-      package =
-        (pkgs.discord-canary.override {
-          # <https://github.com/GooseMod/OpenAsar>
-          withOpenASAR = true;
-          # fix for not respecting system browser
-          nss = pkgs.nss_latest;
-        }).overrideAttrs
-          ({
-            # why is this missing?
-            # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/instant-messengers/discord/linux.nix#L99>
-            postFixup = ''
-              wrapProgram $out/opt/${binaryName}/${binaryName} \
-                --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations" \
-            '';
-          });
-      bdAddons = pkgs.callPackage bdAddonsDrv { };
-    in
-    {
-      home.packages = [
-        package
-        pkgs.betterdiscordctl
-      ];
-      home.activation.wrapDiscordCanaryNixGL =
-        inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
-          ''
-            mkdir -p "${config.xdg.dataHome}/applications"
-            discord_desktop="${config.xdg.dataHome}/applications/discord-canary.desktop"
-            if [ ! -f "$discord_desktop" ]; then
-              cp ${package}/share/applications/discord-canary.desktop "$discord_desktop"
-              sed -i 's|^Exec=.*|Exec=nixGLIntel ${binaryName}|' "$discord_desktop"
-            fi
-          '';
-      # NOTE: do this after for theme
-      # betterdiscordctl -i traditional -f 'canary' install
-      # ln -sf "$XDG_CACHE_HOME/wal/custom-discord.theme.css" "$XDG_CONFIG_HOME/BetterDiscord/themes/custom-discord.theme.css"
+      desktopFileName = "discord-canary";
+      iconName = "discord-canary";
+      basePackage = pkgs.discord-canary;
+      packageOverrides = {
+        withOpenASAR = true;
+        nss = pkgs.nss_latest;
+      };
     };
 }
+
+# NOTE: do this after for theme
+# betterdiscordctl -i traditional -f 'canary' install
+# ln -sf "$XDG_CACHE_HOME/wal/custom-discord.theme.css" "$XDG_CONFIG_HOME/BetterDiscord/themes/custom-discord.theme.css"
