@@ -1,3 +1,4 @@
+# flake.nix
 {
   description = "Mshnwq Home Manager configuration";
 
@@ -49,10 +50,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nvchad-starter.follows = "nvchad-starter";
     };
-    # sops-nix = {
-    #   url = "github:mic92/sops-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

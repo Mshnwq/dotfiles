@@ -1,0 +1,7 @@
+# .sops.yaml
+keys: 
+  - &bazzite age1gnmqucyk3vgkk4zu9rwkywnn5s6u6qk5z28akreujs0hhy4aggaszpxcvc
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+        - *bazzite

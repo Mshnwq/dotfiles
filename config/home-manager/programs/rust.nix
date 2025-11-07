@@ -1,3 +1,4 @@
+# programs/rust.nix
 {
   pkgs,
   ...
@@ -41,7 +42,7 @@ in
           let
             configFile = pkgs.writeText "glim.toml" ''
               gitlab_url = "https://gitlab.com/api/v4"
-              gitlab_token = ""
+              gitlab_token = "${config.sops.secrets."glim-token"}"
             '';
           in
           ''

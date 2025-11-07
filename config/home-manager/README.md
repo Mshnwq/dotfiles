@@ -1,3 +1,6 @@
+
+https://zohaib.me/managing-secrets-in-nixos-home-manager-with-sops/
+
 # If you can't find `systemd-resolved`, here's how to check if it's **installed**, **running**, and how to **configure or disable** it.
 #
 # ---
