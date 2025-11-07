@@ -29,6 +29,8 @@ in
     simple-mtpfs
     lm_sensors
     zathura
+    sops
+    age
   ];
 
   # https://wiki.archlinux.org/title/XDG_Base_Directory
@@ -76,27 +78,39 @@ in
       programs = user.programs args;
     in
     [
-      programs.devenv
-      programs.mpv
-      programs.qmk
-      programs.vim
-      programs.neovim
-      programs.firefox
-      programs.obsidian
-      programs.pass
-      programs.auto
-      programs.music
-      programs.shell
-      programs.tmux
-      programs.yazi
-      programs.pywal
-      programs.rust
-      programs.infra
-      programs.mime
-      programs.hypr
-      programs.flat
-      # programs.anki
-      programs.discord.stable
-      # programs.discord.canary
-    ];
+      inputs.sops-nix.homeManagerModules.sops
+    ]
+    ++ (with programs; [
+      devenv
+      mpv
+      qmk
+      vim
+      neovim
+      firefox
+      obsidian
+      pass
+      auto
+      music
+      shell
+      tmux
+      yazi
+      pywal
+      rust
+      infra
+      mime
+      hypr
+      flat
+      # anki
+      discord.stable
+      # discord.canary
+    ]);
+
+  sops = {
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    secrets = {
+      glim-token = { };
+    };
+  };
 }

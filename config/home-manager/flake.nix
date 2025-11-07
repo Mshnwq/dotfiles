@@ -91,6 +91,9 @@
       #     ({ isNix, isHidden, hasNixFiles, hasDefault, ... }:
       #       isNix && !isHidden && !(hasNixFiles && !hasDefault)));
 
+      home-manager.sharedModules = [
+        inputs.sops-nix.homeManagerModules.sops
+      ];
       homeConfigurations."mshnwq" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           system = "x86_64-linux";

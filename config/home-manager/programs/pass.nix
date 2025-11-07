@@ -5,7 +5,6 @@
   ...
 }:
 {
-
   # TODO: hide share one
   xdg.desktopEntries.keepassxc-nix = {
     name = "KeePassXC (nix)";
