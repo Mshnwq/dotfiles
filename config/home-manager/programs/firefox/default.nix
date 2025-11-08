@@ -7,7 +7,6 @@
 let
   profile = "mshnwq.default";
   profileName = "mshnwq";
-
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     custom = pkgs.callPackage ./addons.nix {

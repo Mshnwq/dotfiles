@@ -9,34 +9,28 @@ let
 in
 {
   imports = [ inputs.nix4nvchad.homeManagerModules.nvchad ];
-
   programs.nvchad = {
     enable = true;
     hm-activation = true;
     backup = false;
-
     extraPackages =
       with pkgs;
       [
         # lua
         stylua
         luajitPackages.luacheck
-
         # Nix tooling
         nil
         nixd
         nixfmt
-
         # Shell tooling
         bash-language-server
         shellcheck-minimal
         shfmt
-
         # Python tooling
         pyright
         ruff
         isort
-
         # DevOps / CI/CD
         tflint
         terraform-ls
@@ -47,7 +41,6 @@ in
         docker-compose-language-service
         dockerfile-language-server
         hadolint
-
         # TODO: additional tools
         yamllint
         kics
@@ -56,7 +49,6 @@ in
         dclint
         dockerfmt
       ]);
-
     extraConfig = "";
   };
 }
