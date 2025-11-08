@@ -1,6 +1,7 @@
 {
   lib,
   inputs,
+  config,
   pkgs,
   ...
 }:
@@ -16,7 +17,7 @@ let
   };
 in
 {
-  xdg.desktopEntries.firefox-nix = {
+  xdg.desktopEntries.firefox = {
     name = "Firefox";
     exec = "Firefox %u";
     icon = "firefox";
@@ -91,9 +92,9 @@ in
       # Don't show blue dot to notify about AI chat.
       "sidebar.notification.badge.aichat" = false;
 
-      # TODO: new tab page pin sites SOP secret
       "browser.newtabpage.pinned" =
-        ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://chatgpt.com/","baseDomain":"chatgpt.com"},{"url":"https://github.com/","baseDomain":"github.com"},{"url":"https://www.reddit.com/","baseDomain":"reddit.com"}]'';
+        builtins.readFile
+          config.sops.secrets."browser-pinned".path;
 
       "browser.shell.checkDefaultBrowser" = false;
       "browser.download.autohideButton" = false;
@@ -133,19 +134,15 @@ in
     extensions.packages =
       with extensions.rycee;
       [
-
         # MyFox Theme
         pywalfox # remove shortcut Ctrl+Alt+D
         sidebery # remove Ctrl+E and import settings from dotfiles
         userchrome-toggle-extended # manually add shortcuts  1: Ctrl+E 2: Ctrl+Alt+S 3: Ctrl+Alt+H 4: Ctrl+Alt+C
-
         pwas-for-firefox # idk
-
         # Useful utilities
-
         # aria2-integration
         # buster-captcha-solver
-
+        # other helpful
         darkreader
         clearurls
         sponsorblock
@@ -153,7 +150,6 @@ in
         videospeed
         search-by-image
         cookies-txt
-
         # unfree extensions - manually allowed
         (untrap-for-youtube.override {
           meta.license.free = true;
@@ -164,7 +160,6 @@ in
         (tampermonkey.override {
           meta.license.free = true;
         }) # TODO: import scripts from dotfiles SOP secrets
-
         # vimium
         # TODO:
         # web-clipper-obsidian

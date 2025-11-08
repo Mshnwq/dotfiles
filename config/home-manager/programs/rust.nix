@@ -23,7 +23,6 @@ let
       hash = "sha256-vNJn2Xf8KBZMDD3hK0SXLQ9+84hDid2+NHNviU3oCGs=";
     };
     cargoHash = "sha256-9DxUgv10cSsTlwqTJWtNxcd/hbS6pGZ+XCPjL1wbCh8=";
-
     nativeBuildInputs = [ pkgs.pkg-config ]; # for build-time discovery
     buildInputs = [ pkgs.openssl ]; # OpenSSL headers & libs
   };
@@ -50,6 +49,11 @@ in
         paths = [ glim ];
         postBuild =
           let
+            # glim-token = builtins.readFile config.sops.secrets."glim-token".path;
+            # configFile = pkgs.writeText "glim.toml" ''
+            #   gitlab_url = "https://gitlab.com/api/v4"
+            #   gitlab_token = ${glim-token}
+            # '';
             configFile = pkgs.writeText "glim.toml" ''
               gitlab_url = "https://gitlab.com/api/v4"
               gitlab_token = ""

@@ -114,6 +114,9 @@ in
       glim-token = {
         mode = "0400";
       };
+      browser-pinned = {
+        mode = "0400";
+      };
     };
   };
 }
