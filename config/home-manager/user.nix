@@ -91,7 +91,6 @@ in
       music
       shell
       tmux
-      yazi
       pywal
       rust
       infra
@@ -101,6 +100,18 @@ in
       # anki
       discord.stable
       # discord.canary
+      yazi
+      {
+        programs.yazi.pluginSettings = {
+          relative-motions.enable = true;
+          jump-to-char.enable = true;
+          mediainfo.enable = true;
+          projects.enable = true;
+          restore.enable = true;
+          dupes.enable = true;
+          yamb.enable = true;
+        };
+      }
     ]
     ++ [
       inputs.sops-nix.homeManagerModules.sops
