@@ -19,7 +19,7 @@
     St_pos_text = {{ fg = "{background}", bg = "{color8}" }},
     St_Lsp = {{ fg = "{color3}" }},
     St_LspMsg = {{ fg = "{color3}" }},
-    TbTabOn = {{ fg = "{color3}", bg = "{color8}" }},
+    TbTabOn = {{ fg = "{color0}", bg = "{color3}" }},
     TbTabOff = {{ fg = "{color0}", bg = "{color8}" }},
   }},
   hl_add = {{
@@ -34,7 +34,7 @@
     NotifyWARNTitle = {{ fg = "yellow" }},
     NotifyWARNBorder = {{ fg = "grey_fg" }},
     TodoError = {{ fg = "red" }},
-    TodoWarn = {{ fg = "#BFA1FF" }},
+    TodoWarn = {{ fg = "red" }},
     TodoInfo = {{ fg = "yellow" }},
     TodoHint = {{ fg = "green" }},
     TodoTest = {{ fg = "cyan" }},
