@@ -28,13 +28,6 @@ args@{
     ];
   };
 
-  # keyboard
-  qmk = {
-    home.packages = with pkgs; [
-      vial
-    ];
-  };
-
   # language
   anki = {
     home.packages = with pkgs; [

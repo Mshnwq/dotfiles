@@ -81,7 +81,6 @@ in
     [
       devenv
       mpv
-      qmk
       vim
       neovim
       firefox
@@ -97,6 +96,8 @@ in
       mime
       hypr
       flat
+      keyboard.vial
+      keyboard.kmonad
       # anki
       discord.stable
       # discord.canary
@@ -126,6 +127,9 @@ in
         mode = "0400";
       };
       browser-pinned = {
+        mode = "0400";
+      };
+      yazi-goto = {
         mode = "0400";
       };
     };
