@@ -13,7 +13,6 @@ case "$layout" in
   *"English (US)"*) short="EN" ;;
   *"Arabic"*)       short="AR" ;;
   *"Russian"*)      short="RU" ;;
-  *"Romanian"*)     short="RO" ;;
   *)                short="??" ;;
 esac
 
