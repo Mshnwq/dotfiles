@@ -9,7 +9,6 @@
       vial
     ];
   };
-
   kmonad = {
     home.packages = with pkgs; [
       kmonad
@@ -27,30 +26,29 @@
         grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
         tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
         caps a    s    d    f    g    h    j    k    l    ;    '    ret
-        lsft z    x    c    v    b    n    m    ,    .    /    rsft
-        lctl lmet lalt           spc            ralt rmet cmp  rctl
+        lsft z    x    c    v    b    n    m    ,    .    /    rsft      up
+        lctl lmet lalt           spc            ralt rmet cmp  rctl left down rght
       )
       (deflayer enthium-left
         grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
         tab  z    y    o    u    ;    y    u    i    o    p    [    ]    \
         caps c    i    e    a    w    h    j    k    l    ;    '    ret
-        lsft -    =    ,    .    /    n    m    ,    .    /    rsft
-        lctl lmet lalt           spc            ralt rmet cmp  rctl
+        lsft -    =    ,    .    /    n    m    ,    .    /    rsft      up
+        lctl lmet lalt           spc            ralt rmet cmp  rctl left down rght
       )
     '';
-
-    systemd.user.services."kmonad" = {
-      Unit = {
-        Description = "KMonad keyboard remapper";
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.kmonad}/bin/kmonad ${config.home.homeDirectory}/.config/kmonad/config.kbd";
-        Restart = "on-failure";
-      };
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
-    };
+    # systemd.user.services."kmonad" = {
+    #   Unit = {
+    #     Description = "KMonad keyboard remapper";
+    #   };
+    #   Service = {
+    #     Type = "simple";
+    #     ExecStart = "${pkgs.kmonad}/bin/kmonad ${config.home.homeDirectory}/.config/kmonad/config.kbd";
+    #     Restart = "on-failure";
+    #   };
+    #   Install = {
+    #     WantedBy = [ ];
+    #   };
+    # };
   };
 }

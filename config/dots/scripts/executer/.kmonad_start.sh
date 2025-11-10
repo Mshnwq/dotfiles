@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-systemctl --user start kmonad
+pgrep -f config.kbd || { kmonad "$HOME/.config/kmonad/config.kbd" & }
+notify-send -u low "Kmonad status" "On"

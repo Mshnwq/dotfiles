@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-systemctl --user stop kmonad
+
+pkill -f config.kbd && notify-send -u low "Kmonad status" "Off"
