@@ -21,7 +21,7 @@ let
   pluginsConfig = lib.mapAttrs (name: plugin: plugin.source) enabledPlugins;
 
   # Import base keymap and merge with enabled plugin keymaps
-  baseKeymap = import ./keymap.nix { inherit lib config; };
+  baseKeymap = import ./keymap.nix { };
   pluginsKeymap = lib.flatten (
     lib.mapAttrsToList (name: plugin: plugin.keymap or [ ]) enabledPlugins
   );
@@ -81,9 +81,22 @@ in
       enableZshIntegration = false;
       enableBashIntegration = false;
       plugins = pluginsConfig;
-      keymap = mergedKeymap;
       initLua = mergedInitLua;
       settings = mergedSettings;
+      # keymap = mergedKeymap;
     };
+
+    # to inject secret paths
+    home.activation.yaziKeymap = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      baseToml=${(pkgs.formats.toml { }).generate "keymap.toml" mergedKeymap}
+      target="${config.home.homeDirectory}/.config/yazi/keymap.toml"
+      cat "$baseToml" > "$target"
+      secret="${config.sops.secrets."yazi-goto".path}"
+      if [ -f "$secret" ]; then
+        cat "$secret" >> "$target"
+      else
+        echo "Yazi secret not found: $secret"
+      fi
+    '';
   };
 }
