@@ -46,6 +46,9 @@ in
     WGETRC = "${config.xdg.configHome}/wget/wgetrc";
     LESSHISTFILE = "${config.xdg.cacheHome}/less_history";
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";
+    # TODO: clean this mess up
+    # nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings
+    # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
     CUDA_CACHE_PATH = "${config.xdg.stateHome}/nv";
     CARGO_HOME = "${config.xdg.dataHome}/cargo";
     NPM_CONFIG_PREFIX = "${config.xdg.dataHome}";
@@ -58,9 +61,6 @@ in
     # XPROFILE = "${config.xdg.configHome}/x11/xprofile";
     # XRESOURCES = "${config.xdg.configHome}/x11/xresources";
   };
-  # TODO: clean this mess up
-  # nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings
-  # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
 
   home.sessionVariables = {
     EDITOR = "vim";
@@ -88,7 +88,6 @@ in
       pass
       auto
       music
-      shell
       pywal
       rust
       infra
@@ -100,6 +99,17 @@ in
       # anki
       discord.stable
       # discord.canary
+      zsh
+      {
+        programs.zsh.pluginSettings = {
+          history-substring-search.enable = true;
+          syntax-highlighting.enable = true;
+          autosuggestions.enable = true;
+          nix-shell.enable = true;
+          fzf-tab.enable = true;
+          fzf.enable = true;
+        };
+      }
       tmux
       {
         programs.tmux.pluginSettings = {
