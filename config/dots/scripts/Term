@@ -130,7 +130,7 @@ case $MY_TERM in
         ;;
       "--yazi")
         kitty --config ~/.config/kitty/kitty-hidden.conf -e \
-          sh -c "export EDITOR=~/.local/bin/vim && yazi ~"
+	   sh -c 'exec zsh -i -c "export EDITOR=~/.local/bin/vim; exec yazi ~"'
         ;;
       "--yazi-tmux")
         kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
