@@ -89,7 +89,6 @@ in
       auto
       music
       shell
-      tmux
       pywal
       rust
       infra
@@ -101,6 +100,15 @@ in
       # anki
       discord.stable
       # discord.canary
+      tmux
+      {
+        programs.tmux.pluginSettings = {
+          dracula.enable = true;
+          floax.enable = true;
+          yank.enable = true;
+          fzf.enable = true;
+        };
+      }
       yazi
       {
         programs.yazi.pluginSettings = {
