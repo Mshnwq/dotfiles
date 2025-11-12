@@ -48,11 +48,6 @@ in
       enable = lib.mkDefault plugin.defaultEnable;
     }) availablePlugins;
 
-    home.packages = with pkgs; [
-      tmux
-      tmuxp
-    ];
-
     home.sessionVariables = {
       TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmux/tmuxp";
     };

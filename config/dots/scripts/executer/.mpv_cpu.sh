@@ -4,8 +4,7 @@ CONF_FILE="$HOME/.config/mpv/mpv.conf"
 cat > "$CONF_FILE" <<EOF
 osd-level=0
 title='\${filename}'
-vo=gpu-next
-hwdec=auto
+hwdec=vaapi
 EOF
 
 #vo=gpu
