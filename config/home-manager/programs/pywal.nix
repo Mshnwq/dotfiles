@@ -1,3 +1,4 @@
+# programs/pywal.nix
 {
   inputs,
   config,
