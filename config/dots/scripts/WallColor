@@ -16,9 +16,9 @@ color_kitty() {
 
 color_hyprland() {
   log "Starting color_hyprland"
-  hyprland_file="$HOME/.config/hypr/conf.d/general.conf"
-  sed -i "s/^    col.active_border =.*/    col.active_border = rgba(${color7:1}ff) rgba(${color4:1}ff) 90deg/" $hyprland_file
-  sed -i "s/^    col.inactive_border =.*/    col.inactive_border = rgba(${color2:1}aa)/" $hyprland_file
+  # hyprland_file="$HOME/.config/hypr/conf.d/general.conf"
+  # sed -i "s/^    col.active_border =.*/    col.active_border = rgba(${color7:1}ff) rgba(${color4:1}ff) 90deg/" $hyprland_file
+  # sed -i "s/^    col.inactive_border =.*/    col.inactive_border = rgba(${color2:1}aa)/" $hyprland_file
   log "Finished color_hyprland"
 }
 

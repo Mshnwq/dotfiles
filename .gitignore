@@ -11,4 +11,5 @@ devenv.local.nix
 **/conf.d/general.conf
 **/*.swp
 **/.wall
+config/dots/rices/.wall
 .env
