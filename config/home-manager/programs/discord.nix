@@ -1,3 +1,4 @@
+# programs/discord.nix
 let
   bdAddonsDrv =
     { pkgs, ... }:

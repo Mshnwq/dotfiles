@@ -1,3 +1,4 @@
+# programs/infra.nix
 {
   config,
   pkgs,

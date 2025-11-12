@@ -1,3 +1,4 @@
+# programs/keyboard.nix
 {
   pkgs,
   config,

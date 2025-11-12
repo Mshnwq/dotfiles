@@ -1,3 +1,4 @@
+# programs/flatpak.nix
 {
   inputs,
   config,

@@ -1,3 +1,4 @@
+# programs/hypr.nix
 {
   pkgs,
   ...
