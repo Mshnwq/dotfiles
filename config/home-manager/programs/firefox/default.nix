@@ -154,13 +154,12 @@ in
         (untrap-for-youtube.override {
           meta.license.free = true;
         }) # import it from dotfiles
-        (video-downloadhelper.override {
-          meta.license.free = true;
-        }) # TODO: install daemon
         (tampermonkey.override {
           meta.license.free = true;
-        }) # TODO: import scripts from dotfiles SOP secrets
-        # vimium
+        }) # import it from sops
+        # (video-downloadhelper.override {
+        #   meta.license.free = true;
+        # }) # install daemon
         # TODO:
         # web-clipper-obsidian
         # keepassxc-browser

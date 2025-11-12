@@ -34,7 +34,7 @@ in
     virt-manager
     podman-compose
     lazydocker
-    #pkgs.ktailctl  # needs nixGL wrap # TODO: broken on nvidia # moved to flatpak
+    #pkgs.ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
     #nixos-anywhere
     veracrypt
     terraform # too SLOW!

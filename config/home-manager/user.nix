@@ -36,6 +36,7 @@ in
   # https://wiki.archlinux.org/title/XDG_Base_Directory
   xdg.enable = true;
 
+  # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
   # home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
   home.sessionVariables = {
     # NIX_PROFILE_DIR = "${config.home.homeDirectory}/.nix-profile";
@@ -46,9 +47,6 @@ in
     WGETRC = "${config.xdg.configHome}/wget/wgetrc";
     LESSHISTFILE = "${config.xdg.cacheHome}/less_history";
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";
-    # TODO: clean this mess up
-    # nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings
-    # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
     CUDA_CACHE_PATH = "${config.xdg.stateHome}/nv";
     CARGO_HOME = "${config.xdg.dataHome}/cargo";
     NPM_CONFIG_PREFIX = "${config.xdg.dataHome}";
@@ -93,7 +91,7 @@ in
       infra
       mime
       hypr
-      flat
+      flatpak
       keyboard.vial
       keyboard.kmonad
       # anki
@@ -149,6 +147,10 @@ in
       };
       yazi-goto = {
         mode = "0400";
+      };
+      tampermonkey = {
+        mode = "0400";
+        path = "${config.home.homeDirectory}/.config/tampermonkey.txt";
       };
       # beets-lastfm-token = {
       #   mode = "0400";
