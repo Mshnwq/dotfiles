@@ -175,8 +175,8 @@
   "custom/distro": {
     "format": " ",
     "tooltip": false,
-    "on-click": "~/.config/dots/scripts/OpenApps --menu"
-    //"on-click-right": "~/.config/dots/scripts/OpenApps --rice"
+    "on-click": "~/.config/dots/scripts/OpenApps --menu",
+    "on-click-right": "~/.config/dots/scripts/OpenApps --execute"
   },
   "clock#date": {
     "tooltip-format": "<tt>{calendar}</tt>",

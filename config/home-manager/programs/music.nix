@@ -73,6 +73,7 @@
       lastfm-key = builtins.readFile config.sops.secrets."glim-token".path;
       discogs-key = builtins.readFile config.sops.secrets."glim-token".path;
     in
+    # extract year my plugin
     {
       enable = true;
       settings = ''
@@ -86,14 +87,13 @@
           comp: Compilations/($year) $album/$track $title
         pluginpath: ~/.config/beets/plugins
         plugins:
-          - extract_year # my plugin
+          - extract_year
           - fetchart
           - embedart
           - mbsync
           - edit
           - lastgenre
           - discogs
-        }
         fetchart:
           lastfm_key: ${lastfm-key}
           sources:
