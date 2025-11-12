@@ -9,10 +9,10 @@
     mpd
     mpc
     rmpc
-    cava # TODO: doesnt work on waybar ?
+    cava
     beets
-    pulsemixer
     qpwgraph
+    pulsemixer
   ];
 
   # https://github.com/nix-community/home-manager/blob/master/modules/services/mpd.nix
@@ -45,6 +45,7 @@
       format "44100:16:2"
     }
   '';
+
   home.activation.ensureMpdDirs =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
@@ -55,6 +56,7 @@
         mkdir -p "${config.xdg.dataHome}/mpd/playlists"
         mkfifo -m 600 /tmp/mpd.fifo || true
       '';
+
   systemd.user.services.mpd = {
     Unit = {
       Description = "Music Player Daemon";

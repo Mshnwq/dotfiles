@@ -45,6 +45,7 @@ in
     [
       grim
       swappy
+      waybar
       libinput-gestures
     ]
     ++ ([
