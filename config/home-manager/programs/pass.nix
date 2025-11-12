@@ -17,23 +17,24 @@
 
   home.packages = with pkgs; [
     pass
-    #pinentry-all
-    pinentry-rofi
+    pinentry-all
+    (pkgs.symlinkJoin {
+      name = "pinentry-rofi-wrapped";
+      buildInputs = [ pkgs.makeWrapper ];
+      paths = [ pkgs.pinentry-rofi ];
+      postBuild = ''
+        wrapProgram $out/bin/pinentry-rofi \
+          --add-flags "-- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi"
+      '';
+    })
   ];
-
-  # Custom wrapper for pinentry
-  # TODO: fix blurry
-  home.file.".local/bin/pinentry-wofi".text = ''
-    #!/usr/bin/env bash
-    exec ${pkgs.pinentry-rofi}/bin/pinentry-rofi "$@" -- -theme ${config.xdg.configHome}/rofi/Pinentry.rasi
-  '';
-  home.file.".local/bin/pinentry-wofi".executable = true;
 
   # Environment
   home.sessionVariables = {
     PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
   };
+
   # https://wiki.archlinux.org/title/XDG_Base_Directory
   # OpenSSH 		      ~/.ssh 	will not fix 	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH.
   # SSH folder 		    ~/.ssh 			700 	drwx------
