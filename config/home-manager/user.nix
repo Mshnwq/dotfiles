@@ -150,6 +150,12 @@ in
       yazi-goto = {
         mode = "0400";
       };
+      # beets-lastfm-token = {
+      #   mode = "0400";
+      # };
+      # beets-discogs-token = {
+      #   mode = "0400";
+      # };
     };
   };
 }

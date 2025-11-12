@@ -42,7 +42,7 @@
     # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
     devenv.url = "github:cachix/devenv/v1.10";
     nvchad-starter = {
-      url = "github:Mshnwq/nvchad/main";
+      url = "github:Mshnwq/nvchad";
       flake = false;
     };
     nix4nvchad = {

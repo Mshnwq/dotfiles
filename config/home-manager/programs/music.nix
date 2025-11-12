@@ -68,29 +68,38 @@
     Install = { }; # empty so it won’t auto-start
   };
 
-  # TODO: inject SoPS
-  programs.beets = {
-    # enable = true;
-    enable = false;
-    settings = ''
-      directory: ~/Music
-      import:
-        write: yes
-        autotag: yes
-      paths:
-        default: $artist/($year) $album/$track $title
-        singleton: $artist/Other/$title
-        comp: Compilations/($year) $album/$track $title
-      pluginpath: ~/.config/beets/plugins
-      plugins:
-        - extract_year # my plugin
-        - fetchart
-        - embedart
-        - mbsync
-        - edit
-        - lastgenre
-        - discogs
-      }
-    '';
-  };
+  programs.beets =
+    let
+      lastfm-key = builtins.readFile config.sops.secrets."glim-token".path;
+      discogs-key = builtins.readFile config.sops.secrets."glim-token".path;
+    in
+    {
+      enable = true;
+      settings = ''
+        directory: ~/Music
+        import:
+          write: yes
+          autotag: yes
+        paths:
+          default: $artist/($year) $album/$track $title
+          singleton: $artist/Other/$title
+          comp: Compilations/($year) $album/$track $title
+        pluginpath: ~/.config/beets/plugins
+        plugins:
+          - extract_year # my plugin
+          - fetchart
+          - embedart
+          - mbsync
+          - edit
+          - lastgenre
+          - discogs
+        }
+        fetchart:
+          lastfm_key: ${lastfm-key}
+          sources:
+            - lastfm
+        discogs:
+          user_token: ${discogs-key}
+      '';
+    };
 }
