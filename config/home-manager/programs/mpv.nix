@@ -6,7 +6,15 @@
 {
   home.packages = with pkgs; [
     mpv
-    jellyfin-mpv-shim # TODO:
+    jellyfin-mpv-shim
+    # TODO:
+    # i have no idea this garbage
+    # https://deepwiki.com/hyprwm/hyprland-wiki/9.5-nix-on-other-distributions
+    nixgl.auto.nixGLDefault # NOTE:run with --impure flag
+    nixgl.auto.nixGLNvidia # NOTE:run with --impure flag
+    nixgl.auto.nixGLNvidiaBumblebee # NOTE:run with --impure flag
+    nixgl.nixGLIntel # NOTE:run with --impure flag
+    libvdpau-va-gl
   ];
   xdg.desktopEntries.mpv = {
     name = "MPV";

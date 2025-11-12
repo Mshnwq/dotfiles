@@ -35,12 +35,6 @@ in
     podman-compose
     lazydocker
     #pkgs.ktailctl  # needs nixGL wrap # TODO: broken on nvidia # moved to flatpak
-    # i have no idea this garbage
-    # https://deepwiki.com/hyprwm/hyprland-wiki/9.5-nix-on-other-distributions
-    nixgl.auto.nixGLDefault # NOTE:run with --impure flag
-    nixgl.auto.nixGLNvidia # NOTE:run with --impure flag
-    nixgl.auto.nixGLNvidiaBumblebee # NOTE:run with --impure flag
-    nixgl.nixGLIntel # NOTE:run with --impure flag
     #nixos-anywhere
     veracrypt
     terraform # too SLOW!
