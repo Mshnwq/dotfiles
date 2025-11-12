@@ -156,10 +156,7 @@ in
         }) # import it from dotfiles
         (tampermonkey.override {
           meta.license.free = true;
-        }) # import it from sops
-        # (video-downloadhelper.override {
-        #   meta.license.free = true;
-        # }) # install daemon
+        }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts from sops
         # TODO:
         # web-clipper-obsidian
         # keepassxc-browser

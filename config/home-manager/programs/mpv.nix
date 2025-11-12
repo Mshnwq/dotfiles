@@ -1,3 +1,4 @@
+# programs/mpv.nix
 {
   inputs,
   config,
@@ -5,6 +6,7 @@
   ...
 }:
 {
+  # https://home-manager.dev/manual/24.11/index.xhtml#sec-usage-gpu-non-nixos
   nixGL.packages = inputs.nixgl.packages;
   nixGL.defaultWrapper = "mesa";
   nixGL.offloadWrapper = "nvidiaPrime";
