@@ -6,12 +6,6 @@
   ...
 }:
 let
-  # TODO: migrate to devenv modulized monorepo opentofu
-  terraform = pkgs.terraform.overrideAttrs (old: {
-    meta = old.meta // {
-      license = lib.licenses.unfree;
-    };
-  });
   # TODO: what to do?
   veracrypt = pkgs.veracrypt.overrideAttrs (old: {
     meta = old.meta // {
@@ -23,27 +17,24 @@ in
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (pkgs.lib.getName pkg) [
-      "terraform"
       "veracrypt"
     ];
   home.packages = with pkgs; [
     kubectl
     kubectx
     k9s
-    velero
-    rclone
-    virt-manager
     podman-compose
     lazydocker
-    #pkgs.ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
-    #nixos-anywhere
+    virt-manager
+    #ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
     veracrypt
-    terraform # too SLOW!
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {
     KUBECONFIG = "${config.xdg.configHome}/kube";
     KUBECACHEDIR = "${config.xdg.cacheHome}/kube";
+    # https://github.com/sigstore/cosign/commit/32a2d62a9992b1b990f3747e0bbb1533529d7e14
+    TUF_ROOT = "${config.xdg.dataHome}/sigstore/root";
     # DOCKER_HOST = unix://$XDG_RUNTIME_DIR/podman/podman.sock;
     # AZURE_CONFIG_DIR=$XDG_CONFIG_HOME/azure
   };

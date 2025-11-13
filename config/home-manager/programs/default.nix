@@ -21,8 +21,9 @@ args@{
   # automation tools
   auto = {
     home.packages = with pkgs; [
-      yt-dlp
       gallery-dl
+      yt-dlp
+      rclone
       jdupes
       buku
       nmap
