@@ -41,9 +41,8 @@ in
         docker-compose-language-service
         dockerfile-language-server
         hadolint
-        # TODO: additional tools
         yamllint
-        kics
+        # kics
       ]
       ++ (with builds; [
         dclint

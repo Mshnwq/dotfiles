@@ -37,5 +37,6 @@ in
     TUF_ROOT = "${config.xdg.dataHome}/sigstore/root";
     # DOCKER_HOST = unix://$XDG_RUNTIME_DIR/podman/podman.sock;
     # AZURE_CONFIG_DIR=$XDG_CONFIG_HOME/azure
+    # https://github.com/gravitational/teleport/issues/7222
   };
 }

@@ -94,7 +94,6 @@ in
       flatpak
       keyboard.vial
       keyboard.kmonad
-      # anki
       discord.stable
       # discord.canary
       zsh
