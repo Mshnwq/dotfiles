@@ -26,7 +26,7 @@ in
     podman-compose
     lazydocker
     virt-manager
-    #ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
+    # ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
     # veracrypt
   ];
   # https://github.com/hashicorp/terraform/issues/15389

@@ -15,6 +15,11 @@ let
       inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
     };
   };
+  browser-pinned =
+    if inputs.useSops then
+      builtins.readFile config.sops.secrets."browser-pinned".path
+    else
+      ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://github.com/","baseDomain":"github.com"}]'';
 in
 {
   xdg.desktopEntries.firefox = {
@@ -44,7 +49,6 @@ in
 
   home.sessionVariables = {
     BROWSER = "firefox";
-    # MOZ_ENABLE_WAYLAND = "1";
   };
 
   # only need pywalfax --install and sidebery load addons and untrap
@@ -58,7 +62,8 @@ in
       name = "Firefox";
       command = "firefox";
       nixGLVariant = "nixGLIntel";
-      envVars = "LIBVA_DRIVER_NAME=\"i965\" MOZ_USE_XINPUT2=1";
+      # libva is needed for intel vaapi Hardware decoding
+      envVars = "LIBVA_DRIVER_NAME=\"i965\" MOZ_ENABLE_WAYLAND=1 MOZ_USE_XINPUT2=1";
     })
   ];
 
@@ -93,9 +98,7 @@ in
       # Don't show blue dot to notify about AI chat.
       "sidebar.notification.badge.aichat" = false;
 
-      "browser.newtabpage.pinned" =
-        builtins.readFile
-          config.sops.secrets."browser-pinned".path;
+      "browser.newtabpage.pinned" = "${browser-pinned}";
 
       "browser.shell.checkDefaultBrowser" = false;
       "browser.download.autohideButton" = false;

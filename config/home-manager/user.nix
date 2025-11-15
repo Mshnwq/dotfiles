@@ -158,6 +158,13 @@ in
       yazi-goto = {
         mode = "0400";
       };
+      # beets-lastfm-token = {
+      #   mode = "0400";
+      # };
+      # beets-discogs-token = {
+      #   mode = "0400";
+      # };
+      # doesn't matter with useSops
       tampermonkey = {
         mode = "0400";
         path = "${config.home.homeDirectory}/.config/tampermonkey.txt";
@@ -182,12 +189,6 @@ in
         mode = "0444";
         path = "${config.home.homeDirectory}/.ssh/github.pub";
       };
-      # beets-lastfm-token = {
-      #   mode = "0400";
-      # };
-      # beets-discogs-token = {
-      #   mode = "0400";
-      # };
     };
   };
 }
