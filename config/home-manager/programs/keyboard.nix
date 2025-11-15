@@ -1,7 +1,6 @@
 # programs/keyboard.nix
 {
   pkgs,
-  config,
   ...
 }:
 {
@@ -38,18 +37,5 @@
         lctl lmet lalt           spc            ralt rmet cmp  rctl left down rght
       )
     '';
-    # systemd.user.services."kmonad" = {
-    #   Unit = {
-    #     Description = "KMonad keyboard remapper";
-    #   };
-    #   Service = {
-    #     Type = "simple";
-    #     ExecStart = "${pkgs.kmonad}/bin/kmonad ${config.home.homeDirectory}/.config/kmonad/config.kbd";
-    #     Restart = "on-failure";
-    #   };
-    #   Install = {
-    #     WantedBy = [ ];
-    #   };
-    # };
   };
 }

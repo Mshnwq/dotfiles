@@ -16,6 +16,7 @@ args@{
       pkgs.direnv
       inputs.devenv.packages.x86_64-linux.devenv
     ];
+    # DIRENV_LOG_FORMAT = "";
   };
 
   # automation tools
@@ -35,5 +36,6 @@ args@{
     home.packages = with pkgs; [
       anki
     ];
+    # ANKI_WAYLAND = "1";
   };
 }

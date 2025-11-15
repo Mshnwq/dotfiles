@@ -40,6 +40,7 @@ in
   # home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
   home.sessionVariables = {
     # NIX_PROFILE_DIR = "${config.home.homeDirectory}/.nix-profile";
+    # NIX_PROFILE_DIR = "${config.home.dataHome}/nix/profile";
     # NIX_PROFILE_DIR = "$HOME/.local/share/nix/profile";
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
@@ -150,6 +151,26 @@ in
       tampermonkey = {
         mode = "0400";
         path = "${config.home.homeDirectory}/.config/tampermonkey.txt";
+      };
+      ssh-config = {
+        mode = "0400";
+        path = "${config.home.homeDirectory}/.ssh/config";
+      };
+      gitlab-ssh-priv = {
+        mode = "0400";
+        path = "${config.home.homeDirectory}/.ssh/gitlab";
+      };
+      gitlab-ssh-pub = {
+        mode = "0444";
+        path = "${config.home.homeDirectory}/.ssh/gitlab.pub";
+      };
+      github-ssh-priv = {
+        mode = "0400";
+        path = "${config.home.homeDirectory}/.ssh/github";
+      };
+      github-ssh-pub = {
+        mode = "0444";
+        path = "${config.home.homeDirectory}/.ssh/github.pub";
       };
       # beets-lastfm-token = {
       #   mode = "0400";

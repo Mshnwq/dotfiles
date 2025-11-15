@@ -77,20 +77,6 @@
         )
       );
 
-      # # for more information about the host configurations,
-      # # see ./hosts/default.nix
-      # nixosConfigurations = lib.mapAttrs (_host: fn:
-      #   lib.applyAutoArgs fn { inherit self lib tree inputs nixpkgs; })
-      #   (lib.importDir' ./hosts "common");
-      #
-      # # for more information aboyt user configurations,
-      # # see ./users/default.nix
-      # homeConfigurations = lib.mapAttrs (_userAtHost: fn:
-      #   lib.applyAutoArgs fn { inherit self lib tree inputs nixpkgs; })
-      #   (lib.importDir' ./users
-      #     ({ isNix, isHidden, hasNixFiles, hasDefault, ... }:
-      #       isNix && !isHidden && !(hasNixFiles && !hasDefault)));
-
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
       ];

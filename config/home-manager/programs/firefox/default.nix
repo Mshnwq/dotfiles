@@ -44,6 +44,7 @@ in
 
   home.sessionVariables = {
     BROWSER = "firefox";
+    # MOZ_ENABLE_WAYLAND = "1";
   };
 
   # only need pywalfax --install and sidebery load addons and untrap
