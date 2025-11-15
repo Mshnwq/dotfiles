@@ -66,6 +66,9 @@
     }:
     let
       inherit (self) lib;
+      inputs' = inputs // {
+        useSops = builtins.getEnv "ENABLE_SOPS" == "true";
+      };
     in
     {
       lib = nixpkgs.lib.extend (
@@ -73,7 +76,7 @@
           [
             # inputs.bird-nix-lib.lib.overlay
           ]
-          ++ (import ./lib/default.nix inputs)
+          ++ (import ./lib/default.nix inputs')
         )
       );
 
@@ -86,7 +89,7 @@
           overlays = [
             (import ./packages/overlays.nix lib)
           ]
-          ++ (import ./overlays/default.nix inputs);
+          ++ (import ./overlays/default.nix inputs');
         };
         modules = [
           (
@@ -102,15 +105,15 @@
                     self
                     config
                     lib
-                    inputs
                     pkgs
                     ;
+                  inputs = inputs';
                 })
               ];
             }
           )
         ];
-        extraSpecialArgs = { inherit inputs; };
+        extraSpecialArgs = { inherit inputs'; };
       };
     };
 }

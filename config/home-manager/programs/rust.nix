@@ -1,5 +1,6 @@
 # programs/rust.nix
 {
+  inputs,
   config,
   pkgs,
   ...
@@ -7,14 +8,6 @@
 let
   glim = pkgs.rustPlatform.buildRustPackage {
     pname = "glim";
-    # version = "git-cd53dae";
-    # src = pkgs.fetchFromGitHub {
-    #   owner = "junkdog";
-    #   repo = "glim";
-    #   rev = "cd53dae";
-    #   hash = "sha256-yAymON+o2slcyCpEq5prkffUelW5jV3I9JSJuQc6+jc=";
-    # };
-    # cargoHash = "sha256-9DxUgv10cSsTlwqTJWtNxcd/hbS6pGZ+XCPjL1wbCh8=";
     version = "git-f141972";
     src = pkgs.fetchFromGitHub {
       owner = "mshnwq";
@@ -49,15 +42,12 @@ in
         paths = [ glim ];
         postBuild =
           let
-            # glim-token = builtins.readFile config.sops.secrets."glim-token".path;
-            # configFile = pkgs.writeText "glim.toml" ''
-            #   gitlab_url = "https://gitlab.com/api/v4"
-            #   gitlab_token = ${glim-token}
-            # '';
+            glim-token =
+              if inputs.useSops then config.sops.secrets."glim-token".path else "xxx";
             configFile = pkgs.writeText "glim.toml" ''
               gitlab_url = "https://gitlab.com/api/v4"
               gitlab_token = ""
-              gitlab_token_file = "${config.sops.secrets."glim-token".path}"
+              gitlab_token_file = "${glim-token}"
               animations = true
             '';
           in

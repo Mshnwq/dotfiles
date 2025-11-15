@@ -72,8 +72,16 @@
 
   programs.beets =
     let
-      lastfm-key = builtins.readFile config.sops.secrets."glim-token".path;
-      discogs-key = builtins.readFile config.sops.secrets."glim-token".path;
+      lastfm-key =
+        if inputs.useSops then
+          builtins.readFile config.sops.secrets."glim-token".path
+        else
+          "xxx";
+      discogs-key =
+        if inputs.useSops then
+          builtins.readFile config.sops.secrets."glim-token".path
+        else
+          "xxx";
     in
     # extract year my plugin
     {
@@ -100,6 +108,7 @@
           lastfm_key: ${lastfm-key}
           sources:
             - lastfm
+            - xxx
         discogs:
           user_token: ${discogs-key}
       '';

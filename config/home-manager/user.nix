@@ -9,6 +9,7 @@ args@{
 }:
 let
   username = "mshnwq";
+  useSops = inputs.useSops;
 in
 {
   home.username = username;
@@ -20,18 +21,24 @@ in
 
   targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS
 
-  home.packages = with pkgs; [
-    cowsay
-    cmatrix
-    dialog
-    qimgv
-    mtpfs
-    simple-mtpfs
-    lm_sensors
-    zathura
-    sops
-    age
-  ];
+  home.packages =
+    with pkgs;
+    [
+      cowsay
+      cmatrix
+      dialog
+      qimgv
+      mtpfs
+      simple-mtpfs
+      lm_sensors
+      zathura
+      sops
+      age
+    ]
+    ++ lib.optionals inputs.useSops [
+      sops
+      age
+    ];
 
   # https://wiki.archlinux.org/title/XDG_Base_Directory
   xdg.enable = true;
@@ -71,6 +78,9 @@ in
     DISABLE_AUTO_TITLE = "true";
   };
 
+  _module.args = {
+    inherit inputs useSops;
+  };
   imports =
     let
       user = lib.importDir' ./. "user.nix";
