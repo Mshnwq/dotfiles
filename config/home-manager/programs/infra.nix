@@ -27,7 +27,7 @@ in
     lazydocker
     virt-manager
     #ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
-    veracrypt
+    # veracrypt
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {

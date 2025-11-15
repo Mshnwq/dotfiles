@@ -35,7 +35,7 @@ in
   home.packages =
     with pkgs;
     [
-      pywal16
+      # pywal16 # BROKEN
       pywalfox-native # do pywalfox install
       catppuccin-whiskers # no need cursors has a *.nix
       kdePackages.qtstyleplugin-kvantum
@@ -48,7 +48,10 @@ in
       # papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
       papirus-folders # cli tool
     ]
-    ++ [ pkgs-stable.highlight ]
+    ++ [
+      pkgs-stable.highlight
+      pkgs-stable.pywal16 # SOLUTION
+    ]
     ++ (with pkgs.nerd-fonts; [
       jetbrains-mono
       roboto-mono
