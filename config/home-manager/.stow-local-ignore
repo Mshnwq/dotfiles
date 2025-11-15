@@ -1,0 +1,7 @@
+# config/home-manager/.stow-local-ignore
+flake.lock
+devenv.*
+.devenv.flake.nix
+.devenv
+.direnv
+.envrc

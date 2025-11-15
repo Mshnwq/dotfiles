@@ -8,7 +8,7 @@ devenv.local.nix
 # pre-commit
 .pre-commit-config.yaml
 
-**/conf.d/general.conf
+**/*.lock
 **/*.swp
 **/.wall
 config/dots/rices/.wall

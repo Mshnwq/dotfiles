@@ -1,5 +1,3 @@
-#!/bin/env bash
-
 #!/usr/bin/env bash
 
 # File containing list of desktop filenames to hide (one per line)
@@ -24,7 +22,7 @@ SEARCH_DIRS=(
 mkdir -p "$HOME/.local/share/applications"
 
 while IFS= read -r entry; do
-  [ -z "$entry" ] && continue  # skip empty lines
+  [ -z "$entry" ] && continue # skip empty lines
   entry="$entry.desktop"
   echo "Hiding $entry ..."
 
@@ -33,7 +31,7 @@ while IFS= read -r entry; do
     src="$dir/$entry"
     if [ -f "$src" ]; then
       dest="$HOME/.local/share/applications/$entry"
-   
+
       cp "$src" "$dest"
       sudo chmod 666 "$dest"
 
@@ -48,5 +46,4 @@ while IFS= read -r entry; do
       break
     fi
   done
-done < "$LIST_FILE"
-
+done <"$LIST_FILE"
