@@ -35,7 +35,6 @@ in
   home.packages =
     with pkgs;
     [
-      # pywal16 # BROKEN
       pywalfox-native # do pywalfox install
       catppuccin-whiskers # no need cursors has a *.nix
       kdePackages.qtstyleplugin-kvantum

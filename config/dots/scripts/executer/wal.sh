@@ -1,6 +1,7 @@
 #WRAP_Color
 #btop
 #cursor
+#icons
 #nvchad
 #p10k
 #qbit

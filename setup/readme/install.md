@@ -41,6 +41,8 @@ ujust install-dotfiles
 ujust install-home-manager
 ujust install-rice
 
+reboot
+
 # 4: look into /usr/share/ublue-os/just
 # https://www.youtube.com/watch?v=dKynTzn1_BY
 # https://docs.bazzite.gg/Installing_and_Managing_Software/Waydroid_Setup_Guide/
