@@ -17,6 +17,7 @@ in
       source = pkgs.yaziPlugins.mediainfo;
       defaultEnable = false;
       settings = {
+        # TODO: fix Goto Jump
         # BUG: overwritting instead of appending
         # opener = {
         #   play = [
