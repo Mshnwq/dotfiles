@@ -2,6 +2,13 @@ lol: https://github.com/ublue-os/main/issues/765
 
 # 1: install Fedora Atomic Kinoite iso (KDE spin)
 
+# flash
+dd bs=4M if=./Fedora-Kinoite-ostree-x86_64-43-1.6.iso of=/dev/sdx conv=fsync oflag=direct status=progress
+
+# read partition.md
+
+# https://docs.getaurora.dev/guides/alternate-install-guide/
+Do not create a root user.
 # 2: Rebase to Bazzite custom image
 
 # FOR AMD do this
@@ -9,17 +16,23 @@ sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix:latest
 reboot
 sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix:latest
 
-# FOR NVIDIA do this
+# FOR NVIDIA NEW do this
 sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia-open:latest
+reboot
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia-open:latest
+
+# FOR NVIDIA OLD do this
+sudo bootc switch ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
 reboot
 sudo bootc switch --enforce-container-sigpolicy ghcr.io/mshnwq/bazzite-hyprland-nix-nvidia:latest
 
 # NOTE: Do not rebase from a Gnome-based image to Aurora or back!
 
 ujust toggle-user-motd
+ujust add-user-to-input-group
 
 # 3: ujust commands
-# ujust install-cpu-governer # migrated to nix
+ujust install-cpu-governer # migrated to nix?
 ujust install-custom-flatpaks
 ujust install-nix
 
@@ -27,8 +40,6 @@ ujust install-nix
 ujust install-dotfiles
 ujust install-home-manager
 ujust install-rice
-
-ujust add-user-to-input-group
 
 # 4: look into /usr/share/ublue-os/just
 # https://www.youtube.com/watch?v=dKynTzn1_BY
