@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 function yapt() {
-    ( (sleep 0.1; YAZI_ID=$1 ya emit plugin projects "load tmux") &)
+    ( (sleep 0.3; YAZI_ID=$1 ya emit plugin projects "load tmux") &)
     zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
 }
 
 function yapp() {
-    ( (sleep 0.1; YAZI_ID=$1 ya emit plugin projects "load $2") &)
+    ( (sleep 0.3; YAZI_ID=$1 ya emit plugin projects "load $2") &)
     zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1" || return $?
 }
 
 function yapl() {
-    ( (sleep 0.1; YAZI_ID=$1 ya emit plugin projects "load_last") &)
+    ( (sleep 0.3; YAZI_ID=$1 ya emit plugin projects "load_last") &)
     zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
 }
 
