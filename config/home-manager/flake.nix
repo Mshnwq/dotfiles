@@ -74,10 +74,6 @@
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dotfiles = {
-      url = "github:mshnwq/dotfiles/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -116,7 +112,6 @@
           ++ (import ./overlays/default.nix inputs');
         };
         modules = [
-          inputs.dotfiles.homeModules.vim
           (
             {
               config,

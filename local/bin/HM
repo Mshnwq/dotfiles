@@ -2,4 +2,4 @@
 
 kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
   --override font_size=8 --config ~/.config/kitty/kitty-hidden.conf \
-  -e zsh -c "$HOME/.dotfiles/setup/hm.sh; read -k"
+  -e zsh -c "$HOME/.dotfiles/setup/hm.sh $*; read -k"

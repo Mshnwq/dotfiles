@@ -44,11 +44,11 @@ in
   xdg.enable = true;
 
   # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
-  # home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
+  home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
   home.sessionVariables = {
     # NIX_PROFILE_DIR = "${config.home.homeDirectory}/.nix-profile";
     # NIX_PROFILE_DIR = "${config.home.dataHome}/nix/profile";
-    # NIX_PROFILE_DIR = "$HOME/.local/share/nix/profile";
+    NIX_PROFILE_DIR = "$HOME/.local/share/nix/profile";
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
     GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
@@ -106,7 +106,6 @@ in
       keyboard.vial
       keyboard.kmonad
       discord.stable
-      # discord.canary
       zsh
       {
         programs.zsh.pluginSettings = {
@@ -145,7 +144,7 @@ in
     ];
 
   sops = {
-    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
@@ -167,7 +166,7 @@ in
       # doesn't matter with useSops
       tampermonkey = {
         mode = "0400";
-        path = "${config.home.homeDirectory}/.config/tampermonkey.txt";
+        path = "${config.xdg.configHome}/tampermonkey.txt";
       };
       ssh-config = {
         mode = "0400";

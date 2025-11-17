@@ -73,6 +73,23 @@
   };
 }
 
+# TODO: find way to sync all
+# for now manually do it
+# Source:
+#   (gpg)
+#     - gpg --export-secret-keys --armor KEY_ID > XXX-priv.asc
+#     - gpg --export             --armor KEY_ID > XXX-pub.asc
+#     - gpg --export-ownertrust > trust.txt
+#   (pass)
+#     - tar -czf backup.tar.gz -C ~/.pass .
+# Destination:
+#   (gpg)
+#     - gpg --import XXX-priv.asc
+#     - gpg --import XXX-pub.asc
+#     - gpg --import-ownertrust trust.txt
+#   (pass)
+#     - tar -xzf backup.tar.gz
+
 # TEST:
 # run ~/.dotfiles/setup/test/pass.sh
 
