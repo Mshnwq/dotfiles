@@ -5,12 +5,15 @@
   nixConfig = {
     extra-substituters = [
       "https://devenv.cachix.org"
+      "https://hyprland.cachix.org"
     ];
     extra-trusted-substituters = [
       "https://devenv.cachix.org"
+      "https://hyprland.cachix.org"
     ];
     extra-trusted-public-keys = [
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
     trusted-users = [
       "root"
@@ -23,11 +26,22 @@
     # systems.url = "github:nix-systems/default";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    #nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
+    # nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
     nixpkgs.follows = "nixpkgs-unstable";
     nixgl = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+    hyprland = {
+      url = "github:hyprwm/hyprland/v0.52.0";
+    };
+    hyprWorkspaceLayouts = {
+      url = "github:zakk4223/hyprWorkspaceLayouts";
+      inputs.hyprland.follows = "hyprland";
+    };
+    hyprnix = {
+      url = "github:hyprland-community/hyprnix";
+      inputs.hyprland.follows = "hyprland";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -37,10 +51,16 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    bird-nix-lib.url = "github:spikespaz/bird-nix-lib";
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    };
+    bird-nix-lib = {
+      url = "github:spikespaz/bird-nix-lib";
+    };
     # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
-    devenv.url = "github:cachix/devenv/v1.10";
+    devenv = {
+      url = "github:cachix/devenv/v1.10";
+    };
     nvchad-starter = {
       url = "github:Mshnwq/nvchad";
       flake = false;
@@ -52,6 +72,10 @@
     };
     sops-nix = {
       url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dotfiles = {
+      url = "github:mshnwq/dotfiles/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -92,6 +116,7 @@
           ++ (import ./overlays/default.nix inputs');
         };
         modules = [
+          inputs.dotfiles.homeModules.vim
           (
             {
               config,
