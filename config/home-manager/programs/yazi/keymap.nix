@@ -585,6 +585,16 @@
         desc = "Open help";
       }
     ];
+    prepend_keymap = [
+      {
+        on = [
+          "g"
+          "<Space>"
+        ];
+        run = "cd --interactive";
+        desc = "Jump interactively";
+      }
+    ];
   };
 
   tasks = {
