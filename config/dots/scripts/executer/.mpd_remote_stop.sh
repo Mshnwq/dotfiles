@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-HOST="192.168.0.200"
+HOST=$(<"$HOME/.config/mpd_remote_host")
+
 MediaControl --stop
 # sudo ufw delete allow from $HOST to any port 4713 proto tcp
 sudo firewall-cmd --zone=public --remove-rich-rule="rule family='ipv4' source address='$HOST' port protocol='tcp' port='4713' accept"

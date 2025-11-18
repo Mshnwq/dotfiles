@@ -157,6 +157,10 @@ in
       #   mode = "0400";
       # };
       # doesn't matter with useSops
+      mpd-remote-host = {
+        mode = "0400";
+        path = "${config.xdg.configHome}/mpd_remote_host";
+      };
       tampermonkey = {
         mode = "0400";
         path = "${config.xdg.configHome}/tampermonkey.txt";
@@ -184,33 +188,32 @@ in
     };
   };
 
-  programs.git =
-    {
-      enable = true;
-      signing = {
-        key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
-        signByDefault = true;
+  programs.git = {
+    enable = true;
+    signing = {
+      key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
+      signByDefault = true;
+    };
+    settings = {
+      user = {
+        name = "mshnwq";
+        email = "mshnwq.com@gmail.com";
       };
-      settings = {
-        user = {
-          name = "mshnwq";
-          email = "mshnwq.com@gmail.com";
-        };
-        init = {
-          defaultBranch = "main";
-        };
-        tag = {
-          gpgSign = true;
-        };
-        rerere = {
-          enabled = true;
-        };
-        credential = {
-          helper = "cache --timeout=36000";
-        };
-        core = {
-          editor = "vim";
-        };
+      init = {
+        defaultBranch = "main";
+      };
+      tag = {
+        gpgSign = true;
+      };
+      rerere = {
+        enabled = true;
+      };
+      credential = {
+        helper = "cache --timeout=36000";
+      };
+      core = {
+        editor = "vim";
       };
     };
+  };
 }

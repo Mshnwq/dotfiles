@@ -7,7 +7,7 @@ if [[ -f "$STATUS_FILE" && "$(cat "$STATUS_FILE")" == "local" ]]; then
     exit 1
 fi
 
-HOST="192.168.0.200"
+HOST=$(<"$HOME/.config/mpd_remote_host")
 CONF_FILE="$HOME/.config/pipewire/pipewire-pulse.conf.d/mpd-tcp.conf"
 mkdir -p "$(dirname "$CONF_FILE")"
 cat > "$CONF_FILE" <<EOF
