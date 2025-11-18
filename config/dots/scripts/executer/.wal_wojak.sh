@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 BUILDDIR=$(<"$HOME/.config/builddir")
+BUILDDIR="${BUILDDIR/#\~/$HOME}"
 cursor_dir="$BUILDDIR/cursors"
 cursor_file="$cursor_dir/src/templates/svgs.tera"
 cache_dir="$HOME/.cache/wal/cursors"

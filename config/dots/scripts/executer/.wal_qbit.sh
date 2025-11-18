@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 BUILDDIR=$(<"$HOME/.config/builddir")
+BUILDDIR="${BUILDDIR/#\~/$HOME}"
 cd "$BUILDDIR/qbittorrent" && nix-shell -p libsForQt5.qt5.qtbase --run "just compile"
 
 STATE_FILE="/tmp/qbit_state.json"

@@ -50,7 +50,7 @@ in
     };
     bindings = {
       "r" = "cycle_values video-rotate 90 180 270 0";
-      "|" = "vf toggle hflip";
+      "|" = "vf toggle vflip";
     };
   };
 }
