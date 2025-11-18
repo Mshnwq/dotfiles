@@ -6,9 +6,8 @@
   ...
 }:
 {
-  # TODO: hide share one
-  xdg.desktopEntries.keepassxc-nix = {
-    name = "KeePassXC (nix)";
+  xdg.desktopEntries.keepassxc = {
+    name = "KeePassXC";
     exec = "env QT_SCALE_FACTOR=0.75 /usr/bin/keepassxc";
     icon = "keepassxc";
     categories = [ "Utility" ];
@@ -31,15 +30,10 @@
   ];
 
   # https://wiki.archlinux.org/title/XDG_Base_Directory
-  # export GNUPGHOME="$XDG_DATA_HOME"/gnupg, gpg2 --homedir "$XDG_DATA_HOME"/gnupg
-
-  # Environment
   home.sessionVariables = {
     PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
   };
-
-  # https://wiki.archlinux.org/title/XDG_Base_Directory
   # OpenSSH 		      ~/.ssh 	will not fix 	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH.
   # SSH folder 		    ~/.ssh 			700 	drwx------
   # Public key 		    ~/.ssh/id_rsa.pub 	644 	-rw-r--r--

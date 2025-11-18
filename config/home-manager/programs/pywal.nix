@@ -115,7 +115,7 @@ in
           sed -i -e :a -e '$d;N;2,3ba' -e 'P;D' $BUILDDIR/qbittorrent/tools/build
           echo 'rcc src/catppuccin-pywal/resources.qrc -o dist/catppuccin-pywal.qbtheme -binary' >> $BUILDDIR/qbittorrent/tools/build
         fi
-        mkdir -p "${cache}/wal/qbit"/{icons/pwal,catppuccin-pywal}
+        mkdir -p "${cache}/wal/qbit"/{icons/pywal,catppuccin-pywal}
         ln -sf "${cache}/wal/qbit/catppuccin-pywal" \
           "$BUILDDIR/qbittorrent/src/catppuccin-pywal"
         ln -sf "${cache}/wal/qbit/icons/pywal" \
@@ -126,8 +126,7 @@ in
         #fi
       '';
 
-  # TODO:
-  # Gnome Apps # https://github.com/catppuccin/gtk
+  # TODO: broken Gnome apps theme
   # Veracrypt    (nix)
   # Virt-Manager (nix)
   # DistroShelf  (flatpak)

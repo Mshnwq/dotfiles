@@ -62,3 +62,5 @@ waydroid.org.lineageos.jelly
 waydroid.org.lineageos.recorder
 
 yafti-go
+
+org.keepassxc.KeePassXC

@@ -14,7 +14,6 @@ fi
 SEARCH_DIRS=(
   "$HOME/.local/share/applications"
   "/usr/share/applications"
-  "$HOME/.nix-profile/share/applications"
   # flatpak dont make sense to hide any
 )
 
