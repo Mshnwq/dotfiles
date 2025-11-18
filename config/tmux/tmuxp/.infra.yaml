@@ -1,8 +1,0 @@
-session_name: Infra
-windows:
-  - window_name: Cluster
-    shell_command_before:
-      - ~/Desktop/Infra/Cluster
-  - window_name: Nix
-    shell_command_before:
-      - ~/Desktop/Infra/Nix
