@@ -6,6 +6,7 @@
 # https://www.answeroverflow.com/m/1307013565714137200
 
 BUILDDIR=$(<"$HOME/.config/builddir")
+BUILDDIR="${BUILDDIR/#\~/$HOME}"
 git clone --recurse-submodules --remote-submodules https://github.com/winapps-org/winapps.git "$BUILDDIR/winapps"
 mkdir ~/.config/winapps/
 touch ~/.config/winapps/winapps.conf

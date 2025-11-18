@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 kitty --name=FetchTerm --title=FetchTerm --class=FloaTerm \
-	--config ~/.config/kitty/kitty-hidden.conf -d $(pwd) -e "serie"
+  --config ~/.config/kitty/kitty-hidden.conf -d "$(pwd)" -e "serie"

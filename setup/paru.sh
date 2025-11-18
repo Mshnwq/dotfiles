@@ -5,6 +5,7 @@ distrobox create -n arch-box --image ghcr.io/ublue-os/arch-distrobox:latest --ye
 distrobox enter arch-box -- bash -eux <<'EOF'
 sudo pacman -Syu --noconfirm --needed base-devel git
 BUILDDIR=$(<"$HOME/.config/builddir")
+BUILDDIR="${BUILDDIR/#\~/$HOME}"
 for i in {1..3}; do
   git clone https://aur.archlinux.org/paru.git $BUILDDIR/paru && break
   rm -rf $BUILDDIR/paru

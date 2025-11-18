@@ -10,6 +10,11 @@ let
   cfg = config.xdg.configHome;
   cache = config.xdg.cacheHome;
 
+  builddirRaw = builtins.readFile "${config.home.homeDirectory}/.config/builddir";
+  builddir =
+    builtins.replaceStrings [ "~" ] [ config.home.homeDirectory ]
+      builddirRaw;
+
   walCache = "${cache}/wal";
   walLinks = {
     "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
@@ -75,6 +80,7 @@ in
             ''
           ) (builtins.attrNames walLinks)
         )}
+        BUILDDIR=${builddir}
 
         mkdir -p "${cfg}/Kvantum"
         mkdir -p "${cache}/wal/Plasma"/{Pywal,PywalNT}
@@ -95,25 +101,25 @@ in
           # Dont forget to set in telegram app to ~/.cache/wal/wal.tdesktop-theme
         fi
 
-        if [ ! -d "$HOME/.build/cursors" ]; then
-          ${pkgs.git}/bin/git clone https://github.com/mshnwq/cursors $HOME/.build/cursors
+        if [ ! -d "$BUILDDIR/cursors" ]; then
+          ${pkgs.git}/bin/git clone https://github.com/mshnwq/cursors $BUILDDIR/cursors
         fi
-        mkdir -p "$HOME/.build/cursors/dist"
+        mkdir -p "$BUILDDIR/cursors/dist"
         mkdir -p "${data}/icons"
-        ln -sf "$HOME/.build/cursors/dist/catppuccin-mocha-pywal-cursors" \
+        ln -sf "$BUILDDIR/cursors/dist/catppuccin-mocha-pywal-cursors" \
             "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
         mkdir -p "${cache}/wal/cursors"
 
-        if [ ! -d "$HOME/.build/qbittorrent" ]; then
-          ${pkgs.git}/bin/git clone https://github.com/catppuccin/qbittorrent $HOME/.build/qbittorrent
-          sed -i -e :a -e '$d;N;2,3ba' -e 'P;D' $HOME/.build/qbittorrent/tools/build
-          echo 'rcc src/catppuccin-pywal/resources.qrc -o dist/catppuccin-pywal.qbtheme -binary' >> $HOME/.build/qbittorrent/tools/build
+        if [ ! -d "$BUILDDIR/qbittorrent" ]; then
+          ${pkgs.git}/bin/git clone https://github.com/catppuccin/qbittorrent $BUILDDIR/qbittorrent
+          sed -i -e :a -e '$d;N;2,3ba' -e 'P;D' $BUILDDIR/qbittorrent/tools/build
+          echo 'rcc src/catppuccin-pywal/resources.qrc -o dist/catppuccin-pywal.qbtheme -binary' >> $BUILDDIR/qbittorrent/tools/build
         fi
         mkdir -p "${cache}/wal/qbit"/{icons/pwal,catppuccin-pywal}
         ln -sf "${cache}/wal/qbit/catppuccin-pywal" \
-          "$HOME/.build/qbittorrent/src/catppuccin-pywal"
+          "$BUILDDIR/qbittorrent/src/catppuccin-pywal"
         ln -sf "${cache}/wal/qbit/icons/pywal" \
-          "$HOME/.build/qbittorrent/src/icons/pywal"
+          "$BUILDDIR/qbittorrent/src/icons/pywal"
 
         #if [ ! -d "$HOME/.local/share/icons/Papirus" ]; then
           # TODO: /usr/bin/curl -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh

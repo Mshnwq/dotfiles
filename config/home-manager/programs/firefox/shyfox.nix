@@ -7,17 +7,22 @@ profile:
 }:
 let
   cfg = config.programs.firefox;
+  builddirRaw = builtins.readFile "${config.home.homeDirectory}/.config/builddir";
+  builddir =
+    builtins.replaceStrings [ "~" ] [ config.home.homeDirectory ]
+      builddirRaw;
 in
 {
   # home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.shyfox;
   home.activation.shyfoxTheme =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
-        if [ ! -d "$HOME/.build/shyfox" ]; then
-          ${pkgs.git}/bin/git clone https://github.com/mshnwq/shyfox $HOME/.build/shyfox
-          ln -sf "$HOME/.build/shyfox/ShyFox" \
+        BUILDDIR=${builddir}
+        if [ ! -d "$BUILDDIR/shyfox" ]; then
+          ${pkgs.git}/bin/git clone https://github.com/mshnwq/shyfox $BUILDDIR/shyfox
+          ln -sf "$BUILDDIR/shyfox/ShyFox" \
               "${cfg.profilesPath}/${profile}/chrome/ShyFox"
-          ln -sf "$HOME/.build/shyfox/icons" \
+          ln -sf "$BUILDDIR/shyfox/icons" \
               "${cfg.profilesPath}/${profile}/chrome/icons"
         fi
       '';

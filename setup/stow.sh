@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 DOTDIR=$(<"$HOME/.config/dotdir")
+DOTDIR="${DOTDIR/#\~/$HOME}"
 
 for dir in "$DOTDIR"/config/*; do
   name="$(basename "$dir")"
