@@ -26,8 +26,9 @@ args@{
       yt-dlp
       rclone
       jdupes
-      buku
       nmap
+      buku
+      # --import bookmarks.db
     ];
   };
 

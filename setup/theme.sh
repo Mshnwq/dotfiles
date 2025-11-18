@@ -1,8 +1,10 @@
+#!/usr/bin/env bash
+
 RICE="futhark"
-echo "$RICE" >~/.config/dots/.rice
+echo "$RICE" > ~/.config/dots/.rice
 
 WALL="$HOME/.config/dots/rices/$RICE/walls/glacier.png"
-echo "$WALL" >~/.config/dots/rices/.wall
+echo "$WALL" > ~/.config/dots/rices/.wall
 
 # INSTALL
 # TODO: automate this
@@ -14,8 +16,6 @@ echo "$WALL" >~/.config/dots/rices/.wall
 wget -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh
 pywalfox install
 ~/.config/dots/scripts/WallColor "$WALL"
-# hyprctl reload
-# swww-daemon &
 
 # tee -a ~/.var/app/org.qbittorrent.qBittorrent/config/qBittorrent.conf <<EOL
 # [Prefrences]

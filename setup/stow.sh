@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-for dir in ~/.dotfiles/config/*; do
+
+DOTDIR=$(<"$HOME/.config/dotdir")
+
+for dir in "$DOTDIR"/config/*; do
   name="$(basename "$dir")"
   mkdir -p "$HOME/.config/$name"
   if [ "$name" = "dots" ]; then
@@ -11,7 +14,7 @@ for dir in ~/.dotfiles/config/*; do
   cd "$dir" && stow --target="$HOME/.config/$name" .
 done
 
-for dir in ~/.dotfiles/local/*; do
+for dir in "$DOTDIR"/local/*; do
   name="$(basename "$dir")"
   mkdir -p "$HOME/.local/$name"
   cd "$dir" && stow --target="$HOME/.local/$name" .

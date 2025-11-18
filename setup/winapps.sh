@@ -1,15 +1,18 @@
+#!/usr/bin/env bash
+
 # TODO: SOPS CONFIG & .ENV
 # TODO: needs special ext4 partition, btrfs is no good & fix home mounting
 # https://universal-blue.discourse.group/t/winapps-discussion/8161/18
 # https://www.answeroverflow.com/m/1307013565714137200
 
-git clone --recurse-submodules --remote-submodules https://github.com/winapps-org/winapps.git ~/.build/winapps
+BUILDDIR=$(<"$HOME/.config/builddir")
+git clone --recurse-submodules --remote-submodules https://github.com/winapps-org/winapps.git "$BUILDDIR/winapps"
 mkdir ~/.config/winapps/
 touch ~/.config/winapps/winapps.conf
 # Set RDP_USER and RDP_PASS to what you want your Windows user account login to be.
 # Set WAFLAVOR="podman".
 
-cd ~/.build/winapps || exit
+cd "$BUILDDIR/winapps" || exit
 
 # https://universal-blue.discourse.group/t/winapps-in-bazzite-portal/2199/3
 
