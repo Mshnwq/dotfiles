@@ -53,6 +53,7 @@ in
       swappy
       waybar
       hyprsunset
+      hyprpicker
       libinput-gestures
     ]
     ++ ([
