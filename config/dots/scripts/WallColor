@@ -124,7 +124,7 @@ color_icons() {
 
 # Main
 log "Running wal..."
-wal --out-dir "$HOME/.cache/wal" -s -t -i "$1" >>"$LOG_FILE" 2>&1
+wal -sti $(cat ~/.config/dots/rices/.wall)
 source "$HOME/.cache/wal/colors.sh"
 log "Loaded colors from wal"
 

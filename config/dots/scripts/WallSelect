@@ -68,5 +68,6 @@ if [[ -n "$wall_selection" ]]; then
   #swww img $new_wallpaper \
   #  --transition-type="random" \
   #  --transition-pos="top-right"
+  echo $new_wallpaper
   ~/.config/dots/scripts/WallColor $new_wallpaper
 fi
