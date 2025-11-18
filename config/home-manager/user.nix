@@ -18,7 +18,6 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
   targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS
 
   home.packages =
@@ -42,16 +41,10 @@ in
 
   # https://wiki.archlinux.org/title/XDG_Base_Directory
   xdg.enable = true;
-
-  # https://github.com/BreadOnPenguins/dots/blob/master/.zprofile
-  home.profileDirectory = "$HOME/.local/share/nix/profile"; # Careful
   home.sessionVariables = {
-    # NIX_PROFILE_DIR = "${config.home.homeDirectory}/.nix-profile";
-    # NIX_PROFILE_DIR = "${config.home.dataHome}/nix/profile";
-    NIX_PROFILE_DIR = "$HOME/.local/share/nix/profile";
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
-    GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0"; # gtk 3 & 4 are XDG compliant
+    GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0";
     WGETRC = "${config.xdg.configHome}/wget/wgetrc";
     LESSHISTFILE = "${config.xdg.cacheHome}/less_history";
     PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";
@@ -190,4 +183,34 @@ in
       };
     };
   };
+
+  programs.git =
+    {
+      enable = true;
+      signing = {
+        key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
+        signByDefault = true;
+      };
+      settings = {
+        user = {
+          name = "mshnwq";
+          email = "mshnwq.com@gmail.com";
+        };
+        init = {
+          defaultBranch = "main";
+        };
+        tag = {
+          gpgSign = true;
+        };
+        rerere = {
+          enabled = true;
+        };
+        credential = {
+          helper = "cache --timeout=36000";
+        };
+        core = {
+          editor = "vim";
+        };
+      };
+    };
 }
