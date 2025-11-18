@@ -69,7 +69,6 @@ if grep -q "#WRAP" "$script"; then
   tmpfile=$(mktemp)
 
   # Launch floating terminal running fzf with preview
-  # TODO: find way to theme the bat
   ACTIONS="$actions" PROMPT="$prompt_name" BASE_DIR="$base_dir" BASE_NAME="$base_name" TMPFILE="$tmpfile" \
     alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
     -e bash -c '

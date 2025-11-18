@@ -150,6 +150,22 @@ in
       yazi-goto = {
         mode = "0400";
       };
+      tmuxp-caishen = {
+        mode = "0444";
+        path = "${config.xdg.configHome}/tmux/tmuxp/caishen.yaml";
+      };
+      tmuxp-mshnwq = {
+        mode = "0444";
+        path = "${config.xdg.configHome}/tmux/tmuxp/mshnwq.yaml";
+      };
+      tmuxp-infra = {
+        mode = "0444";
+        path = "${config.xdg.configHome}/tmux/tmuxp/infra.yaml";
+      };
+      tmuxp-mooc = {
+        mode = "0444";
+        path = "${config.xdg.configHome}/tmux/tmuxp/mooc.yaml";
+      };
       # beets-lastfm-token = {
       #   mode = "0400";
       # };

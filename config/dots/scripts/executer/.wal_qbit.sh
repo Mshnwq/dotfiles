@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-cd $HOME/.build/qbittorrent && nix-shell -p libsForQt5.qt5.qtbase --run "just compile"
+BUILDDIR=$(<"$HOME/.config/builddir")
+cd "$BUILDDIR/qbittorrent" && nix-shell -p libsForQt5.qt5.qtbase --run "just compile"
 
 STATE_FILE="/tmp/qbit_state.json"
 WINDOW_CLASS="org.qbittorrent.qBittorrent"
