@@ -43,5 +43,14 @@ in
   programs.mpv = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.mpv;
+    config = {
+      # osd-level = 0;
+      title = "\${filename}";
+      hwdec = "vaapi";
+    };
+    bindings = {
+      "r" = "cycle_values video-rotate 90 180 270 0";
+      "|" = "vf toggle hflip";
+    };
   };
 }
