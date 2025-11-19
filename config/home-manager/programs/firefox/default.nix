@@ -161,9 +161,9 @@ in
         (tampermonkey.override {
           meta.license.free = true;
         }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts from sops
+        web-clipper-obsidian
         # TODO:
-        # web-clipper-obsidian
-        # keepassxc-browser
+        keepassxc-browser
       ]
       ++ (with extensions.custom; [
         duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
@@ -205,6 +205,9 @@ in
       "widget.gtk.rounded-bottom-corners.enabled" = true;
       "widget.gtk.ignore-bogus-leave-notify" = 1;
       "svg.context-properties.content.enabled" = true;
+
+      # Plugins
+      "network.protocol-handler.expose.obsidian" = false;
 
       # other
       "browser.tabs.inTitlebar" = 0;

@@ -26,23 +26,4 @@ in
       };
     };
   };
-  xdg.desktopEntries.obsidian = {
-    name = "Obsidian";
-    exec = "Obsidian %u";
-    icon = "obsidian";
-    categories = [ "Utility" ];
-    type = "Application";
-    startupNotify = true;
-    mimeType = [
-      "x-scheme-handler/obsidian"
-    ];
-  };
-  imports = [
-    (lib.nixgl.mkNixGLWrapper {
-      name = "Obsidian";
-      command = "obsidian";
-      nixGLVariant = "nixGLIntel";
-      extraArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WaylandWindowDecorations";
-    })
-  ];
 }
