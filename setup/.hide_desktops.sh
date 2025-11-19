@@ -12,9 +12,10 @@ fi
 
 # Directories to search for desktop files
 SEARCH_DIRS=(
-  "$HOME/.local/share/applications"
   "/usr/share/applications"
-  # flatpak dont make sense to hide any
+  "/lib/flatpak/exports/share/applications"
+  "/var/lib/flatpak/app/org.virt_manager.virt-manager/current/active/export/share/applications"
+  "$HOME/.local/state/nix/profile/share/applications"
 )
 
 # Ensure target directory exists
@@ -38,7 +39,7 @@ while IFS= read -r entry; do
       if grep -q 'Hidden=' "$dest"; then
         sed -i 's/^Hidden=.*/Hidden=true/' "$dest"
       else
-        sed -i '2iHidden=true' "$dest"
+        sed -i '4iHidden=true' "$dest"
       fi
 
       echo " -> Copied and marked hidden: $dest"

@@ -44,6 +44,8 @@ rofi-theme-selector
 firefox
 mpv
 
+vim
+gvim
 nvim
 yazi
 
@@ -63,4 +65,7 @@ waydroid.org.lineageos.recorder
 
 yafti-go
 
+org.pwmt.zathura
+org.rncbc.qpwgraph
 org.keepassxc.KeePassXC
+org.virt_manager.virt-manager

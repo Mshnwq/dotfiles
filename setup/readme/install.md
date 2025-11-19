@@ -41,6 +41,12 @@ ujust install-dotfiles
 ujust install-home-manager
 ujust install-rice
 
+reboot to Hyprland
+
+# ujust 84-virt
+ujust setup-virtualization
+    - add to libvirt group
+    - enable, it will install flatpak virt-manager
 reboot
 
 # 4: look into /usr/share/ublue-os/just
@@ -76,7 +82,3 @@ ujust setup-waydroid
     - authenticators (MICROSOFT, Google) and OPSWAT
     - KDE Connect (configure firewall in scripts)
     - ColorNote (get backup) 
-
-# ujust 84-virt
-ujust setup-virtualization
-    - add to libvirt group
