@@ -15,6 +15,23 @@
     pulsemixer
   ];
 
+  xdg.desktopEntries.qpwgraph = {
+    name = "qpwgraph";
+    exec = "qpwgraph %f";
+    icon = "org.rncbc.qpwgraph";
+    categories = [
+      "Audio"
+      "Midi"
+      "X-Alsa"
+      "X-Pipewire"
+    ];
+    type = "Application";
+    startupNotify = true;
+    mimeType = [
+      "application/x-qpwgraph-patchbay"
+    ];
+  };
+
   # https://github.com/nix-community/home-manager/blob/master/modules/services/mpd.nix
   home.file."${config.xdg.configHome}/mpd/mpd.conf".text = ''
     music_directory    "${config.home.homeDirectory}/Music"
