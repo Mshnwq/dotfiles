@@ -128,7 +128,7 @@ in
 
   # TODO: broken Gnome apps theme
   # Veracrypt    (nix)
-  # Virt-Manager (nix)
+  # Virt-Manager (flatpak)
   # DistroShelf  (flatpak)
   # FlatSeal     (flatpak)
   # Warehouse    (flatpak)

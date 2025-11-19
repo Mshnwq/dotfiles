@@ -26,7 +26,7 @@ in
       cowsay
       cmatrix
       dialog
-      qimgv
+      qimgv # TODO: bootstrap settings
       mtpfs
       simple-mtpfs
       lm_sensors
