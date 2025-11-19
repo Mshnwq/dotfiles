@@ -6,7 +6,6 @@
   ...
 }:
 let
-  # TODO: what to do?
   veracrypt = pkgs.veracrypt.overrideAttrs (old: {
     meta = old.meta // {
       license = lib.licenses.unfree;
@@ -25,9 +24,7 @@ in
     k9s
     podman-compose
     lazydocker
-    virt-manager
-    # ktailctl  # needs nixGL wrap # broken on nvidia,  moved to flatpak
-    # veracrypt
+    veracrypt
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {
