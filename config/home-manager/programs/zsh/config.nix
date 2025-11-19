@@ -51,7 +51,7 @@ let
         zle redisplay
     }
     function zle_refresh_p10k {
-        zle_eval "source $ZDOTDIR/.p10k.zsh; clear"
+        zle_eval "source $HOME/.cache/wal/custom-fzf.sh; source $ZDOTDIR/.p10k.zsh; clear"
     }
     zle -N zle_refresh_p10k
     bindkey "^E" zle_refresh_p10k

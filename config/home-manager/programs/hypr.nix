@@ -52,6 +52,7 @@ in
       slurp
       swappy
       waybar
+      hypridle
       hyprsunset
       hyprpicker
       libinput-gestures

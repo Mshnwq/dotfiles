@@ -16,6 +16,7 @@ SEARCH_DIRS=(
   "/lib/flatpak/exports/share/applications"
   "/var/lib/flatpak/app/org.virt_manager.virt-manager/current/active/export/share/applications"
   "$HOME/.local/state/nix/profile/share/applications"
+  "$HOME/.local/share/applications" # waydroid
 )
 
 # Ensure target directory exists
