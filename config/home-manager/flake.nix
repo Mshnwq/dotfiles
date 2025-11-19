@@ -39,10 +39,6 @@
       url = "github:zakk4223/hyprWorkspaceLayouts";
       inputs.hyprland.follows = "hyprland";
     };
-    hyprnix = {
-      url = "github:hyprland-community/hyprnix";
-      inputs.hyprland.follows = "hyprland";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

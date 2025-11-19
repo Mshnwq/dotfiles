@@ -66,6 +66,8 @@ in
     portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
     plugins = [ inputs.hyprWorkspaceLayouts.packages.${pkgs.system}.default ];
     extraConfig = ''
+      exec-once = dbus-update-activation-environment --systemd --all
+      exec-once = /usr/bin/lxpolkit
       source = ~/.config/hypr/conf.d/autostart.conf
       source = ~/.config/hypr/conf.d/env.conf
       source = ~/.config/hypr/conf.d/general.conf

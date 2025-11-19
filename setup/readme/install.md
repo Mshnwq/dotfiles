@@ -43,12 +43,6 @@ ujust install-rice
 
 reboot to Hyprland
 
-# ujust 84-virt
-ujust setup-virtualization
-    - add to libvirt group
-    - enable, it will install flatpak virt-manager
-reboot
-
 # 4: look into /usr/share/ublue-os/just
 # https://www.youtube.com/watch?v=dKynTzn1_BY
 # https://docs.bazzite.gg/Installing_and_Managing_Software/Waydroid_Setup_Guide/
@@ -82,3 +76,10 @@ ujust setup-waydroid
     - authenticators (MICROSOFT, Google) and OPSWAT
     - KDE Connect (configure firewall in scripts)
     - ColorNote (get backup) 
+
+# ujust 84-virt
+ujust setup-virtualization
+    - add to libvirt group
+    - enable, it will install flatpak virt-manager
+sudo systemctl disable cups.service
+reboot
