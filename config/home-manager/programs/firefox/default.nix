@@ -9,7 +9,7 @@ let
   profile = "mshnwq.default";
   profileName = "mshnwq";
   profile2 = "mshnwq.dummy";
-  profileName2 = "mshnwq";
+  profileName2 = "dummy";
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     custom = pkgs.callPackage ./addons.nix {
@@ -59,8 +59,11 @@ in
 
   imports = [
     (import ./blocking.nix profile)
+    (import ./youtube.nix profile)
     (import ./shyfox.nix profile)
+    (import ./shortcuts.nix profile)
     (import ./shyfox.nix profile2)
+    (import ./shortcuts.nix profile2)
     (lib.nixgl.mkNixGLWrapper {
       name = "Firefox";
       command = "firefox";
@@ -84,6 +87,9 @@ in
     search.engines = import ./search-engines.nix { inherit lib; };
 
     settings = {
+      # https://github.com/nix-community/home-manager/pull/6389
+      "extensions.webextensions.ExtensionStorageIDB.enabled" = false;
+
       # Do not require manual intervention to enable extensions.
       # This might be a security hole.
       "extensions.autoDisableScopes" = 0;
@@ -141,29 +147,19 @@ in
       "browser.urlbar.suggest.searches" = false;
     };
 
+    extensions.force = true;
     extensions.packages =
       with extensions.rycee;
       [
-        # MyFox Theme
-        pywalfox # remove shortcut Ctrl+Alt+D
-        sidebery # remove Ctrl+E and import settings from dotfiles
-        userchrome-toggle-extended # manually add shortcuts  1: Ctrl+E 2: Ctrl+Alt+S 3: Ctrl+Alt+H 4: Ctrl+Alt+C
-        pwas-for-firefox # idk
         # Useful utilities
+        pwas-for-firefox # idk
         # aria2-integration
         # buster-captcha-solver
         # other helpful
-        darkreader
         clearurls
-        sponsorblock
-        return-youtube-dislikes
-        videospeed
         search-by-image
         cookies-txt
         # unfree extensions - manually allowed
-        (untrap-for-youtube.override {
-          meta.license.free = true;
-        }) # import it from dotfiles
         (tampermonkey.override {
           meta.license.free = true;
         }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts from sops
@@ -182,6 +178,8 @@ in
     name = profileName2;
 
     settings = {
+      # https://github.com/nix-community/home-manager/pull/6389
+      "extensions.webextensions.ExtensionStorageIDB.enabled" = false;
       # Do not require manual intervention to enable extensions.
       # This might be a security hole.
       "extensions.autoDisableScopes" = 0;
@@ -211,11 +209,10 @@ in
       "browser.urlbar.suggest.searches" = false;
     };
 
+    extensions.force = true;
     extensions.packages =
       with extensions.rycee;
       [
-        sidebery # remove Ctrl+E and import settings from dotfiles
-        darkreader
         clearurls
         search-by-image
       ]
