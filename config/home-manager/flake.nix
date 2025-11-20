@@ -106,8 +106,10 @@
               lib = lib;
               inputs = inputs';
             })
-          ]
-          ++ (import ./overlays/default.nix inputs');
+            inputs'.nixgl.overlay
+            inputs'.nur.overlays.default
+          ];
+          # ++ (import ./overlays/default.nix inputs');
         };
         modules = [
           (
