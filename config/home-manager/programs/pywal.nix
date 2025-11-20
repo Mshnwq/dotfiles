@@ -41,7 +41,6 @@ in
     with pkgs;
     [
       pywalfox-native # do pywalfox install
-      catppuccin-whiskers # no need cursors has a *.nix
       kdePackages.qtstyleplugin-kvantum
       # TODO: automate this
       # Plasma Style: Utterly-Round (follows color scheme)
@@ -49,7 +48,6 @@ in
       # Window Decorations: Utterly-Round-Dark (also follows color scheme)
       # in kde settings
       # Set Application Style to Kvantum if not already
-      # papirus-icon-theme  # cant use this beacuse it doesnt link to local icons
       papirus-folders # cli tool
     ]
     ++ [
@@ -121,11 +119,22 @@ in
         ln -sf "${cache}/wal/qbit/icons/pywal" \
           "$BUILDDIR/qbittorrent/src/icons/pywal"
 
-        #if [ ! -d "$HOME/.local/share/icons/Papirus" ]; then
-          # TODO: /usr/bin/curl -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh
-        #fi
+        ICONS_DIR="$HOME/.local/share/icons"
+        if [ ! -d "$ICONS_DIR/Papirus" ]; then
+          ICONS_VERSION="20250501"
+          mkdir -p "$ICONS_DIR"
+          tmp=$(mktemp --suffix=.zip)
+          trap "rm -f '$tmp'" EXIT
+          ${pkgs.curl}/bin/curl -L --fail -o "$tmp" \
+            https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/archive/refs/tags/$ICONS_VERSION.zip
+          ${pkgs.unzip}/bin/unzip "$tmp" -d "$ICONS_DIR"
+          ZIPROOT="papirus-icon-theme-$ICONS_VERSION"
+          mv "$ICONS_DIR/$ZIPROOT/Papirus" "$ICONS_DIR/"
+          mv "$ICONS_DIR/$ZIPROOT/Papirus-Dark" "$ICONS_DIR/"
+          mv "$ICONS_DIR/$ZIPROOT/Papirus-Light" "$ICONS_DIR/"
+          rm -rf "$ICONS_DIR/$ZIPROOT"
+        fi
       '';
-
   # TODO: broken Gnome apps theme
   # Veracrypt    (nix)
   # Virt-Manager (flatpak)

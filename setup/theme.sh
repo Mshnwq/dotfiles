@@ -13,7 +13,6 @@ echo "$WALL" > ~/.config/dots/rices/.wall
 # Window Decorations: Utterly-Round-Dark (also follows color scheme)
 # in kde settings
 # Set Application Style to Kvantum if not already
-wget -qO- https://git.io/papirus-icon-theme-install | env DESTDIR="$HOME/.local/share/icons" sh
 pywalfox install
 ~/.config/dots/scripts/WallColor "$WALL"
 
