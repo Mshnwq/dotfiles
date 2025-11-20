@@ -1,3 +1,4 @@
+# packages/shyfox.nix
 { stdenv, fetchFromGitHub }:
 stdenv.mkDerivation {
   pname = "shyfox";
@@ -10,7 +11,6 @@ stdenv.mkDerivation {
   };
   installPhase = ''
     mkdir $out
-    cp -r $src/chrome -T $out
-    cp -r $src/{README.md,LICENSE} -t $out
+    cp -r $src -T $out
   '';
 }

@@ -8,6 +8,8 @@
 let
   profile = "mshnwq.default";
   profileName = "mshnwq";
+  profile2 = "mshnwq.dummy";
+  profileName2 = "mshnwq";
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     custom = pkgs.callPackage ./addons.nix {
@@ -58,6 +60,7 @@ in
   imports = [
     (import ./blocking.nix profile)
     (import ./shyfox.nix profile)
+    (import ./shyfox.nix profile2)
     (lib.nixgl.mkNixGLWrapper {
       name = "Firefox";
       command = "firefox";
@@ -121,6 +124,9 @@ in
       "widget.use-xdg-desktop-portal.mime-handler" = 1;
       "widget.use-xdg-desktop-portal.open-uri" = 1;
 
+      # Plugins
+      "network.protocol-handler.expose.obsidian" = false;
+
       # other
       "browser.tabs.inTitlebar" = 0;
       "browser.tabs.warnOnClose" = true;
@@ -163,17 +169,17 @@ in
         }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts from sops
         web-clipper-obsidian
         # TODO:
-        keepassxc-browser
+        # keepassxc-browser
       ]
       ++ (with extensions.custom; [
         duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
       ]);
   };
 
-  programs.firefox.profiles."mshnwq.job" = {
+  programs.firefox.profiles.${profile2} = {
     id = 1;
     isDefault = false;
-    name = "job";
+    name = profileName2;
 
     settings = {
       # Do not require manual intervention to enable extensions.
@@ -190,24 +196,6 @@ in
       # remove machine learning
       "extensions.ml.enabled" = false;
       "browser.ml.chat.enabled" = false;
-
-      # Theme
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      "browser.download.autohideButton" = false;
-      "browser.tabs.groups.smart.enabled" = false;
-      ### ShyFox ###
-      "sidebar.revamp" = false;
-      "layout.css.has-selector.enabled" = true;
-      "browser.urlbar.suggest.calculator" = true;
-      "browser.urlbar.unitConversion.enabled" = true;
-      "browser.urlbar.trimHttps" = true;
-      "browser.urlbar.trimURLs" = true;
-      "widget.gtk.rounded-bottom-corners.enabled" = true;
-      "widget.gtk.ignore-bogus-leave-notify" = 1;
-      "svg.context-properties.content.enabled" = true;
-
-      # Plugins
-      "network.protocol-handler.expose.obsidian" = false;
 
       # other
       "browser.tabs.inTitlebar" = 0;

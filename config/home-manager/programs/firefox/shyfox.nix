@@ -7,45 +7,12 @@ profile:
 }:
 let
   cfg = config.programs.firefox;
-  builddirRaw = builtins.readFile "${config.home.homeDirectory}/.config/builddir";
-  builddir =
-    builtins.replaceStrings [ "~" ] [ config.home.homeDirectory ]
-      builddirRaw;
 in
 {
-  # home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.shyfox;
-  home.activation.shyfoxTheme =
-    inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
-      ''
-        BUILDDIR=${builddir}
-        if [ ! -d "$BUILDDIR/shyfox" ]; then
-          ${pkgs.git}/bin/git clone https://github.com/mshnwq/shyfox $BUILDDIR/shyfox
-          ln -sf "$BUILDDIR/shyfox/ShyFox" \
-              "${cfg.profilesPath}/${profile}/chrome/ShyFox"
-          ln -sf "$BUILDDIR/shyfox/icons" \
-              "${cfg.profilesPath}/${profile}/chrome/icons"
-        fi
-      '';
+  home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.shyfox;
   programs.firefox.profiles.${profile} = {
-    userChrome = ''
-      @import url("ShyFox/shy-variables.css");
-      @import url("ShyFox/shy-global.css");
-      @import url("ShyFox/shy-sidebar.css");
-      @import url("ShyFox/shy-toolbar.css");
-      @import url("ShyFox/shy-navbar.css");
-      @import url("ShyFox/shy-findbar.css");
-      @import url("ShyFox/shy-controls.css");
-      @import url("ShyFox/shy-compact.css");
-      @import url("ShyFox/shy-icons.css");
-      @import url("ShyFox/shy-floating-search.css");
-    '';
-    userContent = ''
-      @import url("ShyFox/content/shy-new-tab.css");
-      @import url("ShyFox/content/shy-sidebery.css");
-      @import url("ShyFox/content/shy-about.css");
-      @import url("ShyFox/content/shy-global-content.css");
-      @import url("ShyFox/shy-variables.css");
-    '';
+    userChrome = "";
+    userContent = "";
     settings = {
       # Theme
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
