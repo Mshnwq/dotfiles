@@ -42,17 +42,11 @@ in
     [
       pywalfox-native # do pywalfox install
       kdePackages.qtstyleplugin-kvantum
-      # TODO: automate this
-      # Plasma Style: Utterly-Round (follows color scheme)
-      # utterly-round-plasma-style # manually set
-      # Window Decorations: Utterly-Round-Dark (also follows color scheme)
-      # in kde settings
-      # Set Application Style to Kvantum if not already
       papirus-folders # cli tool
     ]
     ++ [
       pkgs-stable.highlight
-      pkgs-stable.pywal16 # SOLUTION
+      pkgs-stable.pywal16
     ]
     ++ (with pkgs.nerd-fonts; [
       jetbrains-mono

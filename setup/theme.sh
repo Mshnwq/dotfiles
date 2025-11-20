@@ -21,5 +21,5 @@ pywalfox install
 # General\Locale=en
 # General\CloseToTrayNotified=true
 # General\UseCustomUITheme=true
-# General\CustomUIThemePath=${HOME}/.build/qbittorrent/dist/catppuccin-pywal.qbtheme
+# General\CustomUIThemePath=${HOME}/Documents/.build/qbittorrent/dist/catppuccin-pywal.qbtheme
 # EOL

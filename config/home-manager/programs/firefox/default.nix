@@ -22,6 +22,60 @@ let
       builtins.readFile config.sops.secrets."browser-pinned".path
     else
       ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://github.com/","baseDomain":"github.com"}]'';
+
+  commonSettings = {
+    # https://github.com/nix-community/home-manager/pull/6389
+    "extensions.webextensions.ExtensionStorageIDB.enabled" = false;
+    # Do not require manual intervention to enable extensions.
+    # This might be a security hole.
+    "extensions.autoDisableScopes" = 0;
+
+    # Hardware
+    "gfx.webrender.all" = true;
+    ### from Bazzite Repo ###
+    "media.ffmpeg.vaapi.enabled" = true;
+    # not hw but bazzite still
+    "media.webspeech.synth.enabled" = false;
+    "reader.parse-on-load.enabled" = false;
+    # remove machine learning
+    "extensions.ml.enabled" = false;
+    "browser.ml.chat.enabled" = false;
+    # Don't show blue dot to notify about AI chat.
+    "sidebar.notification.badge.aichat" = false;
+
+    # No sponsored suggestions.
+    "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+
+    # Allow playing DRM-controlled content.
+    "media.eme.enabled" = true;
+
+    # Tell websites not to sell or share my data.
+    "privacy.globalprivacycontrol.enabled" = true;
+
+    # Disable "Firefox Labs" because I'm afraid of it messing with extensions and user chrome.
+    # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
+    "app.shield.optoutstudies.enabled" = false;
+
+    # <https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
+    "widget.use-xdg-desktop-portal.file-picker" = 1;
+    "widget.use-xdg-desktop-portal.mime-handler" = 1;
+    "widget.use-xdg-desktop-portal.open-uri" = 1;
+
+    # other
+    "browser.shell.checkDefaultBrowser" = false;
+    "browser.download.autohideButton" = false;
+    "browser.tabs.inTitlebar" = 0;
+    "browser.tabs.warnOnClose" = true;
+    "browser.urlbar.placeholderName" = "DuckDuckGo";
+    "browser.urlbar.placeholderName.private" = "DuckDuckGo";
+    "datareporting.usage.uploadEnabled" = "false";
+    "datareporting.healthreport.logging.consoleEnabled" = false;
+    "datareporting.healthreport.service.enabled" = false;
+    "datareporting.healthreport.service.firstRun" = false;
+    "datareporting.healthreport.uploadEnabled" = false;
+    "browser.urlbar.suggest.recentsearches" = false;
+    "browser.urlbar.suggest.searches" = false;
+  };
 in
 {
   xdg.desktopEntries.firefox = {
@@ -53,7 +107,6 @@ in
     BROWSER = "firefox";
   };
 
-  # only need pywalfax --install and sidebery load addons and untrap
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox;
 
@@ -74,7 +127,10 @@ in
   ];
 
   home.packages = [ pkgs.firefoxpwa ];
-  programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
+  programs.firefox.nativeMessagingHosts = [
+    pkgs.firefoxpwa
+    # pkgs.ff2mpv
+  ];
 
   programs.firefox.profiles.${profile} = {
     id = 0;
@@ -86,73 +142,16 @@ in
     search.default = "ddg";
     search.engines = import ./search-engines.nix { inherit lib; };
 
-    settings = {
-      # https://github.com/nix-community/home-manager/pull/6389
-      "extensions.webextensions.ExtensionStorageIDB.enabled" = false;
-
-      # Do not require manual intervention to enable extensions.
-      # This might be a security hole.
-      "extensions.autoDisableScopes" = 0;
-
-      # Hardware
-      "gfx.webrender.all" = true;
-      ### from Bazzite Repo ###
-      "media.ffmpeg.vaapi.enabled" = true;
-      # not hw but bazzite still
-      "media.webspeech.synth.enabled" = false;
-      "reader.parse-on-load.enabled" = false;
-      # remove machine learning
-      "extensions.ml.enabled" = false;
-      "browser.ml.chat.enabled" = false;
-      # Don't show blue dot to notify about AI chat.
-      "sidebar.notification.badge.aichat" = false;
-
+    settings = commonSettings // {
       "browser.newtabpage.pinned" = "${browser-pinned}";
-
-      "browser.shell.checkDefaultBrowser" = false;
-      "browser.download.autohideButton" = false;
-
-      # No sponsored suggestions.
-      "browser.urlbar.suggest.quicksuggest.sponsored" = false;
-
-      # Allow playing DRM-controlled content.
-      "media.eme.enabled" = true;
-
-      # Tell websites not to sell or share my data.
-      "privacy.globalprivacycontrol.enabled" = true;
-
-      # Disable "Firefox Labs" because I'm afraid of it messing with extensions and user chrome.
-      # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
-      "app.shield.optoutstudies.enabled" = false;
-
-      # <https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
-      "widget.use-xdg-desktop-portal.file-picker" = 1;
-      "widget.use-xdg-desktop-portal.mime-handler" = 1;
-      "widget.use-xdg-desktop-portal.open-uri" = 1;
-
-      # Plugins
       "network.protocol-handler.expose.obsidian" = false;
-
-      # other
-      "browser.tabs.inTitlebar" = 0;
-      "browser.tabs.warnOnClose" = true;
-      "browser.urlbar.placeholderName" = "DuckDuckGo";
-      "browser.urlbar.placeholderName.private" = "DuckDuckGo";
-      "datareporting.usage.uploadEnabled" = "false";
-      "datareporting.healthreport.logging.consoleEnabled" = false;
-      "datareporting.healthreport.service.enabled" = false;
-      "datareporting.healthreport.service.firstRun" = false;
-      "datareporting.healthreport.uploadEnabled" = false;
-      "browser.urlbar.suggest.recentsearches" = false;
-      "browser.urlbar.suggest.searches" = false;
     };
 
     extensions.force = true;
     extensions.packages =
       with extensions.rycee;
       [
-        # Useful utilities
-        pwas-for-firefox # idk
+        pwas-for-firefox
         # aria2-integration
         # buster-captcha-solver
         # other helpful
@@ -162,7 +161,7 @@ in
         # unfree extensions - manually allowed
         (tampermonkey.override {
           meta.license.free = true;
-        }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts from sops
+        }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts
         web-clipper-obsidian
         # TODO:
         # keepassxc-browser
@@ -176,39 +175,7 @@ in
     id = 1;
     isDefault = false;
     name = profileName2;
-
-    settings = {
-      # https://github.com/nix-community/home-manager/pull/6389
-      "extensions.webextensions.ExtensionStorageIDB.enabled" = false;
-      # Do not require manual intervention to enable extensions.
-      # This might be a security hole.
-      "extensions.autoDisableScopes" = 0;
-
-      # Hardware
-      "gfx.webrender.all" = true;
-      ### from Bazzite Repo ###
-      "media.ffmpeg.vaapi.enabled" = true;
-      # not hw but bazzite still
-      "media.webspeech.synth.enabled" = false;
-      "reader.parse-on-load.enabled" = false;
-      # remove machine learning
-      "extensions.ml.enabled" = false;
-      "browser.ml.chat.enabled" = false;
-
-      # other
-      "browser.tabs.inTitlebar" = 0;
-      "browser.tabs.warnOnClose" = true;
-      "browser.urlbar.placeholderName" = "DuckDuckGo";
-      "browser.urlbar.placeholderName.private" = "DuckDuckGo";
-      "datareporting.usage.uploadEnabled" = "false";
-      "datareporting.healthreport.logging.consoleEnabled" = false;
-      "datareporting.healthreport.service.enabled" = false;
-      "datareporting.healthreport.service.firstRun" = false;
-      "datareporting.healthreport.uploadEnabled" = false;
-      "browser.urlbar.suggest.recentsearches" = false;
-      "browser.urlbar.suggest.searches" = false;
-    };
-
+    settings = commonSettings;
     extensions.force = true;
     extensions.packages =
       with extensions.rycee;
