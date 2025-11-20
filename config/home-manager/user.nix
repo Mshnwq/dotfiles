@@ -20,25 +20,6 @@ in
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS
 
-  home.packages =
-    with pkgs;
-    [
-      cowsay
-      cmatrix
-      dialog
-      qimgv # TODO: bootstrap settings
-      mtpfs
-      simple-mtpfs
-      lm_sensors
-      zathura
-      sops
-      age
-    ]
-    ++ lib.optionals inputs.useSops [
-      sops
-      age
-    ];
-
   # https://wiki.archlinux.org/title/XDG_Base_Directory
   xdg.enable = true;
   home.sessionVariables = {
@@ -94,6 +75,7 @@ in
       infra
       neovim
       devenv
+      default
       flatpak
       firefox
       obsidian

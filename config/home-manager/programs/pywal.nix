@@ -10,7 +10,7 @@ let
   cfg = config.xdg.configHome;
   cache = config.xdg.cacheHome;
 
-  builddirRaw = builtins.readFile "${config.home.homeDirectory}/.config/builddir";
+  builddirRaw = builtins.readFile "${cfg}/builddir";
   builddir =
     builtins.replaceStrings [ "~" ] [ config.home.homeDirectory ]
       builddirRaw;

@@ -11,12 +11,49 @@ args@{
   lib.importDir' ./. "default.nix"
 ))
 // {
+
+  default = {
+    home.packages =
+      with pkgs;
+      [
+        cmatrix
+        cowsay
+        cmatrix
+        dialog
+        qimgv # TODO: bootstrap settings
+        mtpfs
+        simple-mtpfs
+        lm_sensors
+        zathura
+      ]
+      ++ lib.optionals inputs.useSops [
+        sops
+        age
+      ];
+  };
+
   devenv = {
     home.packages = [
       pkgs.direnv
       inputs.devenv.packages.x86_64-linux.devenv
     ];
-    # DIRENV_LOG_FORMAT = "";
+    home.file."${config.xdg.configHome}/direnv/config.toml" = {
+      force = true;
+      text = ''
+        [global]
+        log_format = "-"
+        log_filter = "^$"
+      '';
+    };
+    home.file."${config.xdg.configHome}/npm/npmrc" = {
+      force = true;
+      text = ''
+        prefix=$XDG_DATA_HOME/npm
+        cache=$XDG_CACHE_HOME/npm
+        init-module=$XDG_CONFIG_HOME/npm/config/npm-init.js
+        logs-dir=$XDG_STATE_HOME/npm/logs
+      '';
+    };
   };
 
   # automation tools

@@ -1,7 +1,7 @@
 # programs/pass.nix
 {
-  config,
   pkgs,
+  config,
   inputs,
   ...
 }:
@@ -13,6 +13,21 @@
     categories = [ "Utility" ];
     type = "Application";
     startupNotify = true;
+  };
+
+  home.file."${config.xdg.configHome}/keepassxc/keepassxc.ini" = {
+    force = true;
+    text = ''
+      [General]
+      ConfigVersion=2
+
+      [GUI]
+      ApplicationTheme=classic
+
+      [PasswordGenerator]
+      AdditionalChars=
+      ExcludedChars=
+    '';
   };
 
   home.packages = with pkgs; [
@@ -34,7 +49,7 @@
     PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
   };
-  # OpenSSH 		      ~/.ssh 	will not fix 	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH.
+  # OpenSSH 		      ~/.ssh 	will not be fix -	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH.
   # SSH folder 		    ~/.ssh 			700 	drwx------
   # Public key 		    ~/.ssh/id_rsa.pub 	644 	-rw-r--r--
   # Private key 	    ~/.ssh/id_rsa 		600 	-rw-------
