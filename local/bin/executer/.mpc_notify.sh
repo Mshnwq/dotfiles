@@ -8,18 +8,18 @@ MPD_REMOTE=$(<"$REMOTE_MPD")
 # Define an mpc wrapper that injects host and port
 mpc_cmd() {
   case "$MY_MPD" in
-    "remote")
-      MPD_HOST="$MPD_REMOTE"
-      MPD_PORT="6600"
-      ;;
-    "local")
-      MPD_HOST="127.0.0.1"
-      MPD_PORT="6600"
-      ;;
-    *)
-      MPD_HOST="localhost"
-      MPD_PORT="6600"
-      ;;
+  "remote")
+    MPD_HOST="$MPD_REMOTE"
+    MPD_PORT="6600"
+    ;;
+  "local")
+    MPD_HOST="127.0.0.1"
+    MPD_PORT="6600"
+    ;;
+  *)
+    MPD_HOST="localhost"
+    MPD_PORT="6600"
+    ;;
   esac
   mpc --host "$MPD_HOST" --port "$MPD_PORT" "$@"
 }

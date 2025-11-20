@@ -2,6 +2,7 @@
 
 pkill -f dolphin
 pkill -f kactivitymanagerd
+pkill -f kunifiedpush-distributor
 pkill -f kded6
 pkill -f kiod6
 pkill -f ksecretd
