@@ -22,7 +22,6 @@ let
   inherit (pkgs.nur.repos.rycee) firefox-addons;
 in
 {
-  # this nix configuration requires two extensions
   programs.firefox.profiles.${profile} = {
     extensions.packages = with firefox-addons; [
       localcdn
@@ -31,6 +30,9 @@ in
       user-agent-string-switcher
     ];
 
+    # TODO:
+    # extensions.settings."uBlock0@raymondhill.net".force = true;
+    # extensions.settings."uBlock0@raymondhill.net".settings =
     settings."uBlock0@raymondhill.net" =
       let
         stevenBlackHosts = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
