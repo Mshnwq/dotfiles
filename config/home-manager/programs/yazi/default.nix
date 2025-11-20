@@ -1,9 +1,9 @@
 # programs/yazi/default.nix
 {
-  inputs,
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }:
 let

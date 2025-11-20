@@ -1,8 +1,9 @@
 # programs/tmux/default.nix
 {
-  config,
   lib,
   pkgs,
+  config,
+  inputs,
   ...
 }:
 let
@@ -42,6 +43,12 @@ in
     description = "Settings for individual tmux plugins";
   };
 
+  options.programs.tmuxp.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "Enable tmuxp";
+  };
+
   config = {
     # Set default enable values for all available plugins
     programs.tmux.pluginSettings = lib.mapAttrs (name: plugin: {
@@ -63,9 +70,37 @@ in
       mouse = true;
       prefix = "C-Space";
       shortcut = "Space";
-      tmuxp.enable = true;
+      tmuxp.enable = config.programs.tmuxp.enable;
       extraConfig = import ./config.nix { };
       plugins = enabledPlugins;
     };
+
+    home.activation.extractTmuxp =
+      lib.mkIf (config.programs.tmuxp.enable && inputs.useSops)
+        (
+          config.lib.dag.entryAfter [ "writeBoundary" ] ''
+            ${pkgs.python3.withPackages (ps: [ ps.pyyaml ])}/bin/python3 << 'EOF'
+            import yaml
+            import os
+
+            secret_path = "${config.sops.secrets.tmuxp.path}";
+            output_dir = "${config.xdg.configHome}/tmux/tmuxp";
+
+            os.makedirs(output_dir, exist_ok=True)
+
+            with open(secret_path, 'r') as f:
+              tmuxp_data = yaml.safe_load(f)
+
+            for name, content in tmuxp_data.items():
+              file_path = os.path.join(output_dir, f"{name}.yaml")
+              try:
+                with open(file_path, 'w') as f:
+                    yaml.dump(content, f)
+                os.chmod(file_path, 0o444)
+              except PermissionError:
+                print(f"Warning: Could not write {file_path}, skipping.")
+            EOF
+          ''
+        );
   };
 }
