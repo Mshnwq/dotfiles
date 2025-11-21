@@ -53,6 +53,10 @@
     bird-nix-lib = {
       url = "github:spikespaz/bird-nix-lib";
     };
+    erosanix = {
+      url = "github:emmanuelrosa/erosanix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
     devenv = {
       url = "github:cachix/devenv/v1.10";
@@ -88,12 +92,7 @@
     in
     {
       lib = nixpkgs.lib.extend (
-        nixpkgs.lib.composeManyExtensions (
-          [
-            # inputs.bird-nix-lib.lib.overlay
-          ]
-          ++ (import ./lib/default.nix inputs')
-        )
+        nixpkgs.lib.composeManyExtensions (import ./lib/default.nix inputs')
       );
 
       home-manager.sharedModules = [
@@ -103,7 +102,10 @@
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           overlays = [
-            (import ./packages/overlays.nix lib)
+            (import ./packages/overlays.nix {
+              lib = lib;
+              inputs = inputs';
+            })
           ]
           ++ (import ./overlays/default.nix inputs');
         };

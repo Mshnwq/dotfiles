@@ -81,21 +81,22 @@ in
     in
     with programs;
     [
-      devenv
       mpv
       vim
-      neovim
-      firefox
-      obsidian
+      hypr
       pass
       auto
+      rust
+      mime
+      wine
       music
       pywal
-      rust
       infra
-      mime
-      hypr
+      neovim
+      devenv
       flatpak
+      firefox
+      obsidian
       keyboard.vial
       keyboard.kmonad
       discord.stable
