@@ -33,6 +33,8 @@ let
       });
 in
 {
+  # to garbage collect
+  # nix run github:emmanuelrosa/erosanix#mkwindowsapp-tools
   home.packages =
     with pkgs;
     [

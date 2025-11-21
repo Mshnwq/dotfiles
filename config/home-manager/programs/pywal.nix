@@ -80,6 +80,8 @@ in
         )}
         BUILDDIR=${builddir}
 
+        mkdir -p "$HOME/Documents/GP8"
+
         mkdir -p "${cfg}/Kvantum"
         mkdir -p "${cache}/wal/Plasma"/{Pywal,PywalNT}
         ln -sf "${cache}/wal/Plasma/Pywal" "${cfg}/Kvantum/Pywal"
