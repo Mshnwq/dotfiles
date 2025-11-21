@@ -81,5 +81,7 @@ ujust setup-waydroid
 ujust setup-virtualization
     - add to libvirt group
     - enable, it will install flatpak virt-manager
+
 sudo systemctl disable cups.service
+sudo systemctl disable waydroid-container.service
 reboot
