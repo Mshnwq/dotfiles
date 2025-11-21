@@ -28,33 +28,44 @@ in
         ];
 
         ### DOCUMENT VIEWER ###
-        # "org.kde.okular" = [
-        "zathura" = [
-          "application/pdf"
-          "application/epub"
-          "application/mobi"
+        "zathura" = builtins.map (s: "application/" + s) [
+          "pdf"
+          "epub"
+          "mobi"
         ];
 
         ### IMAGE VIEWER ###
-        "org.kde.gwenview" = [
-          "image/bmp"
-          "image/gif"
-          "image/jpeg"
-          "image/jpg"
-          "image/png"
-          "image/tiff"
-          "image/x-bmp"
-          "image/x-pcx"
-          "image/x-tga"
-          "image/x-portable-pixmap"
-          "image/x-portable-bitmap"
-          "image/x-targa"
-          "image/x-portable-greymap"
-          "application/pcx"
-          "image/svg+xml"
-          "image/svg-xml"
-        ];
+        "org.kde.gwenview" =
+          builtins.map (s: "image/" + s) [
+            "bmp"
+            "gif"
+            "jpeg"
+            "jpg"
+            "png"
+            "tiff"
+            "x-bmp"
+            "x-pcx"
+            "x-tga"
+            "x-portable-pixmap"
+            "x-portable-bitmap"
+            "x-targa"
+            "x-portable-greymap"
+            "svg+xml"
+            "svg-xml"
+          ]
+          ++ ([
+            "application/pcx"
+          ]);
 
+        ## other ###
+        "guitarpro" = builtins.map (s: "application/" + s) [
+          "gpx"
+          "x-gpx"
+          "x-gpt"
+          "x-guitarpro"
+          "x-guitar-pro"
+          "x-gnuplot"
+        ];
       };
     in
     {
