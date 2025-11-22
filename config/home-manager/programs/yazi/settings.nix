@@ -21,6 +21,12 @@
         block = true;
         for = "unix";
       }
+      {
+        run = "nvim $@";
+        desc = "neovim";
+        block = true;
+        for = "unix";
+      }
     ];
     open = [
       {
@@ -32,6 +38,12 @@
         run = "xdg-open $1";
         desc = "Open";
         for = "linux";
+      }
+      {
+        run = "nvim $@";
+        desc = "neovim";
+        block = true;
+        for = "unix";
       }
     ];
     reveal = [
