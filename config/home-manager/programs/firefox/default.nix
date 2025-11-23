@@ -29,7 +29,6 @@ let
     # Do not require manual intervention to enable extensions.
     # This might be a security hole.
     "extensions.autoDisableScopes" = 0;
-
     # Hardware
     "gfx.webrender.all" = true;
     ### from Bazzite Repo ###
@@ -42,25 +41,19 @@ let
     "browser.ml.chat.enabled" = false;
     # Don't show blue dot to notify about AI chat.
     "sidebar.notification.badge.aichat" = false;
-
     # No sponsored suggestions.
     "browser.urlbar.suggest.quicksuggest.sponsored" = false;
-
     # Allow playing DRM-controlled content.
     "media.eme.enabled" = true;
-
     # Tell websites not to sell or share my data.
     "privacy.globalprivacycontrol.enabled" = true;
-
     # Disable "Firefox Labs" because I'm afraid of it messing with extensions and user chrome.
     # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
     "app.shield.optoutstudies.enabled" = false;
-
     # <https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
     "widget.use-xdg-desktop-portal.file-picker" = 1;
     "widget.use-xdg-desktop-portal.mime-handler" = 1;
     "widget.use-xdg-desktop-portal.open-uri" = 1;
-
     # other
     "browser.shell.checkDefaultBrowser" = false;
     "browser.download.autohideButton" = false;
@@ -137,11 +130,9 @@ in
     isDefault = true;
     name = profileName;
 
-    # Clobber unconditionally, `./search-engines.nix` is source of truth.
     search.force = true;
     search.default = "ddg";
     search.engines = import ./search-engines.nix { inherit lib; };
-
     settings = commonSettings // {
       "browser.newtabpage.pinned" = "${browser-pinned}";
       "network.protocol-handler.expose.obsidian" = false;
@@ -151,23 +142,20 @@ in
     extensions.packages =
       with extensions.rycee;
       [
-        pwas-for-firefox
-        # aria2-integration
-        # buster-captcha-solver
-        # other helpful
         clearurls
-        search-by-image
         cookies-txt
-        # unfree extensions - manually allowed
+        search-by-image
+        pwas-for-firefox
+        keepassxc-browser
+        # aria2-integration
+        web-clipper-obsidian
+        # buster-captcha-solver
         (tampermonkey.override {
           meta.license.free = true;
         })
-        web-clipper-obsidian
-        # TODO:
-        # keepassxc-browser
       ]
       ++ (with extensions.custom; [
-        duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
+        duplicate-tab-shortcut
       ]);
   };
 
@@ -182,9 +170,12 @@ in
       [
         clearurls
         search-by-image
+        keepassxc-browser
+        web-clipper-obsidian
+        # buster-captcha-solver
       ]
       ++ (with extensions.custom; [
-        duplicate-tab-shortcut # change default shortcut Ctrl+Alt+D
+        duplicate-tab-shortcut
       ]);
   };
 }

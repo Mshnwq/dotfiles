@@ -136,6 +136,26 @@ in
             "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
         mkdir -p "${cache}/wal/cursors"
 
+        keepass_file="${cfg}/keepassxc/keepassxc.ini"
+        if [ ! -f "$keepass_file" ]; then
+          cat > "$keepass_file" <<EOF
+        [General]
+        ConfigVersion=2
+
+        [Browser]
+        CustomProxyLocation=
+        Enabled=true
+
+        [GUI]
+        ApplicationTheme=classic
+        TrayIconAppearance=monochrome-light
+
+        [PasswordGenerator]
+        AdditionalChars=
+        ExcludedChars=
+        EOF
+        fi
+
         if [ ! -d "$BUILDDIR/qbittorrent" ]; then
           ${pkgs.git}/bin/git clone https://github.com/catppuccin/qbittorrent $BUILDDIR/qbittorrent
           sed -i -e :a -e '$d;N;2,3ba' -e 'P;D' $BUILDDIR/qbittorrent/tools/build

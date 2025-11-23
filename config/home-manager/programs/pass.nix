@@ -15,21 +15,6 @@
     startupNotify = true;
   };
 
-  home.file."${config.xdg.configHome}/keepassxc/keepassxc.ini" = {
-    force = true;
-    text = ''
-      [General]
-      ConfigVersion=2
-
-      [GUI]
-      ApplicationTheme=classic
-
-      [PasswordGenerator]
-      AdditionalChars=
-      ExcludedChars=
-    '';
-  };
-
   home.packages = with pkgs; [
     pass
     pinentry-all
