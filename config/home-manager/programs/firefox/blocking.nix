@@ -30,10 +30,8 @@ in
       user-agent-string-switcher
     ];
 
-    # TODO:
-    # extensions.settings."uBlock0@raymondhill.net".force = true;
-    # extensions.settings."uBlock0@raymondhill.net".settings =
-    settings."uBlock0@raymondhill.net" =
+    extensions.settings."uBlock0@raymondhill.net".force = true;
+    extensions.settings."uBlock0@raymondhill.net".settings =
       let
         stevenBlackHosts = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
         defaultFilteringString = ''
@@ -115,55 +113,55 @@ in
         '';
       in
       {
-        adminSettings = builtins.toJSON {
-          userSettings = {
-            advancedUserEnabled = true;
-            dynamicFilteringEnabled = true;
-            externalLists = lib.concatStringsSep "\n" [ stevenBlackHosts ];
-            importedLists = [ stevenBlackHosts ];
-          };
-          selectedFilterLists = [
-            # Built-in
-            "user-filters"
-            "ublock-filters"
-            "ublock-badware"
-            "ublock-privacy"
-            # "ublock-quick-fixes" # BUG: broke youtube
-            "ublock-unbreak"
-            # Ads
-            "easylist"
-            # Privacy
-            "adguard-spyware"
-            "adguard-spyware-url"
-            "easyprivacy"
-            # Malware domains
-            "urlhaus-1"
-            "curben-phishing"
-            "curben-pup"
-            # Multipurpose
-            "dpollock-0"
-            "plowe-0"
-            # Annoyances
-            # NOTE: i-dont-care-about-cookies addon?
-            "adguard-annoyance"
-            "adguard-cookies"
-            "adguard-mobile-app-banners"
-            "adguard-popup-overlays"
-            "adguard-social"
-            "fanboy-thirdparty_social"
-            "fanboy-cookiemonster"
-            "fanboy-annoyance"
-            "fanboy-social"
-            "ublock-annoyances"
-            "easylist-newsletters"
-            # Custom
-            stevenBlackHosts
-          ];
-          dynamicFilteringString = ''
-            ${defaultFilteringString}
-            ${localcdnFilteringString}
-          '';
+        # adminSettings = builtins.toJSON {
+        userSettings = {
+          advancedUserEnabled = true;
+          dynamicFilteringEnabled = true;
+          externalLists = lib.concatStringsSep "\n" [ stevenBlackHosts ];
+          importedLists = [ stevenBlackHosts ];
         };
+        selectedFilterLists = [
+          # Built-in
+          "user-filters"
+          "ublock-filters"
+          "ublock-badware"
+          "ublock-privacy"
+          "ublock-quick-fixes"
+          "ublock-unbreak"
+          # Ads
+          "easylist"
+          # Privacy
+          "adguard-spyware"
+          "adguard-spyware-url"
+          "easyprivacy"
+          # Malware domains
+          "urlhaus-1"
+          "curben-phishing"
+          "curben-pup"
+          # Multipurpose
+          "dpollock-0"
+          "plowe-0"
+          # Annoyances
+          # NOTE: i-dont-care-about-cookies addon?
+          "adguard-annoyance"
+          "adguard-cookies"
+          "adguard-mobile-app-banners"
+          "adguard-popup-overlays"
+          "adguard-social"
+          "fanboy-thirdparty_social"
+          "fanboy-cookiemonster"
+          "fanboy-annoyance"
+          "fanboy-social"
+          "ublock-annoyances"
+          "easylist-newsletters"
+          # Custom
+          stevenBlackHosts
+        ];
+        dynamicFilteringString = ''
+          ${defaultFilteringString}
+          ${localcdnFilteringString}
+        '';
+        # };
       };
   };
 }

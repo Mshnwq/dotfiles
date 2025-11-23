@@ -16,13 +16,13 @@
   opener = {
     edit = [
       {
-        run = "$EDITOR $@";
+        run = ''$EDITOR "$@"'';
         desc = "$EDITOR";
         block = true;
         for = "unix";
       }
       {
-        run = "nvim $@";
+        run = ''nvim "$@"'';
         desc = "neovim";
         block = true;
         for = "unix";
@@ -38,12 +38,6 @@
         run = "xdg-open $1";
         desc = "Open";
         for = "linux";
-      }
-      {
-        run = "nvim $@";
-        desc = "neovim";
-        block = true;
-        for = "unix";
       }
     ];
     reveal = [
@@ -61,12 +55,11 @@
     ];
     extract = [
       {
-        run = "ya pub extract --list $@";
+        run = ''ya pub extract --list "$@"'';
         desc = "Extract here";
         for = "unix";
       }
     ];
-    # WHY BROKEN?
     play = [
       {
         run = ''xdg-open "$1"'';

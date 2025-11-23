@@ -62,6 +62,7 @@ args@{
       yt-dlp
       rclone
       jdupes
+      # aria2
       nmap
       buku
       # --import bookmarks.db

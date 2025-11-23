@@ -147,9 +147,7 @@ in
         search-by-image
         pwas-for-firefox
         keepassxc-browser
-        # aria2-integration
         web-clipper-obsidian
-        # buster-captcha-solver
         (tampermonkey.override {
           meta.license.free = true;
         })
@@ -172,7 +170,6 @@ in
         search-by-image
         keepassxc-browser
         web-clipper-obsidian
-        # buster-captcha-solver
       ]
       ++ (with extensions.custom; [
         duplicate-tab-shortcut
