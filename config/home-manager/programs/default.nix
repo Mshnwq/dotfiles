@@ -20,7 +20,6 @@ args@{
         cowsay
         cmatrix
         dialog
-        qimgv # TODO: bootstrap settings
         mtpfs
         simple-mtpfs
         lm_sensors
@@ -70,10 +69,10 @@ args@{
   };
 
   # language
-  anki = {
-    home.packages = with pkgs; [
-      anki
-    ];
-    # ANKI_WAYLAND = "1";
-  };
+  # anki = {
+  #   home.packages = with pkgs; [
+  #     anki
+  #   ];
+  #   # ANKI_WAYLAND = "1";
+  # };
 }

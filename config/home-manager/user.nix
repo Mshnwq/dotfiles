@@ -84,7 +84,7 @@ in
       discord.stable
       zsh
       {
-        programs.zsh.pluginSettings = {
+        zsh.pluginSettings = {
           history-substring-search.enable = true;
           syntax-highlighting.enable = true;
           autosuggestions.enable = true;
@@ -95,8 +95,8 @@ in
       }
       tmux
       {
-        programs.tmuxp.enable = true;
-        programs.tmux.pluginSettings = {
+        tmux.tmuxp.enable = true;
+        tmux.pluginSettings = {
           dracula.enable = true;
           floax.enable = true;
           yank.enable = true;
@@ -105,7 +105,7 @@ in
       }
       yazi
       {
-        programs.yazi.pluginSettings = {
+        yazi.pluginSettings = {
           relative-motions.enable = true;
           jump-to-char.enable = true;
           mediainfo.enable = true;

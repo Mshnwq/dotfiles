@@ -6,7 +6,7 @@
   ...
 }:
 let
-  cfg = config.programs.zsh;
+  cfg = config.zsh;
   pluginDefs = import ./plugins.nix { inherit pkgs; };
   availablePlugins = pluginDefs.plugins;
 
@@ -18,7 +18,7 @@ let
   );
 in
 {
-  options.programs.zsh.pluginSettings = lib.mkOption {
+  options.zsh.pluginSettings = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
         options = {

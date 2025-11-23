@@ -7,7 +7,7 @@
   ...
 }:
 let
-  cfg = config.programs.tmux;
+  cfg = config.tmux;
   pluginDefs = import ./plugins.nix { inherit pkgs; };
   availablePlugins = pluginDefs.plugins;
 
@@ -28,7 +28,7 @@ let
   );
 in
 {
-  options.programs.tmux.pluginSettings = lib.mkOption {
+  options.tmux.pluginSettings = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
         options = {
@@ -43,7 +43,7 @@ in
     description = "Settings for individual tmux plugins";
   };
 
-  options.programs.tmuxp.enable = lib.mkOption {
+  options.tmux.tmuxp.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
     description = "Enable tmuxp";
@@ -51,7 +51,7 @@ in
 
   config = {
     # Set default enable values for all available plugins
-    programs.tmux.pluginSettings = lib.mapAttrs (name: plugin: {
+    tmux.pluginSettings = lib.mapAttrs (name: plugin: {
       enable = lib.mkDefault plugin.defaultEnable;
     }) availablePlugins;
 
@@ -70,13 +70,13 @@ in
       mouse = true;
       prefix = "C-Space";
       shortcut = "Space";
-      tmuxp.enable = config.programs.tmuxp.enable;
+      tmuxp.enable = config.tmux.tmuxp.enable;
       extraConfig = import ./config.nix { };
       plugins = enabledPlugins;
     };
 
     home.activation.extractTmuxp =
-      lib.mkIf (config.programs.tmuxp.enable && inputs.useSops)
+      lib.mkIf (config.tmux.tmuxp.enable && inputs.useSops)
         (
           config.lib.dag.entryAfter [ "writeBoundary" ] ''
             ${pkgs.python3.withPackages (ps: [ ps.pyyaml ])}/bin/python3 << 'EOF'

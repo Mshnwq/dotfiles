@@ -7,7 +7,7 @@
   ...
 }:
 let
-  cfg = config.programs.yazi;
+  cfg = config.yazi;
 
   # Import plugin definitions
   pluginDefs = import ./plugins.nix { inherit pkgs; };
@@ -18,7 +18,7 @@ let
     name: plugin: cfg.pluginSettings.${name}.enable
   ) availablePlugins;
 
-  # Convert to the format programs.yazi.plugins expects
+  # Convert to the format yazi.plugins expects
   pluginsConfig = lib.mapAttrs (name: plugin: plugin.source) enabledPlugins;
 
   # Import base keymap and merge with enabled plugin keymaps
@@ -50,7 +50,7 @@ let
   '';
 in
 {
-  options.programs.yazi.pluginSettings = lib.mkOption {
+  options.yazi.pluginSettings = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
         options = {
@@ -66,7 +66,7 @@ in
   };
 
   config = {
-    programs.yazi.pluginSettings = lib.mapAttrs (name: plugin: {
+    yazi.pluginSettings = lib.mapAttrs (name: plugin: {
       enable = lib.mkDefault plugin.defaultEnable;
     }) availablePlugins;
 
