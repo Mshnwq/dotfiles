@@ -122,7 +122,7 @@ in
       command = "firefox";
       nixGLVariant = "nixGLIntel";
       # libva is needed for intel vaapi Hardware decoding
-      envVars = "LIBVA_DRIVER_NAME=\"i965\" MOZ_ENABLE_WAYLAND=1 MOZ_USE_XINPUT2=1";
+      envVars = "LIBVA_DRIVER_NAME=\"i965\" DISPLAY=\"\" MOZ_ENABLE_WAYLAND=1 MOZ_USE_XINPUT2=1";
     })
   ];
 
@@ -161,7 +161,7 @@ in
         # unfree extensions - manually allowed
         (tampermonkey.override {
           meta.license.free = true;
-        }) # Important: Under the tampermonkey settings, set the Config mode to Advanced and enable the Browser API in Download Mode (BETA). then import scripts
+        })
         web-clipper-obsidian
         # TODO:
         # keepassxc-browser

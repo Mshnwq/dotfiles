@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+set -euo pipefail
+
 dfrs -c --local \
     | sed -E 's#(/var)(/[^ ]*)#\2#g' \
     | tac | awk '!seen[$1]++' | tac \
