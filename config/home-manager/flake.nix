@@ -42,7 +42,7 @@
     home-manager = {
       # BUG:
       # https://github.com/nix-community/home-manager/commit/44931fdc5da28366f6aa999cf833f9d62f4d26bc
-      url = "github:nix-community/home-manager/9a5042a"; # UNTIL BIRD LIB fixes the minimal arg
+      url = "github:nix-community/home-manager/9a5042a88caea9b729a1d3bc981069159de4fc49"; # UNTIL BIRD LIB fixes the minimal arg
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {

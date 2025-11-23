@@ -40,9 +40,10 @@ in
   home.packages =
     with pkgs;
     [
-      pywalfox-native # do pywalfox install
+      qimgv
       kdePackages.qtstyleplugin-kvantum
       papirus-folders # cli tool
+      pywalfox-native # do pywalfox install
     ]
     ++ [
       pkgs-stable.highlight
@@ -56,6 +57,37 @@ in
       inconsolata
       symbols-only
     ]);
+
+  home.file."${config.xdg.configHome}/qimgv/qimgv.conf" = {
+    force = true;
+    text = ''
+      [General]
+      autoResizeWindow=false
+      backgroundOpacity=0
+      blurBackground=true
+      clickableEdges=true
+      clickableEdgesVisible=false
+      confirmDelete=true
+      confirmTrash=true
+      cursorAutohiding=true
+      defaultCropAction=0
+      defaultFitMode=0
+      defaultViewMode=0
+      drawTransparencyGrid=false
+      enableSmoothScroll=true
+      expandImage=false
+      focusPointIn1to1Mode=1
+      folderEndAction=0
+      folderViewIconSize=120
+      imageScrolling=1
+
+      [Controls]
+      shortcuts="zoomIn=+", "frameStepBack=,", "zoomOut=-", "frameStep=.", "fitWindow=1", "fitWidth=2", "fitNormal=3", "zoomIn=eq", "exit=Alt+X", "folderView=Backspace", "copyFile=C", "zoomIn=Ctrl++", "zoomOut=Ctrl+-", "zoomIn=Ctrl+eq", "copyFileClipboard=Ctrl+C", "showInDirectory=Ctrl+D", "zoomOut=Ctrl+Down", "rotateLeft=Ctrl+L", "seekVideoBackward=Ctrl+Left", "open=Ctrl+O", "print=Ctrl+P", "rotateRight=Ctrl+R", "seekVideoForward=Ctrl+Right", "save=Ctrl+S", "copyPathClipboard=Ctrl+Shift+C", "saveAs=Ctrl+Shift+S", "zoomIn=Ctrl+Up", "pasteFile=Ctrl+V", "setWallpaper=Ctrl+W", "zoomOutCursor=Ctrl+WheelDown", "zoomInCursor=Ctrl+WheelUp", "discardEdits=Ctrl+Z", "toggleShuffle=Ctrl+`", "moveToTrash=Del", "zoomOutCursor=Down", "jumpToLast=End", "folderView=Enter", "closeFullScreenOrExit=Esc", "toggleFullscreen=F", "toggleFullscreen=F11", "renameFile=F2", "reloadImage=F5", "flipH=H", "jumpToFirst=Home", "toggleImageInfo=I", "toggleFullscreen=LMB_DoubleClick", "prevImage=Left", "moveFile=M", "contextMenu=Menu", "exit=MiddleButton", "openSettings=P", "exit=Q", "resize=R", "contextMenu=RMB", "nextImage=Right", "removeFile=Shift+Del", "toggleFullscreenInfoBar=Shift+F", "prevDirectory=Shift+Left", "nextDirectory=Shift+Right", "toggleFitMode=Space", "zoomInCursor=Up", "flipV=V", "nextImage=WheelDown", "prevImage=WheelUp", "crop=X", "prevImage=XButton1", "nextImage=XButton2", "toggleSlideshow=`"
+
+      [Scripts]
+      script\size=0
+    '';
+  };
 
   home.activation.linkWalTheme =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
