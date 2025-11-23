@@ -40,7 +40,9 @@
       inputs.hyprland.follows = "hyprland";
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      # BUG:
+      # https://github.com/nix-community/home-manager/commit/44931fdc5da28366f6aa999cf833f9d62f4d26bc
+      url = "github:nix-community/home-manager/9a5042a"; # UNTIL BIRD LIB fixes the minimal arg
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {
@@ -81,7 +83,6 @@
       self,
       nixpkgs,
       home-manager,
-      # systems,
       ...
     }:
     let
@@ -102,7 +103,7 @@
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           overlays = [
-            (import ./packages/overlays.nix {
+            (import ./pkgs/overlays.nix {
               lib = lib;
               inputs = inputs';
             })
