@@ -64,7 +64,6 @@ in
     [
       mpv
       vim
-      hypr
       pass
       auto
       rust
@@ -82,6 +81,10 @@ in
       keyboard.vial
       keyboard.kmonad
       discord.stable
+      hypr
+      {
+        hypr.hyprWorkspaceLayouts.enable = true;
+      }
       zsh
       {
         zsh.pluginSettings = {

@@ -13,3 +13,5 @@ devenv.local.nix
 **/.wall
 config/dots/rices/.wall
 .env
+
+config/hypr/conf.d/workspaceLayouts.conf
