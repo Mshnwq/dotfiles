@@ -69,6 +69,22 @@ args@{
     ];
   };
 
+  # rust tools
+  rust = {
+    home.packages = with pkgs; [
+      cargo
+      rustc
+      eza
+      bat
+      dfrs
+      ripgrep
+      tldr
+      gpg-tui
+      serie
+      # termscp
+    ];
+  };
+
   # language
   # anki = {
   #   home.packages = with pkgs; [
