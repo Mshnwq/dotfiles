@@ -34,27 +34,5 @@ in
       gpg-tui
       serie
       termscp
-    ]
-    ++ ([
-      (pkgs.symlinkJoin {
-        name = "glim";
-        buildInputs = [ pkgs.makeWrapper ];
-        paths = [ glim ];
-        postBuild =
-          let
-            glim-token =
-              if inputs.useSops then config.sops.secrets."glim-token".path else "xxx";
-            configFile = pkgs.writeText "glim.toml" ''
-              gitlab_url = "https://gitlab.com/api/v4"
-              gitlab_token = ""
-              gitlab_token_file = "${glim-token}"
-              animations = true
-            '';
-          in
-          ''
-            wrapProgram $out/bin/glim \
-              --append-flags "--config ${configFile}"
-          '';
-      })
-    ]);
+    ];
 }

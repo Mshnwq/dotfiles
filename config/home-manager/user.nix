@@ -128,9 +128,6 @@ in
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
-      glim-token = {
-        mode = "0400";
-      };
       browser-pinned = {
         mode = "0400";
       };

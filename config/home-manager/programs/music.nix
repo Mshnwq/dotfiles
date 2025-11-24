@@ -91,12 +91,12 @@
     let
       lastfm-key =
         if inputs.useSops then
-          builtins.readFile config.sops.secrets."glim-token".path
+          builtins.readFile config.sops.secrets."mpd-remote-host".path
         else
           "xxx";
       discogs-key =
         if inputs.useSops then
-          builtins.readFile config.sops.secrets."glim-token".path
+          builtins.readFile config.sops.secrets."mpd-remote-host".path
         else
           "xxx";
     in
