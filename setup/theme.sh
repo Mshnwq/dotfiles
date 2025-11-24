@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-RICE="futhark"
-echo "$RICE" > ~/.config/dots/.rice
+RICE="default"
+echo "$RICE" >"$HOME/.config/dots/.rice"
 
 WALL="$HOME/.config/dots/rices/$RICE/walls/glacier.png"
-echo "$WALL" > ~/.config/dots/rices/.wall
+echo "$WALL" >"$HOME/.config/dots/rices/.wall"
+
+for i in {1..3}; do
+  git clone https://github.com/mshnwq/themes.git "$HOME/.config/dots/rices/themes" && break
+  rm -rf "$HOME/.config/dots/rices/themes"
+  sleep 3
+done
+
+# idk
+mv ~/.config/dots/rices/themes/* ~/.config/dots/rices
+rm -rf "$HOME/.config/dots/rices/themes"
 
 # INSTALL
 # TODO: automate this

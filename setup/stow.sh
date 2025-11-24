@@ -7,9 +7,9 @@ for dir in "$DOTDIR"/config/*; do
   name="$(basename "$dir")"
   mkdir -p "$HOME/.config/$name"
   if [ "$name" = "dots" ]; then
-    mkdir -p "$HOME/.config/$name/config"
-    cp -r "$dir/config/assets" "$HOME/.config/$name/config"
-    cd "$dir" && stow --target="$HOME/.config/$name" --ignore='assets' .
+    mkdir -p "$HOME/.config/$name/rices"
+    cp -r "$dir/rices/default" "$HOME/.config/$name/rices"
+    cd "$dir" && stow --target="$HOME/.config/$name" .
     continue
   fi
   cd "$dir" && stow --target="$HOME/.config/$name" .

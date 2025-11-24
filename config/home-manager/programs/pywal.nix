@@ -136,6 +136,7 @@ in
             "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
         mkdir -p "${cache}/wal/cursors"
 
+        mkdir -p "${cfg}/keepassxc"
         keepass_file="${cfg}/keepassxc/keepassxc.ini"
         if [ ! -f "$keepass_file" ]; then
           cat > "$keepass_file" <<EOF

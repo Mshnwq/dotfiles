@@ -56,8 +56,10 @@ take_screenshot() {
 }
 
 countdown() {
+  RICE=$(cat ~/.config/dots/.rice)
+  ASSETS_DIR="$HOME/.config/dots/rices/$RICE/assets"
   for sec in $(seq "$1" -1 1); do
-    dunstify -t 1000 -i ~/.config/dots/config/assets/screenshot.png "Taking shot in : $sec"
+    dunstify -t 1000 -i "$ASSETS_DIR/screenshot.png" "Taking shot in : $sec"
     sleep 1
   done
 }

@@ -20,14 +20,16 @@ icon() {
   vol=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | sed 's/%//')
   mute=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $5}')
 
+  RICE=$(cat ~/.config/dots/.rice)
+  ASSETS_DIR="$HOME/.config/dots/rices/$RICE/assets"
   if [ "$mute" = "yes" ] || [ "$vol" -eq 0 ]; then
-    icon="$HOME/.config/dots/config/assets/volume_mute.png"
+    icon="$ASSETS_DIR/volume_mute.png"
   elif [ "$vol" -lt 33 ]; then
-    icon="$HOME/.config/dots/config/assets/volume_low.png"
+    icon="$ASSETS_DIR/volume_low.png"
   elif [ "$vol" -lt 66 ]; then
-    icon="$HOME/.config/dots/config/assets/volume_medium.png"
+    icon="$ASSETS_DIR/volume_medium.png"
   else
-    icon="$HOME/.config/dots/config/assets/volume_high.png"
+    icon="$ASSETS_DIR/volume_high.png"
   fi
 }
 
@@ -39,7 +41,7 @@ send_notification() {
 notify_mute() {
   mute=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
   if [ "$mute" = "yes" ]; then
-    icon="$HOME/.config/dots/config/assets/volume_mute.png"
+    icon="$ASSETS_DIR/volume_mute.png"
     notify-send -a "state" -r 91190 -i "$icon" "Muted" -u normal
   else
     icon

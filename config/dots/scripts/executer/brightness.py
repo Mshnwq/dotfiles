@@ -8,7 +8,12 @@ parser = argparse.ArgumentParser(description="Brightness Adjuster")
 parser.add_argument("brightness_direction", choices=["up", "down"])
 # Parse the command-line arguments
 args = parser.parse_args()
-icon = "$HOME/.config/dots/config/assets/brightness.png"
+
+home = os.path.expanduser("~")
+rice_f = os.path.join(home, ".config/dots/.rice")
+with open(rice_f, "r") as f:
+    rice = f.read().strip()
+icon = os.path.join(home, f".config/dots/rices/{rice}/assets/brightness.png")
 
 # Determine the direction of the brightness adjustment
 if args.brightness_direction == "up":
