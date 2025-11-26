@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH="$HOME/.config/dots/scripts/executer:$PATH"
+export PATH="$HOME/.local/bin/executer:$PATH"
 
 .compositor_off.sh
 .gesture_kill.sh

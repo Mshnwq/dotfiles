@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export PATH="$HOME/.config/dots/scripts:$PATH"
-
 CFG_MPD="$HOME/.config/dots/.mpd_status"
 MY_MPD=$(<"$CFG_MPD")
 REMOTE_MPD="$HOME/.config/dots/.mpd_host"

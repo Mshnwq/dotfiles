@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+function yapt() {
+  ( (
+    sleep 0.3
+    YAZI_ID=$1 ya emit plugin projects "load tmux"
+  ) &)
+  zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
+}
+
+function yapp() {
+  ( (
+    sleep 0.3
+    YAZI_ID=$1 ya emit plugin projects "load $2"
+  ) &)
+  zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1" || return $?
+}
+
+function yapl() {
+  ( (
+    sleep 0.3
+    YAZI_ID=$1 ya emit plugin projects "load_last"
+  ) &)
+  zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
+}
+
+STATUS_FILE="$HOME/.config/dots/.yazi_id"
+yaziId="$RANDOM"
+echo "$yaziId" >"$STATUS_FILE"
+
+tmux set-option status off
+
+# Parse arguments
+mode="default"
+project_name=""
+args=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --last)
+    mode="last"
+    shift
+    ;;
+  --project)
+    mode="project"
+    project_name="$2"
+    shift 2
+    ;;
+  *)
+    args+=("$1")
+    shift
+    ;;
+  esac
+done
+
+# Run the appropriate function
+case "$mode" in
+last)
+  yapl "$yaziId" "${args[@]}"
+  ;;
+project)
+  yapp "$yaziId" "$project_name"
+  ;;
+*)
+  yapt "$yaziId" "${args[@]}"
+  ;;
+esac

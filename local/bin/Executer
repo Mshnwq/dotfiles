@@ -1,22 +1,11 @@
 #!/usr/bin/env bash
 
-base_dir="$HOME/.config/dots/scripts/executer"
+DOTDIR=$(<"$HOME/.config/dotdir")
+DOTDIR="${DOTDIR/#\~/$HOME}"
+base_dir="$DOTDIR/local/bin/executer"
 
-# Find all executable files and extract their filenames, excluding hidden .sh files and .py duplicates
 scripts=$(find "$base_dir" -type f -executable \
-  ! -path "*/.venv/*" ! -path "*/.old/*" -not -name ".*.sh" -not -name "*.py" -printf "%f\n" |
-  awk -F. '{
-  if ($2 == "sh") sh_files[$1] = 1;
-  else if ($2 == "py") py_files[$1] = 1;
-}
-END {
-  for (name in sh_files) {
-    print name ".sh";  # Keep .sh files
-  }
-  for (name in py_files) {
-    if (!(name in sh_files)) print name ".py";  # Only keep .py if no .sh exists
-  }
-}')
+  -not -name "*.py" -not -name ".*.sh" -printf "%f\n")
 
 # Pass the scripts to rofi for selection
 selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.rasi")
@@ -25,7 +14,7 @@ selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.ras
 [ -z "$selected" ] && exit 0
 
 # Path to the selected script
-script="$HOME/.config/dots/scripts/executer/$selected"
+script="$HOME/.local/bin/executer/$selected"
 
 # Check for #WRAP marker
 if grep -q "#WRAP" "$script"; then

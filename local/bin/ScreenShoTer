@@ -8,7 +8,6 @@
 #   Script to take screenshots using maim.
 #   20.12.2023 16:10:25
 
-
 # Screenshot general options
 timestamp=$(date +%Y-%m-%d_%H-%M-%S)
 savedir="$HOME/Pictures/ScreenShots"
@@ -32,7 +31,7 @@ rofi_cmd() {
     -markup-rows \
     -theme "$HOME"/.config/rofi/Screenshot.rasi
 }
-    #-p "Screenshot Directory :: $savedir" \
+#-p "Screenshot Directory :: $savedir" \
 
 run_rofi() {
   echo -e "$s_full\n$s_select\n$s_swappy\n$s_in3\n$s_in10" | rofi_cmd
@@ -48,9 +47,9 @@ show_notification() {
 
 take_screenshot() {
   if [[ "$@" != "--sel" ]]; then
-    grim "$filename"  && paplay "$audio" &>/dev/null | wl-copy < "$filename"
+    grim "$filename" && paplay "$audio" &>/dev/null | wl-copy <"$filename"
   else
-    grim -g "$(slurp)" "$filename" && paplay "$audio" &>/dev/null | wl-copy < "$filename"
+    grim -g "$(slurp)" "$filename" && paplay "$audio" &>/dev/null | wl-copy <"$filename"
   fi
   show_notification
 }
@@ -66,23 +65,23 @@ countdown() {
 
 run_cmd() {
   case $1 in
-    --now)
-      sleep 0.5 && take_screenshot
-      ;;
-    --sel)
-      take_screenshot --sel
-      ;;
-    --swappy)
-	grim -g "$(slurp)" "$filename" && paplay "$audio" &>/dev/null
-	swappy -f "$filename" -o "$filename"
-	wl-copy < "$filename"
-      ;;
-    --in3)
-      countdown 3 && take_screenshot
-      ;;
-    --in10)
-      countdown 10 && take_screenshot
-      ;;
+  --now)
+    sleep 0.5 && take_screenshot
+    ;;
+  --sel)
+    take_screenshot --sel
+    ;;
+  --swappy)
+    grim -g "$(slurp)" "$filename" && paplay "$audio" &>/dev/null
+    swappy -f "$filename" -o "$filename"
+    wl-copy <"$filename"
+    ;;
+  --in3)
+    countdown 3 && take_screenshot
+    ;;
+  --in10)
+    countdown 10 && take_screenshot
+    ;;
   esac
 }
 
@@ -93,19 +92,19 @@ fi
 
 select_option="$(run_rofi)"
 case ${select_option} in
-  "$s_full")
-    run_cmd --now
-    ;;
-  "$s_select")
-    run_cmd --sel
-    ;;
-  "$s_swappy")
-    run_cmd --swappy
-    ;;
-  "$s_in3")
-    run_cmd --in3
-    ;;
-  "$s_in10")
-    run_cmd --in10
-    ;;
+"$s_full")
+  run_cmd --now
+  ;;
+"$s_select")
+  run_cmd --sel
+  ;;
+"$s_swappy")
+  run_cmd --swappy
+  ;;
+"$s_in3")
+  run_cmd --in3
+  ;;
+"$s_in10")
+  run_cmd --in10
+  ;;
 esac

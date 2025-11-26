@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+#  ███╗   ███╗███████╗██████╗ ██╗ █████╗      ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗
+#  ████╗ ████║██╔════╝██╔══██╗██║██╔══██╗    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║
+#  ██╔████╔██║█████╗  ██║  ██║██║███████║    ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║
+#  ██║╚██╔╝██║██╔══╝  ██║  ██║██║██╔══██║    ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║
+#  ██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║    ╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗
+#  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+#
+#	Author  : gh0stzk
+#	Url     : https://github.com/gh0stzk/dotfiles
+#	Info    : This script uses playerctl and mpc to control the multimedia playback
+#           "stop, pause, play, next, previous" of different players like
+#           spotify, ncmpcpp, clementine, strawberry and others.
+
+# Set the player
+[ -n "$(pgrep spotify)" ] && Control="spotify" || Control="MPD"
+
+# Here the cover image will be saved.
+Cover=/tmp/cover.png
+RICE=$(cat ~/.config/dots/.rice)
+ASSETS_DIR="$HOME/.config/dots/rices/$RICE/assets"
+# if cover not found in metadata use this instead
+bkpCover="$ASSETS_DIR/fallback.webp"
+# mpd music directory for mpd clients.
+mpddir=~/Music
+LAST_SONG_FILE="/tmp/last_song.txt"
+
+CFG_MPD="$HOME/.config/dots/.mpd_status"
+MY_MPD=$(<"$CFG_MPD")
+REMOTE_MPD="$HOME/.config/dots/.mpd_host"
+MPD_REMOTE=$(<"$REMOTE_MPD")
+
+# Define an mpc wrapper that injects host and port
+mpc_cmd() {
+  case "$MY_MPD" in
+  "remote")
+    MPD_HOST="$MPD_REMOTE"
+    MPD_PORT="6600"
+    ;;
+  "local")
+    MPD_HOST="127.0.0.1"
+    MPD_PORT="6600"
+    ;;
+  *)
+    MPD_HOST="localhost"
+    MPD_PORT="6600"
+    ;;
+  esac
+  mpc --host "$MPD_HOST" --port "$MPD_PORT" "$@"
+}
+
+case $Control in
+MPD)
+  case $1 in
+  --next)
+    mpc_cmd -q next
+    ;;
+  --previous)
+    mpc_cmd -q prev
+    ;;
+  --toggle)
+    mpc_cmd -q toggle
+    ;;
+  --stop)
+    mpc_cmd -q stop
+    ;;
+  --random)
+    mpc_cmd random
+    ;;
+  --single-on)
+    mpc_cmd single on
+    ;;
+  --single-off)
+    mpc_cmd single off
+    ;;
+  --seek)
+    mpc_cmd seek "$2"
+    ;;
+  --title)
+    title=$(mpc_cmd -f %title% current)
+    echo "${title:-Play Something}"
+    ;;
+  --artist)
+    artist=$(mpc_cmd -f %artist% current)
+    echo "${artist:-No Artist}"
+    ;;
+  --status)
+    status=$(mpc_cmd status | head -2 | tail -1 | cut -c2-8 | sed 's/]//g' | sed 's/./\U&/')
+    echo "${status:-Stopped}"
+    ;;
+  --player)
+    echo "$Control"
+    ;;
+  --notify)
+    ARTIST=$("$0" --artist)
+    TITLE=$("$0" --title)
+    COVER=$("$0" --cover)
+    # Send the notification
+    notify-send -r 1001 -i "${COVER}" "Now Playing" "$ARTIST\n$TITLE"
+    ;;
+  --cover)
+    current_song=$(mpc_cmd current -f "%title%-%artist%")
+    last_song=""
+    [ -f "$LAST_SONG_FILE" ] && last_song=$(cat "$LAST_SONG_FILE")
+    if [ "$current_song" != "$last_song" ] || [ ! -f "$Cover" ]; then
+      ffmpeg -i "$mpddir/$(mpc_cmd current -f %file%)" "${Cover}" -y &>/dev/null || cp $bkpCover $Cover
+      echo "$current_song" >"$LAST_SONG_FILE"
+    fi
+    echo "$Cover"
+    ;;
+  nccover)
+    ffmpeg -i "$mpddir"/"$(mpc_cmd current -f %file%)" "${Cover}" -y &>/dev/null || cp $bkpCover $Cover
+    ;;
+  --position)
+    position=$(mpc_cmd status %currenttime%)
+    echo "${position:-0:00}"
+    ;;
+  --positions)
+    positions=$(mpc_cmd status %currenttime% | awk -F: '{print ($1 * 60) + $2}')
+    echo "${positions:-0}"
+    ;;
+  --length)
+    length=$(mpc_cmd status %totaltime%)
+    echo "${length:-0:00}"
+    ;;
+  --lengths)
+    lengths=$(mpc_cmd status %totaltime% | awk -F: '{print ($1 * 60) + $2}')
+    echo "${lengths:-0}"
+    ;;
+  --shuffle)
+    shuffle=$(mpc_cmd status | sed -n '3s/.*random: \([^ ]*\).*/\1/p' | sed 's/.*/\u&/')
+    echo "${shuffle:-Off}"
+    ;;
+  --loop)
+    loop=$(mpc_cmd status | sed -n '3s/.*repeat: \([^ ]*\).*/\1/p' | sed 's/.*/\u&/')
+    echo "${loop:-Off}"
+    ;;
+  --single)
+    single=$(mpc_cmd status | sed -n '3s/.*single: \([^ ]*\).*/\1/p' | sed 's/.*/\u&/')
+    echo "${single:-Off}"
+    ;;
+  esac
+  ;;
+*)
+  # i am not using this playerctl
+  case $1 in
+  --next)
+    playerctl --player="$Control" next
+    ;;
+  --previous)
+    playerctl --player="$Control" previous
+    ;;
+  --toggle)
+    playerctl --player="$Control" play-pause
+    ;;
+  --stop)
+    playerctl --player="$Control" stop
+    ;;
+  --title)
+    title=$(playerctl --player="$Control" metadata --format "{{title}}")
+    echo "${title:-Play Something}"
+    ;;
+  --artist)
+    artist=$(playerctl --player="$Control" metadata --format "{{artist}}")
+    echo "${artist:-No Artist}"
+    ;;
+  --status)
+    status=$(playerctl --player="$Control" status)
+    echo "${status:-Stopped}"
+    ;;
+  --player)
+    echo "$Control"
+    ;;
+  --cover)
+    current_song="$(playerctl --player="$Control" metadata --format '{{title}}-{{artist}}')"
+    last_song=""
+    [ -f "$LAST_SONG_FILE" ] && last_song=$(cat "$LAST_SONG_FILE")
+
+    if [ "$current_song" != "$last_song" ] || [ ! -f "$Cover" ]; then
+      albumart="$(playerctl --player="$Control" metadata mpris:artUrl | sed -e 's/open.spotify.com/i.scdn.co/g')"
+      if [[ $(playerctl --player="$Control" metadata mpris:artUrl) ]]; then
+        curl -s "$albumart" --output $Cover
+      else
+        cp $bkpCover $Cover
+      fi
+      echo "$current_song" >"$LAST_SONG_FILE"
+    fi
+
+    echo "$Cover"
+    ;;
+  --position)
+    position=$(playerctl --player="$Control" position --format "{{ duration(position) }}")
+    echo "${position:-0:00}"
+    ;;
+  --positions)
+    positions=$(playerctl --player="$Control" position | sed 's/..\{6\}$//')
+    echo "${positions:-0}"
+    ;;
+  --length)
+    length=$(playerctl --player="$Control" metadata --format "{{ duration(mpris:length) }}")
+    echo "${length:-0:00}"
+    ;;
+  --lengths)
+    lengths=$(playerctl --player="$Control" metadata mpris:length | sed 's/.\{6\}$//')
+    echo "${lengths:-0}"
+    ;;
+  --shuffle)
+    shuffle=$(playerctl --player="$Control" shuffle)
+    echo "${shuffle:-Off}"
+    ;;
+  --loop)
+    loop=$(playerctl --player="$Control" loop)
+    echo "${loop:-None}"
+    ;;
+  esac
+  ;;
+esac 2>/dev/null

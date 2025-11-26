@@ -175,8 +175,8 @@
   "custom/distro": {
     "format": " ",
     "tooltip": false,
-    "on-click": "~/.config/dots/scripts/OpenApps --menu",
-    "on-click-right": "~/.config/dots/scripts/OpenApps --execute"
+    "on-click": "~/.local/bin/OpenApps --menu",
+    "on-click-right": "~/.local/bin/OpenApps --execute"
   },
   "clock#date": {
     "tooltip-format": "<tt>{calendar}</tt>",
@@ -206,8 +206,7 @@
     "exec": "~/.config/waybar/scripts/wifi-status.sh",
     "return-type": "json",
     "format": "{}",
-    "on-click": "~/.config/dots/scripts/NetManagerDM",
-    "on-click-right": "kitty --title '󰤨  Network Manager TUI' bash -c nmtui",
+    "on-click": "~/.local/bin/NetManagerDM",
     "interval": 1,
     "min-length": 1,
     "max-length": 1
@@ -227,7 +226,7 @@
       "{device_alias}",
     "tooltip-format-enumerate-connected-battery": 
       ":: {device_alias}: 󱊣 {device_battery_percentage}%",
-    "on-click": "~/.config/dots/scripts/RofiBluetooth",
+    "on-click": "~/.local/bin/RofiBluetooth",
     "on-click-right": "kitty --title '󰂯  Bluetooth TUI' bash -c bluetui",
     "interval": 1,
     "min-length": 1,
@@ -263,9 +262,9 @@
       },
       "tooltip-format": "{title}\n{album}\n{artist}\n{repeatIcon} {randomIcon} {singleIcon} {consumeIcon} ",
       "tooltip-format-disconnected": "MPD (disconnected)",
-      "on-click": "~/.config/dots/scripts/OpenApps --music",
-      "on-click-right": "~/.config/dots/scripts/executer/.mpd_launch.sh",
-      "on-click-middle": "~/.config/dots/scripts/executer/.waybar_cava.sh"
+      "on-click": "~/.local/bin/OpenApps --music",
+      "on-click-right": "~/.local/bin/executer/.mpd_launch.sh",
+      "on-click-middle": "~/.local/bin/executer/.waybar_cava.sh"
   },
   "disk": {
     "interval": 30,
@@ -282,8 +281,8 @@
     },
     "tooltip-format": "Device: {desc}",
     "on-click": "~/.config/waybar/scripts/volume-control.sh -o m",
-    "on-click-middle": "~/.config/dots/scripts/OpenApps  --soundmixer",
-    "on-click-right": "~/.config/dots/scripts/OpenApps  --soundcontrol",
+    "on-click-middle": "~/.local/bin/OpenApps  --soundmixer",
+    "on-click-right": "~/.local/bin/OpenApps  --soundcontrol",
     "on-scroll-up": "~/.config/waybar/scripts/volume-control.sh -o i",
     "on-scroll-down": "~/.config/waybar/scripts/volume-control.sh -o d",
     "min-length": 5,
@@ -317,7 +316,7 @@
   "custom/power": {
     "format": " ",
     "tooltip": false,
-    "on-click": "~/.config/dots/scripts/PowerMenu"
+    "on-click": "~/.local/bin/PowerMenu"
   },
   "custom/paddw": {
     "format": " ",
@@ -436,7 +435,7 @@
     "noise_reduction": 0.77,
     "input_delay": 2,
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-    "on-click-right": "~/.config/dots/scripts/executer/.waybar_cava.sh",
+    "on-click-right": "~/.local/bin/executer/.waybar_cava.sh",
     "actions": {
     	"on-click": "mode"
     }
@@ -444,7 +443,7 @@
   "custom/keyboard": {
     "interval": 2,
     "exec": "~/.config/waybar/scripts/keyboard.sh",
-    "on-click": "~/.config/dots/scripts/OpenApps --keyboard",
+    "on-click": "~/.local/bin/OpenApps --keyboard",
     "return-type": "json",
     "format": "{}"
   }

@@ -33,7 +33,6 @@ fi
 
 # ReLaunch MusicTerm
 pkill "$(< $HOME/.config/dots/.music)"
-export PATH="$HOME/.config/dots/scripts:$PATH"
 OpenApps --music & disown
 
 # Wait for it to appear

@@ -47,27 +47,22 @@ wall_list=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -
 selected_index=0
 i=0
 while IFS= read -r wallpaper; do
-    if [[ "$wallpaper" == "$current_wallpaper" ]]; then
-        selected_index=$i
-        break
-    fi
-    ((i++))
-done <<< "$wall_list"
+  if [[ "$wallpaper" == "$current_wallpaper" ]]; then
+    selected_index=$i
+    break
+  fi
+  ((i++))
+done <<<"$wall_list"
 
 echo "Selected index: $selected_index"
 
 # Launch rofi
 wall_selection=$(echo "$wall_list" | while read -r A; do
-    echo -en "$A\x00icon\x1f${cacheDir}/$A\n"
+  echo -en "$A\x00icon\x1f${cacheDir}/$A\n"
 done | $rofi_command -selected-row "$selected_index")
 
 # Set wallpaper
 if [[ -n "$wall_selection" ]]; then
   echo "${wall_dir}/${wall_selection}" >"$HOME/.config/dots/rices/.wall"
-  read -r new_wallpaper <"$HOME"/.config/dots/rices/.wall
-  #swww img $new_wallpaper \
-  #  --transition-type="random" \
-  #  --transition-pos="top-right"
-  echo $new_wallpaper
-  ~/.config/dots/scripts/WallColor $new_wallpaper
+  WallColor
 fi

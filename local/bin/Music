@@ -29,30 +29,30 @@ MPD_HOST=$(<"$REMOTE_MPD")
 
 # Launch the terminal with appropriate options
 case $MY_MUSIC in
-  "ncmpcpp")
-    case $MY_MPD in
-      "remote")
-        ncmpcpp --host $MPD_HOST --port 6600
-        ;;
-      "local")
-        ncmpcpp --host 127.0.0.1 --port 6600
-        ;;
-      *)
-        dunstify "Music is not running or not configured properly."
-        ;;
-    esac
+"ncmpcpp")
+  case $MY_MPD in
+  "remote")
+    ncmpcpp --host $MPD_HOST --port 6600
     ;;
-  "rmpc")
-    case $MY_MPD in
-      "remote")
-        rmpc --address $MPD_HOST:6600
-        ;;
-      "local")
-        rmpc --address 127.0.0.1:6600
-        ;;
-      *)
-        dunstify "Music is not running or not configured properly."
-        ;;
-    esac
+  "local")
+    ncmpcpp --host 127.0.0.1 --port 6600
     ;;
+  *)
+    dunstify "Music is not running or not configured properly."
+    ;;
+  esac
+  ;;
+"rmpc")
+  case $MY_MPD in
+  "remote")
+    rmpc --address $MPD_HOST:6600
+    ;;
+  "local")
+    rmpc --address 127.0.0.1:6600
+    ;;
+  *)
+    dunstify "Music is not running or not configured properly."
+    ;;
+  esac
+  ;;
 esac

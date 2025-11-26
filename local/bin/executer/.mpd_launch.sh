@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH="$HOME/.config/dots/scripts/executer:$PATH"
+export PATH="$HOME/.local/bin/executer:$PATH"
 
 get_state() {
   .mpd_status.sh --quiet
@@ -22,7 +22,7 @@ enable_mpc() {
   local options=("Local" "Remote" "Remote VPN")
   # Show Rofi menu and get the user's choice
   CHOICE=$(printf '%s\n' "${options[@]}" | rofi -theme "$ROFI_THEME" -mesg "[ Select MPD Host ]" -dmenu -no-custom -p "Host" -selected-row 0) 
-  MPD_HOST="/home/mshnwq/.config/dots/.mpd_host"
+  MPD_HOST="$HOME/.config/dots/.mpd_host"
 
   # Handle the selection
   case "$CHOICE" in
