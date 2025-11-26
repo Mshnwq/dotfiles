@@ -2,7 +2,7 @@
 
 function yapt() {
   ( (
-    sleep 0.3
+    sleep 0.5
     YAZI_ID=$1 ya emit plugin projects "load tmux"
   ) &)
   zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?
@@ -10,7 +10,7 @@ function yapt() {
 
 function yapp() {
   ( (
-    sleep 0.3
+    sleep 0.5
     YAZI_ID=$1 ya emit plugin projects "load $2"
   ) &)
   zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1" || return $?
@@ -18,7 +18,7 @@ function yapp() {
 
 function yapl() {
   ( (
-    sleep 0.3
+    sleep 0.5
     YAZI_ID=$1 ya emit plugin projects "load_last"
   ) &)
   zsh -ic "export EDITOR=~/.local/bin/vim && yazi --client-id $1 ${@:2}" || return $?

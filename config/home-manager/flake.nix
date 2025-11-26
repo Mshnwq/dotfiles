@@ -64,7 +64,7 @@
       url = "github:cachix/devenv/v1.10";
     };
     nvchad-starter = {
-      url = "github:Mshnwq/nvchad";
+      url = "github:Mshnwq/nvchad/main";
       flake = false;
     };
     nix4nvchad = {
