@@ -24,7 +24,7 @@ rm -rf "$HOME/.config/dots/rices/themes"
 # in kde settings
 # Set Application Style to Kvantum if not already
 pywalfox install
-~/.config/dots/scripts/WallColor "$WALL"
+~/.local/bin/WallColor "$WALL"
 
 # tee -a ~/.var/app/org.qbittorrent.qBittorrent/config/qBittorrent.conf <<EOL
 # [Prefrences]

@@ -9,7 +9,6 @@ args@{
 }:
 let
   username = "mshnwq";
-  useSops = inputs.useSops;
 in
 {
   home.username = username;
@@ -52,9 +51,6 @@ in
     DISABLE_AUTO_TITLE = "true";
   };
 
-  _module.args = {
-    inherit inputs useSops;
-  };
   imports =
     let
       user = lib.importDir' ./. "user.nix";
@@ -123,57 +119,67 @@ in
       inputs.sops-nix.homeManagerModules.sops
     ];
 
-  sops = {
-    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
-    defaultSopsFile = ./secrets/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    secrets = {
-      browser-pinned = {
-        mode = "0400";
-      };
-      yazi-goto = {
-        mode = "0400";
-      };
-      tmuxp = {
-        mode = "0400";
-      };
-      # beets-lastfm-token = {
-      #   mode = "0400";
-      # };
-      # beets-discogs-token = {
-      #   mode = "0400";
-      # };
-      # doesn't matter with useSops
-      mpd-remote-host = {
-        mode = "0400";
-        path = "${config.xdg.configHome}/mpd_remote_host";
-      };
-      tampermonkey = {
-        mode = "0400";
-        path = "${config.xdg.configHome}/tampermonkey.txt";
-      };
-      ssh-config = {
-        mode = "0400";
-        path = "${config.home.homeDirectory}/.ssh/config";
-      };
-      gitlab-ssh-priv = {
-        mode = "0400";
-        path = "${config.home.homeDirectory}/.ssh/gitlab";
-      };
-      gitlab-ssh-pub = {
-        mode = "0444";
-        path = "${config.home.homeDirectory}/.ssh/gitlab.pub";
-      };
-      github-ssh-priv = {
-        mode = "0400";
-        path = "${config.home.homeDirectory}/.ssh/github";
-      };
-      github-ssh-pub = {
-        mode = "0444";
-        path = "${config.home.homeDirectory}/.ssh/github.pub";
+  sops =
+    let
+      # NOTE: change to own key and secret
+      ageKeyfile =
+        if inputs.useSops then
+          "${config.xdg.configHome}/sops/age/keys.txt"
+        else
+          "${config.xdg.configHome}/sops/age/dummy.txt";
+      sopsFile =
+        if inputs.useSops then ./secrets/primary.yaml else ./secrets/dummy.yaml;
+    in
+    {
+      age.keyFile = ageKeyfile;
+      defaultSopsFile = sopsFile;
+      defaultSopsFormat = "yaml";
+      secrets = {
+        browser-pinned = {
+          mode = "0400";
+        };
+        yazi-goto = {
+          mode = "0400";
+        };
+        tmuxp = {
+          mode = "0400";
+        };
+        # beets-lastfm-token = {
+        #   mode = "0400";
+        # };
+        # beets-discogs-token = {
+        #   mode = "0400";
+        # };
+        mpd-remote-host = {
+          mode = "0400";
+          path = "${config.xdg.configHome}/mpd_remote_host";
+        };
+        tampermonkey = {
+          mode = "0400";
+          path = "${config.xdg.configHome}/tampermonkey.txt";
+        };
+        ssh-config = {
+          mode = "0400";
+          path = "${config.home.homeDirectory}/.ssh/config";
+        };
+        gitlab-ssh-priv = {
+          mode = "0400";
+          path = "${config.home.homeDirectory}/.ssh/gitlab";
+        };
+        gitlab-ssh-pub = {
+          mode = "0444";
+          path = "${config.home.homeDirectory}/.ssh/gitlab.pub";
+        };
+        github-ssh-priv = {
+          mode = "0400";
+          path = "${config.home.homeDirectory}/.ssh/github";
+        };
+        github-ssh-pub = {
+          mode = "0444";
+          path = "${config.home.homeDirectory}/.ssh/github.pub";
+        };
       };
     };
-  };
 
   programs.git = {
     enable = true;

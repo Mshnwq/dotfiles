@@ -84,24 +84,19 @@ in
       plugins = pluginsConfig;
       initLua = mergedInitLua;
       settings = mergedSettings;
-      # Only set keymap directly when sops is disabled
-      # When sops is enabled, the activation script handles it
-      keymap = lib.mkIf (!inputs.useSops) mergedKeymap;
     };
 
-    # Only inject secret paths when sops is enabled
-    home.activation.yaziKeymap = lib.mkIf inputs.useSops (
-      config.lib.dag.entryAfter [ "writeBoundary" ] ''
-        baseToml=${(pkgs.formats.toml { }).generate "keymap.toml" mergedKeymap}
-        target="${config.home.homeDirectory}/.config/yazi/keymap.toml"
-        cat "$baseToml" > "$target"
-        secret="${config.sops.secrets."yazi-goto".path}"
-        if [ -f "$secret" ]; then
-          cat "$secret" >> "$target"
-        else
-          echo "Yazi secret not found: $secret"
-        fi
-      ''
-    );
+    # Only inject secret paths
+    home.activation.yaziKeymap = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      baseToml=${(pkgs.formats.toml { }).generate "keymap.toml" mergedKeymap}
+      target="${config.home.homeDirectory}/.config/yazi/keymap.toml"
+      cat "$baseToml" > "$target"
+      secret="${config.sops.secrets."yazi-goto".path}"
+      if [ -f "$secret" ]; then
+        cat "$secret" >> "$target"
+      else
+        echo "Yazi secret not found: $secret"
+      fi
+    '';
   };
 }

@@ -17,11 +17,7 @@ let
       inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
     };
   };
-  browser-pinned =
-    if inputs.useSops then
-      builtins.readFile config.sops.secrets."browser-pinned".path
-    else
-      ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://github.com/","baseDomain":"github.com"}]'';
+  browser-pinned = builtins.readFile config.sops.secrets."browser-pinned".path;
 
   commonSettings = {
     # https://github.com/nix-community/home-manager/pull/6389

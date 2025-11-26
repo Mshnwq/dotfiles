@@ -13,22 +13,17 @@ args@{
 // {
 
   default = {
-    home.packages =
-      with pkgs;
-      [
-        cmatrix
-        cowsay
-        cmatrix
-        dialog
-        mtpfs
-        simple-mtpfs
-        lm_sensors
-        zathura
-      ]
-      ++ lib.optionals inputs.useSops [
-        sops
-        age
-      ];
+    home.packages = with pkgs; [
+      age
+      sops
+      dialog
+      cowsay
+      cmatrix
+      mtpfs
+      simple-mtpfs
+      lm_sensors
+      zathura
+    ];
   };
 
   devenv = {

@@ -1,9 +1,14 @@
 # .sops.yaml
 keys:
-  - &bazzite age1gnmqucyk3vgkk4zu9rwkywnn5s6u6qk5z28akreujs0hhy4aggaszpxcvc
+  - &primary age1gnmqucyk3vgkk4zu9rwkywnn5s6u6qk5z28akreujs0hhy4aggaszpxcvc
+  - &dummy age1f5ee8vhhcsul3vgh0t6nvs860fv09ukuk0gs6trn24v9hx07vv0s2yjyyd
 
 creation_rules:
-  - path_regex: secrets/secrets\.yaml$
+  - path_regex: secrets/primary\.yaml$
     key_groups:
       - age:
-          - *bazzite
+          - *primary
+  - path_regex: secrets/dummy\.yaml$
+    key_groups:
+      - age:
+          - *dummy
