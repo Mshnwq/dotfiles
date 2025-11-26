@@ -14,6 +14,7 @@
         zsh = import ./config/home-manager/programs/zsh/default.nix;
         yazi = import ./config/home-manager/programs/yazi/default.nix;
         tmux = import ./config/home-manager/programs/tmux/default.nix;
+        nvim = import ./config/home-manager/programs/neovim/default.nix;
         neovim = import ./config/home-manager/programs/neovim/default.nix;
       };
     };

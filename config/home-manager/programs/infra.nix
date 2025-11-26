@@ -24,7 +24,7 @@ in
     k9s
     podman-compose
     lazydocker
-    veracrypt
+    # veracrypt
   ];
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {
