@@ -10,8 +10,6 @@ let
   cfg = config.tmux;
   pluginDefs = import ./plugins.nix { inherit pkgs; };
   availablePlugins = pluginDefs.plugins;
-
-  # Build the enabled plugins list based on user settings
   enabledPlugins = lib.filter (p: p != null) (
     lib.mapAttrsToList (
       name: plugin:
@@ -75,30 +73,37 @@ in
       plugins = enabledPlugins;
     };
 
-    home.activation.extractTmuxp = lib.mkIf config.tmux.tmuxp.enable (
-      config.lib.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.python3.withPackages (ps: [ ps.pyyaml ])}/bin/python3 << 'EOF'
-        import yaml
-        import os
-
-        secret_path = "${config.sops.secrets.tmuxp.path}";
-        output_dir = "${config.xdg.configHome}/tmux/tmuxp";
-
-        os.makedirs(output_dir, exist_ok=True)
-
-        with open(secret_path, 'r') as f:
-          tmuxp_data = yaml.safe_load(f)
-
-        for name, content in tmuxp_data.items():
-          file_path = os.path.join(output_dir, f"{name}.yaml")
-          try:
-            with open(file_path, 'w') as f:
-                yaml.dump(content, f)
-            os.chmod(file_path, 0o444)
-          except PermissionError:
-            print(f"Warning: Could not write {file_path}, skipping.")
-        EOF
-      ''
-    );
+    home.activation.extractTmuxp =
+      lib.mkIf
+        (config.tmux.tmuxp.enable && builtins.pathExists config.sops.secrets.tmuxp.path)
+        (
+          config.lib.dag.entryAfter [ "writeBoundary" ] ''
+            ${pkgs.python3.withPackages (ps: [ ps.pyyaml ])}/bin/python3 << 'EOF'
+            import yaml
+            import os
+            import sys
+            secret_path = "${config.sops.secrets.tmuxp.path}";
+            output_dir = "${config.xdg.configHome}/tmux/tmuxp";
+            os.makedirs(output_dir, exist_ok=True)
+            if not os.path.exists(secret_path):
+              print(f"Warning: secret not found: {secret_path}")
+              sys.exit(0)
+            try:
+              with open(secret_path, 'r') as f:
+                tmuxp_data = yaml.safe_load(f)
+              for name, content in tmuxp_data.items():
+                file_path = os.path.join(output_dir, f"{name}.yaml")
+                try:
+                  with open(file_path, 'w') as f:
+                      yaml.dump(content, f)
+                  os.chmod(file_path, 0o444)
+                except PermissionError:
+                  print(f"Warning: Could not write {file_path}, skipping.")
+            except Exception as e:
+              print(f"Warning: Failed: {e}")
+              sys.exit(0)
+            EOF
+          ''
+        );
   };
 }

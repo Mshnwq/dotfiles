@@ -89,8 +89,22 @@
 
   programs.beets =
     let
-      lastfm-key = builtins.readFile config.sops.secrets."mpd-remote-host".path;
-      discogs-key = builtins.readFile config.sops.secrets."mpd-remote-host".path;
+      lastfm-key =
+        if
+          config.sops.secrets ? "mpd-remote-host"
+          && builtins.pathExists config.sops.secrets."mpd-remote-host".path
+        then
+          builtins.readFile config.sops.secrets."mpd-remote-host".path
+        else
+          "127.0.0.1";
+      discogs-key =
+        if
+          config.sops.secrets ? "mpd-remote-host"
+          && builtins.pathExists config.sops.secrets."mpd-remote-host".path
+        then
+          builtins.readFile config.sops.secrets."mpd-remote-host".path
+        else
+          "127.0.0.1";
     in
     # extract year my plugin
     {

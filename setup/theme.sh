@@ -12,7 +12,6 @@ for i in {1..3}; do
   sleep 3
 done
 
-# idk
 mv ~/.config/dots/rices/themes/* ~/.config/dots/rices
 rm -rf "$HOME/.config/dots/rices/themes"
 
@@ -23,8 +22,9 @@ rm -rf "$HOME/.config/dots/rices/themes"
 # Window Decorations: Utterly-Round-Dark (also follows color scheme)
 # in kde settings
 # Set Application Style to Kvantum if not already
-pywalfox install
-~/.local/bin/WallColor "$WALL"
+
+zsh -c "pywalfox install"
+zsh -c "wal -sti $WALL"
 
 # tee -a ~/.var/app/org.qbittorrent.qBittorrent/config/qBittorrent.conf <<EOL
 # [Prefrences]
