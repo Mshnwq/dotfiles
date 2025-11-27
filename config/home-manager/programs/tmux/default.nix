@@ -47,6 +47,16 @@ in
     description = "Enable tmuxp";
   };
 
+  options.tmux.systemShell.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
+
+  options.tmux.shortcut = lib.mkOption {
+    type = lib.types.nonEmptyStr;
+    default = "Space";
+  };
+
   config = {
     # Set default enable values for all available plugins
     tmux.pluginSettings = lib.mapAttrs (name: plugin: {
@@ -59,18 +69,19 @@ in
 
     programs.tmux = {
       enable = true;
-      shell = "/usr/bin/zsh";
       sensibleOnTop = true;
       terminal = "tmux-256color";
       historyLimit = 1000;
       baseIndex = 1;
       keyMode = "vi";
       mouse = true;
-      prefix = "C-Space";
-      shortcut = "Space";
+      shortcut = config.tmux.shortcut;
       tmuxp.enable = config.tmux.tmuxp.enable;
       extraConfig = import ./config.nix { };
       plugins = enabledPlugins;
+    }
+    // lib.optionalAttrs config.tmux.systemShell.enable {
+      shell = "/usr/bin/zsh";
     };
 
     home.activation.extractTmuxp =
