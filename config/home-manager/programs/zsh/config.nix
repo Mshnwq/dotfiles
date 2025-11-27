@@ -61,37 +61,41 @@ let
     }
     zle -N zle_get_cwd
     bindkey "^P" zle_get_cwd
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-    bindkey '^R' fzf-history-widget
+
+    ${lib.optionalString (config.zsh.pluginSettings.history-substring-search.enable) ''
+      bindkey '^[[A' history-substring-search-up
+      bindkey '^[[B' history-substring-search-down
+    ''}
 
     export PATH="$HOME/.local/bin:$PATH"
-
     source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
     source $ZDOTDIR/.p10k.zsh
-    source ${config.xdg.cacheHome}/wal/custom-fzf.sh
-    zstyle ':fzf-tab:*' use-fzf-default-opts yes
-    zstyle ':fzf-tab:*' switch-group '<' '>'
-    # only show error
-    export DIRENV_LOG_FORMAT=
+
+    ${lib.optionalString (config.zsh.pluginSettings.fzf.enable) ''
+      zstyle ':fzf-tab:*' use-fzf-default-opts yes
+      zstyle ':fzf-tab:*' switch-group '<' '>'
+      bindkey '^R' fzf-history-widget
+    ''}
+
+    ${lib.optionalString (config.zsh.enableDebug) ''
+      source ${config.xdg.cacheHome}/wal/custom-fzf.sh
+      if command -v uv >/dev/null; then
+        autoload -Uz compinit && compinit
+        compdef _uv uv
+        _uv() { eval "$(uv generate-shell-completion zsh)" }
+      fi
+      if [[ "$PROFILE_STARTUP" == true ]]; then
+        unsetopt XTRACE
+        exec 2>&3 3>&-
+      fi
+    ''}
+
     eval "$(direnv hook zsh)"
-
-    if command -v uv >/dev/null; then
-      autoload -Uz compinit && compinit
-      compdef _uv uv
-      _uv() { eval "$(uv generate-shell-completion zsh)" }
-    fi
-
-    # FOR DEBUG
-    if [[ "$PROFILE_STARTUP" == true ]]; then
-      unsetopt XTRACE
-      exec 2>&3 3>&-
-    fi
   '';
 in
 {
   config = lib.mkMerge [
-    zshConfigBefore
+    (lib.mkIf (config.zsh.enableDebug) zshConfigBefore)
     zshConfigAfter
   ];
 }

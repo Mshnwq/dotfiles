@@ -83,6 +83,7 @@ in
       }
       zsh
       {
+        zsh.enableDebug = true;
         zsh.pluginSettings = {
           history-substring-search.enable = true;
           syntax-highlighting.enable = true;
