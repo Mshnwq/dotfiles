@@ -77,7 +77,7 @@ let
       bindkey '^R' fzf-history-widget
     ''}
 
-    ${lib.optionalString (config.zsh.enableDebug) ''
+    ${lib.optionalString (config.zsh.debug.enable) ''
       source ${config.xdg.cacheHome}/wal/custom-fzf.sh
       if command -v uv >/dev/null; then
         autoload -Uz compinit && compinit
@@ -95,7 +95,7 @@ let
 in
 {
   config = lib.mkMerge [
-    (lib.mkIf (config.zsh.enableDebug) zshConfigBefore)
+    (lib.mkIf (config.zsh.debug.enable) zshConfigBefore)
     zshConfigAfter
   ];
 }

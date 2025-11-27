@@ -65,6 +65,11 @@ in
     description = "Settings for individual Yazi plugins";
   };
 
+  options.yazi.sops.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
+
   config = {
     yazi.pluginSettings = lib.mapAttrs (name: plugin: {
       enable = lib.mkDefault plugin.defaultEnable;
@@ -91,12 +96,14 @@ in
       baseToml=${(pkgs.formats.toml { }).generate "keymap.toml" mergedKeymap}
       target="${config.home.homeDirectory}/.config/yazi/keymap.toml"
       cat "$baseToml" > "$target"
-      secret="${config.sops.secrets."yazi-goto".path}"
-      if [ -f "$secret" ]; then
-        cat "$secret" >> "$target"
-      else
-        echo "Yazi secret not found: $secret"
-      fi
+      ${lib.optionalString (config.yazi.sops.enable) ''
+        secret="${config.sops.secrets."yazi-goto".path}"
+        if [ -f "$secret" ]; then
+          cat "$secret" >> "$target"
+        else
+          echo "Yazi secret not found: $secret"
+        fi
+      ''}
     '';
   };
 }

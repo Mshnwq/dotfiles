@@ -30,7 +30,7 @@ in
     default = { };
     description = "Settings for individual zsh plugins";
   };
-  options.zsh.enableDebug = lib.mkOption {
+  options.zsh.debug.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };

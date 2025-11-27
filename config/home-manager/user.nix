@@ -83,7 +83,7 @@ in
       }
       zsh
       {
-        zsh.enableDebug = true;
+        zsh.debug.enable = true;
         zsh.pluginSettings = {
           history-substring-search.enable = true;
           syntax-highlighting.enable = true;
@@ -105,6 +105,7 @@ in
       }
       yazi
       {
+        yazi.sops.enable = true;
         yazi.pluginSettings = {
           relative-motions.enable = true;
           jump-to-char.enable = true;
