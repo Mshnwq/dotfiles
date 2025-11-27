@@ -69,11 +69,6 @@ args@{
     home.packages = with pkgs; [
       cargo
       rustc
-      eza
-      bat
-      dfrs
-      ripgrep
-      tldr
       gpg-tui
       serie
       # termscp

@@ -12,6 +12,7 @@ tf() {
 alias tfin='tf init'
 alias tfap='tf apply'
 alias tfds='tf destroy'
+alias tfrf='tf refresh'
 alias tfvd='tf validate'
 alias tfmt='tf fmt'
 alias tfpl='tf plan'

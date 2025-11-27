@@ -9,8 +9,6 @@ let
   cfg = config.zsh;
   pluginDefs = import ./plugins.nix { inherit pkgs; };
   availablePlugins = pluginDefs.plugins;
-
-  # Filter enabled plugins and convert to list
   enabledPlugins = lib.attrValues (
     lib.filterAttrs (
       name: plugin: cfg.pluginSettings.${name}.enable or false
@@ -35,9 +33,14 @@ in
 
   config = {
     home.packages = with pkgs; [
-      zsh-powerlevel10k
-      zoxide
+      bat
+      dfrs
+      eza
+      tldr
+      ripgrep
       util-linux
+      zoxide
+      zsh-powerlevel10k
     ];
     home.sessionVariables = {
       FZF_PATH = "${config.xdg.configHome}/fzf";

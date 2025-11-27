@@ -79,7 +79,7 @@ in
       discord.stable
       hypr
       {
-        hypr.hyprWorkspaceLayouts.enable = true;
+        hypr.hyprWorkspaceLayouts.enable = false;
       }
       zsh
       {
