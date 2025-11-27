@@ -15,7 +15,7 @@ hyprctl clients -j | jq -r --arg title "$WINDOW_TITLE" '
     at: .at,
     size: .size
   }
-' > "$STATE_FILE"
+' >"$STATE_FILE"
 
 if [ -s "$STATE_FILE" ]; then
   echo "[INFO] FileTerm window state saved to $STATE_FILE"
@@ -30,13 +30,13 @@ fi
 
 #####
 
-
 # Save
-export YAZI_ID="$(< $HOME/.config/dots/.yazi_id)"
+export YAZI_ID="$(<$HOME/.config/dots/.yazi_id)"
 ya emit plugin projects quit
-tmux kill-session -t yazi 
+tmux kill-session -t yazi
 # Resurrect
-Term --override-term kitty --yazi-tmux-last & disown
+Term --override-term kitty --yazi-tmux-last &
+disown
 
 # Wait for it to appear
 for i in {1..10}; do

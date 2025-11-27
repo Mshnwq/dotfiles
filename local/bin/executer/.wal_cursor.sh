@@ -7,7 +7,7 @@ cursor_file="$cursor_dir/src/templates/svgs.tera"
 cache_dir="$HOME/.cache/wal/cursors"
 
 # Get current wallpaper (assuming pywal stores it here)
-WALLPAPER="$(< ~/.cache/wal/wal)"
+WALLPAPER="$(<"$HOME/.cache/wal/wal")"
 
 # Create a unique hash or name from the wallpaper path
 wallpaper_hash=$(echo "$WALLPAPER" | sha256sum | cut -d' ' -f1)

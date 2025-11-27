@@ -13,4 +13,4 @@ nas_unmount_commands() {
 
 export -f nas_unmount_commands
 alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
-	-e bash -c "bash -i -c nas_unmount_commands"
+  -e bash -c "bash -i -c nas_unmount_commands"

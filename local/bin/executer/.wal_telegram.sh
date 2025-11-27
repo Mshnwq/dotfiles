@@ -2,7 +2,7 @@
 
 QT_STYLE_OVERRIDE=""
 # https://legacy.imagemagick.org/Usage/blur/#blur_args.
-~/.local/bin/wal-telegram --wal -d $HOME/.cache/wal -g 1x1
+wal-telegram --wal -d "$HOME/.cache/wal" -g 1x1
 
 STATE_FILE="/tmp/telegram_state.json"
 WINDOW_CLASS="org.telegram.desktop"
@@ -36,7 +36,8 @@ fi
 
 # ReLaunch Telegram
 pkill -f "Telegram"
-flatpak run org.telegram.desktop & disown
+flatpak run org.telegram.desktop &
+disown
 
 # Wait for it to appear
 for i in {1..10}; do

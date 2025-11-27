@@ -15,7 +15,7 @@ hyprctl clients -j | jq -r --arg title "$WINDOW_TITLE" '
     at: .at,
     size: .size
   }
-' > "$STATE_FILE"
+' >"$STATE_FILE"
 
 if [ -s "$STATE_FILE" ]; then
   echo "[INFO] MusicTerm window state saved to $STATE_FILE"
@@ -30,10 +30,10 @@ fi
 
 #####
 
-
 # ReLaunch MusicTerm
-pkill "$(< $HOME/.config/dots/.music)"
-OpenApps --music & disown
+pkill "$(<$HOME/.config/dots/.music)"
+OpenApps --music &
+disown
 
 # Wait for it to appear
 for i in {1..10}; do

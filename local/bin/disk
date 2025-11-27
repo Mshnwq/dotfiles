@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-dfrs -c --local \
-    | sed -E 's#(/var)(/[^ ]*)#\2#g' \
-    | tac | awk '!seen[$1]++' | tac \
-    | grep -vE '^/dev/sdb[23]\b' \
-    | sed -E 's/home//'
+dfrs -c --local |
+  sed -E 's#(/var)(/[^ ]*)#\2#g' |
+  tac | awk '!seen[$1]++' | tac |
+  grep -vE '^/dev/sdb[23]\b' |
+  sed -E 's/home//'

@@ -15,7 +15,7 @@ hyprctl clients -j | jq -r --arg title "$WINDOW_TITLE" '
     at: .at,
     size: .size
   }
-' > "$STATE_FILE"
+' >"$STATE_FILE"
 
 if [ -s "$STATE_FILE" ]; then
   echo "[INFO] TopTerm window state saved to $STATE_FILE"
@@ -30,10 +30,10 @@ fi
 
 #####
 
-
 # ReLaunch TopTerm
 pkill btop
-OpenApps --top & disown
+OpenApps --top &
+disown
 
 # Wait for it to appear
 for i in {1..10}; do

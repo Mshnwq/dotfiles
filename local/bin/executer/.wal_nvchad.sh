@@ -31,8 +31,8 @@ awk -v block="$theme_block" '
       print $0
     }
   }
-' "$nvchad_file" > "${nvchad_file}.tmp" && mv "${nvchad_file}.tmp" "$nvchad_file"
+' "$nvchad_file" >"${nvchad_file}.tmp" && mv "${nvchad_file}.tmp" "$nvchad_file"
 
 for addr in "$XDG_RUNTIME_DIR"/nvim.*; do
-    nvim --server "$addr" --remote-send ':lua require("nvchad.utils").reload() <cr>'
+  nvim --server "$addr" --remote-send ':lua require("nvchad.utils").reload() <cr>'
 done

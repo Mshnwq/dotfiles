@@ -16,8 +16,8 @@ mapfile -t options < <(
 
 # Check if any pinentry options are found
 if [[ ${#options[@]} -eq 0 ]]; then
-    notify-send "Pass Pin Entry" "No pinentry programs found."
-    exit 1
+  notify-send "Pass Pin Entry" "No pinentry programs found."
+  exit 1
 fi
 
 # Show Rofi menu and get the user's choice
@@ -25,13 +25,13 @@ CHOICE=$(printf '%s\n' "${options[@]}" | rofi -theme "$ROFI_THEME" -mesg "[ Sele
 
 # If user pressed Escape or didn't select anything
 if [[ -z "$CHOICE" ]]; then
-    notify-send "Pass Pin Entry" "No pinentry program selected."
-    exit 0
+  notify-send "Pass Pin Entry" "No pinentry program selected."
+  exit 0
 fi
 
 # Update gpg-agent.conf
 GPG_CONF="$GNUPGHOME/gpg-agent.conf"
-echo "pinentry-program $(command -v pinentry-$CHOICE)" > "$GPG_CONF"
+echo "pinentry-program $(command -v pinentry-$CHOICE)" >"$GPG_CONF"
 
 # Reload gpg-agent
 gpg-connect-agent reloadagent /bye

@@ -36,7 +36,8 @@ fi
 
 # ReLaunch qBitTorrent
 pkill -f "qbittorrent"
-gtk-launch org.qbittorrent.qBittorrent & disown
+gtk-launch org.qbittorrent.qBittorrent &
+disown
 
 # Wait for it to appear
 for i in {1..10}; do

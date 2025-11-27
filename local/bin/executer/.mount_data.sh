@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 mount_commands() {
   #sudo systemctl start smartd.service
   #sleep 2

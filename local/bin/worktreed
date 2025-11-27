@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-echo $1
-git clone --bare $1 .git
+echo "$1"
+git clone --bare "$1" .git
 cd .git && git worktree add ../main main && git worktree add ../dev dev

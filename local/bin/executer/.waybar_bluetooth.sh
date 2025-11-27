@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONFIG="${HOME}/.config/waybar/config.jsonc"  # Adjust path if needed
+CONFIG="${HOME}/.config/waybar/config.jsonc" # Adjust path if needed
 
 # Functions
 enable_bluetooth() {
@@ -23,19 +23,19 @@ toggle_bluetooth() {
 
 # Main logic
 case "$1" in
-  on)
-    enable_bluetooth
-    ;;
-  off)
-    disable_bluetooth
-    ;;
-  toggle|"")
-    toggle_bluetooth
-    ;;
-  *)
-    echo "Usage: $0 [on|off|toggle]"
-    exit 1
-    ;;
+on)
+  enable_bluetooth
+  ;;
+off)
+  disable_bluetooth
+  ;;
+toggle | "")
+  toggle_bluetooth
+  ;;
+*)
+  echo "Usage: $0 [on|off|toggle]"
+  exit 1
+  ;;
 esac
 
 pkill waybar 2>/dev/null || true

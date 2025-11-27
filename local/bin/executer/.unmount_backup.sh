@@ -10,4 +10,3 @@ unmount_commands() {
 export -f unmount_commands
 alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
   -e bash -c "bash -i -c unmount_commands"
-~

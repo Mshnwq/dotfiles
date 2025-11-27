@@ -8,7 +8,6 @@ services=$(systemctl --user list-units --type=socket --no-pager --no-legend |
   echo "$service_name $description"
 done)
 
-
 max_width=100 # Adjust this to fit your Rofi window width
 # Format the output with Pango markup for color and alignment
 formatted_services=$(echo "$services" | awk -v width="$max_width" '{

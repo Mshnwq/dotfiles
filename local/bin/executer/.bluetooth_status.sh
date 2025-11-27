@@ -7,8 +7,8 @@
 #	07.08.2024 11:55:34
 
 if [ ! -d /sys/class/bluetooth ]; then
-	echo # No Bluetooth interface
-	exit 0
+  echo # No Bluetooth interface
+  exit 0
 fi
 
 # Colors
@@ -18,17 +18,17 @@ POWER_OFF=$(awk '/^cursor =/ {print $3; exit}' "$FILE")
 
 # Check if Bluetooth interface exists and its status
 check_bluetooth() {
-	if systemctl is-active --quiet bluetooth.service; then
-    		notify-send -u low "Bluetooth status" "On"
-		if bluetoothctl show | grep -q "Powered: yes"; then
-			echo "%{F$POWER_ON}󰂯%{F-}" # Bluetooth is on
-		else
-			echo "%{F$POWER_OFF}󰂲%{F-}" # Bluetooth is off
-		fi
-	else
-    		notify-send -u low "Bluetooth status" "Off"
-		echo
-	fi
+  if systemctl is-active --quiet bluetooth.service; then
+    notify-send -u low "Bluetooth status" "On"
+    if bluetoothctl show | grep -q "Powered: yes"; then
+      echo "%{F$POWER_ON}󰂯%{F-}" # Bluetooth is on
+    else
+      echo "%{F$POWER_OFF}󰂲%{F-}" # Bluetooth is off
+    fi
+  else
+    notify-send -u low "Bluetooth status" "Off"
+    echo
+  fi
 }
 
 check_bluetooth

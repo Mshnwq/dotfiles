@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONFIG="${HOME}/.config/waybar/config.jsonc"  # Adjust path if needed
+CONFIG="${HOME}/.config/waybar/config.jsonc" # Adjust path if needed
 
 # Functions
 enable_cava() {
@@ -23,19 +23,19 @@ toggle_cava() {
 
 # Main logic
 case "$1" in
-  on)
-    enable_cava
-    ;;
-  off)
-    disable_cava
-    ;;
-  toggle|"")
-    toggle_cava
-    ;;
-  *)
-    echo "Usage: $0 [on|off|toggle]"
-    exit 1
-    ;;
+on)
+  enable_cava
+  ;;
+off)
+  disable_cava
+  ;;
+toggle | "")
+  toggle_cava
+  ;;
+*)
+  echo "Usage: $0 [on|off|toggle]"
+  exit 1
+  ;;
 esac
 
 pkill waybar 2>/dev/null || true

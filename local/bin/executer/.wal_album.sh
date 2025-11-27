@@ -5,7 +5,7 @@ TRACK="$(mpc --format '%file%' current)"
 
 if [[ -z "$TRACK" ]]; then
   echo "No track playing (mpc reported empty)." >&2
-  dunstify "Album Wal" "No track playing" 
+  dunstify "Album Wal" "No track playing"
   exit 1
 fi
 
@@ -47,6 +47,6 @@ if [[ $have_cover -eq 1 ]]; then
   echo "Wallpaper created: $OUT"
   WallColor $OUT
 else
-  echo "No cover art found" 
-  dunstify "Album Wal" "No cover art found" 
+  echo "No cover art found"
+  dunstify "Album Wal" "No cover art found"
 fi
