@@ -95,8 +95,8 @@ in
       }
       tmux
       {
-        tmux.systemShell.enable = true;
         tmux.tmuxp.enable = true;
+        tmux.systemShell.enable = true;
         tmux.pluginSettings = {
           dracula.enable = true;
           floax.enable = true;

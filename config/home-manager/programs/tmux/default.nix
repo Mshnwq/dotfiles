@@ -57,6 +57,11 @@ in
     default = "Space";
   };
 
+  options.tmux.position = lib.mkOption {
+    type = lib.types.nonEmptyStr;
+    default = "top";
+  };
+
   config = {
     # Set default enable values for all available plugins
     tmux.pluginSettings = lib.mapAttrs (name: plugin: {
@@ -77,7 +82,7 @@ in
       mouse = true;
       shortcut = config.tmux.shortcut;
       tmuxp.enable = config.tmux.tmuxp.enable;
-      extraConfig = import ./config.nix { };
+      extraConfig = (import ./config.nix { inherit config lib; }).config;
       plugins = enabledPlugins;
     }
     // lib.optionalAttrs config.tmux.systemShell.enable {

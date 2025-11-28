@@ -70,6 +70,7 @@ let
     export PATH="$HOME/.local/bin:$PATH"
     source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
     source $ZDOTDIR/.p10k.zsh
+    source ${config.xdg.cacheHome}/wal/custom-fzf.sh
 
     ${lib.optionalString (config.zsh.pluginSettings.fzf.enable) ''
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
@@ -78,7 +79,6 @@ let
     ''}
 
     ${lib.optionalString (config.zsh.debug.enable) ''
-      source ${config.xdg.cacheHome}/wal/custom-fzf.sh
       if command -v uv >/dev/null; then
         autoload -Uz compinit && compinit
         compdef _uv uv
