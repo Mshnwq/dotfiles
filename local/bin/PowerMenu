@@ -9,15 +9,10 @@ OPTIONS=(
   "󰐥"
 )
 
-rofi_menu() {
-  rofi -dmenu \
-    -no-click-to-exit \
-    -p "Goodbye ${USER}" \
-    -theme "$HOME/.config/rofi/PowerMenu.rasi" \
-    -mesg "Uptime: $(uptime -p | sed -e 's/up //g')"
-}
-
-chosen=$(printf "%s\n" "${OPTIONS[@]}" | rofi_menu)
+chosen=$(
+  printf "%s\n" "${OPTIONS[@]}" | rofi -dmenu \
+    -no-click-to-exit -theme "$HOME/.config/rofi/PowerMenu.rasi"
+)
 
 case $chosen in
 "󰐥")

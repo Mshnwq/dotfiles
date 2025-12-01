@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 export PATH="$HOME/.local/bin/executer:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
-case "$1" in
+case $1 in
 --menu)
   rofi -show drun -theme "$HOME/.config/rofi/Launcher.rasi"
   ;;
@@ -131,6 +132,6 @@ case "$1" in
   alacritty --class FloaTerm,SoundTerm --title=SoundTerm -e pulsemixer
   ;;
 *)
-  echo "Invalid Option"
+  echo "Invalid Option $1"
   ;;
 esac

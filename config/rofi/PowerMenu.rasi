@@ -29,7 +29,6 @@ mainbox {
     padding:                     30px;
     //background-color:            @background;
     background-color:            transparent;
-    //children:                    [ "inputbar", "listview" ];
     children:                    [ "listview" ];
 }
 
