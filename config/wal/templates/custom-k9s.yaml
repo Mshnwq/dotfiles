@@ -7,6 +7,9 @@ k9s:
     fgColor: '{foreground}'
     bgColor: default
     suggestColor: '{color4}'
+    border:
+      default: '{color5}'
+      command: '{color6}'
   help:
     fgColor: '{foreground}'
     bgColor: default

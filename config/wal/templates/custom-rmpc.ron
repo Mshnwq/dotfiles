@@ -103,7 +103,7 @@
                 left: [
                     (kind: Text(" ("), style: (fg: "{color14}")),
                     (kind: Property(Status(Bitrate)), style: (fg: "{color14}")),
-                    (kind: Text(" kbps) "), style: (fg: "{color14}")),
+                    (kind: Text("kbps) "), style: (fg: "{color14}")),
                     (kind: Text(" 󰕾 "), style: (fg: "{color15}", modifiers: "Bold")),
                     (kind: Property(Status(Volume)), style: (fg: "{color15}", modifiers: "Bold")),
                     (kind: Text("%"), style: (fg: "{color15}", modifiers: "Bold"))
