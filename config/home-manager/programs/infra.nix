@@ -1,5 +1,6 @@
 # programs/infra.nix
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -11,6 +12,10 @@ let
       license = lib.licenses.unfree;
     };
   });
+  system = pkgs.system;
+  pkgs-stable = import inputs.nixpkgs-stable {
+    inherit system;
+  };
 in
 {
   nixpkgs.config.allowUnfreePredicate =
@@ -18,14 +23,19 @@ in
     builtins.elem (pkgs.lib.getName pkg) [
       "veracrypt"
     ];
-  home.packages = with pkgs; [
-    kubectl
-    kubectx
-    k9s
-    podman-compose
-    lazydocker
-    # veracrypt
-  ];
+  home.packages =
+    with pkgs;
+    [
+      podman-compose
+      lazydocker
+      # veracrypt
+    ]
+    ++ (with pkgs-stable; [
+      #kubernetes-helm
+      kubectl
+      kubectx
+      k9s
+    ]);
   # https://github.com/hashicorp/terraform/issues/15389
   home.sessionVariables = {
     KUBECONFIG = "${config.xdg.configHome}/kube";

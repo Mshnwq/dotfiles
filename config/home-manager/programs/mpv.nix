@@ -39,12 +39,12 @@ in
       nixgl.auto.nixGLNvidia
     ];
 
-  # https://home-manager.dev/manual/24.11/options.xhtml#opt-programs.mpv.enable
+  # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.mpv.enable
   programs.mpv = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.mpv;
     config = {
-      # osd-level = 0;
+      osd-level = 0;
       title = "\${filename}";
       hwdec = "vaapi";
     };
