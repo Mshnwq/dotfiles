@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 unmount_commands() {
-  sudo umount /mnt/mshnwq/data
+  sudo umount /mnt/internal/data
   #sleep 1
   #sudo ldmtool remove all
   disk

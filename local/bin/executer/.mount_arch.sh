@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 mount_commands() {
-  sudo mount -o ro /dev/sdb4 /mnt/mshnwq/arch
+  sudo mount -o ro /dev/sdb4 /mnt/internal/arch
   disk
   echo "Mounted. Press Enter to close..."
-  read
+  read -r
 }
 
 export -f mount_commands

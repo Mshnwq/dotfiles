@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 unmount_commands() {
-  sudo umount /mnt/mshnwq/arch
+  sudo umount /mnt/internal/arch
   disk
   echo "Unmounted. Press Enter to close..."
   read

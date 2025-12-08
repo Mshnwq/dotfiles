@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 unmount_commands() {
-  sudo umount /mnt/mshnwq/ubuntu
+  sudo umount /mnt/internal/ubuntu
   disk
   echo "Unmounted. Press Enter to close..."
-  read
+  read -r
 }
 
 export -f unmount_commands

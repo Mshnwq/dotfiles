@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 nas_unmount_commands() {
-  echo "Unmounting /mnt/nas..."
+  echo "Unmounting nas..."
   sudo umount /mnt/external/nas
   # pkill gvfs
   # pkill gvfsd-smb
   duf --theme ansi --only network
   disk
   echo "Unmounted. Press Enter to close..."
-  read
+  read -r
 }
 
 export -f nas_unmount_commands

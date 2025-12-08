@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 mount_commands() {
-  sudo mount -o ro /dev/sdb5 /mnt/mshnwq/ubuntu
+  sudo mount -o ro /dev/sdb5 /mnt/internal/ubuntu
   disk
   echo "Mounted. Press Enter to close..."
-  read
+  read -r
 }
 
 export -f mount_commands

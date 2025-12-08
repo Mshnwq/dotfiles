@@ -3,7 +3,7 @@
 gpu_commands() {
   nvidia-smi -l
   echo "Mounted. Press Enter to close..."
-  read
+  read -r
 }
 
 export -f gpu_commands

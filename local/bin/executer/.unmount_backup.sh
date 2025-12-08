@@ -4,7 +4,7 @@ unmount_commands() {
   sudo umount /mnt/external/backup
   disk
   echo "Unmounted. Press Enter to close..."
-  read
+  read -r
 }
 
 export -f unmount_commands
