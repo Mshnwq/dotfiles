@@ -36,13 +36,14 @@
       url = "github:hyprwm/hyprland/v0.52.0";
     };
     hyprWorkspaceLayouts = {
-      url = "github:zakk4223/hyprWorkspaceLayouts";
+      url = "github:zakk4223/hyprWorkspaceLayouts/e44a2db"; # v0.52.0
       inputs.hyprland.follows = "hyprland";
     };
     home-manager = {
       # BUG:
       # https://github.com/nix-community/home-manager/commit/44931fdc5da28366f6aa999cf833f9d62f4d26bc
-      url = "github:nix-community/home-manager/9a5042a88caea9b729a1d3bc981069159de4fc49"; # UNTIL BIRD LIB fixes the minimal arg
+      # url = "github:nix-community/home-manager/9a5042a88caea9b729a1d3bc981069159de4fc49"; # UNTIL BIRD LIB fixes the minimal arg
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {
@@ -55,6 +56,7 @@
     bird-nix-lib = {
       url = "github:spikespaz/bird-nix-lib";
     };
+    # for mkWine
     erosanix = {
       url = "github:emmanuelrosa/erosanix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,7 +66,7 @@
       url = "github:cachix/devenv/v1.10";
     };
     nvchad-starter = {
-      url = "github:Mshnwq/nvchad/main";
+      url = "github:Mshnwq/nvchad";
       flake = false;
     };
     nix4nvchad = {
