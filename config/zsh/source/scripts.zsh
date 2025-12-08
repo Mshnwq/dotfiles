@@ -86,3 +86,12 @@ function vv() {
   # Launch Neovim with selected config name as NVIM_APPNAME
   NVIM_APPNAME=$(basename "$config") nvim "$@"
 }
+
+# https://sw.kovidgoyal.net/kitty/kittens/ssh/
+function ssh() {
+  if [ "$TERM" = "xterm-kitty" ]; then
+    kitten ssh "$@"
+  else
+    command ssh "$@"
+  fi
+}

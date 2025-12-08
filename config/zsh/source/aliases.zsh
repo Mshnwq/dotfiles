@@ -17,6 +17,7 @@ alias ydl="yt-dlp"
 alias lsblk='lsblk | bat -l conf --theme ansi -p'
 alias grep='grep --color'
 #alias tmux='tmux -u'
+alias kssh='kitten ssh'
 
 # -------------------------------------------------------------------
 # List
