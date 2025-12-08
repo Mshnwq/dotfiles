@@ -165,6 +165,12 @@ let
     }
     zle -N zle_append_wl_copy
     bindkey '^\' zle_append_wl_copy
+    function zle_append_stdout {
+        BUFFER="$BUFFER 2>&1"
+        zle end-of-line
+    }
+    zle -N zle_append_stdout
+    bindkey '^]' zle_append_stdout
     ${lib.optionalString (config.zsh.pluginSettings.history-substring-search.enable) ''
       bindkey '^[[A' history-substring-search-up
       bindkey '^[[B' history-substring-search-down
