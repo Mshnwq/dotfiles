@@ -43,6 +43,8 @@ ujust install-rice
 
 reboot to Hyprland
 
+ujust set-static-ip 192.168.x.x 192.168.x.1
+
 # 4: look into /usr/share/ublue-os/just
 # https://www.youtube.com/watch?v=dKynTzn1_BY
 # https://docs.bazzite.gg/Installing_and_Managing_Software/Waydroid_Setup_Guide/
