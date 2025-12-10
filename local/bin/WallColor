@@ -59,37 +59,37 @@ color() {
 
 log "Running wal..."
 
-wal -sti "$(<"$WALL")" || {
-  error "wal command failed"
-  exit 1
-}
-
-# Source colors with fallback
-if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-  # shellcheck disable=SC1091
-  source "$HOME/.cache/wal/colors.sh"
-  log "Loaded colors from wal"
+if wal -sti "$(<"$WALL")" 2>&1 | tee -a "$LOG_FILE"; then
+  log "wal completed successfully"
 else
-  error "Colors file not found after wal execution"
+  error "wal command failed or timed out (exit: $?)"
   exit 1
 fi
 
+set +u
+# shellcheck disable=SC1091
+source "$HOME/.cache/wal/colors.sh"
+log "Loaded colors from wal"
+set -u
+
 themes=(
-  btop
+  # slowest
   cursor
-  dunst
-  kitty
-  nvchad
-  obsidian
-  p10k
   plasma
-  qbit
-  rmpc
-  sddm
-  telegram
   tmux
+  # priority
+  kitty
+  p10k
+  dunst
   waybar
+  nvchad
+  btop
   yazi
+  rmpc
+  qbit
+  telegram
+  obsidian
+  sddm
 )
 
 for theme in "${themes[@]}"; do
