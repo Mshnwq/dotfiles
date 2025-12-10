@@ -7,9 +7,9 @@ case "$1" in
 --menu)
   rofi -show drun -theme "$HOME"/.config/rofi/Launcher.rasi
   ;;
---rice)
-  RiceSelector
-  ;;
+# --rice)
+#   RiceSelector
+#   ;;
 --execute)
   Executer
   ;;
@@ -73,9 +73,6 @@ case "$1" in
 --nvim)
   Term --nvim
   ;;
---termscp)
-  Term --override-term alacritty --termscp
-  ;;
 --yazi)
   Term --override-term kitty --yazi
   ;;
@@ -91,9 +88,6 @@ case "$1" in
   ;;
 --files)
   dolphin
-  ;;
---gpt)
-  Firefox -P mshnwq -new-tab https://chatgpt.com/
   ;;
 --soundcontrol)
   pavucontrol
