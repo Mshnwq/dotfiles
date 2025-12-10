@@ -29,6 +29,7 @@ in
       hyprsunset
       hyprpicker
       libinput-gestures
+      # TODO: quickshell 
     ];
 
     wayland.windowManager.hyprland = {
