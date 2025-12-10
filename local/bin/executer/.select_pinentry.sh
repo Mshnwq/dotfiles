@@ -6,11 +6,13 @@ ROFI_THEME="$HOME/.config/rofi/SelectorPin.rasi"
 BIN_DIRS=("$HOME/.local/bin" "$XDG_STATE_HOME/nix/profile/bin" "$HOME/.nix-profile/bin" "/usr/bin")
 export PATH="$HOME/.local/bin:$PATH"
 
-# Collect all pinentry binaries from BIN_DIRS
 mapfile -t options < <(
   for dir in "${BIN_DIRS[@]}"; do
-    [ -d "$dir" ] || continue
-    ls -1 "$dir" | grep 'pinentry-' | sed "s|pinentry-||"
+    [[ -d "$dir" ]] || continue
+    for file in "$dir"/pinentry-*; do
+      [[ -e "$file" ]] || continue
+      basename "$file" | sed 's/^pinentry-//'
+    done
   done | sort -u
 )
 
