@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 kitty --name=FetchTerm --title=FetchTerm --class=FloaTerm \
   --config ~/.config/kitty/kitty-hidden.conf -d "$(pwd)" -e "serie"

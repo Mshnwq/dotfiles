@@ -323,7 +323,7 @@ getId() {
       fi
     done
   fi
-  echo $id
+  echo "$id"
 }
 
 getTitleFromId() {

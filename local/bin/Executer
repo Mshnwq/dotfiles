@@ -44,13 +44,13 @@ if grep -q "#WRAP" "$script"; then
   # Escape pipes for find -regex
   regex_suffix="${combined//|/\\|}"
 
-  echo $regex_suffix
+  echo "$regex_suffix"
 
   # Find matching executable files
   wrap_files=$(find "$base_dir" -type f -executable \
     -regex ".*/\.${base_name}_\(${regex_suffix}\)\.sh" -printf "%f\n")
 
-  echo $wrap_files
+  echo "$wrap_files"
 
   # Map to display only the action part for fzf
   actions=$(echo "$wrap_files" | sed -E "s/^\\.${base_name}_([^.]+)\\.sh$/\1/")

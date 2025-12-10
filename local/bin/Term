@@ -1,13 +1,4 @@
 #!/usr/bin/env bash
-#  ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗
-#  ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║
-#     ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║
-#     ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║
-#     ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗
-#     ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝
-#   Script to open with selected terminal
-#   Author: z0mbi3
-#   url: https://github.com/gh0stzk/dotfiles
 
 CFG_TERM="$HOME/.config/dots/.term"
 DEFAULT_TERM="kitty"
@@ -61,11 +52,11 @@ case $MY_TERM in
     ;;
   "--disk")
     alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
-      -e zsh -ic "~/.local/bin/disk; read -k"
+      -e zsh -ic "disk; read -k"
     ;;
   "--k9s")
     alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
-      -e sh -ic "env KUBE_EDITOR=~/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
+      -e sh -ic "env KUBE_EDITOR=$HOME/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
     ;;
   "--lazydocker")
     alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
@@ -148,7 +139,7 @@ case $MY_TERM in
     kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
       --config ~/.config/kitty/kitty-hidden.conf \
       --override window_padding_width="4" \
-      -e tmux new -s yazi -c "$HOME" InitYazi --project $2
+      -e tmux new -s yazi -c "$HOME" InitYazi --project "$2"
     ;;
   "--nvim")
     kitty -e nvim -c Nvdash

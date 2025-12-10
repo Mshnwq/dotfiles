@@ -1,16 +1,4 @@
 #!/usr/bin/env bash
-#  ███╗   ███╗███████╗██████╗ ██╗ █████╗      ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗
-#  ████╗ ████║██╔════╝██╔══██╗██║██╔══██╗    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║
-#  ██╔████╔██║█████╗  ██║  ██║██║███████║    ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║
-#  ██║╚██╔╝██║██╔══╝  ██║  ██║██║██╔══██║    ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║
-#  ██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║    ╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗
-#  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-#
-#	Author  : gh0stzk
-#	Url     : https://github.com/gh0stzk/dotfiles
-#	Info    : This script uses playerctl and mpc to control the multimedia playback
-#           "stop, pause, play, next, previous" of different players like
-#           spotify, ncmpcpp, clementine, strawberry and others.
 
 # Set the player
 [ -n "$(pgrep spotify)" ] && Control="spotify" || Control="MPD"
@@ -103,13 +91,13 @@ MPD)
     last_song=""
     [ -f "$LAST_SONG_FILE" ] && last_song=$(cat "$LAST_SONG_FILE")
     if [ "$current_song" != "$last_song" ] || [ ! -f "$Cover" ]; then
-      ffmpeg -i "$mpddir/$(mpc_cmd current -f %file%)" "${Cover}" -y &>/dev/null || cp $bkpCover $Cover
+      ffmpeg -i "$mpddir/$(mpc_cmd current -f %file%)" "${Cover}" -y &>/dev/null || cp "$bkpCover" $Cover
       echo "$current_song" >"$LAST_SONG_FILE"
     fi
     echo "$Cover"
     ;;
   nccover)
-    ffmpeg -i "$mpddir"/"$(mpc_cmd current -f %file%)" "${Cover}" -y &>/dev/null || cp $bkpCover $Cover
+    ffmpeg -i "$mpddir"/"$(mpc_cmd current -f %file%)" "${Cover}" -y &>/dev/null || cp "$bkpCover" $Cover
     ;;
   --position)
     position=$(mpc_cmd status %currenttime%)
@@ -181,7 +169,7 @@ MPD)
       if [[ $(playerctl --player="$Control" metadata mpris:artUrl) ]]; then
         curl -s "$albumart" --output $Cover
       else
-        cp $bkpCover $Cover
+        cp "$bkpCover" $Cover
       fi
       echo "$current_song" >"$LAST_SONG_FILE"
     fi

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eo pipefail
+
 DOTDIR=$(<"$HOME/.config/dotdir")
 kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
   --override font_size=8 --config ~/.config/kitty/kitty-hidden.conf \

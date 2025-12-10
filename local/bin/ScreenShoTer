@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
-#  ╔═╗╔═╗╦═╗╔═╗╔═╗╔╗╔╔═╗╦ ╦╔═╗╔╦╗╔═╗╦═╗
-#  ╚═╗║  ╠╦╝║╣ ║╣ ║║║╚═╗╠═╣║ ║ ║ ║╣ ╠╦╝
-#  ╚═╝╚═╝╩╚═╚═╝╚═╝╝╚╝╚═╝╩ ╩╚═╝ ╩ ╚═╝╩╚═
-#
-#   z0mbi3
-#   https://github.com/gh0stzk/dotfiles
-#   Script to take screenshots using maim.
-#   20.12.2023 16:10:25
+
+set -eo pipefail
 
 # Screenshot general options
 timestamp=$(date +%Y-%m-%d_%H-%M-%S)
@@ -26,12 +20,11 @@ s_in10="󰔜"
 
 rofi_cmd() {
   rofi -dmenu \
+    -markup-rows \
     -p Screenshot \
     -mesg "Directory :: $savedir" \
-    -markup-rows \
     -theme "$HOME"/.config/rofi/Screenshot.rasi
 }
-#-p "Screenshot Directory :: $savedir" \
 
 run_rofi() {
   echo -e "$s_full\n$s_select\n$s_swappy\n$s_in3\n$s_in10" | rofi_cmd
@@ -86,7 +79,7 @@ run_cmd() {
 }
 
 if [[ "$1" == "--override" ]]; then
-  run_cmd --$2
+  run_cmd "--$2"
   exit 0
 fi
 

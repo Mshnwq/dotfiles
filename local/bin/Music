@@ -32,7 +32,7 @@ case $MY_MUSIC in
 "ncmpcpp")
   case $MY_MPD in
   "remote")
-    ncmpcpp --host $MPD_HOST --port 6600
+    ncmpcpp --host "$MPD_HOST" --port 6600
     ;;
   "local")
     ncmpcpp --host 127.0.0.1 --port 6600
@@ -45,7 +45,7 @@ case $MY_MUSIC in
 "rmpc")
   case $MY_MPD in
   "remote")
-    rmpc --address $MPD_HOST:6600
+    rmpc --address "$MPD_HOST:6600"
     ;;
   "local")
     rmpc --address 127.0.0.1:6600
