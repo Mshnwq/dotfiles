@@ -87,53 +87,60 @@
     Install = { }; # empty so it won’t auto-start
   };
 
+  # https://github.com/nix-community/home-manager/blob/master/modules/programs/beets.nix
   programs.beets =
     let
       lastfm-key =
         if
-          config.sops.secrets ? "mpd-remote-host"
-          && builtins.pathExists config.sops.secrets."mpd-remote-host".path
+          config.sops.secrets ? "lastfm-key"
+          && builtins.pathExists config.sops.secrets."lastfm-key".path
         then
-          builtins.readFile config.sops.secrets."mpd-remote-host".path
+          builtins.readFile config.sops.secrets."lastfm-key".path
         else
-          "127.0.0.1";
+          "xxx";
       discogs-key =
         if
-          config.sops.secrets ? "mpd-remote-host"
-          && builtins.pathExists config.sops.secrets."mpd-remote-host".path
+          config.sops.secrets ? "discogs-key"
+          && builtins.pathExists config.sops.secrets."discogs-key".path
         then
-          builtins.readFile config.sops.secrets."mpd-remote-host".path
+          builtins.readFile config.sops.secrets."discogs-key".path
         else
-          "127.0.0.1";
+          "xxx";
     in
     # extract year my plugin
     {
       enable = true;
-      settings = ''
-        directory: ~/Music
-        import:
-          write: yes
-          autotag: yes
-        paths:
-          default: $artist/($year) $album/$track $title
-          singleton: $artist/Other/$title
-          comp: Compilations/($year) $album/$track $title
-        pluginpath: ~/.config/beets/plugins
-        plugins:
-          - extract_year
-          - fetchart
-          - embedart
-          - mbsync
-          - edit
-          - lastgenre
-          - discogs
-        fetchart:
-          lastfm_key: ${lastfm-key}
-          sources:
-            - lastfm
-            - xxx
-        discogs:
-          user_token: ${discogs-key}
-      '';
+      settings = {
+        directory = "~/Music";
+        import = {
+          write = true;
+          autotag = true;
+        };
+        paths = {
+          default = "$artist/($year) $album/$track $title";
+          singleton = "$artist/Other/$title";
+          comp = "Compilations/($year) $album/$track $title";
+        };
+        pluginpath = "~/.config/beets/plugins";
+        plugins = [
+          "extract_year"
+          "fetchart"
+          "embedart"
+          "mbsync"
+          "edit"
+          "lastgenre"
+          "discogs"
+        ];
+        fetchart = {
+          lastfm_key = lastfm-key;
+          sources = [
+            "lastfm"
+            # "xxx"
+          ];
+        };
+        discogs = {
+          user_token = discogs-key;
+        };
+      };
     };
 }

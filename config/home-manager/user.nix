@@ -147,12 +147,12 @@ in
         tmuxp = {
           mode = "0400";
         };
-        # beets-lastfm-token = {
-        #   mode = "0400";
-        # };
-        # beets-discogs-token = {
-        #   mode = "0400";
-        # };
+        lastfm-key = {
+          mode = "0400";
+        };
+        discogs-key = {
+          mode = "0400";
+        };
         mpd-remote-host = {
           mode = "0400";
           path = "${config.xdg.configHome}/mpd_remote_host";
