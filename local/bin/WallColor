@@ -1,148 +1,111 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-LOG_FILE="$HOME/.cache/wal/log.txt"
-mkdir -p "$(dirname "$LOG_FILE")"
-echo "=== Wal Color Apply Start: $(date) ===" >"$LOG_FILE"
+# CONSTS
+EXECUTER_DIR="$HOME/.local/bin/executer"
+LOG_FILE="$HOME/.cache/wal/wall_color.log"
+WALL=$HOME/.config/dots/rices/.wall
+
+# Flags
+WAIT=""
+
+while (($# > 0)); do
+  case $1 in
+  -w | --wait)
+    WAIT=true
+    shift
+    ;;
+  *)
+    echo "Unknown option: $1"
+    ;;
+  esac
+done
+
+mkdir -p "${LOG_FILE%/*}"
+echo "=== Wal Color Apply Start: $(date '+%F %T') ===" >"$LOG_FILE"
 
 log() {
-  echo "[$(date '+%F %T')] $*" >>"$LOG_FILE"
+  echo "[$(date '+%T')] INFO: $*" | tee -a "$LOG_FILE" >/dev/null
 }
 
-color_kitty() {
-  log "Starting color_kitty"
-  sh -c "$HOME/.local/bin/executer/.wal_kitty.sh" >>"$LOG_FILE"
-  log "Finished color_kitty"
+error() {
+  echo "[$(date '+%T')] ERROR: $*" | tee -a "$LOG_FILE" >&2
 }
 
-color_hyprland() {
-  log "Starting color_hyprland"
-  log "Finished color_hyprland"
+color() {
+  local theme="$1"
+  local pid_file="/tmp/wal_${theme}.pid"
+
+  log "Starting $theme (background)"
+
+  (
+    if sh -c "$EXECUTER_DIR/.wal_${theme}.sh" >>"$LOG_FILE" 2>&1; then
+      log "Finished $theme (success)"
+    else
+      error "Failed $theme (exit code: $?)"
+    fi
+    rm -f "$pid_file"
+  ) &
+
+  local pid=$!
+  echo "$pid" >"$pid_file"
+  log "$theme launched with PID: $pid"
 }
 
-color_cursor() {
-  log "Starting color_cursor (background)"
-  zsh -c "$HOME/.local/bin/executer/.wal_cursor.sh" &
-  log "color_cursor launched in background"
+[[ ! -f $WALL ]] && {
+  error "Wallpaper file not found: $WALL"
+  exit 1
 }
 
-color_waybar() {
-  log "Starting color_waybar"
-  sed -i "/\/\/-clock-date/s|\"<span color='#.*'><b>{}</b></span>\"|\"<span color='${cursor}'><b>{}</b></span>\"|" "$HOME/.config/waybar/config.jsonc"
-  sh -c "$HOME/.local/bin/executer/.waybar_start.sh" >>"$LOG_FILE"
-  log "Finished color_waybar"
-}
-
-color_dunst() {
-  log "Starting color_dunst"
-  RICE=$(cat ~/.config/dots/.rice)
-  ASSETS_DIR="$HOME/.config/dots/rices/$RICE/assets"
-  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 ""' "$ASSETS_DIR/brightness.png"
-  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰕾"' "$ASSETS_DIR/volume_high.png"
-  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰖀"' "$ASSETS_DIR/volume_medium.png"
-  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰕿"' "$ASSETS_DIR/volume_low.png"
-  magick -size 64x64 xc:transparent -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' -pointsize 64 -draw 'gravity center text 0 0 "󰝟"' "$ASSETS_DIR/volume_mute.png"
-  sh -c "$HOME/.local/bin/executer/.dunst_start.sh" >>"$LOG_FILE"
-  log "Finished color_dunst"
-}
-
-color_nvchad() {
-  log "Starting color_nvchad"
-  sh -c "$HOME/.local/bin/executer/.wal_nvchad.sh" >>"$LOG_FILE"
-  log "Finished color_nvchad"
-}
-
-color_p10k() {
-  log "Starting color_p10k"
-  sh -c "$HOME/.local/bin/executer/.wal_p10k.sh" >>"$LOG_FILE"
-  log "Finished color_p10k"
-}
-
-color_tmux() {
-  log "Starting color_tmux"
-  sh -c "$HOME/.local/bin/executer/.wal_tmux.sh" >>"$LOG_FILE"
-  log "Finished color_tmux"
-}
-
-color_rmpc() {
-  log "Starting color_rmpc"
-  sh -c "$HOME/.local/bin/executer/.wal_rmpc.sh" >>"$LOG_FILE"
-  log "Finished color_rmpc"
-}
-
-color_btop() {
-  log "Starting color_btop"
-  sh -c "$HOME/.local/bin/executer/.wal_btop.sh" >>"$LOG_FILE"
-  log "Finished color_btop"
-}
-
-color_yazi() {
-  log "Starting color_yazi"
-  sh -c "$HOME/.local/bin/executer/.wal_yazi.sh" >>"$LOG_FILE"
-  log "Finished color_yazi"
-}
-
-color_telegram() {
-  log "Starting color_telegram"
-  sh -c "$HOME/.local/bin/executer/.wal_telegram.sh" >>"$LOG_FILE"
-  log "Finished color_telegram"
-}
-
-color_qbit() {
-  log "Starting color_qbit"
-  sh -c "$HOME/.local/bin/executer/.wal_qbit.sh" >>"$LOG_FILE"
-  log "Finished color_qbit"
-}
-
-color_sddm() {
-  log "Starting color_sddm"
-  sh -c "$HOME/.local/bin/executer/.wal_sddm.sh" >>"$LOG_FILE"
-  log "Finished color_sddm"
-}
-
-color_obsidian() {
-  log "Starting color_obsidian"
-  sh -c "$HOME/.local/bin/executer/.wal_obsidian.sh" >>"$LOG_FILE"
-  log "Finished color_obsidian"
-}
-
-color_plasma() {
-  log "Starting color_plasma"
-  plasma-apply-colorscheme BreezeDark >>"$LOG_FILE" 2>&1
-  plasma-apply-colorscheme Pywal >>"$LOG_FILE" 2>&1
-  log "Finished color_plasma"
-}
-
-color_icons() {
-  log "Starting color_icons"
-  sh -c "$HOME/.local/bin/executer/.wal_icons.sh" >>"$LOG_FILE"
-  log "Finished color_icons"
-}
-
-# Main
 log "Running wal..."
-wal -sti "$(cat ~/.config/dots/rices/.wall)"
-source "$HOME/.cache/wal/colors.sh"
-log "Loaded colors from wal"
 
-#AUTO:
-color_hyprland
+wal -sti "$(<"$WALL")" || {
+  error "wal command failed"
+  exit 1
+}
 
-#MANUAL
-color_cursor #BACKGROUND
-color_plasma
-color_waybar
-color_dunst
-color_kitty #BUG TAB BAR
-color_p10k
-color_rmpc
-color_btop
-color_yazi
-color_tmux
-color_nvchad
-color_telegram
-color_obsidian
-color_qbit
-color_sddm
-color_icons
+# Source colors with fallback
+if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+  # shellcheck disable=SC1091
+  source "$HOME/.cache/wal/colors.sh"
+  log "Loaded colors from wal"
+else
+  error "Colors file not found after wal execution"
+  exit 1
+fi
 
-log "All theming complete"
+themes=(
+  btop
+  cursor
+  dunst
+  kitty
+  nvchad
+  obsidian
+  p10k
+  plasma
+  qbit
+  rmpc
+  sddm
+  telegram
+  tmux
+  waybar
+  yazi
+)
+
+for theme in "${themes[@]}"; do
+  color "$theme"
+done
+
+log "All themes launched in background"
+
+[[ -n $WAIT ]] && {
+  log "Waiting for all themes..."
+  pids=(/tmp/wal_*.pid)
+
+  while [[ -e "${pids[0]}" ]]; do
+    sleep 0.5
+    pids=(/tmp/wal_*.pid)
+  done
+
+  dunstify "Wall Color" "All Themes Completed"
+}

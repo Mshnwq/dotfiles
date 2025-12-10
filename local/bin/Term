@@ -152,8 +152,8 @@ case $MY_TERM in
       -o window.opacity="0.01" -e cava &
     PINNED_PID=$!
     kitty --name MusicTerm --title MusicTerm --class FloaTerm \
-      --override font_size=10 \
       --config ~/.config/kitty/kitty-hidden.conf \
+      --override font_size=10 \
       -e Music &
     MUSIC_PID=$!
     hyprctl dispatch focuswindow title:MusicTerm

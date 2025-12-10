@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 # CONSTANTS
-readonly CACHE_BASE="${HOME}/.cache/wallpapers"
-readonly CONFIG_DIR="${HOME}/.config/dots"
-readonly RICES_DIR="${CONFIG_DIR}/rices"
-readonly THUMBNAIL_SIZE="500x500"
-readonly REQUIRED_APPS=(
+CACHE_BASE="${HOME}/.cache/wallpapers"
+CONFIG_DIR="${HOME}/.config/dots"
+RICES_DIR="${CONFIG_DIR}/rices"
+THUMBNAIL_SIZE="500x500"
+REQUIRED_APPS=(
   xdpyinfo
   magick
   md5sum
@@ -30,7 +29,7 @@ wall_dir="${RICES_DIR}/${current_rice}/walls"
 cache_dir="${CACHE_BASE}/${current_rice}"
 
 # Validate
-[[ -d "$wall_dir" ]] || {
+[[ -d $wall_dir ]] || {
   dunstify -u critical "Error" "Wallpaper directory not found: $wall_dir"
   exit 1
 }
@@ -41,17 +40,17 @@ monitor_res=$(($(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1) * 14 
 rofi_override="element-icon{size:${monitor_res}px;}"
 rofi_command="rofi -dmenu -theme $HOME/.config/rofi/WallSelect.rasi -theme-str $rofi_override"
 
-declare -a wallpapers=()
+wallpapers=()
 # Convert images in directory and save to cache dir
 for image in "$wall_dir"/*; do
-  [[ "$image" =~ \.(jpg|png|webp)$ ]] || continue
+  [[ $image =~ \.(jpg|png|webp)$ ]] || continue
 
   archive=${image##*/}
   cache_file="${cache_dir}/${archive}"
   md5_file="${cache_dir}/.${archive}.md5"
 
   # Generate thumbnail if needed
-  if [[ ! -f "$cache_file" ]] || [[ ! -f "$md5_file" ]] ||
+  if [[ ! -f $cache_file ]] || [[ ! -f $md5_file ]] ||
     [[ "$(md5sum "$image" | cut -d' ' -f1)" != "$(<"$md5_file")" ]]; then
 
     printf "Generating thumbnail: %s\n" "$archive" >&2
@@ -77,7 +76,7 @@ wall_selection=$(for wall in "${wallpapers[@]}"; do
 done | $rofi_command -selected-row "${selected_index:-0}")
 
 # Set wallpaper
-[[ -n "$wall_selection" ]] && {
+[[ -n $wall_selection ]] && {
   echo "${wall_dir}/${wall_selection}" >"${RICES_DIR}/.wall"
-  WallColor
+  WallColor --wait
 }
