@@ -5,6 +5,15 @@
   ...
 }:
 {
+  sops.secrets = {
+    mpd-remote-host = {
+      mode = "0400";
+      path = "${config.xdg.configHome}/mpd_remote_host";
+    };
+    discogs-key.mode = "0400";
+    lastfm-key.mode = "0400";
+  };
+
   home.packages = with pkgs; [
     mpd
     mpc
@@ -123,7 +132,7 @@
         };
         pluginpath = "~/.config/beets/plugins";
         plugins = [
-          "extract_year"
+          # "extract_year"  # my plugins
           "fetchart"
           "embedart"
           "mbsync"

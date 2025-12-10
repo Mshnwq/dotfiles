@@ -74,6 +74,16 @@ let
   };
 in
 {
+  sops.secrets = {
+    browser-pinned = {
+      mode = "0400";
+    };
+    tampermonkey = {
+      mode = "0400";
+      path = "${config.xdg.configHome}/tampermonkey.txt";
+    };
+  };
+
   xdg.desktopEntries.firefox = {
     name = "Firefox";
     exec = "Firefox %u";
