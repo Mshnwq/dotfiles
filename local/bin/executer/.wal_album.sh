@@ -45,7 +45,8 @@ fi
 if ((have_cover == 1)); then
   magick "$COVER" -resize 1920x1080\! "$OUT"
   echo "Wallpaper created: $OUT"
-  WallColor "$OUT"
+  echo "$OUT" >"$HOME/.config/dots/rices/.wall"
+  WallColor -w
 else
   echo "No cover art found"
   dunstify "Album Wal" "No cover art found"

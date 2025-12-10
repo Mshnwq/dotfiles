@@ -14,6 +14,7 @@ wallpaper_hash=$(echo "$WALLPAPER" | sha256sum | cut -d' ' -f1)
 cache_path="$cache_dir/$wallpaper_hash"
 
 # Load pywal colors
+# shellcheck disable=SC1091
 source "$HOME/.cache/wal/colors.sh"
 
 # Replace FF0000 with pywal color3 in cursor template

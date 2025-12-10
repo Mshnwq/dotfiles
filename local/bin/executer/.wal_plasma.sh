@@ -8,7 +8,9 @@ find "$pywal_dir" -type f -path "*/places/*.svg" | while read -r src; do
   dest="$papirus_dir/$rel_path"
   mkdir -p "$(dirname "$dest")"
   cp -f "$src" "$dest"
-  echo "$src -> $dest"
+  # echo "$src -> $dest"
 done
 
 papirus-folders -C cat-mocha-pywal --theme Papirus-Dark
+plasma-apply-colorscheme BreezeDark
+plasma-apply-colorscheme Pywal
