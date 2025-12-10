@@ -22,7 +22,7 @@
     highlight_border_style: (fg: "{color4}"),
     symbols: (song: "󰝚 ", dir: " ", marker: "* ", ellipsis: "..."),
     progress_bar: (
-        symbols: ["═", "", "═"],
+        symbols: ["═", "", "═"],
         elapsed_style: (fg: "{background}", bg: "{color1}"),
         thumb_style: (fg: "{color1}"), 
         track_style: (fg: "{foreground}"),

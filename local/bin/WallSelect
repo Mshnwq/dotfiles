@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # Verifies if xdpyinfo and imagemagick are installed
 for app in xdpyinfo magick; do
   if ! which $app >/dev/null 2>&1; then
