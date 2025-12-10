@@ -52,7 +52,7 @@ color() {
   log "$theme launched with PID: $pid"
 }
 
-[[ ! -f $WALL ]] && {
+[[ -f $WALL ]] || {
   error "Wallpaper file not found: $WALL"
   exit 1
 }
