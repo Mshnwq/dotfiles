@@ -30,12 +30,12 @@
     ];
     open = [
       {
-        run = "qimgv $1";
+        run = ''qimgv "$@"'';
         for = "unix";
         when = ''extension in ["jpeg", "png", "jpg"]'';
       }
       {
-        run = "xdg-open $1";
+        run = ''xdg-open "$@"'';
         desc = "Open";
         for = "linux";
       }

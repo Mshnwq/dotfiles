@@ -28,7 +28,7 @@ in
         ];
 
         ### DOCUMENT VIEWER ###
-        "zathura" = builtins.map (s: "application/" + s) [
+        "org.pwmt.zathura" = builtins.map (s: "application/" + s) [
           "pdf"
           "epub"
           "mobi"
