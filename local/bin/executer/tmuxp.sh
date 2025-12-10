@@ -14,6 +14,6 @@ TMPFILE="$tmpfile" \
   '
 chosen=$(<"$tmpfile")
 rm -f "$tmpfile"
-[ -z "$chosen" ] && exit 0
+[ -z "$chosen" ]] && exit 0
 tmuxp load "$TMUXP_DIR/$chosen.yaml" &
 notify-send -u low "Tmuxp loaded" "$chosen"

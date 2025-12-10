@@ -35,7 +35,7 @@ mode="default"
 project_name=""
 args=()
 
-while [[ $# -gt 0 ]]; do
+while (($# > 0)); do
   case "$1" in
   --last)
     mode="last"

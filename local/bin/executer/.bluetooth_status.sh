@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ ! -d /sys/class/bluetooth ]; then
-  echo # No Bluetooth interface
+if [[ ! -d /sys/class/bluetooth ]]; then
+  echo "No Bluetooth interface"
   exit 0
 fi
 
@@ -10,7 +10,6 @@ FILE="$HOME/.cache/wal/colors-rio.toml"
 POWER_ON=$(awk '/^blue =/ {print $3; exit}' "$FILE")
 POWER_OFF=$(awk '/^cursor =/ {print $3; exit}' "$FILE")
 
-# Check if Bluetooth interface exists and its status
 check_bluetooth() {
   if systemctl is-active --quiet bluetooth.service; then
     notify-send -u low "Bluetooth status" "On"

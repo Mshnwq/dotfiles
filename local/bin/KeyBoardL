@@ -6,7 +6,7 @@ set -euo pipefail
 keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
 
 # Exit if no main keyboard found
-if [[ -z "$keyboard" ]]; then
+if [[ -z $keyboard ]]; then
   echo "Error: No main keyboard found" >&2
   exit 1
 fi
@@ -43,7 +43,7 @@ show_rofi_menu() {
 # Layout switcher
 selected=$(show_rofi_menu)
 
-if [[ -n "$selected" && -n "${LAYOUTS[$selected]}" ]]; then
+if [[ -n $selected && -n ${LAYOUTS[$selected]} ]]; then
   target_layout="${LAYOUTS[$selected]}"
 
   for i in "${!layout_list[@]}"; do

@@ -17,7 +17,7 @@ mapfile -t options < <(
 )
 
 # Check if any pinentry options are found
-if [[ ${#options[@]} -eq 0 ]]; then
+if ((${#options[@]} == 0)); then
   notify-send "Pass Pin Entry" "No pinentry programs found."
   exit 1
 fi
@@ -26,7 +26,7 @@ fi
 CHOICE=$(printf '%s\n' "${options[@]}" | rofi -theme "$ROFI_THEME" -mesg "[ Select Pass Pin Entry Program ]" -dmenu)
 
 # If user pressed Escape or didn't select anything
-if [[ -z "$CHOICE" ]]; then
+if [[ -z $CHOICE ]]; then
   notify-send "Pass Pin Entry" "No pinentry program selected."
   exit 0
 fi

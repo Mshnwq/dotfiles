@@ -9,7 +9,7 @@ for app in xdpyinfo magick; do
 done
 
 # Set some variables
-read -r current_rice <"$HOME"/.config/dots/.rice
+read -r current_rice <"$HOME/.config/dots/.rice"
 wall_dir="$HOME/.config/dots/rices/$current_rice/walls"
 cacheDir="$HOME/.cache/$USER/$current_rice"
 # Create cache dir if not exists
@@ -23,7 +23,7 @@ rofi_command="rofi -dmenu -theme $HOME/.config/rofi/WallSelect.rasi -theme-str $
 # Convert images in directory and save to cache dir
 for imagen in "$wall_dir"/*.{jpg,jpeg,png,webp}; do
   [ -f "$imagen" ] || continue
-  nombre_archivo=$(basename "$imagen")
+  nombre_archivo=${imagen##*/}
   cache_file="${cacheDir}/${nombre_archivo}"
   md5_file="${cacheDir}/.${nombre_archivo}.md5"
 
@@ -31,14 +31,17 @@ for imagen in "$wall_dir"/*.{jpg,jpeg,png,webp}; do
   current_md5=$(md5sum "$imagen" | cut -d' ' -f1)
 
   # Comprobar si el archivo de caché existe y si el contenido ha cambiado
-  if [ ! -f "$cache_file" ] || [ ! -f "$md5_file" ] || [ "$current_md5" != "$(cat "$md5_file")" ]; then
+  if [[ ! -f "$cache_file" ]] || [[ ! -f "$md5_file" ]] || [[ "$current_md5" != "$(cat "$md5_file")" ]]; then
     magick "$imagen" -resize 500x500^ -gravity center -extent 500x500 "$cache_file"
     echo "$current_md5" >"$md5_file"
   fi
 done
 
 # Find currently selected wallpaper name
-current_wallpaper=$(basename "$(cat "$HOME/.config/dots/rices/.wall" 2>/dev/null)")
+# current_wallpaper=$(basename "$(cat "$HOME/.config/dots/rices/.wall" 2>/dev/null)")
+# https://ysap.sh/v/26/
+read -r wall <"$HOME/.config/dots/rices/.wall"
+current_wallpaper=${wall##*/}
 
 # Build wallpaper list
 wall_list=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -exec basename {} \; | sort)

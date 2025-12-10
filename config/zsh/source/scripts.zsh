@@ -84,7 +84,7 @@ function vv() {
   [[ -z "$config" ]] && echo "No config selected" && return
 
   # Launch Neovim with selected config name as NVIM_APPNAME
-  NVIM_APPNAME=$(basename "$config") nvim "$@"
+  NVIM_APPNAME="${config##*/}" nvim "$@"
 }
 
 # https://sw.kovidgoyal.net/kitty/kittens/ssh/

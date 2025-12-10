@@ -11,7 +11,7 @@ scripts=$(find "$base_dir" -type f -executable \
 selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.rasi")
 
 # Exit if no script is selected
-[ -z "$selected" ] && exit 0
+[[ -z $selected ]] && exit 0
 
 # Path to the selected script
 script="$HOME/.local/bin/executer/$selected"
@@ -31,7 +31,7 @@ if grep -q "#WRAP" "$script"; then
     ' "$script")
 
   # Append optional extras if any
-  if [ ${#extra_options[@]} -gt 0 ]; then
+  if ((${#extra_options[@]} > 0)); then
     extra_regex=$(
       IFS='|'
       echo "${extra_options[*]}"
@@ -70,7 +70,7 @@ if grep -q "#WRAP" "$script"; then
   # Read result from temp file
   chosen_action=$(<"$tmpfile")
   rm -f "$tmpfile"
-  [ -z "$chosen_action" ] && exit 0
+  [[ -z $chosen_action ]] && exit 0
   chosen_file=".${base_name}_${chosen_action}.sh"
   "$base_dir/$chosen_file"
   exit 0

@@ -5,11 +5,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 case "$1" in
 --menu)
-  rofi -show drun -theme "$HOME"/.config/rofi/Launcher.rasi
+  rofi -show drun -theme "$HOME/.config/rofi/Launcher.rasi"
   ;;
-# --rice)
-#   RiceSelector
-#   ;;
 --execute)
   Executer
   ;;

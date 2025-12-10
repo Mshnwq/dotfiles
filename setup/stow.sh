@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 DOTDIR=$(<"$HOME/.config/dotdir")
-DOTDIR="${DOTDIR/#\~/$HOME}"
+DOTDIR="${DOTDIR/#\~/$HOME}" # glob to work
 
 for dir in "$DOTDIR"/config/*; do
-  name="$(basename "$dir")"
+  name="${dir##*/}"
   mkdir -p "$HOME/.config/$name"
   if [ "$name" = "sops" ]; then
     mkdir -p "$HOME/.config/$name"
@@ -21,7 +21,7 @@ for dir in "$DOTDIR"/config/*; do
 done
 
 for dir in "$DOTDIR"/local/*; do
-  name="$(basename "$dir")"
+  name="${dir##*/}"
   mkdir -p "$HOME/.local/$name"
   cd "$dir" && stow --target="$HOME/.local/$name" .
 done
