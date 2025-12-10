@@ -44,7 +44,7 @@ for i in {1..10}; do
   sleep 0.3
   WIN_ID=$(hyprctl clients -j | jq -r --arg class "$WINDOW_CLASS" '.[] | select(.class == $class) | .address')
   if [ -n "$WIN_ID" ]; then
-    echo $WIN_ID
+    echo "$WIN_ID"
     break
   fi
 done
@@ -65,10 +65,10 @@ workspace=$(jq -r '.workspace' "$STATE_FILE")
 floating=$(jq -r '.floating' "$STATE_FILE")
 
 # Apply saved state
-[ "$floating" = "false" ] && hyprctl dispatch togglefloating address:$WIN_ID
-hyprctl dispatch focuswindow address:$WIN_ID
+[ "$floating" = "false" ] && hyprctl dispatch togglefloating "address:$WIN_ID"
+hyprctl dispatch focuswindow "address:$WIN_ID"
 hyprctl dispatch movetoworkspacesilent "$workspace"
-hyprctl dispatch resizewindowpixel "exact ${size[0]} ${size[1]}", address:$WIN_ID
-hyprctl dispatch movewindowpixel "exact ${at[0]} ${at[1]}", address:$WIN_ID
+hyprctl dispatch resizewindowpixel "exact ${size[0]} ${size[1]}", "address:$WIN_ID"
+hyprctl dispatch movewindowpixel "exact ${at[0]} ${at[1]}", "address:$WIN_ID"
 
 echo "[INFO] qBitTorrent restored to previous state."

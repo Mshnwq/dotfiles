@@ -17,10 +17,7 @@ enable_mpc() {
   notify-send "MPC" "Starting MPC"
 
   ROFI_THEME="$HOME/.config/rofi/SelectorMPD.rasi"
-  # Define the options
-  # local options=("Local" "Remote" "Remote VPN")
   local options=("Local" "Remote" "Remote VPN")
-  # Show Rofi menu and get the user's choice
   CHOICE=$(printf '%s\n' "${options[@]}" | rofi -theme "$ROFI_THEME" -mesg "[ Select MPD Host ]" -dmenu -no-custom -p "Host" -selected-row 0)
   MPD_HOST="$HOME/.config/dots/.mpd_host"
 

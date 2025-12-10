@@ -31,7 +31,7 @@ fi
 
 # Update gpg-agent.conf
 GPG_CONF="$GNUPGHOME/gpg-agent.conf"
-echo "pinentry-program $(command -v pinentry-$CHOICE)" >"$GPG_CONF"
+echo "pinentry-program $(command -v "pinentry-$CHOICE")" >"$GPG_CONF"
 
 # Reload gpg-agent
 gpg-connect-agent reloadagent /bye

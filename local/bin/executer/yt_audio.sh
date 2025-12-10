@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #INPUT_REQUIRED
 
+set -euo pipefail
+
 # Default configuration
 default_downloads_path="$HOME/Downloads/YT-DLP"
 log_file="/tmp/yt_dlp_error.log"

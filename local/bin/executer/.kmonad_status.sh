@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 if pgrep -f config.kbd >/dev/null; then
   if [ "$1" == "--quiet" ]; then
     echo "on"

@@ -45,7 +45,7 @@ fi
 if [[ $have_cover -eq 1 ]]; then
   magick "$COVER" -resize 1920x1080\! "$OUT"
   echo "Wallpaper created: $OUT"
-  WallColor $OUT
+  WallColor "$OUT"
 else
   echo "No cover art found"
   dunstify "Album Wal" "No cover art found"

@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
 p10k_file="$HOME/.config/zsh/.p10k.zsh"
-#p10k_theme="$HOME/.config/wal/templates/custom-p10k.sh"
 p10k_theme="$HOME/.cache/wal/custom-p10k.sh"
 
-# Delete the old block between the markers
 sed -i '/# -- start replace from rice/,/# -- end replace from rice/{
   /# -- start replace from rice/!{/# -- end replace from rice/!d}
 }' "$p10k_file"

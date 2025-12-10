@@ -15,7 +15,6 @@ pulse.cmd = [
   { cmd = "load-module" args = "module-native-protocol-tcp auth-ip-acl=$HOST auth-anonymous=1" }
 ]
 EOF
-#sudo ufw allow from $HOST to any port 4713 proto tcp
 sudo firewall-cmd --zone=public --add-rich-rule="rule family='ipv4' source address='$HOST' port protocol='tcp' port='4713' accept"
 systemctl --user restart pipewire-pulse
 echo "remote" >"$STATUS_FILE"

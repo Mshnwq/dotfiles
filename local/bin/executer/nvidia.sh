@@ -9,4 +9,4 @@ gpu_commands() {
 export -f gpu_commands
 alacritty --option 'font.size=14' \
   --class FloaTerm,TopTerm --title=TopTerm \
-  -e bash -c "bash -i -c gpu_commands"
+  -e bash -c "bash -ic gpu_commands"

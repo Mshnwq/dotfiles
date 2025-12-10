@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# sudo ufw allow from 192.168.0.0/24 to any port 6600
 sudo ufw allow 67
 sudo ufw allow 53
 sudo ufw default allow FORWARD

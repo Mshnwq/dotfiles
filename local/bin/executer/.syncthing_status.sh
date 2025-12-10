@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 if systemctl --user is-active --quiet syncthing.service; then
   if [ "$1" == "--quiet" ]; then
     echo "on"

@@ -13,4 +13,4 @@ nas_commands() {
 export -f nas_commands
 alacritty --option 'font.size=10' \
   --class FloaTerm,DiskTerm --title=DiskTerm \
-  -e bash -c "bash -i -c nas_commands"
+  -e bash -c "bash -ic nas_commands"

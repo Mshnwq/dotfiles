@@ -4,9 +4,9 @@ pywal_dir="$HOME/.cache/wal/Papirus/Pywal"
 papirus_dir="$HOME/.local/share/icons/Papirus"
 
 find "$pywal_dir" -type f -path "*/places/*.svg" | while read -r src; do
-  rel_path="${src#$pywal_dir/}" # remove base path
+  rel_path="${src#$pywal_dir/}"
   dest="$papirus_dir/$rel_path"
-  mkdir -p "$(dirname "$dest")" # ensure destination dir exists
+  mkdir -p "$(dirname "$dest")"
   cp -f "$src" "$dest"
   echo "$src -> $dest"
 done

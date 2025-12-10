@@ -33,4 +33,4 @@ sudo sed -i "s/UserIconColor=\"#\([0-9A-Fa-f]\{6\}\)\"/UserIconColor=\"$color7\"
 sudo sed -i "s/PasswordIconColor=\"#\([0-9A-Fa-f]\{6\}\)\"/PasswordIconColor=\"$color7\"/" "$sddm_theme_conf"
 
 # Copy wallpaper to SDDM theme
-sudo cp $wallpaper_path $sddm_simple/Backgrounds/default
+sudo cp "$wallpaper_path" "$sddm_simple/Backgrounds/default"

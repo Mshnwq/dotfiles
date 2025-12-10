@@ -9,4 +9,4 @@ mount_commands() {
 
 export -f mount_commands
 alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
-  -e bash -c "bash -i -c mount_commands"
+  -e bash -c "bash -ic mount_commands"
