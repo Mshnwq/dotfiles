@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# TODO: improve
 
 DOTDIR=$(<"$HOME/.config/dotdir")
 DOTDIR="${DOTDIR/#\~/$HOME}"

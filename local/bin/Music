@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: improve
+
 CFG_MUSIC="$HOME/.config/dots/.music"
 CFG_MPD="$HOME/.config/dots/.mpd_status"
 REMOTE_MPD="$HOME/.config/dots/.mpd_host"

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: improve
+
 # Set the player
 [ -n "$(pgrep spotify)" ] && Control="spotify" || Control="MPD"
 

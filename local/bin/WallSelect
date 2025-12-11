@@ -33,7 +33,7 @@ cache_dir="${CACHE_BASE}/${current_rice}"
   dunstify -u critical "Error" "Wallpaper directory not found: $wall_dir"
   exit 1
 }
-mkdir -p "$cache_dir"
+[[ -d $cache_dir ]] || mkdir -p "$cache_dir"
 
 # Adapt to screen resolution.
 monitor_res=$(($(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1) * 14 / $(xdpyinfo | awk '/resolution/{print $2}' | cut -d 'x' -f1)))

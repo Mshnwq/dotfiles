@@ -107,7 +107,7 @@ case "$1" in
 --music)
   alacritty --class FloaTerm,CavaTerm --title=CavaTerm \
     -o window.opacity="0.01" -e cava &
-  PINNED_PID=$!
+  CAVA_PID=$!
   kitty --name MusicTerm --title MusicTerm --class FloaTerm \
     --override font_size=10 \
     --config ~/.config/kitty/kitty-hidden.conf \
@@ -115,7 +115,7 @@ case "$1" in
   MUSIC_PID=$!
   hyprctl dispatch focuswindow title:MusicTerm
   wait $MUSIC_PID
-  kill $PINNED_PID 2>/dev/null
+  kill $CAVA_PID
   ;;
   # Apps
 --firefox)

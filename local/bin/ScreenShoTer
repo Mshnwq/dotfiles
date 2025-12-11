@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-
 set -eo pipefail
+
+# TODO: improve
 
 # Screenshot general options
 timestamp=$(date +%Y-%m-%d_%H-%M-%S)
@@ -23,7 +24,7 @@ rofi_cmd() {
     -markup-rows \
     -p Screenshot \
     -mesg "Directory :: $savedir" \
-    -theme "$HOME"/.config/rofi/Screenshot.rasi
+    -theme "$HOME/.config/rofi/Screenshot.rasi"
 }
 
 run_rofi() {
