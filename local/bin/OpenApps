@@ -11,28 +11,40 @@ case "$1" in
   Executer
   ;;
 --terminal)
-  Term --terminal
+  kitty --config ~/.config/kitty/kitty-show.conf
   ;;
 --terminal-init)
-  Term --override-term kitty --init
+  tmux kill-server 2>/dev/null
+  KITTY_SOCKET="unix:$XDG_RUNTIME_DIR/init-term-kitty.sock"
+  # Launch Kitty + tmux InitTerminal in background
+  kitty --class=InitTerm \
+    --watcher tab_focus.py \
+    --listen-on "$KITTY_SOCKET" \
+    --config ~/.config/kitty/kitty-hidden.conf \
+    -e tmux new -s init &
+  kitty @ --to "$KITTY_SOCKET" "set-tab-title" "Tmux"
   ;;
 --floating)
-  Term --override-term alacritty --floating
+  alacritty --class FloaTerm,FloaTerm --title=FloaTerm
   ;;
 --fetch)
-  Term --override-term alacritty --fetch
+  alacritty --class FloaTerm,FetchTerm --title=FetchTerm \
+    -o font.size="10" -e zsh -c 'fastfetch; read -k'
   ;;
 --top)
-  Term --override-term alacritty --top
+  alacritty --class FloaTerm,TopTerm --title=TopTerm -e zsh -ic 'btop'
   ;;
 --k9s)
-  Term --override-term alacritty --k9s
+  alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
+    -e sh -ic "env KUBE_EDITOR=~/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
   ;;
 --lazydocker)
-  Term --override-term alacritty --lazydocker
+  alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
+    -e sh -ic "export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock && lazydocker"
   ;;
 --disk)
-  Term --override-term alacritty --disk
+  alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
+    -e zsh -ic "$HOME/.local/bin/disk; read -k"
   ;;
 --netmanager)
   NetManagerDM
@@ -68,16 +80,42 @@ case "$1" in
   WallSelect
   ;;
 --nvim)
-  Term --nvim
+  kitty -e nvim -c Nvdash
   ;;
 --yazi)
-  Term --override-term kitty --yazi
+  kitty --config ~/.config/kitty/kitty-hidden.conf -e \
+    sh -c 'exec zsh -i -c "export EDITOR=~/.local/bin/vim; exec yazi ~"'
   ;;
 --yazi-tmux)
-  Term --override-term kitty --yazi-tmux
+  kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
+    --config ~/.config/kitty/kitty-hidden.conf \
+    --override window_padding_width="4" \
+    -e tmux new -s yazi -c "$HOME" InitYazi
+  ;;
+--yazi-tmux-last)
+  kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
+    --config ~/.config/kitty/kitty-hidden.conf \
+    --override window_padding_width="4" \
+    -e tmux new -s yazi -c "$HOME" InitYazi --last
+  ;;
+--yazi-tmux-project)
+  kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
+    --config ~/.config/kitty/kitty-hidden.conf \
+    --override window_padding_width="4" \
+    -e tmux new -s yazi -c "$HOME" InitYazi --project "$2"
   ;;
 --music)
-  Term --override-term kitty --music
+  alacritty --class FloaTerm,CavaTerm --title=CavaTerm \
+    -o window.opacity="0.01" -e cava &
+  PINNED_PID=$!
+  kitty --name MusicTerm --title MusicTerm --class FloaTerm \
+    --override font_size=10 \
+    --config ~/.config/kitty/kitty-hidden.conf \
+    -e Music &
+  MUSIC_PID=$!
+  hyprctl dispatch focuswindow title:MusicTerm
+  wait $MUSIC_PID
+  kill $PINNED_PID 2>/dev/null
   ;;
   # Apps
 --firefox)
@@ -90,7 +128,7 @@ case "$1" in
   pavucontrol
   ;;
 --soundmixer)
-  Term --override-term alacritty --soundmixer
+  alacritty --class FloaTerm,SoundTerm --title=SoundTerm -e pulsemixer
   ;;
 *)
   echo "Invalid Option"

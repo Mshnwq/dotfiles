@@ -35,7 +35,7 @@ export YAZI_ID="$(<"$HOME/.config/dots/.yazi_id")"
 ya emit plugin projects quit
 tmux kill-session -t yazi
 # Resurrect
-Term --override-term kitty --yazi-tmux-last &
+OpenApps --yazi-tmux-last &
 disown
 
 # Wait for it to appear
