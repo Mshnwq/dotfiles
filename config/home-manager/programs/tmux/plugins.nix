@@ -1,6 +1,8 @@
 # programs/tmux/plugins.nix
 {
+  lib,
   pkgs,
+  config,
   ...
 }:
 let
@@ -30,9 +32,36 @@ in
     dracula = {
       plugin = tmux-dracula;
       defaultEnable = false;
-      extraConfig = ''
-        source-file ~/.config/tmux/pywal.conf
-      '';
+      extraConfig = lib.concatStringsSep "\n" [
+        ''
+          source-file ~/.config/tmux/pywal.conf
+          set -g @dracula-show-powerline true
+          set -g @dracula-border-contrast true
+          set -g @dracula-show-flags true
+          set -g @dracula-show-left-icon session
+          set -g @dracula-clients-minimum 1
+          set -g @dracula-transparent-powerline-bg true
+          set -g @dracula-invert-select-window-fg true
+        ''
+        (
+          if config.tmux.server.enable then
+            ''
+              set -g @dracula-show-left-sep \ue0b8
+              set -g @dracula-show-right-sep \ue0ba
+              set -g @dracula-inverse-divider \ue0be
+              set -g @dracula-plugins "network-public-ip"
+              set -g @dracula-network-public-ip-colors "mpc_bg mpc_fg"
+            ''
+          else
+            ''
+              set -g @dracula-show-left-sep \ue0bc
+              set -g @dracula-show-right-sep \ue0be
+              set -g @dracula-inverse-divider \ue0ba
+              set -g @dracula-plugins "kitty"
+              set -g @dracula-kitty-colors "mpc_bg mpc_fg"
+            ''
+        )
+      ];
     };
     floax = {
       plugin = tmux-floax;
@@ -44,9 +73,10 @@ in
         set -g @floax-width '50%'
         set -g @floax-height '50%'
         # set -g @floax-x 'R'
+        # lower left
         set -g @floax-x 'P'
         set -g @floax-y 'P'
-        # Options: black, red, green, yellow, blue, magenta, cyan, white
+        # Options: black, red
         set -g @floax-border-color 'blue'
         set -g @floax-text-color 'white'
         set -g @floax-change-path 'false'

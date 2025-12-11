@@ -96,6 +96,7 @@ in
       tmux
       {
         tmux.tmuxp.enable = true;
+        tmux.server.enable = false;
         tmux.systemShell.enable = true;
         tmux.pluginSettings = {
           dracula.enable = true;
