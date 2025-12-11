@@ -29,7 +29,7 @@ in
       hyprsunset
       hyprpicker
       libinput-gestures
-      # TODO: quickshell 
+      # TODO: quickshell
     ];
 
     wayland.windowManager.hyprland = {
@@ -39,26 +39,59 @@ in
       plugins = lib.mkIf config.hypr.hyprWorkspaceLayouts.enable [
         inputs.hyprWorkspaceLayouts.packages.${pkgs.system}.default
       ];
-      extraConfig = lib.concatStringsSep "\n" [
-        ''
-          exec-once = dbus-update-activation-environment --systemd --all
-          exec-once = /usr/bin/lxpolkit
-          source = ${hyprConfDir}/autostart.conf
-          source = ${hyprConfDir}/env.conf
-          source = ${hyprConfDir}/general.conf
-          source = ${hyprConfDir}/input.conf
-          source = ${hyprConfDir}/keybindings.conf
-          source = ${hyprConfDir}/layouts.conf
-          source = ${hyprConfDir}/monitors.conf
-          source = ${hyprConfDir}/rules.conf
-        ''
-        (
-          if config.hypr.hyprWorkspaceLayouts.enable then
-            "source = ${hyprConfDir}/workspaceLayouts.conf"
-          else
-            ""
-        )
-      ];
+      extraConfig =
+        let
+          layoutConfigContent =
+            builtins.readFile
+              config.sops.secrets."keyboard_layouts".path;
+          # Parse lines and extract layout codes (values after =)
+          parseLayouts =
+            content:
+            let
+              lines = lib.splitString "\n" content;
+              # Filter out empty lines and comments
+              validLines = builtins.filter (
+                line: line != "" && !(lib.hasPrefix "#" (lib.trim line))
+              ) lines;
+              # Extract the part after = and trim whitespace
+              extractCode =
+                line:
+                let
+                  parts = lib.splitString "=" line;
+                in
+                if builtins.length parts >= 2 then lib.trim (builtins.elemAt parts 1) else "";
+              codes = map extractCode validLines;
+              # Filter out empty codes
+              validCodes = builtins.filter (code: code != "") codes;
+            in
+            lib.concatStringsSep "," validCodes;
+
+          kbLayouts = parseLayouts layoutConfigContent;
+        in
+        lib.concatStringsSep "\n" [
+          ''
+            exec-once = dbus-update-activation-environment --systemd --all
+            exec-once = /usr/bin/lxpolkit
+            source = ${hyprConfDir}/autostart.conf
+            source = ${hyprConfDir}/env.conf
+            source = ${hyprConfDir}/general.conf
+            source = ${hyprConfDir}/input.conf
+            source = ${hyprConfDir}/keybindings.conf
+            source = ${hyprConfDir}/layouts.conf
+            source = ${hyprConfDir}/monitors.conf
+            source = ${hyprConfDir}/rules.conf
+            input {
+                kb_layout=${kbLayouts}
+            }
+          ''
+          # kb_layout=us,ru,ara
+          (
+            if config.hypr.hyprWorkspaceLayouts.enable then
+              "source = ${hyprConfDir}/workspaceLayouts.conf"
+            else
+              ""
+          )
+        ];
     };
 
     home.file."${hyprConfDir}/workspaceLayouts.conf" =
@@ -76,5 +109,12 @@ in
             }
           '';
         };
+
+    sops.secrets = {
+      keyboard_layouts = {
+        mode = "0400";
+        path = "${config.xdg.configHome}/keyboard_layouts.conf";
+      };
+    };
   };
 }

@@ -6,53 +6,63 @@ set -euo pipefail
 keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
 
 # Exit if no main keyboard found
-if [[ -z $keyboard ]]; then
+[[ -n $keyboard ]] || {
   echo "Error: No main keyboard found" >&2
   exit 1
-fi
+}
 
 # Extract details using jq once
-read -r keyboard_name active_keymap caps_state num_state layouts_csv < <(
-  echo "$keyboard" | jq -r '[.name, .active_keymap, .capsLock, .numLock, .layout] | @tsv'
+read -r keyboard_name active_keymap caps_state num_state < <(
+  echo "$keyboard" | jq -r '[.name, .active_keymap, .capsLock, .numLock] | @tsv'
 )
 
-# Convert CSV layouts to array
+read -r layouts_csv < <(echo "$keyboard" | jq -r '[.layout] | @tsv')
 IFS=',' read -ra layout_list <<<"$layouts_csv"
 
-# Layout labels and mapping
-declare -A LAYOUTS=(
-  ["US English"]="us"
-  ["AR العربية"]="ara"
-  ["RU Россия"]="ru"
-)
+LAYOUT_CONFIG="$HOME/.config/keyboard_layouts.conf"
+[[ -f "$LAYOUT_CONFIG" ]] || {
+  echo "Creating example config file..."
+  echo "US English=us" >"$LAYOUT_CONFIG"
+}
+
+# Load layout mappings from config file
+declare -A LAYOUTS
+while IFS='=' read -r label code; do
+  [[ -z $label || $label =~ ^[[:space:]]*# ]] && continue
+  label=$(echo "$label" | xargs)
+  code=$(echo "$code" | xargs)
+  [[ -n $label && -n $code ]] && LAYOUTS["$label"]="$code"
+done <"$LAYOUT_CONFIG"
+
+# Check if any layouts were loaded
+((${#LAYOUTS[@]} != 0)) || {
+  echo "Error: No layouts defined in $LAYOUT_CONFIG"
+  exit 1
+}
 
 # Show layout chooser with rofi
 show_rofi_menu() {
   local message="Current Layout: $active_keymap"$'\n\n'
   message+="Caps Lock: $caps_state"$'\n'
   message+="Num Lock: $num_state"
-
   printf '%s\n' "${!LAYOUTS[@]}" | rofi \
     -dmenu \
-    -p "Keyboard Layout" \
-    -mesg "$message" \
     -markup-rows \
+    -mesg "$message" \
+    -p "Keyboard Layout" \
     -theme "${HOME}/.config/rofi/SelectorKeyboard.rasi"
 }
 
 # Layout switcher
 selected=$(show_rofi_menu)
-
-if [[ -n $selected && -n ${LAYOUTS[$selected]} ]]; then
-  target_layout="${LAYOUTS[$selected]}"
-
-  for i in "${!layout_list[@]}"; do
-    if [[ "${layout_list[$i]}" == "$target_layout" ]]; then
-      hyprctl switchxkblayout "$keyboard_name" "$i"
-      exit 0
-    fi
-  done
-
-  echo "Warning: Layout '$target_layout' not found in available layouts" >&2
+[[ -n $selected && -n ${LAYOUTS[$selected]} ]] || {
+  echo "Warning: Layout '$selected' not found in available layouts"
   exit 1
-fi
+}
+
+for ((i = 0; i < ${#LAYOUTS[@]}; i++)); do
+  [[ "${layout_list[$i]}" == "${LAYOUTS[$selected]}" ]] && {
+    hyprctl switchxkblayout "$keyboard_name" "$i"
+    exit 0
+  }
+done
