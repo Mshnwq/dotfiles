@@ -8,7 +8,7 @@
 }:
 let
   cfg = config.tmux;
-  pluginDefs = import ./plugins.nix { inherit pkgs; };
+  pluginDefs = import ./plugins.nix { inherit lib pkgs config; };
   availablePlugins = pluginDefs.plugins;
   enabledPlugins = lib.filter (p: p != null) (
     lib.mapAttrsToList (
@@ -41,6 +41,11 @@ in
     description = "Settings for individual tmux plugins";
   };
 
+  options.tmux.server.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
+
   options.tmux.tmuxp.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -57,10 +62,10 @@ in
     default = "Space";
   };
 
-  options.tmux.position = lib.mkOption {
-    type = lib.types.nonEmptyStr;
-    default = "top";
-  };
+  # options.tmux.position = lib.mkOption {
+  #   type = lib.types.nonEmptyStr;
+  #   default = "top";
+  # };
 
   config = {
     # Set default enable values for all available plugins
@@ -82,7 +87,7 @@ in
       mouse = true;
       shortcut = config.tmux.shortcut;
       tmuxp.enable = config.tmux.tmuxp.enable;
-      extraConfig = (import ./config.nix { inherit config lib; }).config;
+      extraConfig = (import ./config.nix { inherit lib config; }).config;
       plugins = enabledPlugins;
     }
     // lib.optionalAttrs config.tmux.systemShell.enable {
