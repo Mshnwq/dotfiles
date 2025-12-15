@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Get main keyboard info in one pass
+# Get main keyboard info
 keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
 
 # Exit if no main keyboard found
 [[ -n $keyboard ]] || {
-  echo "Error: No main keyboard found" >&2
+  echo "Error: No main keyboard found"
   exit 1
 }
 
-# Extract details using jq once
+# Extract details
 read -r keyboard_name active_keymap caps_state num_state < <(
   echo "$keyboard" | jq -r '[.name, .active_keymap, .capsLock, .numLock] | @tsv'
 )
@@ -59,6 +59,8 @@ selected=$(show_rofi_menu)
   exit 1
 }
 
+# echo "${LAYOUTS[@]}"
+# echo "${layout_list[@]}"
 for ((i = 0; i < ${#LAYOUTS[@]}; i++)); do
   [[ "${layout_list[$i]}" == "${LAYOUTS[$selected]}" ]] && {
     hyprctl switchxkblayout "$keyboard_name" "$i"

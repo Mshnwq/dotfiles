@@ -84,7 +84,6 @@ in
                 kb_layout=${kbLayouts}
             }
           ''
-          # kb_layout=us,ru,ara
           (
             if config.hypr.hyprWorkspaceLayouts.enable then
               "source = ${hyprConfDir}/workspaceLayouts.conf"

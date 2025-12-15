@@ -21,7 +21,8 @@ while (($# > 0)); do
   esac
 done
 
-mkdir -p "${LOG_FILE%/*}"
+# validate
+[[ -d "${LOG_FILE%/*}" ]] || mkdir -p "${LOG_FILE%/*}"
 echo "=== Wal Color Apply Start: $(date '+%F %T') ===" >"$LOG_FILE"
 
 log() {

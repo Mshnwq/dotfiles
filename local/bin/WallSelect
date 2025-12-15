@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # CONSTANTS
-CACHE_BASE="${HOME}/.cache/wallpapers"
-CONFIG_DIR="${HOME}/.config/dots"
-RICES_DIR="${CONFIG_DIR}/rices"
+CACHE_BASE="$HOME/.cache/wallpapers"
+CONFIG_DIR="$HOME/.config/dots"
+RICES_DIR="$CONFIG_DIR/rices"
 THUMBNAIL_SIZE="500x500"
 REQUIRED_APPS=(
   xdpyinfo
