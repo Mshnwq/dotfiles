@@ -18,33 +18,32 @@ read -r keyboard_name active_keymap caps_state num_state < <(
 read -r layouts_csv < <(echo "$keyboard" | jq -r '[.layout] | @tsv')
 IFS=',' read -ra layout_list <<<"$layouts_csv"
 
+# Load layout mappings from config file
 LAYOUT_CONFIG="$HOME/.config/keyboard_layouts.conf"
-[[ -f "$LAYOUT_CONFIG" ]] || {
+[[ -f $LAYOUT_CONFIG ]] || {
   echo "Creating example config file..."
   echo "US English=us" >"$LAYOUT_CONFIG"
 }
 
-# Load layout mappings from config file
-declare -A LAYOUTS
+declare -A layout
 while IFS='=' read -r label code; do
   [[ -z $label || $label =~ ^[[:space:]]*# ]] && continue
   label=$(echo "$label" | xargs)
   code=$(echo "$code" | xargs)
-  [[ -n $label && -n $code ]] && LAYOUTS["$label"]="$code"
+  [[ -n $label && -n $code ]] && layout["$label"]="$code"
 done <"$LAYOUT_CONFIG"
 
 # Check if any layouts were loaded
-((${#LAYOUTS[@]} == 0)) && {
+((${#layout[@]} == 0)) && {
   echo "Error: No layouts defined in $LAYOUT_CONFIG"
   exit 1
 }
 
-# Show layout chooser with rofi
-show_rofi_menu() {
+rofi_menu() {
   local message="Current Layout: $active_keymap"$'\n\n'
   message+="Caps Lock: $caps_state"$'\n'
   message+="Num Lock: $num_state"
-  printf '%s\n' "${!LAYOUTS[@]}" | rofi \
+  printf '%s\n' "${!layout[@]}" | rofi \
     -dmenu \
     -markup-rows \
     -mesg "$message" \
@@ -53,16 +52,16 @@ show_rofi_menu() {
 }
 
 # Layout switcher
-selected=$(show_rofi_menu)
-[[ -n $selected && -n ${LAYOUTS[$selected]} ]] || {
+selected=$(rofi_menu)
+[[ -n $selected && -n ${layout[$selected]} ]] || {
   echo "Warning: Layout '$selected' not found in available layouts"
   exit 1
 }
 
-# echo "${LAYOUTS[@]}"
+# echo "${layout[@]}"
 # echo "${layout_list[@]}"
-for ((i = 0; i < ${#LAYOUTS[@]}; i++)); do
-  [[ "${layout_list[$i]}" == "${LAYOUTS[$selected]}" ]] && {
+for ((i = 0; i < ${#layout[@]}; i++)); do
+  [[ "${layout_list[$i]}" == "${layout[$selected]}" ]] && {
     hyprctl switchxkblayout "$keyboard_name" "$i"
     exit 0
   }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-options=(
+OPTIONS=(
   "󰍁"
   ""
   "󰗽"
@@ -9,7 +9,7 @@ options=(
   "󰐥"
 )
 
-rofi_cmd() {
+rofi_menu() {
   rofi -dmenu \
     -no-click-to-exit \
     -p "Goodbye ${USER}" \
@@ -17,7 +17,7 @@ rofi_cmd() {
     -mesg "Uptime: $(uptime -p | sed -e 's/up //g')"
 }
 
-chosen=$(printf "%s\n" "${options[@]}" | rofi_cmd)
+chosen=$(printf "%s\n" "${OPTIONS[@]}" | rofi_menu)
 
 case $chosen in
 "󰐥")

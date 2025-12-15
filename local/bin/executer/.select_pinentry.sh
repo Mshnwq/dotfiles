@@ -1,42 +1,42 @@
 #!/usr/bin/env bash
-
-notify-send "Pass Pin Entry" "Selecting Pass Pin Entry Program"
+set -euo pipefail
 
 ROFI_THEME="$HOME/.config/rofi/SelectorPin.rasi"
-BIN_DIRS=("$HOME/.local/bin" "$XDG_STATE_HOME/nix/profile/bin" "$HOME/.nix-profile/bin" "/usr/bin")
-export PATH="$HOME/.local/bin:$PATH"
+BIN_DIRS=(
+  "$XDG_STATE_HOME/nix/profile/bin"
+  "$HOME/.nix-profile/bin"
+  "$HOME/.local/bin"
+  "/usr/bin"
+)
 
+notify-send "Pass Pin Entry" "Selecting Pass Pin Entry Program"
+shopt -s nullglob
 mapfile -t options < <(
   for dir in "${BIN_DIRS[@]}"; do
     [[ -d "$dir" ]] || continue
     for file in "$dir"/pinentry-*; do
-      [[ -e "$file" ]] || continue
-      basename "$file" | sed 's/^pinentry-//'
+      echo "${file#*/pinentry-}"
     done
   done | sort -u
 )
-
-# Check if any pinentry options are found
-if ((${#options[@]} == 0)); then
+((${#options[@]} == 0)) && {
   notify-send "Pass Pin Entry" "No pinentry programs found."
   exit 1
-fi
+}
 
-# Show Rofi menu and get the user's choice
-CHOICE=$(printf '%s\n' "${options[@]}" | rofi -theme "$ROFI_THEME" -mesg "[ Select Pass Pin Entry Program ]" -dmenu)
+rofi_menu() {
+  printf '%s\n' "${options[@]}" | rofi \
+    -mesg "[ Select Pass Pin Entry Program ]" \
+    -theme "$ROFI_THEME" -dmenu
+}
 
-# If user pressed Escape or didn't select anything
-if [[ -z $CHOICE ]]; then
+choice=$(rofi_menu)
+[[ -z $choice ]] && {
   notify-send "Pass Pin Entry" "No pinentry program selected."
   exit 0
-fi
+}
 
 # Update gpg-agent.conf
-GPG_CONF="$GNUPGHOME/gpg-agent.conf"
-echo "pinentry-program $(command -v "pinentry-$CHOICE")" >"$GPG_CONF"
-
-# Reload gpg-agent
+echo "pinentry-program $(command -v "pinentry-$choice")" >"$GNUPGHOME/gpg-agent.conf"
 gpg-connect-agent reloadagent /bye
-
-# Confirm selection
-notify-send "Pass Pin Entry" "Set pinentry program to: pinentry-$CHOICE"
+notify-send "Pass Pin Entry" "Set pinentry program to: pinentry-$choice"

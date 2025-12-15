@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: improve
+
 yapt() {
   ( (
     sleep 0.5
