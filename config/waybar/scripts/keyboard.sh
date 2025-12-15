@@ -1,26 +1,28 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Get JSON block for main keyboard
-keyboard=$(hyprctl devices -j | jq '.keyboards[] | select(.main == true)')
+keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
 
-# Extract fields
-layout=$(echo "$keyboard" | jq -r '.active_keymap')
-caps=$(echo "$keyboard" | jq -r '.capsLock')
-num=$(echo "$keyboard" | jq -r '.numLock')
+# Exit if no main keyboard found
+[[ -n $keyboard ]] || {
+  echo "Error: No main keyboard found"
+  exit 1
+}
 
-# Normalize layout to 2-letter code
-case "$layout" in
-  *"English (US)"*) short="EN" ;;
-  *"Arabic"*)       short="AR" ;;
-  *"Russian"*)      short="RU" ;;
-  *"Romanian"*)     short="RO" ;;
-  *)                short="??" ;;
-esac
+# Extract details
+IFS=$'\t' read -r layouts_csv layout index caps num < <(
+  jq -r '[.layout, .active_keymap, .active_layout_index, .capsLock, .numLock] | @tsv' <<<"$keyboard"
+)
+IFS=',' read -ra layout_list <<<"$layouts_csv"
 
-# Pretty labels for states
-caps_status=$( [[ "$caps" == "true" ]] && echo "On" || echo "Off" )
-num_status=$( [[ "$num" == "true" ]] && echo "On" || echo "Off" )
+# capitlize
+short="${layout_list[$index]:0:2}" # limit 2
+declare -A locks=(
+  [true]="On"
+  [false]="Off"
+)
 
 # Output JSON for Waybar
-echo "{\"text\": \"$short\", \"tooltip\": \"$layout\nCaps Lock: $caps_status\nNum Lock: $num_status\"}"
-#echo "{\"text\": \"󰌌 $short\", \"tooltip\": \"$layout\nCaps Lock: $caps_status\nNum Lock: $num_status\"}"
+printf '{ "text": "%s", "tooltip": "%s" }\n' \
+  "${short^^}" "${layout}\nCaps Lock: ${locks[$caps]}\nNum Lock: ${locks[$num]}"

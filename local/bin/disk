@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-dfrs -c --local |
-  sed -E 's#(/var)(/[^ ]*)#\2#g' |
-  tac | awk '!seen[$1]++' | tac |
-  grep -vE '^/dev/sdb[23]\b' |
-  sed -E 's/home//'
+dfrs -c --local | grep -v '/boot' |
+  sed -E 's|/var/home|/|; s|/var||' |
+  tac | awk '!seen[$1]++' | tac

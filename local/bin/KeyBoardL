@@ -11,11 +11,9 @@ keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
 }
 
 # Extract details
-read -r keyboard_name active_keymap caps_state num_state < <(
-  echo "$keyboard" | jq -r '[.name, .active_keymap, .capsLock, .numLock] | @tsv'
+IFS=$'\t' read -r layouts_csv keyboard_name active_keymap caps_state num_state < <(
+  jq -r '[.layout, .name, .active_keymap, .capsLock, .numLock] | @tsv' <<<"$keyboard"
 )
-
-read -r layouts_csv < <(echo "$keyboard" | jq -r '[.layout] | @tsv')
 IFS=',' read -ra layout_list <<<"$layouts_csv"
 
 # Load layout mappings from config file
@@ -58,8 +56,6 @@ selected=$(rofi_menu)
   exit 1
 }
 
-# echo "${layout[@]}"
-# echo "${layout_list[@]}"
 for ((i = 0; i < ${#layout[@]}; i++)); do
   [[ "${layout_list[$i]}" == "${layout[$selected]}" ]] && {
     hyprctl switchxkblayout "$keyboard_name" "$i"
