@@ -175,7 +175,7 @@ let
       bindkey '^[[A' history-substring-search-up
       bindkey '^[[B' history-substring-search-down
     ''}
-    export PATH="$HOME/.local/bin:$PATH"
+    export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v linuxbrew | paste -sd:)
     source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
     source $ZDOTDIR/.p10k.zsh
     source ${config.xdg.cacheHome}/wal/custom-fzf.sh

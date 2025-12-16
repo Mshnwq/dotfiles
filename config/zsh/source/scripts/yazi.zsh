@@ -1,4 +1,4 @@
-function y() {
+y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -7,7 +7,7 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-function yap() {
+yap() {
     local yaziProject="$1"
     shift
     if [ -z "$yaziProject" ]; then
@@ -23,7 +23,7 @@ function yap() {
     yazi --client-id $yaziId "$@" || return $?
 }
 
-function yapl() {
+yapl() {
     local yaziId=$RANDOM
     ( (sleep 0.1; YAZI_ID=$yaziId ya emit plugin projects "load_last") &)
     # Run Yazi with the generated client ID

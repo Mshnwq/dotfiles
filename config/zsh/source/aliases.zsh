@@ -13,16 +13,14 @@ alias n="nvim"
 alias v="vim"
 alias gdl="gallery-dl"
 alias ydl="yt-dlp"
-# ALIAS COMMANDS
 alias lsblk='lsblk | bat -l conf --theme ansi -p'
 alias grep='grep --color'
-#alias tmux='tmux -u'
 alias kssh='kitten ssh'
 
 # -------------------------------------------------------------------
 # List
 # -------------------------------------------------------------------
-#alias l='/bin/ls -CF'
+alias l='exa -al --icons'
 alias ll='/bin/ls -alF'
 alias la='exa --all --icons'
 alias ls='exa --icons'
@@ -30,8 +28,6 @@ alias lg='exa --icons --git'
 alias lgt='exa --icons --git --tree -L=3'
 alias lt='exa --icons --tree -L=3'
 alias lta='exa --all --icons --tree -L=3'
-#alias llc='exa -al --icons'
-alias l='exa -al --icons'
 
 # ----
 # Cat
