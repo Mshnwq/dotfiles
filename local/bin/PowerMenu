@@ -22,11 +22,11 @@ case $chosen in
   systemctl reboot
   ;;
 "󰍁")
-  hyprlock
+  # TODO: broken nix
+  # hyprlock
   ;;
 "")
-  MediaControl --stop
-  systemctl suspend
+  MediaControl --stop && systemctl suspend
   ;;
 "󰗽")
   hyprctl dispatch exit

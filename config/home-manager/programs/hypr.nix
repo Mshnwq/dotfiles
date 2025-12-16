@@ -26,6 +26,7 @@ in
       waybar
       niflveil # mine
       hypridle
+      # hyprlock TODO: broken
       hyprsunset
       hyprpicker
       libinput-gestures
