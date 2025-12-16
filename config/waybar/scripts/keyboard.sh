@@ -16,12 +16,12 @@ IFS=$'\t' read -r layouts_csv layout index caps num < <(
 )
 IFS=',' read -ra layout_list <<<"$layouts_csv"
 
-# capitlize
-short="${layout_list[$index]:0:2}" # limit 2
 declare -A locks=(
   [true]="On"
   [false]="Off"
 )
+short="${layout_list[$index]:0:2}";  # limit 2
+short="${short/us/en}" # en -> us
 
 # Output JSON for Waybar
 printf '{ "text": "%s", "tooltip": "%s" }\n' \

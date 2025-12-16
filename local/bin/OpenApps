@@ -32,7 +32,7 @@ case "$1" in
     -o font.size="10" -e zsh -c 'fastfetch; read -k'
   ;;
 --top)
-  alacritty --class FloaTerm,TopTerm --title=TopTerm -e zsh -ic 'btop'
+  alacritty --class FloaTerm,TopTerm --title=TopTerm -e zsh -ic 'btop --preset 1'
   ;;
 --k9s)
   alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \

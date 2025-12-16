@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #INPUT_REQUIRED
 
-set -euo pipefail
+set -eo pipefail
 
 # Default configuration
 default_downloads_path="$HOME/Videos"

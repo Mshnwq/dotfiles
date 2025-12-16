@@ -24,6 +24,14 @@ args@{
       lm_sensors
       zathura
     ];
+    programs.btop = {
+      enable = true;
+      settings = {
+        color_theme = "pywal";
+        theme_background = false;
+        presets = "proc:1:default";
+      };
+    };
   };
 
   devenv = {
