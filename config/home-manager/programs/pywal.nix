@@ -26,7 +26,7 @@ let
     "dunst/dunstrc" = "${walCache}/custom-dunstrc";
     "cava/config" = "${walCache}/custom-cava";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
-    "rmpc/themes/custom-rmpc.ron" = "${walCache}/custom-rmpc.ron";
+    "rmpc/themes/pywal.ron" = "${walCache}/custom-rmpc.ron";
     "btop/themes/pywal.theme" = "${walCache}/custom-btop.theme";
     "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
   };
