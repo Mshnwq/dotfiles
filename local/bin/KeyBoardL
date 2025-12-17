@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# set -euo pipefail
 
 # Get main keyboard info
 keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
@@ -11,8 +11,8 @@ keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
 }
 
 # Extract details
-IFS=$'\t' read -r layouts_csv keyboard_name active_keymap caps_state num_state < <(
-  jq -r '[.layout, .name, .active_keymap, .capsLock, .numLock] | @tsv' <<<"$keyboard"
+IFS=$'\t' read -r layouts_csv keyboard_name active_keymap active_index caps_state num_state < <(
+  jq -r '[.layout, .name, .active_keymap, .active_layout_index, .capsLock, .numLock] | @tsv' <<<"$keyboard"
 )
 IFS=',' read -ra layout_list <<<"$layouts_csv"
 
@@ -37,6 +37,12 @@ done <"$LAYOUT_CONFIG"
   exit 1
 }
 
+selected_index=0
+for lang in "${layout[@]}"; do
+  [[ "${layout_list[$active_index]}" == "$lang" ]] && break
+  ((selected_index++))
+done
+
 rofi_menu() {
   local message="Current Layout: $active_keymap"$'\n\n'
   message+="Caps Lock: $caps_state"$'\n'
@@ -46,7 +52,8 @@ rofi_menu() {
     -markup-rows \
     -mesg "$message" \
     -p "Keyboard Layout" \
-    -theme "${HOME}/.config/rofi/SelectorKeyboard.rasi"
+    -selected-row "$selected_index" \
+    -theme "$HOME/.config/rofi/SelectorKeyboard.rasi"
 }
 
 # Layout switcher
