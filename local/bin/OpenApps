@@ -1,137 +1,104 @@
 #!/usr/bin/env bash
-set -euo pipefail
+#set -euo pipefail
 
 export PATH="$HOME/.local/bin/executer:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
+_alacritty() {
+  local term && term="$1" && shift
+  alacritty --class FloaTerm,"$term" --title="$term" "$@"
+}
+
+_kitty() {
+  local kitty_args && kitty_args=()
+  while (($# > 0)); do
+    case $1 in
+    --style)
+      [[ -n $2 ]] && {
+        kitty_args+=(-c "$HOME/.config/kitty/kitty-$2.conf")
+        shift
+      }
+      shift
+      ;;
+    --term)
+      [[ -n $2 ]] && {
+        kitty_args+=(--class FloaTerm --name "$2" --title "$2")
+        shift
+      }
+      shift
+      ;;
+    *)
+      break
+      ;;
+    esac
+  done
+  kitty_args+=("$@") && kitty "${kitty_args[@]}"
+}
+
 case $1 in
---menu)
-  rofi -show drun -theme "$HOME/.config/rofi/Launcher.rasi"
-  ;;
---execute)
-  Executer
-  ;;
---terminal)
-  kitty --config ~/.config/kitty/kitty-show.conf
-  ;;
+--menu) rofi -show drun -theme "$HOME/.config/rofi/Launcher.rasi" ;;
+--execute) Executer ;;
+--terminal) _kitty --style show ;;
+--terminal-float) _alacritty FloaTerm ;;
 --terminal-init)
   tmux kill-server 2>/dev/null
   KITTY_SOCKET="unix:$XDG_RUNTIME_DIR/init-term-kitty.sock"
-  # Launch Kitty + tmux InitTerminal in background
-  kitty --class=InitTerm \
-    --watcher tab_focus.py \
-    --listen-on "$KITTY_SOCKET" \
-    --config ~/.config/kitty/kitty-hidden.conf \
-    -e tmux new -s init &
+  _kitty --style hide --listen-on "$KITTY_SOCKET" \
+    --class=InitTerm --watcher tab_focus.py -e tmux new -s init &
   kitty @ --to "$KITTY_SOCKET" "set-tab-title" "Tmux"
   ;;
---floating)
-  alacritty --class FloaTerm,FloaTerm --title=FloaTerm
-  ;;
---fetch)
-  alacritty --class FloaTerm,FetchTerm --title=FetchTerm \
-    -o font.size="10" -e zsh -c 'fastfetch; read -k'
-  ;;
---top)
-  alacritty --class FloaTerm,TopTerm --title=TopTerm -e zsh -ic 'btop --preset 1'
-  ;;
+--top) _alacritty TopTerm -e btop -p 1 ;;
+--disk) _alacritty DiskTerm -e disk --hold ;;
+--fetch) _alacritty FetchTerm -o font.size=10 -e zsh -c 'fastfetch; read' ;;
 --k9s)
-  alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
-    -e sh -ic "env KUBE_EDITOR=~/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
+  _alacritty K9Term -o font.size="10" -e sh -c \
+    "KUBE_EDITOR=~/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
   ;;
 --lazydocker)
-  alacritty --class FloaTerm,K9Term --title=K9Term -o font.size="10" \
-    -e sh -ic "export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock && lazydocker"
+  _alacritty K9Term -o font.size="10" -e sh -c \
+    "DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock lazydocker"
   ;;
---disk)
-  alacritty --class FloaTerm,DiskTerm --title=DiskTerm \
-    -e zsh -ic "$HOME/.local/bin/disk; read -k"
-  ;;
---netmanager)
-  NetManagerDM
-  ;;
---bluetooth)
-  RofiBluetooth
-  ;;
---buku)
-  RofiBuku
-  ;;
---clipboard)
-  cliphist list | rofi -theme "$HOME/.config/rofi/Clipboard.rasi" -dmenu | cliphist decode | wl-copy
-  ;;
---screenshot-menu)
-  ScreenShoTer
-  ;;
---screenshot-now)
-  ScreenShoTer --override now
-  ;;
---screenshot-sel)
-  ScreenShoTer --override sel
-  ;;
---powermenu)
-  PowerMenu
-  ;;
---android)
-  AndroidMount
-  ;;
---keyboard)
-  KeyBoardL
-  ;;
---wall)
-  WallSelect
-  ;;
---nvim)
-  kitty -e nvim -c Nvdash
-  ;;
+--netmanager) NetManagerDM ;;
+--bluetooth) RofiBluetooth ;;
+--buku) RofiBuku ;;
+--clipboard) cliphist list | rofi -theme "$HOME/.config/rofi/Clipboard.rasi" -dmenu | cliphist decode | wl-copy ;;
+--screenshot-menu) ScreenShoTer ;;
+--screenshot-now) ScreenShoTer --override now ;;
+--screenshot-sel) ScreenShoTer --override sel ;;
+--powermenu) PowerMenu ;;
+--android) AndroidMount ;;
+--keyboard) KeyBoardL ;;
+--wall) WallSelect ;;
+--nvim) _kitty -e nvim -c Nvdash ;;
 --yazi)
-  kitty --config ~/.config/kitty/kitty-hidden.conf -e \
-    sh -c 'exec zsh -i -c "export EDITOR=~/.local/bin/vim; exec yazi ~"'
+  _kitty --style hide -e sh -c \
+    'exec zsh -c "EDITOR=~/.local/bin/vim yazi ~"'
   ;;
 --yazi-tmux)
-  kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
-    --config ~/.config/kitty/kitty-hidden.conf \
-    --override window_padding_width="4" \
-    -e tmux new -s yazi -c "$HOME" InitYazi
+  _kitty --term FileTerm --style hide -o window_padding_width="4" -e \
+    tmux new -s yazi -c "$HOME" InitYazi
   ;;
 --yazi-tmux-last)
-  kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
-    --config ~/.config/kitty/kitty-hidden.conf \
-    --override window_padding_width="4" \
-    -e tmux new -s yazi InitYazi --last
+  _kitty --term FileTerm --style hide -o window_padding_width="4" -e \
+    tmux new -s yazi InitYazi --last
   ;;
 --yazi-tmux-project)
-  kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
-    --config ~/.config/kitty/kitty-hidden.conf \
-    --override window_padding_width="4" \
-    -e tmux new -s yazi InitYazi --project coom
+  _kitty --term FileTerm --style hide -o window_padding_width="4" -e \
+    tmux new -s yazi InitYazi --project coom
   ;;
 --music)
-  alacritty --class FloaTerm,CavaTerm --title=CavaTerm \
-    -o window.opacity="0.01" -e cava &
+  _alacritty CavaTerm -o window.opacity="0.01" -e cava &
   CAVA_PID=$!
-  kitty --name MusicTerm --title MusicTerm --class FloaTerm \
-    --override font_size=10 \
-    --config ~/.config/kitty/kitty-hidden.conf \
-    -e Music &
+  _kitty --term MusicTerm --style hide -o font_size=10 -e Music &
   MUSIC_PID=$!
   hyprctl dispatch focuswindow title:MusicTerm
   wait $MUSIC_PID
   kill $CAVA_PID
   ;;
   # Apps
---firefox)
-  Firefox -P mshnwq
-  ;;
---files)
-  dolphin
-  ;;
---soundcontrol)
-  pavucontrol
-  ;;
---soundmixer)
-  alacritty --class FloaTerm,SoundTerm --title=SoundTerm -e pulsemixer
-  ;;
-*)
-  echo "Invalid Option $1"
-  ;;
+--firefox) Firefox -P mshnwq ;;
+--files) dolphin ;;
+--soundcontrol) pavucontrol ;;
+--soundmixer) _alacritty SoundTerm -e pulsemixer ;;
+*) echo "Invalid Option $1" ;;
 esac

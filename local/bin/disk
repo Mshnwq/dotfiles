@@ -4,3 +4,5 @@ set -eo pipefail
 dfrs -c --local | grep -v '/boot' |
   sed -E 's|/var/home|/|; s|/var||' |
   tac | awk '!seen[$1]++' | tac
+
+[[ $1 == "--hold" ]] && read -r
