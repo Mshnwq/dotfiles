@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-DOTDIR=$(<"$HOME/.config/dotdir")
+DOTDIR="$(<"$HOME/.config/dotdir")"
 DOTDIR="${DOTDIR/#\~/$HOME}" # glob to work
 
 for dir in "$DOTDIR"/config/*; do
   name="${dir##*/}"
   mkdir -p "$HOME/.config/$name"
-  if [ "$name" = "sops" ]; then
+  if [[ $name = "sops" ]]; then
     mkdir -p "$HOME/.config/$name"
     cp -r "$dir/age" "$HOME/.config/$name"
     continue
   fi
-  if [ "$name" = "dots" ]; then
+  if [[ $name = "dots" ]]; then
     mkdir -p "$HOME/.config/$name/rices"
     cp -r "$dir/rices/default" "$HOME/.config/$name/rices"
     cd "$dir" && stow --target="$HOME/.config/$name" .
