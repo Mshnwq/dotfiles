@@ -5,7 +5,7 @@ TMUXP_DIR="$HOME/.config/tmux/tmuxp"
 
 TMPFILE="$tmpfile" \
   kitty --name=FloatTerm --title=FloatTerm --class=FloaTerm \
-  --config ~/.config/kitty/kitty-hidden.conf -d "$TMUXP_DIR" \
+  --config ~/.config/kitty/kitty-hide.conf -d "$TMUXP_DIR" \
   -e zsh -c '
     source "${HOME}/.cache/wal/custom-fzf.sh"
     ls *.yaml | sed 's/\.yaml$//' | fzf \
@@ -14,6 +14,6 @@ TMPFILE="$tmpfile" \
   '
 chosen=$(<"$tmpfile")
 rm -f "$tmpfile"
-[ -z "$chosen" ]] && exit 0
+[[ -z $chosen ]] && exit 0
 tmuxp load "$TMUXP_DIR/$chosen.yaml" &
 notify-send -u low "Tmuxp loaded" "$chosen"
