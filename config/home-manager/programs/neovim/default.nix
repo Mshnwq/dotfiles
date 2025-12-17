@@ -31,7 +31,7 @@ in
         pyright
         ruff
         isort
-        # DevOps / CI/CD
+        # DevOps && CI/CD
         tflint
         terraform-ls
         prettierd
