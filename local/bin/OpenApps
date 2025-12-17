@@ -97,13 +97,13 @@ case $1 in
   kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
     --config ~/.config/kitty/kitty-hidden.conf \
     --override window_padding_width="4" \
-    -e tmux new -s yazi -c "$HOME" InitYazi --last
+    -e tmux new -s yazi InitYazi --last
   ;;
 --yazi-tmux-project)
   kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
     --config ~/.config/kitty/kitty-hidden.conf \
     --override window_padding_width="4" \
-    -e tmux new -s yazi -c "$HOME" InitYazi --project "$2"
+    -e tmux new -s yazi InitYazi --project coom
   ;;
 --music)
   alacritty --class FloaTerm,CavaTerm --title=CavaTerm \
