@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -eu
-
-kitty --name=FetchTerm --title=FetchTerm --class=FloaTerm \
-  --config ~/.config/kitty/kitty-hidden.conf -d "$(pwd)" -e "serie"

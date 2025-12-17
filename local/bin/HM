@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -eu
-
-DOTDIR=$(<"$HOME/.config/dotdir")
-kitty --name=FileTerm --title=FileTerm --class=FloaTerm \
-  --override font_size=8 --config ~/.config/kitty/kitty-hidden.conf \
-  -e zsh -c "$DOTDIR/setup/hm.sh $*; read -k"
