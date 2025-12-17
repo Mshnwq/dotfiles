@@ -5,7 +5,14 @@
 alias chmox='chmod +x'
 alias dev='devenv shell $SHELL'
 alias ...='cd ../..'
-alias OA='OpenApps'
+
+_OpenApps() {
+  local -a options
+  options=("${(@f)$(OpenApps --completion-list 2>/dev/null | cut -d: -f1)}")
+  compadd -a options
+}
+compdef _OpenApps OpenApps
+alias oa='OpenApps'
 
 # Program renames
 alias py='python'

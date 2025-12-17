@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-#set -euo pipefail
+set -euo pipefail
 
-export PATH="$HOME/.local/bin/executer:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
+CLIP_THEME="$HOME/.config/rofi/Clipboard.rasi"
+export PATH="$HOME/.local/bin/executer:$HOME/.local/bin:$PATH"
 
+# useful wrappers
 _alacritty() {
   local term && term="$1" && shift
   alacritty --class FloaTerm,"$term" --title="$term" "$@"
@@ -35,24 +36,25 @@ _kitty() {
   kitty_args+=("$@") && kitty "${kitty_args[@]}"
 }
 
-case $1 in
+case ${1:-} in
 --menu) rofi -show drun -theme "$HOME/.config/rofi/Launcher.rasi" ;;
 --execute) Executer ;;
 --terminal) _kitty --style show ;;
 --terminal-float) _alacritty FloaTerm ;;
 --terminal-init)
+  set +e
   tmux kill-server 2>/dev/null
-  KITTY_SOCKET="unix:$XDG_RUNTIME_DIR/init-term-kitty.sock"
-  _kitty --style hide --listen-on "$KITTY_SOCKET" \
-    --class=InitTerm --watcher tab_focus.py -e tmux new -s init &
-  kitty @ --to "$KITTY_SOCKET" "set-tab-title" "Tmux"
+  socket="unix:$XDG_RUNTIME_DIR/init-term-kitty.sock"
+  _kitty --style hide --watcher tab_focus.py \
+    --class=InitTerm --listen-on "$socket" -e tmux new -s init &
+  sleep 0.3 && kitty @ --to "$socket" "set-tab-title" "Tmux"
   ;;
 --top) _alacritty TopTerm -e btop -p 1 ;;
 --disk) _alacritty DiskTerm -e disk --hold ;;
 --fetch) _alacritty FetchTerm -o font.size=10 -e zsh -c 'fastfetch; read' ;;
 --k9s)
   _alacritty K9Term -o font.size="10" -e sh -c \
-    "KUBE_EDITOR=~/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
+    "KUBE_EDITOR=$HOME/.local/bin/vim TERM=xterm-256color KUBECACHEDIR=$HOME/.cache/kube k9s"
   ;;
 --lazydocker)
   _alacritty K9Term -o font.size="10" -e sh -c \
@@ -61,7 +63,9 @@ case $1 in
 --netmanager) NetManagerDM ;;
 --bluetooth) RofiBluetooth ;;
 --buku) RofiBuku ;;
---clipboard) cliphist list | rofi -theme "$HOME/.config/rofi/Clipboard.rasi" -dmenu | cliphist decode | wl-copy ;;
+--clipboard)
+  cliphist list | rofi -theme "$CLIP_THEME" -dmenu | cliphist decode | wl-copy
+  ;;
 --screenshot-menu) ScreenShoTer ;;
 --screenshot-now) ScreenShoTer --override now ;;
 --screenshot-sel) ScreenShoTer --override sel ;;
@@ -88,17 +92,19 @@ case $1 in
   ;;
 --music)
   _alacritty CavaTerm -o window.opacity="0.01" -e cava &
-  CAVA_PID=$!
+  cava_pid=$!
   _kitty --term MusicTerm --style hide -o font_size=10 -e Music &
-  MUSIC_PID=$!
+  music_pid=$!
   hyprctl dispatch focuswindow title:MusicTerm
-  wait $MUSIC_PID
-  kill $CAVA_PID
+  wait $music_pid
+  kill $cava_pid
   ;;
   # Apps
 --firefox) Firefox -P mshnwq ;;
 --files) dolphin ;;
 --soundcontrol) pavucontrol ;;
 --soundmixer) _alacritty SoundTerm -e pulsemixer ;;
-*) echo "Invalid Option $1" ;;
+--completion-list) grep -oP -- '--[a-z-]+(?=\))' "$0" ;;
+"") echo "Usage: ${0##*/} <option>" >&2 && exit 1 ;;
+*) echo "Error: Invalid option $1" >&2 && exit 1 ;;
 esac
