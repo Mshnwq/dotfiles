@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 rice=$(<"$HOME/.config/dots/.rice")
 assets_dir="$HOME/.config/dots/rices/$rice/assets"
