@@ -170,6 +170,7 @@ in
 
   programs.git = {
     enable = true;
+    package = pkgs.gitMinimal;
     signing = {
       key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
       signByDefault = true;
