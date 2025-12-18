@@ -5,7 +5,7 @@ colormap() {
 }
 
 # get date
-today() { echo "Today is $(date +"%A %d in %B of %Y (%r)")"; }
+today() { bash -c "printf 'Today is %(%A %d in %B of %Y (%r))T\n'"; }
 
 # file into clipboard Wayland
 wcat() { cat "$1" | wl-copy; }
@@ -57,3 +57,8 @@ ssh() {
 
 # return last dir, doesnt work as alias
 -() { cd -; }
+
+wsed() {
+  local file && file=$1 && shift
+  diff "$file" <(sed "$@" "$file")
+}

@@ -23,6 +23,7 @@ alias gdl="gallery-dl"
 alias ydl="yt-dlp"
 alias lsblk='lsblk | bat -l conf --theme ansi -p'
 alias grep='grep --color'
+alias diff='diff --color'
 alias kssh='kitten ssh'
 
 # -------------------------------------------------------------------
