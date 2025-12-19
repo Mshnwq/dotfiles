@@ -198,3 +198,11 @@ in
     };
   };
 }
+
+# l | awk '{print $9}' | sed "s|nix/store/||" | sed "s|/bin/.*||" | cut -d "-" -f 2- | awk '!seen[$1]++' | sort | wc -l
+
+# l | awk '{print $9}' \
+# | sed 's|^/nix/store/||; s|/bin/.*||' \
+# | cut -d- -f2- \
+# | awk '{count[$0]++} END {for (p in count) printf "%3d %s\n", count[p], p}' \
+# | sort -nr | wc -l

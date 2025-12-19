@@ -17,7 +17,7 @@ args@{
       age
       sops
       dialog
-      cowsay
+      # cowsay
       cmatrix
       mtpfs
       simple-mtpfs
