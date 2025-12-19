@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# set -euo pipefail
+# set -uo pipefail
 
 # Get main keyboard info
 keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
@@ -44,15 +44,12 @@ for lang in "${layout[@]}"; do
 done
 
 rofi_menu() {
-  local message="Current Layout: $active_keymap"$'\n\n'
-  message+="Caps Lock: $caps_state"$'\n'
-  message+="Num Lock: $num_state"
   printf '%s\n' "${!layout[@]}" | rofi \
     -dmenu \
     -markup-rows \
-    -mesg "$message" \
     -p "Keyboard Layout" \
     -selected-row "$selected_index" \
+    -mesg "Current Layout: $active_keymap" \
     -theme "$HOME/.config/rofi/SelectorKeyboard.rasi"
 }
 
@@ -65,7 +62,9 @@ selected=$(rofi_menu)
 
 for ((i = 0; i < ${#layout[@]}; i++)); do
   [[ "${layout_list[$i]}" == "${layout[$selected]}" ]] && {
-    hyprctl switchxkblayout "$keyboard_name" "$i"
-    exit 0
+    hyprctl switchxkblayout "$keyboard_name" "$i" &&
+      sleep 0.1 && dunstify -r 91192 -i input-keyboard-symbolic "Set Languege" -u low \
+      "$(hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | .active_keymap' | cut -d " " -f 1)" &&
+      exit 0 || exit 1
   }
 done
