@@ -3,7 +3,7 @@
 rice=$(<"$HOME/.config/dots/.rice")
 assets_dir="$HOME/.config/dots/rices/$rice/assets"
 sleep 0.2
-read -r num_state caps_state < <(hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | "\(.numLock) \(.capsLock)"')
+read -r num_state caps_state < <(hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | [.numLock, .capsLock] | @tsv')
 
 _notify() {
   local icon message state

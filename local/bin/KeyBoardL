@@ -1,19 +1,10 @@
 #!/usr/bin/env bash
-# set -uo pipefail
-
-# Get main keyboard info
-keyboard=$(hyprctl devices -j | jq -c '.keyboards[] | select(.main == true)')
-
-# Exit if no main keyboard found
-[[ -n $keyboard ]] || {
-  echo "Error: No main keyboard found"
-  exit 1
-}
+set -uo pipefail
 
 # Extract details
-IFS=$'\t' read -r layouts_csv keyboard_name active_keymap active_index caps_state num_state < <(
-  jq -r '[.layout, .name, .active_keymap, .active_layout_index, .capsLock, .numLock] | @tsv' <<<"$keyboard"
-)
+IFS=$'\t' read -r layouts_csv keyboard_name active_keymap active_index < \
+  <(hyprctl devices -j | jq -r \
+    '.keyboards[] | select(.main == true) | [.layout, .name, .active_keymap, .active_layout_index] | @tsv')
 IFS=',' read -ra layout_list <<<"$layouts_csv"
 
 # Load layout mappings from config file
