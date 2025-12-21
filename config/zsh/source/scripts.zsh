@@ -60,5 +60,5 @@ ssh() {
 
 wsed() {
   local file && file=$1 && shift
-  diff "$file" <(sed "$@" "$file")
+  diff --color "$file" <(sed "$@" "$file")
 }

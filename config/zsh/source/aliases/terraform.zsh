@@ -1,7 +1,7 @@
 tf() {
-  if command -v tofu >/dev/null 2>&1; then
+  if command -v tofu &>/dev/null; then
     tofu "$@"
-  elif command -v terraform >/dev/null 2>&1; then
+  elif command -v terraform &>/dev/null; then
     terraform "$@"
   else
     echo "Neither tofu nor terraform found" >&2
