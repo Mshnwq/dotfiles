@@ -11,17 +11,10 @@ from kitty.utils import color_as_int
 
 opts = get_options()
 
-# "\ue0be"  
-# "\ue0ba"  
-# "\ue0bc"  
-# "\ue0b8"  
 RIGHT_SYMBOL = ""
 LEFT_SYMBOL = ""
-# ICON_SYMBOL = "  "
-# ICON_SYMBOL = "  "
 ICON_SYMBOL = "   "
 RIGHT_MARGIN = ""
-# REFRESH_TIME = 1
 
 
 def get_active_tab_index() -> int:
