@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 tabs="$( kitty @ ls | jq -r '.[]  | .tabs[]  | .title' )"
 tab="$(fzf --reverse <<< "${tabs}")"
