@@ -62,3 +62,30 @@ wsed() {
   local file && file=$1 && shift
   diff --color "$file" <(sed "$@" "$file")
 }
+
+# print a colorized diff
+cdiff() {
+  local red=$(tput setaf 1 2>/dev/null)
+  local green=$(tput setaf 2 2>/dev/null)
+  local cyan=$(tput setaf 6 2>/dev/null)
+  local reset=$(tput sgr0 2>/dev/null)
+  diff -u "$@" | awk "
+  /^\-/ {
+    printf(\"%s\", \"$red\");
+  }
+  /^\+/ {
+    printf(\"%s\", \"$green\");
+  }
+  /^@/ {
+    printf(\"%s\", \"$cyan\");
+  }
+  {
+    print \$0 \"$reset\";
+  }"
+  return "${PIPESTATUS[0]}"
+}
+
+worktreed() {
+  git clone --bare "$1" .git
+  cd .git && git worktree add ../main main && git worktree add ../dev dev
+}
