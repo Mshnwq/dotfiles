@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+THEME="$HOME/.config/rofi/Screenshot.rasi"
+SAVEDIR="$HOME/Pictures/ScreenShots"
+[[ -d $SAVEDIR ]] || mkdir -p "$SAVEDIR"
+filename="$SAVEDIR/Shot-$(date +%Y-%m-%d_%H-%M-%S).png"
+rice=$(<"$HOME/.config/dots/.rice")
+assets_dir="$HOME/.config/dots/rices/$rice/assets"
+
+_notify() {
+  if [[ -e $filename ]]; then
+    dunstify --replace=699 -i "$filename" \
+      "Screenshot" "Screenshot saved and copied to clipboard"
+  else
+    dunstify --replace=699 -i custom-trash-bin \
+      "Screenshot" "Screenshot Canceled"
+  fi
+}
+
+_screenshot() {
+  if [[ $1 == "--select" ]]; then
+    grim -g "$(slurp)" "$filename"
+  else
+    grim "$filename"
+  fi
+  wl-copy <"$filename"
+  _notify
+}
+
+_countdown() {
+  for ((i = $1; i > 0; i--)); do
+    dunstify -t 1000 -i "$assets_dir/screenshot.png" \
+      "Taking shot in : $i" && sleep 1
+  done
+}
+
+_full() { sleep 0.3 && _screenshot --full; }
+_select() { _screenshot --select; }
+_swappy() {
+  grim -g "$(slurp)" "$filename"
+  swappy -f "$filename" -o "$filename"
+  wl-copy <"$filename"
+}
+_in_3() { _countdown 3 && _screenshot --full; }
+_in_10() { _countdown 10 && _screenshot --full; }
+
+[[ $1 == "--override" ]] && "_${2}" && exit 0
+
+declare -A ACTIONS=(
+  [""]=_full
+  [""]=_select
+  [""]=_swappy
+  ["󰔝"]=_in_3
+  ["󰔜"]=_in_10
+)
+
+mapfile -t fixed < <(printf "%s\n" "${!ACTIONS[@]}")
+tmp=${fixed[3]}
+fixed[3]=${fixed[4]}
+fixed[4]=$tmp
+
+chosen=$(
+  printf "%s\n" "${fixed[@]}" |
+    rofi -dmenu -markup-rows -p Screenshot \
+      -mesg "Save Dir :: $SAVEDIR" -theme "$THEME"
+)
+
+[[ -n "$chosen" ]] && "${ACTIONS[$chosen]}"
