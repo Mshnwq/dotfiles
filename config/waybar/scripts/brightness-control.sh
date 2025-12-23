@@ -2,18 +2,22 @@
 
 # Print error message for invalid arguments
 print_error() {
-  cat <<"EOF"
+  cat <<'EOF'
 Usage: ./brightnesscontrol.sh <action>
 Valid actions are:
-    i -- <i>ncrease brightness [+2%]
-    d -- <d>ecrease brightness [-2%]
+  i -- <i>ncrease brightness [+2%]
+  d -- <d>ecrease brightness [-2%]
 EOF
 }
 
 # Send a notification with brightness info
 send_notification() {
-  brightness=$(brightnessctl info | grep -oP "(?<=\()\d+(?=%)")
-  notify-send -a "state" -r 91190 -i "gpm-brightness-lcd" -h int:value:"$brightness" "Brightness: ${brightness}%" -u low
+  rice=$(<"$HOME/.config/dots/.rice")
+  assets_dir="$HOME/.config/dots/rices/$rice/assets"
+  brightness=$(brightnessctl get -P)
+  dunstify -p -a "brightness" \
+    -r 12345 -h int:value:"$brightness" \
+    "$brightness%" --icon="$assets_dir/brightness.png"
 }
 
 # Get the current brightness percentage and device name
@@ -31,7 +35,7 @@ while getopts o: opt; do
   o)
     case $OPTARG in
     i) # Increase brightness
-      if [[ $brightness -lt 10 ]]; then
+      if ((brightness < 10)); then
         brightnessctl set +1%
       else
         brightnessctl set +2%
@@ -39,23 +43,19 @@ while getopts o: opt; do
       send_notification
       ;;
     d) # Decrease brightness
-      if [[ $brightness -le 1 ]]; then
+      if ((brightness <= 1)); then
         brightnessctl set 1%
-      elif [[ $brightness -le 10 ]]; then
+      elif ((brightness <= 10)); then
         brightnessctl set 1%-
       else
         brightnessctl set 2%-
       fi
       send_notification
       ;;
-    *)
-      print_error
-      ;;
+    *) print_error ;;
     esac
     ;;
-  *)
-    print_error
-    ;;
+  *) print_error ;;
   esac
 done
 
@@ -83,7 +83,7 @@ get_icon() {
 }
 
 # Backlight module and tooltip
-get_icon
+{ get_icon; }
 module="${icon} ${brightness}%"
 
 tooltip="Device Name: ${device}"

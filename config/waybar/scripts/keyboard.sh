@@ -20,7 +20,7 @@ declare -A locks=(
   [true]="On"
   [false]="Off"
 )
-short="${layout_list[$index]:0:2}";  # limit 2
+short="${layout_list[index]:0:2}";  # limit 2
 short="${short/us/en}" # en -> us
 
 # Output JSON for Waybar
