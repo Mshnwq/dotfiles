@@ -6,7 +6,7 @@ BUILDDIR="${BUILDDIR/#\~/$HOME}"
 cd "$BUILDDIR/qbittorrent" && nix-shell -p libsForQt5.qt5.qtbase --run "just compile"
 cd - || exit 1
 
-source "${BASH_SOURCE%/*}/.wal_lib.sh"
+source "${BASH_SOURCE%/*}/.wal_lib.sh" || exit 1
 wal:relaunch \
   --kind class \
   --kill-cmd "pkill -f qbittorrent" \
