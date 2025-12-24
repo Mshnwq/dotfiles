@@ -7,8 +7,7 @@ DOTDIR=$(<"$HOME/.config/dotdir")
 DOTDIR="${DOTDIR/#\~/$HOME}"
 base_dir="$DOTDIR/local/bin/executer"
 
-scripts=$(find "$base_dir" -type f -executable \
-  -not -name "*.py" -not -name ".*.sh" -printf "%f\n")
+scripts=$(find "$base_dir" -type f -executable -not -name ".*.sh" -printf "%f\n")
 
 # Pass the scripts to rofi for selection
 selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.rasi")
