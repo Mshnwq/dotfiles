@@ -83,7 +83,8 @@ in
       }
       zsh
       {
-        zsh.debug.enable = true;
+        zsh.debug.enable = false;
+        zsh.direnv.enable = true;
         zsh.pluginSettings = {
           history-substring-search.enable = true;
           syntax-highlighting.enable = true;

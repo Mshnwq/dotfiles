@@ -41,6 +41,7 @@ in
     with pkgs;
     [
       qimgv
+      vips
       kdePackages.qtstyleplugin-kvantum
       papirus-folders # cli tool
       pywalfox-native # do pywalfox install
