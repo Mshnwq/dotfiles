@@ -1,34 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OPTIONS=(
-  "󰍁"
-  ""
-  "󰗽"
-  "󰜉"
-  "󰐥"
+lock() { :; }
+logout() { hyprctl dispatch exit; }
+suspend() { MediaControl --stop && systemctl suspend; }
+reboot() { systemctl reboot; }
+poweroff() { systemctl poweroff; }
+
+declare -A ACTIONS=(
+  ["󰍁"]=lock
+  ["󰗽"]=logout
+  [""]=suspend
+  ["󰜉"]=reboot
+  ["󰐥"]=poweroff
 )
+
+# stupid but it gets same order as keys
+mapfile -t fixed < <(printf "%s\n" "${!ACTIONS[@]}" | tac)
+tmp=${fixed[0]}
+fixed[0]=${fixed[3]}
+fixed[3]=$tmp
 
 chosen=$(
-  printf "%s\n" "${OPTIONS[@]}" | rofi -dmenu \
-    -no-click-to-exit -theme "$HOME/.config/rofi/PowerMenu.rasi"
+  printf "%s\n" "${fixed[@]}" |
+    rofi -dmenu -no-click-to-exit \
+      -theme "$HOME/.config/rofi/PowerMenu.rasi"
 )
 
-case $chosen in
-"󰐥")
-  systemctl poweroff
-  ;;
-"󰜉")
-  systemctl reboot
-  ;;
-"󰍁")
-  # TODO: broken nix
-  # hyprlock
-  ;;
-"")
-  MediaControl --stop && systemctl suspend
-  ;;
-"󰗽")
-  hyprctl dispatch exit
-  ;;
-esac
+[[ -n "$chosen" ]] && "${ACTIONS[$chosen]}"
