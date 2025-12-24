@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 
 # Extract details
 IFS=$'\t' read -r layouts_csv keyboard_name active_keymap active_index < \
@@ -16,9 +16,6 @@ LAYOUT_CONFIG="$HOME/.config/keyboard_layouts.conf"
 
 declare -A layout
 while IFS='=' read -r label code; do
-  [[ -z $label || $label =~ ^[[:space:]]*# ]] && continue
-  label=$(echo "$label" | xargs)
-  code=$(echo "$code" | xargs)
   [[ -n $label && -n $code ]] && layout["$label"]="$code"
 done <"$LAYOUT_CONFIG"
 
@@ -30,8 +27,8 @@ done <"$LAYOUT_CONFIG"
 
 selected_index=0
 for lang in "${layout[@]}"; do
-  [[ "${layout_list[$active_index]}" == "$lang" ]] && break
-  ((selected_index++))
+  [[ "${layout_list[active_index]}" == "$lang" ]] && break
+  ((++selected_index)) # set -e :)
 done
 
 rofi_menu() {
@@ -45,14 +42,9 @@ rofi_menu() {
 }
 
 # Layout switcher
-selected=$(rofi_menu)
-[[ -n $selected && -n ${layout[$selected]} ]] || {
-  echo "Warning: Layout '$selected' not found in available layouts"
-  exit 1
-}
-
+selected=${ rofi_menu; } # doesnt fork & and exists on cancel
 for ((i = 0; i < ${#layout[@]}; i++)); do
-  [[ "${layout_list[$i]}" == "${layout[$selected]}" ]] && {
+  [[ "${layout_list[i]}" == "${layout[$selected]}" ]] && {
     hyprctl switchxkblayout "$keyboard_name" "$i" &&
       sleep 0.1 && dunstify -r 91192 -i input-keyboard-symbolic "Set Languege" -u low \
       "$(hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | .active_keymap' | cut -d " " -f 1)" &&

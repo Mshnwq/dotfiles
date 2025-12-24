@@ -27,7 +27,8 @@ _mpc() {
     mpd_port="6600"
     ;;
   esac
-  mpc --host "${mpd_host:-127.0.0.1}" --port "${mpd_port:-6600}" "$@"
+  mpc --port "${mpd_port:-6600}" \
+    --host "${mpd_host:-127.0.0.1}" "$@"
 }
 
 # Extract cover art from music file

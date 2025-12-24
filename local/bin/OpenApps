@@ -17,20 +17,16 @@ _kitty() {
     --style)
       [[ -n $2 ]] && {
         kitty_args+=(-c "$HOME/.config/kitty/kitty-$2.conf")
-        shift
+        shift 2
       }
-      shift
       ;;
     --term)
       [[ -n $2 ]] && {
         kitty_args+=(--class FloaTerm --name "$2" --title "$2")
-        shift
+        shift 2
       }
-      shift
       ;;
-    *)
-      break
-      ;;
+    *) break ;;
     esac
   done
   kitty_args+=("$@") && kitty "${kitty_args[@]}"
@@ -66,20 +62,18 @@ case ${1:-} in
 --clipboard)
   cliphist list | rofi -theme "$CLIP_THEME" -dmenu | cliphist decode | wl-copy
   ;;
---screenshot-menu) ScreenShoTer ;;
---screenshot-now) ScreenShoTer --override now ;;
---screenshot-sel) ScreenShoTer --override sel ;;
+--screenshot) shift && [[ $# -eq 0 || $# -eq 2 ]] && ScreenShot "$@" ;;
 --powermenu) PowerMenu ;;
 --android) AndroidMount ;;
 --keyboard) KeyBoardL ;;
 --wall) WallSelect ;;
 --nvim) _kitty -e nvim -c Nvdash ;;
 --serie) _kitty --term FetchTerm --style hide -d "$(pwd)" -e "serie" ;;
---hm)
+--hm) #TODO: do a nice bash progress script from ysap advanced
   shift && _kitty --term FileTerm --style hide -o font_size=8 \
     -d "$(<"$HOME/.config/dotdir")/setup" -e zsh -c "./hm.sh $*; read"
   ;;
---yazi) _kitty --style hide -e yazi ;;
+--yazi) _kitty --style hide -e sh -c "zsh -ic yazi" ;;
 --yazi-tmux)
   _kitty --term FileTerm --style hide -o window_padding_width="4" -e \
     tmux new -s yazi -c "$HOME" InitYazi
@@ -90,7 +84,7 @@ case ${1:-} in
   ;;
 --yazi-tmux-project)
   _kitty --term FileTerm --style hide -o window_padding_width="4" -e \
-    tmux new -s yazi InitYazi --project coom
+    tmux new -s yazi InitYazi --project "$2"
   ;;
 --music)
   _alacritty CavaTerm -o window.opacity="0.01" -e cava &
@@ -107,6 +101,7 @@ case ${1:-} in
 --soundcontrol) pavucontrol ;;
 --soundmixer) _alacritty SoundTerm -e pulsemixer ;;
 --completion-list) grep -oP -- '--[a-z-]+(?=\))' "$0" ;;
-"") echo "Usage: ${0##*/} <option>" >&2 && exit 1 ;;
+--help) echo "Usage: ${0##*/} <option>" ;;
+"") ${0##*/} --help >&2 && exit 1 ;;
 *) echo "Error: Invalid option $1" >&2 && exit 1 ;;
 esac
