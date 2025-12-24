@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -eu
-
-git clone --bare "$1" .git
-cd .git && git worktree add ../main main && git worktree add ../dev dev
