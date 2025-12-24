@@ -2,18 +2,19 @@
 set -euo pipefail
 
 # CONSTANTS
+ROFI_THEME="$HOME/.config/rofi/WallSelect.rasi"
 CACHE_BASE="$HOME/.cache/wallpapers"
 CONFIG_DIR="$HOME/.config/dots"
 RICES_DIR="$CONFIG_DIR/rices"
 THUMBNAIL_SIZE="500x500"
 REQUIRED_APPS=(
-  xdpyinfo
-  magick
+  xrandr
   md5sum
+  dunst
   rofi
+  vips
 )
 
-# Check for required apps
 for app in "${REQUIRED_APPS[@]}"; do
   command -v "$app" >/dev/null 2>&1 || {
     dunstify -u critical "Missing package" "Please install '$app' to continue"
@@ -22,61 +23,69 @@ for app in "${REQUIRED_APPS[@]}"; do
 done
 
 # VARS
-current_rice=$(<"${CONFIG_DIR}/.rice")
-current_wallpaper_path=$(<"${RICES_DIR}/.wall")
+current_rice=$(<"$CONFIG_DIR/.rice")
+current_wallpaper_path=$(<"$RICES_DIR/.wall")
 current_wallpaper="${current_wallpaper_path##*/}"
-wall_dir="${RICES_DIR}/${current_rice}/walls"
-cache_dir="${CACHE_BASE}/${current_rice}"
+wall_dir="$RICES_DIR/$current_rice/walls"
+cache_dir="$CACHE_BASE/$current_rice"
 
 # Validate
+[[ -d $cache_dir ]] || mkdir -p "$cache_dir"
 [[ -d $wall_dir ]] || {
   dunstify -u critical "Error" "Wallpaper directory not found: $wall_dir"
   exit 1
 }
-[[ -d $cache_dir ]] || mkdir -p "$cache_dir"
+read -r _ _ res _ < <(xrandr -q | grep ' connected')
+monitor_res=${res%%x*}
+monitor_res=$((monitor_res * 14 / 96))
 
-# Adapt to screen resolution.
-monitor_res=$(($(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1) * 14 / $(xdpyinfo | awk '/resolution/{print $2}' | cut -d 'x' -f1)))
-rofi_override="element-icon{size:${monitor_res}px;}"
-rofi_command="rofi -dmenu -theme $HOME/.config/rofi/WallSelect.rasi -theme-str $rofi_override"
+generate_thumbnail() {
+  _thumbnail_cmd() {
+    vipsthumbnail --size="${THUMBNAIL_SIZE}" \
+      "$image" --crop=centre -o "$cache_file"
+  }
+  local image=$1
+  local archive=${image##*/}
+  local cache_file="${cache_dir}/${archive}"
+  local md5_file="${cache_dir}/.${archive}.md5"
+  [[ -f $cache_file && $cache_file -nt $image ]] && return 0
+  local sum _
+  read -r sum _ < <(md5sum "$image")
+  { _thumbnail_cmd; } 2>/dev/null &&
+    printf '%s\n' "$sum" >"$md5_file"
+}
 
-wallpapers=()
-# Convert images in directory and save to cache dir
-for image in "$wall_dir"/*; do
-  [[ $image =~ \.(jpg|png|webp)$ ]] || continue
+export -f generate_thumbnail
+export cache_dir THUMBNAIL_SIZE
 
-  archive=${image##*/}
-  cache_file="${cache_dir}/${archive}"
-  md5_file="${cache_dir}/.${archive}.md5"
+shopt -s nullglob
+mapfile -t images < <(printf '%s\n' "$wall_dir"/*.{jpg,png,webp} | sort)
+wallpapers=() && generate=() && idx=0
 
-  # Generate thumbnail if needed
-  if [[ ! -f $cache_file ]] || [[ ! -f $md5_file ]] ||
-    [[ "$(md5sum "$image" | cut -d' ' -f1)" != "$(<"$md5_file")" ]]; then
-
-    printf "Generating thumbnail: %s\n" "$archive" >&2
-    magick "$image" -resize "${THUMBNAIL_SIZE}^" -gravity center -extent "$THUMBNAIL_SIZE" "$cache_file" || {
-      printf "Warning: Failed to process %s\n" "$archive" >&2
-      continue
-    }
-    md5sum "$image" | cut -d' ' -f1 >"$md5_file"
-  fi
-
+for i in "${!images[@]}"; do
+  archive="${images[i]##*/}"
+  cache_file="$cache_dir/$archive"
   wallpapers+=("$archive")
+  [[ "$archive" == "$current_wallpaper" ]] && idx=$i
+  [[ ! -f $cache_file ]] && generate+=("${images[i]}")
 done
 
-# index of current wallpaper
-for i in "${!wallpapers[@]}"; do
-  [[ "${wallpapers[$i]}" == "$current_wallpaper" ]] && selected_index=$i && break
-done
+# Generate missing thumbnails in parallel
+((${#generate[@]})) && {
+  printf '%s\n' "${generate[@]}" |
+    xargs -P "$(nproc)" -I {} bash -c \
+      'generate_thumbnail "$@"' _ {}
+}
 
-# Launch rofi
-wall_selection=$(for wall in "${wallpapers[@]}"; do
-  # TODO: fix text bug
-  printf '%s\0icon\x1f%s\n' "${wall}" "${cache_dir}/$wall"
-done | $rofi_command -selected-row "${selected_index:-0}")
+# TODO: broken text
+wall_selection=$(
+  printf '%s\n' "${wallpapers[@]}" |
+    awk -v c="$cache_dir" '{printf "%s\0icon\x1f%s/%s\n",$0,c,$0}' |
+    rofi -dmenu -selected-row "$idx" -theme "$ROFI_THEME" \
+      -theme-str "element-icon{size:${monitor_res}px;}"
+)
 
-# Set wallpaper
 [[ -n $wall_selection ]] && {
   echo "${wall_dir}/${wall_selection}" >"${RICES_DIR}/.wall"
-  WallColor --wait
+  WallColor --wait &
 }
