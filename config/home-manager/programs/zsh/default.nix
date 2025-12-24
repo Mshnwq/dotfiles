@@ -34,6 +34,10 @@ in
     type = lib.types.bool;
     default = false;
   };
+  options.zsh.direnv.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
 
   config = {
     home.packages = with pkgs; [
@@ -87,5 +91,28 @@ in
       initContent = (import ./config.nix { inherit config pkgs lib; }).config;
       plugins = enabledPlugins;
     };
+    # precompile p10k
+    home.file = {
+      ".cache/p10k/powerlevel10k.zsh-theme" = {
+        source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      };
+      ".cache/p10k/internal" = {
+        source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/internal";
+        recursive = true;
+      };
+      ".cache/p10k/gitstatus" = {
+        source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/gitstatus";
+        recursive = true;
+      };
+    };
+    home.activation.compileP10k = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      P10K_CACHE="${config.xdg.cacheHome}/p10k"
+      if [[ -f "$P10K_CACHE/powerlevel10k.zsh-theme" ]]; then
+        ${pkgs.zsh}/bin/zsh -c "zcompile -R  $P10K_CACHE/powerlevel10k.zsh-theme"
+        for file in "$P10K_CACHE"/internal/*.zsh; do
+          [[ -f "$file" ]] && ${pkgs.zsh}/bin/zsh -c "zcompile -R $file"
+        done
+      fi
+    '';
   };
 }
