@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE%/*}/.lib.sh" || exit 1
+
+daemon="${0##*/}"
+case $1 in
+--status | --start | --stop)
+  daemon:"${1##--}" "$daemon"
+  ;;
+*) exit 2 ;;
+esac
