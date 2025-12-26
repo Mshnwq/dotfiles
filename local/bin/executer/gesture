@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+CONF="$HOME/.config/dots/config/libinput-gestures.conf"
+[[ -s $CONF ]] || exit 1
+app="libinput-gestures"
+
+case $1 in
+--kill | --start) pkill -f "$app" ;;&
+--start) "$app" --conffile "$CONF" & ;;
+*) exit 2 ;;
+esac
