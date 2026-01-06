@@ -1,25 +1,12 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
+
+# TODO: do the fg <> pipe from advacned ysap to watch over the sub wal's
 
 # CONSTS
 EXECUTER_DIR="$HOME/.local/bin/executer"
 LOG_FILE="$HOME/.cache/wal/wall_color.log"
 WALL=$HOME/.config/dots/rices/.wall
-
-# Flags
-WAIT=""
-
-while (($# > 0)); do
-  case $1 in
-  -w | --wait)
-    WAIT=true
-    shift
-    ;;
-  *)
-    echo "Unknown option: $1"
-    ;;
-  esac
-done
 
 # validate
 [[ -d "${LOG_FILE%/*}" ]] || mkdir -p "${LOG_FILE%/*}"
@@ -40,7 +27,7 @@ color() {
   log "Starting $theme (background)"
 
   (
-    if sh -c "$EXECUTER_DIR/.wal_${theme}.sh" >>"$LOG_FILE" 2>&1; then
+    if "$EXECUTER_DIR/.wal_${theme}.sh" >>"$LOG_FILE" 2>&1; then
       log "Finished $theme (success)"
     else
       error "Failed $theme (exit code: $?)"
@@ -67,18 +54,16 @@ else
   exit 1
 fi
 
-set +u
 # shellcheck disable=SC1091
 source "$HOME/.cache/wal/colors.sh"
 log "Loaded colors from wal"
-set -u
 
 themes=(
-  # slowest
+  ## slowest
   cursor
   plasma
   tmux
-  # priority
+  ## priority
   kitty
   p10k
   dunst
@@ -99,7 +84,7 @@ done
 
 log "All themes launched in background"
 
-[[ -n $WAIT ]] && {
+[[ $1 == "--wait" ]] && {
   log "Waiting for all themes..."
   pids=(/tmp/wal_*.pid)
 

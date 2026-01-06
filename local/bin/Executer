@@ -1,90 +1,104 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-# TODO: improve
+# set -euo pipefail
 
 DOTDIR=$(<"$HOME/.config/dotdir")
 DOTDIR="${DOTDIR/#\~/$HOME}"
 base_dir="$DOTDIR/local/bin/executer"
+-O) grep -Po '^\s*--[a-z-]+(?:\s*\|\s*--[a-z-]+)*\)' \
+  "$0" | sed 's# | #\n#g' | sed -E 's|^--([a-z-]+)\)?|\1|' ;;
+*) echo "Error: Invalid option $app" >&2 && exit 2 ;;
 
-scripts=$(find "$base_dir" -type f -executable -not -name ".*.sh" -printf "%f\n")
 
-# Pass the scripts to rofi for selection
-selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.rasi")
+# declare -A actions=(
+#   ["Daemon"]="start|status|stop"
+#   ["Action"]="xxxxx"
+#   [""]="xxxxx"
+#   # ["Disk"]="start|status|stop"
+#   )
 
-# Exit if no script is selected
-[[ -z $selected ]] && exit 0
-
-# Path to the selected script
-script="$HOME/.local/bin/executer/$selected"
-
-# Check for #WRAP marker
-if grep -q "#WRAP" "$script"; then
-  # Always keep the standard actions
-  standard_actions="status|start|stop|kill|on|off"
-  base_name="${selected%.*}" # strip .sh or .py
-  prompt_name=$(awk -F'_' '/#WRAP_/ {print $2}' "$script")
-
-  # Collect extra actions listed in the script (lines after #WRAP_…, skip empty/comment lines)
-  mapfile -t extra_options < <(awk '
-        /^#WRAP_/ {flag=1; next}      # start after WRAP line
-        flag && /^#/ {sub(/^#/,""); print}   # strip leading #, print
-        flag && /^[[:space:]]*$/ {exit}     # stop at empty line
-    ' "$script")
-
-  # Append optional extras if any
-  if ((${#extra_options[@]} > 0)); then
-    extra_regex=$(
-      IFS='|'
-      echo "${extra_options[*]}"
-    )
-    combined="$standard_actions|$extra_regex"
-  else
-    combined="$standard_actions"
-  fi
-
-  # Escape pipes for find -regex
-  regex_suffix="${combined//|/\\|}"
-
-  echo "$regex_suffix"
-
-  # Find matching executable files
-  wrap_files=$(find "$base_dir" -type f -executable \
-    -regex ".*/\.${base_name}_\(${regex_suffix}\)\.sh" -printf "%f\n")
-
-  echo "$wrap_files"
-
-  # Map to display only the action part for fzf
-  actions=$(echo "$wrap_files" | sed -E "s/^\\.${base_name}_([^.]+)\\.sh$/\1/")
-
-  tmpfile=$(mktemp)
-
-  # Launch floating terminal running fzf with preview
-  ACTIONS="$actions" PROMPT="$prompt_name" BASE_DIR="$base_dir" BASE_NAME="$base_name" TMPFILE="$tmpfile" \
-    alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
-    -e bash -c '
-        source "${HOME}/.cache/wal/custom-fzf.sh"
-        printf "%s\n" "${ACTIONS}" | fzf --prompt="${PROMPT}: " \
-          --preview="highlight -O ansi ${BASE_DIR}/.${BASE_NAME}_{}.sh" \
-          --preview-window=right:85%:wrap > "$TMPFILE"
-      '
-
-  # Read result from temp file
-  chosen_action=$(<"$tmpfile")
-  rm -f "$tmpfile"
-  [[ -z $chosen_action ]] && exit 0
-  chosen_file=".${base_name}_${chosen_action}.sh"
-  "$base_dir/$chosen_file"
-  exit 0
-fi
-
-# Check if the script requires input
-if grep -q "#INPUT_REQUIRED" "$script"; then
-  # Prompt the user for input using `rofi`
-  user_input=$(rofi -dmenu -theme "$HOME/.config/rofi/Input.rasi" -p "Enter input for $selected: ")
-  # Run the script with the input
-  "$script" "$user_input"
-else
-  # Run the script normally if no input is required
-  "$script"
-fi
+# # TODO: improve
+#
+# DOTDIR=$(<"$HOME/.config/dotdir")
+# DOTDIR="${DOTDIR/#\~/$HOME}"
+# base_dir="$DOTDIR/local/bin/executer"
+#
+# scripts=$(find "$base_dir" -type f -executable -not -name ".*.sh" -printf "%f\n")
+#
+# # Pass the scripts to rofi for selection
+# selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.rasi")
+#
+# # Exit if no script is selected
+# [[ -n $selected ]] || exit 0
+#
+# # Path to the selected script
+# script="$HOME/.local/bin/executer/$selected"
+#
+# # Check for #WRAP marker
+# if grep -q "#WRAP" "$script"; then
+#   # Always keep the standard actions
+#   standard_actions="status|start|stop|kill|on|off"
+#   base_name="${selected%.*}" # strip .sh or .py
+#   prompt_name=$(awk -F'_' '/#WRAP_/ {print $2}' "$script")
+#
+#   # Collect extra actions listed in the script (lines after #WRAP_…, skip empty/comment lines)
+#   mapfile -t extra_options < <(awk '
+#         /^#WRAP_/ {flag=1; next}      # start after WRAP line
+#         flag && /^#/ {sub(/^#/,""); print}   # strip leading #, print
+#         flag && /^[[:space:]]*$/ {exit}     # stop at empty line
+#     ' "$script")
+#   echo "${extra_options[@]}"
+#
+#     extra_regex=$(
+#       IFS='|'
+#       echo "${extra_options[*]}"
+#     )
+#     combined="$standard_actions|$extra_regex"
+#   else
+#     combined="$standard_actions"
+#   fi
+#
+#   # Escape pipes for find -regex
+#   regex_suffix="${combined//|/\\|}"
+#
+#   echo "$regex_suffix"
+#
+#   # Find matching executable files
+#   wrap_files=$(find "$base_dir" -type f -executable \
+#     -regex ".*/\.${base_name}_\(${regex_suffix}\)\.sh" -printf "%f\n")
+#
+#   echo "$wrap_files"
+#
+#   # Map to display only the action part for fzf
+#   actions=$(echo "$wrap_files" | sed -E "s/^\\.${base_name}_([^.]+)\\.sh$/\1/")
+#
+#   tmpfile=$(mktemp)
+#
+#   # Launch floating terminal running fzf with preview
+#   ACTIONS="$actions" PROMPT="$prompt_name" BASE_DIR="$base_dir" BASE_NAME="$base_name" TMPFILE="$tmpfile" \
+#     alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
+#     -e bash -c '
+#         source "${HOME}/.cache/wal/custom-fzf.sh"
+#         printf "%s\n" "${ACTIONS}" | fzf --prompt="${PROMPT}: " \
+#           --preview="highlight -O ansi ${BASE_DIR}/.${BASE_NAME}_{}.sh" \
+#           --preview-window=right:85%:wrap > "$TMPFILE"
+#       '
+#
+#   # Read result from temp file
+#   chosen_action=$(<"$tmpfile")
+#   rm -f "$tmpfile"
+#   [[ -z $chosen_action ]] && exit 0
+#   chosen_file=".${base_name}_${chosen_action}.sh"
+#   "$base_dir/$chosen_file"
+#   exit 0
+# fi
+#
+# # Check if the script requires input
+# if grep -q "#INPUT_REQUIRED" "$script"; then
+#   # Prompt the user for input using `rofi`
+#   user_input=$(rofi -dmenu -theme "$HOME/.config/rofi/Input.rasi" -p "Enter input for $selected: ")
+#   # Run the script with the input
+#   "$script" "$user_input"
+# else
+#   # Run the script normally if no input is required
+#   "$script"
+# fi

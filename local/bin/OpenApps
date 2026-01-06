@@ -89,7 +89,11 @@ case ${1:-} in
 --music)
   _alacritty CavaTerm -o window.opacity="0.01" -e cava &
   cava_pid=$!
-  _kitty --term MusicTerm --style hide -o font_size=10 -e Music &
+  # shellcheck disable=SC2016
+  _kitty --term MusicTerm --style hide -o font_size=10 -e \
+    bash -c '[[ -s "$HOME/.config/dots/.mpd_status" ]] \
+    && rmpc --address "$(<"$HOME/.config/dots/.mpd_host"):6600" \
+    || dunstify "Music is not running."' &
   music_pid=$!
   hyprctl dispatch focuswindow title:MusicTerm
   wait $music_pid
