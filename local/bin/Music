@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -eu
-
-case $(<"$HOME/.config/dots/.mpd_status") in
-"remote") rmpc --address "$(<"$HOME/.config/dots/.mpd_host"):6600" ;;
-"local") rmpc --address 127.0.0.1:6600 ;;
-*) dunstify "Music is not running or not configured properly." ;;
-esac
