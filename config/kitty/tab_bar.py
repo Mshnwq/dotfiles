@@ -10,6 +10,7 @@ from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb, draw_title
 from kitty.utils import color_as_int
 
 opts = get_options()
+color_cache = {}
 
 RIGHT_SYMBOL = ""
 LEFT_SYMBOL = ""
@@ -17,8 +18,16 @@ ICON_SYMBOL = "   "
 RIGHT_MARGIN = ""
 
 
-def get_active_tab_index() -> int:
-    return get_boss().active_tab_manager.active_tab_idx + 1
+def _get_color(color_int: int) -> int:
+    if color_int not in color_cache:
+        color_cache[color_int] = as_rgb(color_int)
+    return color_cache[color_int]
+
+
+def _set_colors(screen: Screen, fg_color: int, bg_color: int) -> None:
+    """Helper to set foreground and background colors."""
+    screen.cursor.fg = _get_color(fg_color)
+    screen.cursor.bg = _get_color(bg_color)
 
 
 def _draw_status(
@@ -28,35 +37,32 @@ def _draw_status(
     index: int,
     is_last: bool,
 ) -> int:
-    if index == get_active_tab_index():
-        screen.cursor.fg = as_rgb(color_as_int(opts.active_tab_background))
-        screen.cursor.bg = as_rgb(color_as_int(opts.active_tab_foreground))
-        screen.draw(LEFT_SYMBOL)
-        screen.cursor.bg = as_rgb(color_as_int(opts.active_tab_background))
-        screen.cursor.fg = as_rgb(color_as_int(opts.active_tab_foreground))
-        draw_title(draw_data, screen, tab, index)
-        screen.cursor.fg = as_rgb(color_as_int(opts.active_tab_background))
-        screen.cursor.bg = as_rgb(color_as_int(opts.active_tab_foreground))
+    if index == get_boss().active_tab_manager.active_tab_idx + 1:
+        _set_colors(
+            screen,
+            color_as_int(opts.active_tab_foreground),
+            color_as_int(opts.active_tab_background),
+        )
         screen.draw(RIGHT_SYMBOL)
+        draw_title(draw_data, screen, tab, index)
+        screen.draw(LEFT_SYMBOL)
     else:
-        screen.cursor.fg = as_rgb(color_as_int(opts.inactive_tab_background))
-        screen.cursor.bg = as_rgb(color_as_int(opts.inactive_tab_foreground))
-        screen.draw(LEFT_SYMBOL)
-        screen.cursor.bg = as_rgb(color_as_int(opts.inactive_tab_background))
-        screen.cursor.fg = as_rgb(color_as_int(opts.inactive_tab_foreground))
-        draw_title(draw_data, screen, tab, index)
-        screen.cursor.fg = as_rgb(color_as_int(opts.inactive_tab_background))
-        screen.cursor.bg = as_rgb(color_as_int(opts.inactive_tab_foreground))
+        _set_colors(
+            screen,
+            color_as_int(opts.inactive_tab_foreground),
+            color_as_int(opts.inactive_tab_background),
+        )
         screen.draw(RIGHT_SYMBOL)
-    if is_last:
-        screen.cursor.fg = as_rgb(color_as_int(opts.active_tab_background))
-        screen.cursor.bg = as_rgb(color_as_int(opts.active_tab_foreground))
+        draw_title(draw_data, screen, tab, index)
         screen.draw(LEFT_SYMBOL)
-        screen.cursor.bg = as_rgb(color_as_int(opts.active_tab_background))
-        screen.cursor.fg = as_rgb(color_as_int(opts.active_tab_foreground))
+    if is_last:
+        _set_colors(
+            screen,
+            color_as_int(opts.active_tab_foreground),
+            color_as_int(opts.active_tab_background),
+        )
+        screen.draw(RIGHT_SYMBOL)
         screen.draw(ICON_SYMBOL)
-        screen.cursor.fg = as_rgb(color_as_int(opts.active_tab_foreground))
-        screen.cursor.bg = as_rgb(color_as_int(opts.active_tab_foreground))
         screen.draw(RIGHT_MARGIN)
     end = screen.cursor.x
     return end
