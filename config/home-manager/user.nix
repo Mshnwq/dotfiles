@@ -117,6 +117,7 @@ in
           restore.enable = true;
           dupes.enable = true;
           yamb.enable = true;
+          zoom.enable = true;
         };
       }
     ]
@@ -145,6 +146,10 @@ in
         };
         tmuxp = {
           mode = "0400";
+        };
+        mounts-conf = {
+          mode = "0400";
+          path = "${config.xdg.configHome}/mounts.conf";
         };
         ssh-config = {
           mode = "0400";
