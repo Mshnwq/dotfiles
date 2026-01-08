@@ -4,32 +4,17 @@ set -euo pipefail
 CLIP_THEME="$HOME/.config/rofi/Clipboard.rasi"
 export PATH="$HOME/.local/bin/executer:$HOME/.local/bin:$PATH"
 
-# useful wrappers
-_alacritty() {
-  local term && term="$1" && shift
-  alacritty --class FloaTerm,"$term" --title="$term" "$@"
-}
-
+# wrappers
+_alacritty() { alacritty --class FloaTerm,"$1" --title="$1" "${@:2}"; }
 _kitty() {
-  local kitty_args && kitty_args=()
+  local args=() && declare -A opts
+  opts[--term]="--class FloaTerm --name %s --title %s"
+  opts[--style]="-c $HOME/.config/kitty/kitty-%s.conf"
   while (($# > 0)); do
-    case $1 in
-    --style)
-      [[ -n $2 ]] && {
-        kitty_args+=(-c "$HOME/.config/kitty/kitty-$2.conf")
-        shift 2
-      }
-      ;;
-    --term)
-      [[ -n $2 ]] && {
-        kitty_args+=(--class FloaTerm --name "$2" --title "$2")
-        shift 2
-      }
-      ;;
-    *) break ;;
-    esac
-  done
-  kitty_args+=("$@") && kitty "${kitty_args[@]}"
+    [[ $1 =~ ^($(printf '%s|' "${!opts[@]}"))$ ]] || break
+    # shellcheck disable=SC2206 # word split treat str as list
+    args+=(${opts[$1]//%s/$2}) && shift 2
+  done && args+=("$@") && kitty "${args[@]}"
 }
 
 case ${1:-} in
@@ -88,16 +73,12 @@ case ${1:-} in
   ;;
 --music)
   _alacritty CavaTerm -o window.opacity="0.01" -e cava &
-  cava_pid=$!
+  trap 'pkill -f CavaTerm' EXIT
   # shellcheck disable=SC2016
   _kitty --term MusicTerm --style hide -o font_size=10 -e \
     bash -c '[[ -s "$HOME/.config/dots/.mpd_status" ]] \
     && rmpc --address "$(<"$HOME/.config/dots/.mpd_host"):6600" \
-    || dunstify "Music is not running."' &
-  music_pid=$!
-  hyprctl dispatch focuswindow title:MusicTerm
-  wait $music_pid
-  kill $cava_pid
+    || dunstify "Music is not running."'
   ;;
   # Apps
 --firefox) Firefox -P mshnwq ;;
