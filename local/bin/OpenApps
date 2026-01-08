@@ -73,7 +73,7 @@ case ${1:-} in
   ;;
 --music)
   _alacritty CavaTerm -o window.opacity="0.01" -e cava &
-  trap 'pkill -f CavaTerm' EXIT
+  trap "pkill -f CavaTerm" EXIT
   # shellcheck disable=SC2016
   _kitty --term MusicTerm --style hide -o font_size=10 -e \
     bash -c '[[ -s "$HOME/.config/dots/.mpd_status" ]] \
