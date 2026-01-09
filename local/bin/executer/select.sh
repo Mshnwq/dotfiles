@@ -1,2 +1,0 @@
-#WRAP_Action
-#pinentry
