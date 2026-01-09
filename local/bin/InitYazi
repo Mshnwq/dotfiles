@@ -8,7 +8,7 @@ echo "$yazi_id" >"$STATUS_FILE"
 tmux set-option status off
 
 _emit() (
-  sleep 0.5 && YAZI_ID="$yazi_id" ya emit plugin projects "$1"
+  sleep 1 && YAZI_ID="$yazi_id" ya emit plugin projects "$1"
 )
 
 case "${1:---default}" in
