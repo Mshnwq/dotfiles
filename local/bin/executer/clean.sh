@@ -3,7 +3,7 @@ export PATH="$HOME/.local/bin/executer:$PATH"
 
 _procs() {
   for app in "${@:2}"; do
-    procs "--$app" "$1"
+    procs.sh "--$app" "$1"
   done
 }
 
@@ -15,13 +15,13 @@ apps=(
 case $1 in
 --on)
   _procs kill "${apps[@]}"
-  compositor --off
+  compositor.sh --off
   $0 --kde
   ;;
 --off)
   apps+=("dunst")
   _procs start "${apps[@]}"
-  compositor --on
+  compositor.sh --on
   $0 --kde
   ;;
 --status)
