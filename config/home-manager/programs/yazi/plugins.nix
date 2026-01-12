@@ -7,12 +7,28 @@ let
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "e95c7b384e7b0a9793fe1471f0f8f7810ef2a7ed";
-    hash = "sha256-TUS+yXxBOt6tL/zz10k4ezot8IgVg0/2BbS8wPs9KcE=";
+    rev = "03cdd4b5b15341b3c0d0f4c850d633fadd05a45f";
+    hash = "sha256-5dMAJ6W/L66XuH4CCwRRFpKSLy0ZDFIABAYleFX0AsQ=";
   };
 in
 {
   plugins = {
+    zoom = {
+      source = "${yazi-plugins}/zoom.yazi";
+      defaultEnable = false;
+      keymap = [
+        {
+          on = "+";
+          run = "plugin zoom 1";
+          desc = "Zoom in hovered file";
+        }
+        {
+          on = "-";
+          run = "plugin zoom -1";
+          desc = "Zoom out hovered file";
+        }
+      ];
+    };
     mediainfo = {
       source = pkgs.yaziPlugins.mediainfo;
       defaultEnable = false;
@@ -115,7 +131,7 @@ in
       source = pkgs.fetchFromGitHub {
         owner = "dedukun";
         repo = "relative-motions.yazi";
-        rev = "a603d9e";
+        rev = "a603d9ea924dfc0610bcf9d3129e7cba605d4501";
         hash = "sha256-9i6x/VxGOA3bB3FPieB7mQ1zGaMK5wnMhYqsq4CvaM4=";
       };
       initLua = ''
@@ -174,8 +190,8 @@ in
       source = pkgs.fetchFromGitHub {
         owner = "MasouShizuka";
         repo = "projects.yazi";
-        rev = "a5e33db284ab580de7b549e472bba13a5ba7c7b9";
-        hash = "sha256-4VD1OlzGgyeB1jRgPpI4aWnOCHNZQ9vhh40cbU80Les=";
+        rev = "eed0657a833f56ea69f3531c89ecc7bad761d611";
+        hash = "sha256-5J0eqffUzI0GodpqwzmaQJtfh75kEbbIwbR8pFH/ZmU=";
       };
       initLua = ''
         require("projects"):setup({
@@ -281,8 +297,8 @@ in
       source = pkgs.fetchFromGitHub {
         owner = "boydaihungst";
         repo = "restore.yazi";
-        rev = "2a2ba2fbaee72f88054a43723becf66c3cfb892e";
-        hash = "sha256-FqvQuKNH3jjXQ/7N7MsUsOoh9DTreZTjpdQ4lrr2iLk=";
+        rev = "6395e52b3af3a8832f0249970a168c41fb92b31b";
+        hash = "sha256-HfXhYe3XPKkd/ivpQB85EsZyvLiflJE0tRNGVid2A9A=";
       };
       defaultEnable = false;
       keymap = [
@@ -297,8 +313,8 @@ in
       source = pkgs.fetchFromGitHub {
         owner = "h-hg";
         repo = "yamb.yazi";
-        rev = "22af0033be18eead7b04c2768767d38ccfbaa05b";
-        hash = "sha256-NMxZ8/7HQgs+BsZeH4nEglWsRH2ibAzq7hRSyrtFDTA=";
+        rev = "5f2e22e784dd5fc830cd85885a6d1d6690b52298";
+        hash = "sha256-3Cp3+v0laSVsDdTyG26EOh2xt18ER8P9Nla9vtRuj9k=";
       };
       initLua = ''
         require("yamb"):setup({
