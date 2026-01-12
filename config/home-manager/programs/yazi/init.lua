@@ -1,45 +1,47 @@
 -- Get back old tabs but with new style and style cwd
+
+-- clear new
 function Tabs.height()
 	return 0
 end
+function Header:cwd()
+	return ""
+end
 
+-- replaces tabs
 Header:children_add(function()
 	if #cx.tabs == 1 then
 		return ""
 	end
 	local lines = {
-		ui.Line(th.tabs.sep_outer.open):fg(th.tabs.inactive.bg),
+		ui.Line(th.tabs.sep_outer.open):style(th.tabs.inactive),
 	}
 	for i = 1, #cx.tabs do
-		local name = ya.truncate(cx.tabs[i].name, { max = 12 })
+		local name = ui.truncate(cx.tabs[i].name, { max = 12 })
 		if i == cx.tabs.idx then
 			if i == #cx.tabs then
 				lines[#lines + 1] = ui.Line({
-					ui.Span(th.tabs.sep_inner.open):bg(th.tabs.inactive.bg):fg(th.tabs.active.bg),
-					ui.Span(" " .. i .. " " .. name .. " "):style(th.tabs.active),
-					ui.Span(th.tabs.sep_inner.close):bg(th.tabs.active.bg):fg(th.tabs.active.bg),
+					ui.Span(th.tabs.sep_inner.open):style(th.help.footer),
+					ui.Span(" " .. i .. " " .. name .. " "):style(th.mode.normal_main),
 				})
 			else
 				lines[#lines + 1] = ui.Line({
-					ui.Span(th.tabs.sep_inner.open):bg(th.tabs.inactive.bg):fg(th.tabs.active.bg),
-					ui.Span(" " .. i .. " " .. name .. " "):style(th.tabs.active),
-					ui.Span(th.tabs.sep_inner.close):bg(th.tabs.inactive.bg):fg(th.tabs.active.bg),
+					ui.Span(th.tabs.sep_inner.open):style(th.help.footer),
+					ui.Span(" " .. i .. " " .. name .. " "):style(th.mode.normal_main),
+					ui.Span(th.tabs.sep_inner.close):style(th.help.footer),
 				})
 			end
 		else
-			lines[#lines + 1] = ui.Line(" " .. i .. " " .. name .. " "):style(th.tabs.inactive)
+			lines[#lines + 1] = ui.Line(" " .. i .. " " .. name .. " "):style(th.mode.normal_alt)
 		end
 	end
 	return ui.Line(lines)
 end, 9000, Header.RIGHT)
 
-function Header:cwd()
-	return ""
-end
-
-Header:children_add(function(state)
-	local opener = ya.truncate(th.status.sep_left.open, { max = 1 })
-	local closer = ya.truncate(th.tabs.sep_outer.close, { max = 1 })
+-- replaces cwd
+Header:children_add(function()
+	local opener = ui.truncate(th.status.sep_left.open, { max = 1 })
+	local closer = ui.truncate(th.tabs.sep_outer.close, { max = 1 })
 
 	local cwd = tostring(cx.active.current.cwd)
 	local home = os.getenv("HOME") or ""
@@ -52,49 +54,38 @@ Header:children_add(function(state)
 		table.insert(path_spans, ui.Span(text):style(style))
 	end
 
-	-- Helper to add styled opener/closer
-	local function add_opener(fg, bg)
-		add_span(opener, { fg = fg, bg = bg })
-	end
-
-	local function add_closer(fg, bg)
-		add_span(closer, { fg = fg, bg = bg })
-	end
-
 	if cwd == "~" then
 		-- Home directory
-		add_opener(th.tabs.active.bg, th.tabs.inactive.bg)
-		add_span("   ", th.tabs.active)
-		add_closer(th.tabs.active.bg, th.tabs.inactive.bg)
+		add_span(opener, th.tabs.active)
+		add_span("   ", th.mode.normal_main)
+		add_span(closer, th.help.footer)
 	elseif cwd == "/" then
 		-- Root directory
-		add_opener(th.tabs.active.bg, th.tabs.inactive.bg)
-		add_span(" ", th.tabs.active)
-		add_closer(th.tabs.active.bg, th.tabs.inactive.bg)
+		add_span(opener, th.tabs.active)
+		add_span(" ", th.mode.normal_main)
+		add_span(closer, th.help.footer)
 	else
 		-- Normal path
 		cwd = " " .. cwd:gsub("/+$", "")
 		local parent, leaf = cwd:match("^(.*)/([^/]+)$")
 		if not parent or parent == " " or parent == "" then
 			-- Path like `/usr` → no parent
-			add_opener(th.tabs.active.bg, th.tabs.inactive.bg)
-			add_span(" /" .. leaf, th.tabs.active)
-			add_closer(th.tabs.active.bg, th.tabs.inactive.bg)
+			add_span(opener, th.tabs.active)
+			add_span(" /" .. leaf, th.mode.normal_main)
+			add_span(closer, th.help.footer)
 		else
 			-- Path like `/home/user/dev` or `~/Desktop`
-			add_opener(th.tabs.inactive.bg, th.tabs.inactive.bg)
-			add_span(parent, th.tabs.inactive)
-			add_closer(th.tabs.inactive.bg, th.tabs.active.bg)
-			add_span("/" .. leaf, th.tabs.active)
-			add_closer(th.tabs.active.bg, th.tabs.inactive.bg)
+			add_span(opener, th.mode.normal_main)
+			add_span(parent, th.mode.normal_alt)
+			add_span(closer, th.help.desc)
+			add_span("/" .. leaf, th.mode.normal_main)
+			add_span(closer, th.help.footer)
 		end
 	end
 
 	local lines = {
-		-- ui.Line(th.tabs.sep_outer.open):fg(th.tabs.inactive.bg),
-		-- ui.Line(" "):style(th.tabs.inactive),
 		ui.Line(path_spans),
-		ui.Line(th.tabs.sep_outer.close):fg(th.tabs.inactive.bg),
+		ui.Line(th.tabs.sep_outer.close):style(th.tabs.inactive),
 	}
 
 	return ui.Line(lines)
