@@ -15,6 +15,7 @@ TMPFILE=$tmpfile &&
   "
 chosen=$(<"$tmpfile")
 rm -f "$tmpfile"
-[[ -z $chosen ]] && exit 0
-tmuxp load "$TMUXP_DIR/$chosen.yaml" &
-dunstify -u low "Tmuxp loaded" "$chosen"
+[[ -n $chosen ]] && {
+  tmuxp load "$TMUXP_DIR/$chosen.yaml" &
+  dunstify -u low "Tmuxp loaded" "$chosen"
+}
