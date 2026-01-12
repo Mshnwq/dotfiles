@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+export PATH="$HOME/.local/bin/executer:$HOME/.local/bin:$PATH"
 
 # CONSTANTS
 ROFI_THEME="$HOME/.config/rofi/WallSelect.rasi"
@@ -87,5 +88,5 @@ wall_selection=$(
 
 [[ -n $wall_selection ]] && {
   echo "${wall_dir}/${wall_selection}" >"${RICES_DIR}/.wall"
-  WallColor --wait &
+  wal.sh --all --wait
 }
