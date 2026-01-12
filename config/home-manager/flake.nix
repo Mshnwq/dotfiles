@@ -6,14 +6,17 @@
     extra-substituters = [
       "https://devenv.cachix.org"
       "https://hyprland.cachix.org"
+      "https://yazi.cachix.org"
     ];
     extra-trusted-substituters = [
       "https://devenv.cachix.org"
       "https://hyprland.cachix.org"
+      "https://yazi.cachix.org"
     ];
     extra-trusted-public-keys = [
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
     ];
     trusted-users = [
       "root"
@@ -64,6 +67,9 @@
     # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
     devenv = {
       url = "github:cachix/devenv/v1.10";
+    };
+    yazi = {
+      url = "github:sxyazi/yazi/v26.1.4";
     };
     nvchad-starter = {
       url = "github:Mshnwq/nvchad";

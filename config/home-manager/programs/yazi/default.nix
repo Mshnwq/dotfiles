@@ -76,7 +76,6 @@ in
     }) availablePlugins;
 
     home.packages = with pkgs; [
-      yazi
       trash-cli
       mediainfo
       exiftool
@@ -84,6 +83,8 @@ in
 
     programs.yazi = {
       enable = true;
+      # https://github.com/sxyazi/yazi/blob/main/CHANGELOG.md#v251229
+      package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
       enableZshIntegration = false;
       enableBashIntegration = false;
       plugins = pluginsConfig;
