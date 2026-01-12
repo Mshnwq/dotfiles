@@ -45,6 +45,7 @@ in
       dfrs
       eza
       tldr
+      jless
       ripgrep
       util-linux
       zoxide

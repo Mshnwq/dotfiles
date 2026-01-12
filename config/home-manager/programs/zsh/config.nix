@@ -53,13 +53,17 @@ let
     function zle_eval { echo -en "\e[2K\r"; eval "$@"; zle redisplay }
     function zle_refresh_p10k { zle_eval "source $HOME/.cache/wal/custom-fzf.sh; source $ZDOTDIR/.p10k.zsh; clear" }
     function zle_get_cwd { zle_eval "pwd | wl-copy" }
+    function zle_wl_copy { echo -n "$BUFFER" | wl-copy; }
     function zle_append_wl_copy { BUFFER="$BUFFER | wl-copy"; zle end-of-line }
     function zle_append_stdout { BUFFER="$BUFFER 2>&1"; zle end-of-line }
 
     zle -N zle_refresh_p10k; bindkey "^E" zle_refresh_p10k
     zle -N zle_get_cwd; bindkey "^P" zle_get_cwd
+    zle -N zle_wl_copy; bindkey "^Y" zle_wl_copy
     zle -N zle_append_wl_copy; bindkey '^\' zle_append_wl_copy
     zle -N zle_append_stdout; bindkey '^]' zle_append_stdout
+    autoload -Uz edit-command-line
+    zle -N edit-command-line; bindkey '^_' edit-command-line
 
     # Plugins & Optionals
     ${lib.optionalString (config.zsh.pluginSettings.history-substring-search.enable) ''
