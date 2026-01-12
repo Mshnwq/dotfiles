@@ -1,104 +1,87 @@
 #!/usr/bin/env bash
-# set -euo pipefail
+set -euo pipefail
 
 DOTDIR=$(<"$HOME/.config/dotdir")
 DOTDIR="${DOTDIR/#\~/$HOME}"
-base_dir="$DOTDIR/local/bin/executer"
--O) grep -Po '^\s*--[a-z-]+(?:\s*\|\s*--[a-z-]+)*\)' \
-  "$0" | sed 's# | #\n#g' | sed -E 's|^--([a-z-]+)\)?|\1|' ;;
-*) echo "Error: Invalid option $app" >&2 && exit 2 ;;
+BASE_DIR="$DOTDIR/local/bin/executer"
+ROFI_DIR="$HOME/.config/rofi"
+EXECR_THEME="$ROFI_DIR/Executer.rasi"
+INPUT_THEME="$ROFI_DIR/Input.rasi"
 
+# Get script case statement options
+_opts() {
+  grep -Po '^\s*--[a-z-]+(?:\s*\|\s*--[a-z-]+)*\)' \
+    "$1" | sed 's# | #\n#g' | sed -E 's|^--([a-z-]+)\)?|\1|'
+}
 
-# declare -A actions=(
-#   ["Daemon"]="start|status|stop"
-#   ["Action"]="xxxxx"
-#   [""]="xxxxx"
-#   # ["Disk"]="start|status|stop"
-#   )
+scripts="$(find "$BASE_DIR" -type f -executable -not -name ".*.sh" -printf "%f\n")"
+mapfile -t locals < <(_opts "$0")
+selected=$(printf '%s\n' "${scripts//.sh/}" "${locals[@]}" | sort | rofi -dmenu -theme "$EXECR_THEME")
+[[ -n $selected ]] || exit 0
 
-# # TODO: improve
-#
-# DOTDIR=$(<"$HOME/.config/dotdir")
-# DOTDIR="${DOTDIR/#\~/$HOME}"
-# base_dir="$DOTDIR/local/bin/executer"
-#
-# scripts=$(find "$base_dir" -type f -executable -not -name ".*.sh" -printf "%f\n")
-#
-# # Pass the scripts to rofi for selection
-# selected=$(echo "$scripts" | rofi -dmenu -theme "$HOME/.config/rofi/Executer.rasi")
-#
-# # Exit if no script is selected
-# [[ -n $selected ]] || exit 0
-#
-# # Path to the selected script
-# script="$HOME/.local/bin/executer/$selected"
-#
-# # Check for #WRAP marker
-# if grep -q "#WRAP" "$script"; then
-#   # Always keep the standard actions
-#   standard_actions="status|start|stop|kill|on|off"
-#   base_name="${selected%.*}" # strip .sh or .py
-#   prompt_name=$(awk -F'_' '/#WRAP_/ {print $2}' "$script")
-#
-#   # Collect extra actions listed in the script (lines after #WRAP_…, skip empty/comment lines)
-#   mapfile -t extra_options < <(awk '
-#         /^#WRAP_/ {flag=1; next}      # start after WRAP line
-#         flag && /^#/ {sub(/^#/,""); print}   # strip leading #, print
-#         flag && /^[[:space:]]*$/ {exit}     # stop at empty line
-#     ' "$script")
-#   echo "${extra_options[@]}"
-#
-#     extra_regex=$(
-#       IFS='|'
-#       echo "${extra_options[*]}"
-#     )
-#     combined="$standard_actions|$extra_regex"
-#   else
-#     combined="$standard_actions"
-#   fi
-#
-#   # Escape pipes for find -regex
-#   regex_suffix="${combined//|/\\|}"
-#
-#   echo "$regex_suffix"
-#
-#   # Find matching executable files
-#   wrap_files=$(find "$base_dir" -type f -executable \
-#     -regex ".*/\.${base_name}_\(${regex_suffix}\)\.sh" -printf "%f\n")
-#
-#   echo "$wrap_files"
-#
-#   # Map to display only the action part for fzf
-#   actions=$(echo "$wrap_files" | sed -E "s/^\\.${base_name}_([^.]+)\\.sh$/\1/")
-#
-#   tmpfile=$(mktemp)
-#
-#   # Launch floating terminal running fzf with preview
-#   ACTIONS="$actions" PROMPT="$prompt_name" BASE_DIR="$base_dir" BASE_NAME="$base_name" TMPFILE="$tmpfile" \
-#     alacritty --class FloaTerm,FloaTerm --title=FloaTerm \
-#     -e bash -c '
-#         source "${HOME}/.cache/wal/custom-fzf.sh"
-#         printf "%s\n" "${ACTIONS}" | fzf --prompt="${PROMPT}: " \
-#           --preview="highlight -O ansi ${BASE_DIR}/.${BASE_NAME}_{}.sh" \
-#           --preview-window=right:85%:wrap > "$TMPFILE"
-#       '
-#
-#   # Read result from temp file
-#   chosen_action=$(<"$tmpfile")
-#   rm -f "$tmpfile"
-#   [[ -z $chosen_action ]] && exit 0
-#   chosen_file=".${base_name}_${chosen_action}.sh"
-#   "$base_dir/$chosen_file"
-#   exit 0
-# fi
-#
-# # Check if the script requires input
-# if grep -q "#INPUT_REQUIRED" "$script"; then
-#   # Prompt the user for input using `rofi`
-#   user_input=$(rofi -dmenu -theme "$HOME/.config/rofi/Input.rasi" -p "Enter input for $selected: ")
-#   # Run the script with the input
-#   "$script" "$user_input"
-# else
-#   # Run the script normally if no input is required
-#   "$script"
-# fi
+# if selected in here case
+_alacritty() { alacritty --class FloaTerm,"$1" --title="$1" "${@:2}"; }
+case "--$selected" in
+--nvtop | --gpg-tui)
+  _alacritty TopTerm -o 'font.size=12' -e "$selected"
+  ;;&
+--nvidia)
+  _alacritty TopTerm -o 'font.size=14' -e sh -c "nvidia-smi -l"
+  ;;&
+*) [[ $selected =~ ^($(printf '%s|' "${locals[@]}"))$ ]] && exit 0 ;;
+esac
+
+# get script options
+script="${BASE_DIR}/${selected}.sh"
+mapfile -t opts < <(_opts "$script")
+
+# Has no opts run it
+[[ -z ${opts[*]} ]] && {
+  "$script"
+  exit 0
+}
+
+_fzf() {
+  # shellcheck disable=SC2016
+  SCRIPT="$script" PROMPT="${1:-Opt}" \
+    TMP="$tmpfile" OPTS="$tmpfile.opts" \
+    _alacritty ExecTerm -e sh -c '
+      source "$HOME/.cache/wal/custom-fzf.sh"
+      cat "$OPTS" | fzf --prompt="$PROMPT: " \
+        --preview="highlight -O ansi $SCRIPT" \
+        --preview-window=right:84%:wrap > "$TMP"
+    '
+  cat "$tmpfile"
+}
+
+declare -A actions=(
+  ["daemons"]="start|status|stop"
+  ["procs"]="kill|start|status"
+)
+tmpfile=$(mktemp)
+trap 'rm -f "$tmpfile" "$tmpfile.opts"' EXIT
+
+if [[ $selected == "wal" ]]; then
+  read -ra themes < <("$script" --get)
+  printf "%s\n" "${themes[@]}" >"$tmpfile.opts"
+  option="theme"
+  action=$(_fzf "Theme")
+  [[ -n $action ]] || exit 1
+else
+  printf "%s\n" "${opts[@]}" >"$tmpfile.opts"
+  option=$(_fzf "Option")
+  [[ -n $option ]] || exit 1
+  [[ $selected =~ ^($(printf '%s|' "${!actions[@]}"))$ ]] && {
+    IFS='|' read -ra action_opts <<<"${actions[$selected]}"
+    printf "%s\n" "${action_opts[@]}" >"$tmpfile.opts"
+    action=$(_fzf "$option")
+    [[ -n $action ]] || exit 1
+  }
+fi
+
+# Execute the script
+if grep -q "#INPUT_REQUIRED" "$script"; then
+  "$script" "$(rofi -dmenu -theme "$INPUT_THEME" -p "Enter input for $selected: ")"
+else
+  "$script" "--$option" "${action:-}"
+fi
