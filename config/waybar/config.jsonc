@@ -263,8 +263,8 @@
       "tooltip-format": "{title}\n{album}\n{artist}\n{repeatIcon} {randomIcon} {singleIcon} {consumeIcon} ",
       "tooltip-format-disconnected": "MPD (disconnected)",
       "on-click": "~/.local/bin/OpenApps --music",
-      "on-click-right": "~/.local/bin/executer/.mpd_launch.sh",
-      "on-click-middle": "~/.local/bin/executer/.waybar_cava.sh"
+      "on-click-right": "~/.local/bin/executer/.mpd.sh",
+      "on-click-middle": "~/.local/bin/executer/waybar.sh --cava"
   },
   "disk": {
     "interval": 30,
@@ -433,7 +433,7 @@
     "noise_reduction": 0.77,
     "input_delay": 2,
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-    "on-click-right": "~/.local/bin/executer/.waybar_cava.sh",
+    "on-click-right": "~/.local/bin/executer/waybar.sh --cava",
     "actions": {
     	"on-click": "mode"
     }
