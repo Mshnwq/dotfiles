@@ -12,7 +12,7 @@ in
     defaultSettings = {
       communityPlugins = with plugins; [
         pywalPlugin
-        advancedUri
+        # advancedUri # TODO: broked
       ];
     };
     vaults = {

@@ -19,8 +19,9 @@ args@{
       dialog
       # cowsay
       cmatrix
-      mtpfs
-      simple-mtpfs
+      # TODO: broked
+      # mtpfs
+      # simple-mtpfs
       lm_sensors
       zathura
     ];
@@ -66,9 +67,11 @@ args@{
       rclone
       jdupes
       # aria2
+      # wireshark # TODO: try on other device it brok my wi-fi
       nmap
       buku
       # --import bookmarks.db
+      newsboat
     ];
   };
 

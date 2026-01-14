@@ -44,7 +44,7 @@ in
         let
           layoutConfigContent =
             builtins.readFile
-              config.sops.secrets."keyboard_layouts".path;
+              config.sops.secrets."keyboard-conf".path;
           # Parse lines and extract layout codes (values after =)
           parseLayouts =
             content:
@@ -111,7 +111,7 @@ in
         };
 
     sops.secrets = {
-      keyboard_layouts = {
+      keyboard-conf = {
         mode = "0400";
         path = "${config.xdg.configHome}/keyboard_layouts.conf";
       };

@@ -35,11 +35,11 @@
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
   };
   # OpenSSH 		      ~/.ssh 	will not be fix -	Assumed to be present by many ssh daemons and clients such as DropBear and OpenSSH.
-  # SSH folder 		    ~/.ssh 			700 	drwx------
-  # Public key 		    ~/.ssh/id_rsa.pub 	644 	-rw-r--r--
-  # Private key 	    ~/.ssh/id_rsa 		600 	-rw-------
+  # SSH folder 		    ~/.ssh 			            700 	drwx------
+  # Public key 		    ~/.ssh/id_rsa.pub       644 	-rw-r--r--
+  # Private key 	    ~/.ssh/id_rsa 		      600 	-rw-------
   # Authorized Keys 	~/.ssh/authorized_keys 	600 	-rw-------
-  # Config 		        ~/.ssh/config 		600 	-rw-------
+  # Config 		        ~/.ssh/config 		      600 	-rw-------
 
   # Ensure directory exists with secure permissions
   home.activation.ensureGnuPGDir =
