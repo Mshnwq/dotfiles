@@ -1,7 +1,5 @@
 [manager]
 cwd = {{ fg = "{color11}" }}
-hovered         = {{ reversed = true }}
-preview_hovered = {{ underline = true }}
 find_keyword  = {{ fg = "{color10}", bold = true, italic = true, underline = true }}
 find_position = {{ fg = "{color14}", bg = "reset", bold = true, italic = true }}
 marker_copied   = {{ fg = "{color4}", bg = "{color4}" }}
@@ -18,12 +16,16 @@ border_symbol = "│"
 border_style  = {{ fg = "{foreground}" }}
 syntect_theme = ""
 
+[indicator]
+padding = {{ open = "█", close = "█" }}
+current = {{ reversed = true }}
+preview = {{ underline = true }}
 
 [tabs]
 sep_inner = {{ open = "", close = "" }}
 sep_outer = {{ open = "", close = "" }}
-active   = {{ fg = "{background}", bg = "{color11}", bold = true }}
-inactive = {{ fg = "{background}", bg = "{color8}" }}
+active   = {{ fg = "{color11}", bg = "{background}", bold = true }}
+inactive = {{ fg = "{color8}", bg = "{background}" }}
 
 [mode]
 normal_main = {{ fg = "{background}", bg = "{color11}", bold = true }}
@@ -79,9 +81,10 @@ separator_style = {{ fg = "{color2}" }}
 [help]
 on      = {{ fg = "{color13}" }}
 run     = {{ fg = "{color14}" }}
-desc    = {{}}
+#desc    = {{}}
+desc  = {{ fg = "{color8}", bg = "{color11}" }}
 hovered = {{ reversed = true, bold = true }}
-footer  = {{ fg = "{color1}", bg = "{color5}" }}
+footer  = {{ fg = "{color11}", bg = "{color8}" }}
 
 [notify]
 title_info  = {{ fg = "{color11}" }}
@@ -103,6 +106,6 @@ rules = [
 	# Documents
 	{{ mime = "application/{{pdf,doc,rtf,vnd.*}}", fg = "{color13}" }},
 	# Fallback
-	{{ name = "*", fg = "{color12}" }},
-	{{ name = "*/", fg = "{color11}" }}
+	{{ url = "*", fg = "{color12}" }},
+	{{ url = "*/", fg = "{color11}" }}
 ]

@@ -1,7 +1,3 @@
-#  ┌─┐┬  ┬┌─┐┌─┐
-#  ├─┤│  │├─┤└─┐
-#  ┴ ┴┴─┘┴┴ ┴└─┘
-
 alias chmox='chmod +x'
 alias dev='devenv shell $SHELL'
 alias ...='cd ../..'
@@ -13,6 +9,8 @@ _OpenApps() {
 }
 compdef _OpenApps OpenApps
 alias oa='OpenApps'
+
+alias -s json="jless"
 
 # Program renames
 alias py='python'
@@ -26,9 +24,6 @@ alias grep='grep --color'
 alias diff='diff --color'
 alias kssh='kitten ssh'
 
-# -------------------------------------------------------------------
-# List
-# -------------------------------------------------------------------
 alias l='exa -al --icons'
 alias ll='/bin/ls -alF'
 alias la='exa --all --icons'
@@ -38,8 +33,5 @@ alias lgt='exa --icons --git --tree -L=3'
 alias lt='exa --icons --tree -L=3'
 alias lta='exa --all --icons --tree -L=3'
 
-# ----
-# Cat
-# ----
 alias cat="bat --theme=base16 --paging=never"
 alias cata="bat --theme=base16 --show-all --paging=never"
