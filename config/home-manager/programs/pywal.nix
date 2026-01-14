@@ -24,7 +24,6 @@ let
     "waybar/colors-waybar.css" = "${walCache}/colors-waybar.css";
     "alacritty/colors-alacritty.toml" = "${walCache}/colors-alacritty.toml";
     "dunst/dunstrc" = "${walCache}/custom-dunstrc";
-    "newsboat/pywal" = "${walCache}/custom-newsboat";
     "cava/config" = "${walCache}/custom-cava";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
     "rmpc/themes/pywal.ron" = "${walCache}/custom-rmpc.ron";

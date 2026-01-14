@@ -1,0 +1,63 @@
+{
+  lib,
+  config,
+  ...
+}:
+let
+  theme = ''
+    color background        color2 color0
+    color info              color8 color0
+
+    color listnormal        color3 color0
+    color listfocus         color8 color0 standout
+    color listnormal_unread color4 color0
+    color listfocus_unread  color8 color0 standout
+
+    highlight feedlist ".*0/0..---.*" color0 color0 invis
+    highlight feedlist "---.*---" color8 color0 standout
+
+    search-highlight-colors color6 color0
+    searchresult-title-format "Search result"
+
+    color article color7 default bold
+
+    highlight article "^(Feed|Title|Author|Link|Date): .+" color6 color0 bold
+    highlight article "^(Feed|Title|Author|Link|Date):" color5 color0 bold
+    highlight article "https?://[^ ]+" color4 color0 underline
+    highlight article "\\[[0-9][0-9]*\\]" color6 color0 bold
+  '';
+  binds = ''
+    macro b open-in-browser
+    macro v set browser "setsid -f mpv %u" ; open-in-browser ; set browser linkhandler
+    macro c set browser "echo %u | wl-copy" ; open-in-browser ; set browser linkhandler
+
+    bind-key G end
+    bind-key g home
+    bind-key k pageup
+    bind-key j pagedown
+    bind-key a toggle-article-read
+    bind-key n next-unread
+    bind-key N prev-unread
+    bind-key U show-urls
+  '';
+in
+{
+  sops.secrets = {
+    news-urls = {
+      mode = "0400";
+      path = "${config.xdg.configHome}/newsboat/urls";
+    };
+  };
+
+  # https://wiki.archlinux.org/title/Newsboat
+  # https://newsboat.org/releases/2.24/docs/newsboat.html
+  programs.newsboat = {
+    enable = true;
+    reloadThreads = 8;
+    autoReload = false;
+    extraConfig = lib.concatStringsSep "\n" [
+      theme
+      binds
+    ];
+  };
+}

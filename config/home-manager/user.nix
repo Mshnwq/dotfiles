@@ -60,6 +60,7 @@ in
     [
       mpv
       vim
+      news
       pass
       auto
       rust

@@ -71,7 +71,6 @@ args@{
       nmap
       buku
       # --import bookmarks.db
-      newsboat
     ];
   };
 
@@ -80,8 +79,8 @@ args@{
     home.packages = with pkgs; [
       cargo
       rustc
-      gpg-tui
       serie
+      gpg-tui
       # termscp
     ];
   };
