@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -60,4 +61,59 @@ in
       binds
     ];
   };
+
+  # Lifecycle: socket triggers → proxy starts → container starts → idle timeout → all stop
+  # This socket stays active and listens for incoming connections
+  systemd.user.sockets.rumblerss-proxy = {
+    Unit = {
+      Description = "Rumble RSS Proxy Socket";
+    };
+    Socket = {
+      ListenStream = "127.0.0.1:8030";
+      KeepAlive = true;
+      KeepAliveTimeSec = 15;
+      KeepAliveIntervalSec = 5;
+      KeepAliveProbes = 3;
+    };
+    Install = {
+      WantedBy = [ "sockets.target" ];
+    };
+  };
+
+  # https://thinkaboutit.tech/posts/2025-07-20-adhoc-containers-with-systemd-and-quadlet/
+  # Bridges between the socket and the podman quadlet container
+  systemd.user.services.rumblerss-proxy = {
+    Unit = {
+      Description = "Rumble RSS Proxy Service";
+      Requires = [ "rumblerss.service" ];
+      After = [ "rumblerss.service" ];
+      StopWhenUnneeded = true;
+    };
+    Service = {
+      Type = "notify";
+      ExecStart = "${pkgs.systemd}/lib/systemd/systemd-socket-proxyd --exit-idle-time=15 127.0.0.1:8031";
+      Restart = "no";
+    };
+  };
+
+  # https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+  home.file.".config/containers/systemd/rumblerss.container".text = ''
+    [Unit]
+    Description=Rumble RSS Feed Generator
+    BindsTo=rumblerss-proxy.service
+
+    [Container]
+    Image=ghcr.io/porjo/rumblerss:latest
+    PublishPort=127.0.0.1:8031:8080
+    AutoUpdate=registry
+
+    [Service]
+    Restart=on-failure
+    TimeoutStopSec=5
+
+    # Empty WantedBy = don't auto-start on boot
+    # Container only starts when proxy service requires it
+    [Install]
+    WantedBy=
+  '';
 }
