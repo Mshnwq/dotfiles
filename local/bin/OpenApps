@@ -41,7 +41,7 @@ case ${1:-} in
   _alacritty K9Term -o font.size="10" -e sh -c \
     "DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock lazydocker"
   ;;
---netmanager) NetManagerDM ;;
+--netmanager) networkmanager_dmenu ;;
 --bluetooth) RofiBluetooth ;;
 --buku) RofiBuku ;;
 --clipboard)

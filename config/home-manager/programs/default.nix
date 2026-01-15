@@ -24,7 +24,27 @@ args@{
       # simple-mtpfs
       lm_sensors
       zathura
+      networkmanager_dmenu
     ];
+
+    # https://wiki.archlinux.org/title/NetworkManager#Set_up_PolicyKit_permissions
+    home.file.".config/networkmanager-dmenu/config.ini".source =
+      pkgs.runCommand "NetManagerDM.ini" { }
+        ''
+          ${pkgs.gnused}/bin/sed \
+            -e "s|bspwm/config/rofi-themes|rofi|" \
+            -e "s/pinentry =/pinentry = pinentry-qt/" \
+            ${
+              pkgs.fetchurl {
+                url =
+                  "https://raw.githubusercontent.com/gh0stzk/dotfiles/"
+                  + "7fe6e5966ebcc51110855ff5e82dadc601393ae9/"
+                  + "config/bspwm/config/NetManagerDM.ini";
+                sha256 = "sha256-X1sucruwzSZiM3Qo3ydVZiRMX/5jjDQ+TduST8M9xU4=";
+              }
+            } > $out
+        '';
+
     programs.btop = {
       enable = true;
       settings = {

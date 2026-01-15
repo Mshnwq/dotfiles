@@ -206,7 +206,7 @@
     "exec": "~/.config/waybar/scripts/wifi-status.sh",
     "return-type": "json",
     "format": "{}",
-    "on-click": "~/.local/bin/NetManagerDM",
+    "on-click": "~/.local/bin/OpenApps --netmanager",
     "interval": 1,
     "min-length": 1,
     "max-length": 1
