@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# set -euo pipefail
 
 # TODO: improve
 
@@ -25,18 +26,18 @@ delete="Alt+d"
 help_color="#2d7ed8"
 
 # source custom config
-if [[ -f "$HOME/.config/dots/config/rofi-buku.config" ]]; then
-  source "$HOME/.config/dots/config/rofi-buku.config"
-fi
+# if [[ -f "$HOME/.config/rofi-buku.config" ]]; then
+#   source "$HOME/.config/rofi-buku.config"
+# fi
 
 main() {
-  HELP="Welcome to Buku. Use <span color='${help_color}'>${new_bookmark}</span> to add a new Bookmark
-Use <span color='${help_color}'>${switch_view}</span> to switch View. <span color='${help_color}'>${actions}</span> for actions"
+  HELP="Welcome to Buku. Use <span color='$help_color'>$new_bookmark</span> to add a new Bookmark
+Use <span color='$help_color'>$switch_view</span> to switch View. <span color='$help_color'>$actions</span> for actions"
   if [[ $mode == "bookmarks" ]]; then
     content=$(parseBuku)
-    menu=$(echo "${content}" | _rofi -p 'Bookmarks' -filter "${filter}" -mesg "${HELP}" -kb-custom-1 "${new_bookmark}" -kb-custom-2 "${switch_view}" -kb-custom-3 "${actions}" -kb-custom-4 "${edit}" -kb-custom-5 "${delete}")
+    menu=$(echo "$content" | _rofi -p 'Bookmarks' -filter "$filter" -mesg "$HELP" -kb-custom-1 "$new_bookmark" -kb-custom-2 "$switch_view" -kb-custom-3 "$actions" -kb-custom-4 "$edit" -kb-custom-5 "$delete")
   elif [[ $mode == "tags" ]]; then
-    menu=$(buku --nostdin --np --st | grep -v -e '^waiting for input$' -e '^$' | awk '{$NF=""; print $0}' | cut -d ' ' -f2 | _rofi -p 'Bookmarks' -mesg "${HELP}" -kb-custom-1 "${new_bookmark}" -kb-custom-2 "${switch_view}" -kb-custom-3 "${actions}" -kb-custom-4 "${edit}" -kb-custom-5 "${delete}")
+    menu=$(buku --nostdin --np --st | grep -v -e '^waiting for input$' -e '^$' | awk '$NF=""; print $0' | cut -d ' ' -f2 | _rofi -p 'Bookmarks' -mesg "$HELP" -kb-custom-1 "$new_bookmark" -kb-custom-2 "$switch_view" -kb-custom-3 "$actions" -kb-custom-4 "$edit" -kb-custom-5 "$delete")
   fi
   val=$?
   if [[ $val -eq 1 ]]; then
@@ -60,11 +61,11 @@ Use <span color='${help_color}'>${switch_view}</span> to switch View. <span colo
   elif [[ $val -eq 0 ]]; then
     if [[ $mode == "bookmarks" ]]; then
       id=$(getId "$content" "$menu")
-      for bm in ${id}; do
-        buku --nostdin -o "${bm}"
+      for bm in $id; do
+        buku --nostdin -o "$bm"
       done
     elif [[ $mode == "tags" ]]; then
-      filter="${menu}" mode="bookmarks" main
+      filter="$menu" mode="bookmarks" main
     fi
   fi
 }
@@ -87,7 +88,7 @@ optionsMenu() {
       fi
     fi
   elif [[ $mode == "tags" ]]; then
-    askmenu=$(echo -e "< Return\\n---\\n1. Replace Tag\\n2. Delete Tag" | _rofi -p 'Bookmarks' -mesg "Choose Action for tag \"${menu}\"")
+    askmenu=$(echo -e "< Return\\n---\\n1. Replace Tag\\n2. Delete Tag" | _rofi -p 'Bookmarks' -mesg "Choose Action for tag \"$menu\"")
     val=$?
 
     if [[ $val -eq 1 ]]; then
@@ -97,7 +98,7 @@ optionsMenu() {
         export mode=tags
         main
       elif [[ $askmenu == "1. Replace Tag" ]]; then
-        newtag=$(echo | _rofi -p 'Bookmarks' -mesg "Enter new tag name for tag \"${menu}\"")
+        newtag=$(echo | _rofi -p 'Bookmarks' -mesg "Enter new tag name for tag \"$menu\"")
         val=$?
 
         if [[ $val -eq 1 ]]; then
@@ -106,19 +107,19 @@ optionsMenu() {
           if [[ $newtag == "" ]]; then
             mode=tags main
           else
-            buku --nostdin --replace "${menu}" "${newtag}"
+            buku --nostdin --replace "$menu" "$newtag"
             mode=tags main
           fi
         fi
       elif [[ $askmenu == "2. Delete Tag" ]]; then
-        delask=$(echo -e "1. Yes\\n2. No" | _rofi -p 'Bookmarks' -mesg "Really delete tag \"${menu}\" from ALL bookmarks?")
+        delask=$(echo -e "1. Yes\\n2. No" | _rofi -p 'Bookmarks' -mesg "Really delete tag \"$menu\" from ALL bookmarks?")
         val=$?
 
         if [[ $val -eq 1 ]]; then
           exit
         elif [[ $val -eq 0 ]]; then
           if [[ $delask == "1. Yes" ]]; then
-            echo y | script -qfc "buku --nostdin --replace ${menu}" /dev/null
+            echo y | script -qfc "buku --nostdin --replace $menu" /dev/null
             mode=tags main
           elif [[ $delask == "2. No" ]]; then
             mode=tags main
@@ -139,7 +140,7 @@ deleteMenu() {
     exit
   elif [[ $val -eq 0 ]]; then
     if [[ $delask == "1. Yes" ]]; then
-      output=$(buku --nostdin --nc -d "${id}" --tacit)
+      output=$(buku --nostdin --nc -d "$id" --tacit)
       dunstify -u critical "Delete Bookmark" "$output"
       mode=bookmarks main
     elif [[ $delask == "2. No" ]]; then
@@ -151,13 +152,13 @@ deleteMenu() {
 editMenu() {
   id=$(getId "$content" "$menu")
 
-  title="$(getTitleFromId "${id}")"
-  url="$(getUrlFromId "${id}")"
-  comment="$(getCommentFromId "${id}")"
-  tags="$(getTagsFromId "${id}")"
+  title="$(getTitleFromId "$id")"
+  url="$(getUrlFromId "$id")"
+  comment="$(getCommentFromId "$id")"
+  tags="$(getTagsFromId "$id")"
 
   content="1. Title: $title\\n2. URL: $url\\n3. Comment: $comment\\n4. Tags: $tags"
-  editmenu=$(echo -e "< Return\\n---\\n${content}" | _rofi -p 'Bookmarks')
+  editmenu=$(echo -e "< Return\\n---\\n$content" | _rofi -p 'Bookmarks')
   val=$?
 
   if [[ $val -eq 1 ]]; then
@@ -178,20 +179,20 @@ editMenu() {
 }
 
 editTitle() {
-  titlemenu=$(echo "" | _rofi -p "> " -filter "${title}" -mesg "Edit Title and hit Enter")
+  titlemenu=$(echo "" | _rofi -p "> " -filter "$title" -mesg "Edit Title and hit Enter")
   val=$?
 
   if [[ $val -eq 1 ]]; then
     exit
   elif [[ $val -eq 0 ]]; then
-    buku --nostdin -u "${id}" --title "${titlemenu}"
+    buku --nostdin -u "$id" --title "$titlemenu"
   fi
 
   mode=bookmarks main
 }
 
 editUrl() {
-  urlmenu=$(echo "" | _rofi -p "> " -filter "${url}" -mesg "Edit URL and hit Enter")
+  urlmenu=$(echo "" | _rofi -p "> " -filter "$url" -mesg "Edit URL and hit Enter")
   val=$?
 
   if [[ $val -eq 1 ]]; then
@@ -201,7 +202,7 @@ editUrl() {
       echo "" | rofi -e "Not a valid URI, Make sure URLs start with http"
       editUrl
     else
-      buku --nostdin -u "${id}" --url "${urlmenu}"
+      buku --nostdin -u "$id" --url "$urlmenu"
     fi
   fi
 
@@ -209,13 +210,13 @@ editUrl() {
 }
 
 editComment() {
-  commentmenu=$(echo "" | _rofi -p "> " -filter "${comment}" -mesg "Edit Comment and hit Enter")
+  commentmenu=$(echo "" | _rofi -p "> " -filter "$comment" -mesg "Edit Comment and hit Enter")
   val=$?
 
   if [[ $val -eq 1 ]]; then
     exit
   elif [[ $val -eq 0 ]]; then
-    buku --nostdin -u "${id}" --comment "${commentmenu}"
+    buku --nostdin -u "$id" --comment "$commentmenu"
   fi
 
   mode=bookmarks main
@@ -252,29 +253,29 @@ addTags() {
   if [[ $val -eq 1 ]]; then
     exit
   elif [[ $val -eq 0 ]]; then
-    if [[ $(echo "${inserttags}" | wc -l) -gt 1 ]]; then
-      taglist=$(echo "${inserttags}" | tr '\n' ',')
+    if [[ $(echo "$inserttags" | wc -l) -gt 1 ]]; then
+      taglist=$(echo "$inserttags" | tr '\n' ',')
       tags=()
       for tag in $taglist; do
         tags+=("$tag")
       done
     else
-      tags=${inserttags}
+      tags="$inserttags"
     fi
 
     title=$(_rofi -p 'Bookmarks' -mesg "Add Bookmark Title")
-    echo "buku --nostdin -a \"${inserturl}\" --tag \"${tags}\" --title \"${title}\"" >/tmp/rofi-buku.log
-    if [[ "$title" != "" ]]; then
-      output=$(buku --nostdin --nc --offline -a "${inserturl}" --tag "${tags}" --title "${title}" 2>&1)
-      if [[ "${output}" != "[ERROR]"* ]]; then
-        dunstify -u normal "Bookmark Added" "Name: ${title}\n URL: ${inserturl}\nTags: ${tags}"
+    echo "buku --nostdin -a \"$inserturl\" --tag \"$tags\" --title \"$title\"" >/tmp/rofi-buku.log
+    if [[ $title != "" ]]; then
+      output=$(buku --nostdin --nc --offline -a "$inserturl" --tag "$tags" --title "$title" 2>&1)
+      if [[ $output != "[ERROR]"* ]]; then
+        dunstify -u normal "Bookmark Added" "Name: $title\n URL: $inserturl\nTags: $tags"
       else
         dunstify -u critical "Error" "$output"
       fi
     else
-      output=$(buku --nostdin --nc -a "${inserturl}" --tag "${tags}" 2>&1)
-      if [[ "${output}" != "[ERROR]"* ]]; then
-        dunstify -u normal "Bookmark Added" "URL: ${inserturl}\nTags: ${tags}"
+      output=$(buku --nostdin --nc -a "$inserturl" --tag "$tags" 2>&1)
+      if [[ $output != "[ERROR]"* ]]; then
+        dunstify -u normal "Bookmark Added" "URL: $inserturl\nTags: $tags"
       else
         dunstify -u critical "Error" "$output"
       fi
@@ -288,7 +289,6 @@ parseBuku() {
       if (max == "" or (max | tonumber) <= 0) then s 
       else s[0:(max | tonumber)] 
       end;
-  
     .[] |
     {
       id: (.index | tostring),
@@ -313,11 +313,11 @@ parseBuku() {
 
 getId() {
   id="${2%% *}"
-  if [ -z "$id" ]; then
+  if [[ -z $id ]]; then
     prev=""
     IFS=$'\n'
     for line in $1; do
-      if [ "$2" = "$line" ]; then
+      if [[ $2 = "$line" ]]; then
         id="${prev%% *}"
         break
       else
@@ -329,25 +329,22 @@ getId() {
 }
 
 getTitleFromId() {
-  buku --nostdin --nc -p "${1}" | grep -v '^waiting for input$' | gawk '
+  buku --nostdin --nc -p "$1" | grep -v '^waiting for input$' | gawk '
     BEGIN { RS=""; FS="\n" }
-
     { print gensub(/[0-9]+\.\s*(.*)/, "\\1", "g", $1) }
   '
 }
 
 getUrlFromId() {
-  buku --nostdin --nc -p "${1}" | grep -v '^waiting for input$' | gawk '
+  buku --nostdin --nc -p "$1" | grep -v '^waiting for input$' | gawk '
     BEGIN { RS=""; FS="\n" }
-
     { print gensub(/\s+> (.*)/, "\\1", "g", $2) }
   '
 }
 
 getCommentFromId() {
-  buku --nostdin --nc -p "${1}" | grep -v '^waiting for input$' | gawk '
+  buku --nostdin --nc -p "$1" | grep -v '^waiting for input$' | gawk '
     BEGIN { RS=""; FS="\n" }
-
     {
       if ($3 ~ /^\s+\+ /)
         print gensub(/\s+\+ (.*)/, "\\1", "g", $3)
@@ -356,13 +353,11 @@ getCommentFromId() {
 }
 
 getTagsFromId() {
-  buku --nostdin --nc -p "${1}" | grep -v '^waiting for input$' | gawk '
+  buku --nostdin --nc -p "$1" | grep -v '^waiting for input$' | gawk '
     BEGIN { RS=""; FS="\n" }
-
     {
       if ($3 ~ /^\s+# /)
         print gensub(/\s+# (.*)/, "\\1", "g", $3)
-
       if ($4 ~ /^\s+# /)
         print gensub(/\s+# (.*)/, "\\1", "g", $4)
     }

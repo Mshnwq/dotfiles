@@ -81,7 +81,7 @@ fi
 
 # Execute the script
 if grep -q "#INPUT_REQUIRED" "$script"; then
-  "$script" "$(rofi -dmenu -theme "$INPUT_THEME" -p "Enter input for $selected: ")"
+  "$script" "--$option" "$(rofi -dmenu -theme "$INPUT_THEME" -p "Enter input for $selected: ")"
 else
   "$script" "--$option" "${action:-}"
 fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROFI_THEME="$HOME/.config/rofi/SelectorPin.rasi"
+ROFI_THEME="$HOME/.config/rofi/Selector.rasi"
 
 case $1 in
 --pinentry)
@@ -28,9 +28,10 @@ case $1 in
   }
 
   rofi_menu() {
-    printf '%s\n' "${options[@]}" | rofi \
-      -mesg "[ Select Pass Pin Entry Program ]" \
-      -theme "$ROFI_THEME" -dmenu
+    printf '%s\n' "${options[@]}" |
+      rofi -theme "$ROFI_THEME" -dmenu \
+        -mesg "[ Select Pass Pin Entry Program ]" \
+        -theme-str 'listview { columns: 2; lines: 4; }'
   }
 
   choice=$(rofi_menu)

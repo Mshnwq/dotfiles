@@ -2,7 +2,7 @@
 set -euo pipefail
 
 MNT_CONF="$HOME/.config/mounts.conf"
-ROFI_THEME="$HOME/.config/rofi/SelectorMnt.rasi"
+ROFI_THEME="$HOME/.config/rofi/Selector.rasi"
 [[ -s $MNT_CONF ]] || exit 1
 
 mapfile -t mnts <"$MNT_CONF"
@@ -18,8 +18,11 @@ for mnt in "${mnts[@]}"; do
   fi
 done
 
-selected=$(printf '%s\n' "${options[@]}" |
-  rofi -dmenu -theme "$ROFI_THEME")
+selected=$(
+  printf '%s\n' "${options[@]}" |
+    rofi -dmenu -theme "$ROFI_THEME" \
+      -theme-str 'listview { columns: 1; lines: 5; }'
+)
 [[ -z $selected ]] && exit 0
 
 for i in "${!options[@]}"; do

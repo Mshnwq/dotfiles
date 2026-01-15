@@ -4,7 +4,7 @@ set -uo pipefail
 readonly REMOTE_HOST_FILE="$HOME/.config/mpd_remote_host"
 readonly MEDIA_CONTROL="$HOME/.local/bin/MediaControl"
 readonly WAYBAR="$HOME/.local/bin/executer/waybar.sh"
-ROFI_THEME="$HOME/.config/rofi/SelectorMPD.rasi"
+ROFI_THEME="$HOME/.config/rofi/Selector.rasi"
 DOTS_DIR="$HOME/.config/dots"
 OPTIONS=(
   "Local"
@@ -95,9 +95,12 @@ if [[ -s $STATUS_FILE ]]; then
   _stop "$(<"$STATUS_FILE")" && "$WAYBAR" --mpd
 else
   dunstify -r 1001 "MPC" "Starting MPC"
-  choice=$(printf '%s\n' "${OPTIONS[@]}" | rofi \
-    -dmenu -no-custom -p "Host" -selected-row 0 \
-    -mesg "[ Select MPD Host ]" -theme "$ROFI_THEME")
+  choice=$(
+    printf '%s\n' "${OPTIONS[@]}" |
+      rofi -dmenu -no-custom -selected-row 0 \
+        -theme-str 'listview { columns: 1; lines: 2; }' \
+        -p "Host" -mesg "[ Select MPD Host ]" -theme "$ROFI_THEME"
+  )
   [[ -n $choice ]] && {
     dunstify -r 1001 "MPC" "Starting $choice"
     _start "${choice,,}" && sleep 1
