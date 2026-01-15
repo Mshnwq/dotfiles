@@ -33,6 +33,13 @@ in
       # TODO: quickshell
     ];
 
+    home.file.".config/libinput-gestures.conf".text = ''
+      gesture swipe up 	3 niflveil restore-last
+      gesture swipe down	3 niflveil minimize
+      gesture swipe up	4 hyprctl dispatch fullscreen 0
+      gesture swipe down	4 hyprctl dispatch togglefloating
+    '';
+
     wayland.windowManager.hyprland = {
       enable = true;
       package = config.lib.nixGL.wrap hyprPkgs.hyprland;

@@ -27,7 +27,7 @@ case $1 in
   app="libinput-gestures"
   { "_$action" "$app"; }
   [[ $action == "${actions[1]}" ]] && {
-    CONF="$HOME/.config/dots/config/libinput-gestures.conf"
+    CONF="$HOME/.config/libinput-gestures.conf"
     [[ -s $CONF ]] && "$app" --conffile "$CONF" &>/dev/null &
   }
   ;;
