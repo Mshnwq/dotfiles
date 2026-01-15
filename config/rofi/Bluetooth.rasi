@@ -1,13 +1,10 @@
-// # z0mbi3 -  https://github.com/gh0stzk/dotfiles
-
+// # z0mbi3 - https://github.com/gh0stzk/dotfiles
 
 configuration {
     show-icons:                 false;
 }
 
-
 @import "shared.rasi"
-
 
 window {
     transparency:                "real";

@@ -7,7 +7,6 @@ configuration {
     me-accept-entry:		"MousePrimary";
 }
 
-
 @import "shared.rasi"
 
 window {

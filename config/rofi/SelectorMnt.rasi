@@ -1,6 +1,0 @@
-@import "Selector.rasi"
-
-listview {
-    columns:                     1;
-    lines:                       5;
-}

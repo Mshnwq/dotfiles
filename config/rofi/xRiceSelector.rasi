@@ -19,7 +19,6 @@ select-bg: #7560d3;
 select-fg: #14171c;
 }
 
-
 // Main //
 window {
     enabled:                     true;
