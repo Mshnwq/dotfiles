@@ -17,14 +17,22 @@ args@{
       age
       sops
       dialog
-      # cowsay
+      zathura
       cmatrix
+      lm_sensors
+      networkmanager_dmenu
       # TODO: broked
       # mtpfs
       # simple-mtpfs
-      lm_sensors
-      zathura
-      networkmanager_dmenu
+      (pkgs.symlinkJoin {
+        name = "rofi-bluetooth-wrapped";
+        buildInputs = [ pkgs.makeWrapper ];
+        paths = [ pkgs.rofi-bluetooth ];
+        postBuild = ''
+          wrapProgram $out/bin/rofi-bluetooth \
+            --add-flags "-- -theme ${config.xdg.configHome}/rofi/Bluetooth.rasi"
+        '';
+      })
     ];
 
     # https://wiki.archlinux.org/title/NetworkManager#Set_up_PolicyKit_permissions

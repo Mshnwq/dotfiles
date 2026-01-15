@@ -226,7 +226,7 @@
       "{device_alias}",
     "tooltip-format-enumerate-connected-battery": 
       ":: {device_alias}: 󱊣 {device_battery_percentage}%",
-    "on-click": "~/.local/bin/RofiBluetooth",
+    "on-click": "~/.local/bin/OpenApps --bluetooth",
     "on-click-right": "kitty --title '󰂯  Bluetooth TUI' bash -c bluetui",
     "interval": 1,
     "min-length": 1,

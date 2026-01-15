@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# https://github.com/colonelpanic8/rofi-systemd/blob/master/rofi-systemd
 set -euo pipefail
 
 # Configuration

@@ -42,7 +42,7 @@ case ${1:-} in
     "DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock lazydocker"
   ;;
 --netmanager) networkmanager_dmenu ;;
---bluetooth) RofiBluetooth ;;
+--bluetooth) rofi-bluetooth ;;
 --buku) RofiBuku ;;
 --clipboard)
   cliphist list | rofi -theme "$CLIP_THEME" -dmenu | cliphist decode | wl-copy
