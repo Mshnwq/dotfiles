@@ -53,6 +53,25 @@ args@{
             } > $out
         '';
 
+    # home.file.".config/rofi-buku.config".text = ''
+    #   #!/usr/bin/env bash
+    #   _rofi () {
+    #     rofi -dmenu -i -no-levenshtein-sort -width 1000 \
+    #       -theme "${config.xdg.configHome}/rofi/Buku.rasi" "$@"
+    #   }
+    #   # display settings
+    #   display_type=3
+    #   max_str_width=35
+    #   # keybindings
+    #   switch_view="Alt+Tab"
+    #   new_bookmark="Alt+n"
+    #   actions="Alt+a"
+    #   edit="Alt+e"
+    #   delete="Alt+d"
+    #   # colors
+    #   help_color="#2d7ed8"
+    # '';
+
     programs.btop = {
       enable = true;
       settings = {
