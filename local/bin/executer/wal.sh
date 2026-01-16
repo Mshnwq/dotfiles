@@ -19,6 +19,11 @@ wallpaper_path="$(<"$WALL")"
 builddir=$(<"$HOME/.config/builddir")
 builddir="${builddir/#\~/$HOME}"
 
+COLORS="$HOME/.cache/wal/colors.sh"
+# shellcheck disable=SC1091
+# shellcheck source=$COLORS
+[[ -f "$COLORS" ]] && source "$COLORS"
+
 # validate
 [[ -d "${LOG_FILE%/*}" ]] || mkdir -p "${LOG_FILE%/*}"
 echo "=== Wal Color Apply Start: $(date '+%F %T') ===" >"$LOG_FILE"
@@ -322,11 +327,10 @@ _plasma() {
 }
 
 _dunst() {
+  local rice assets_dir
+  [[ -n "$color4" ]] || return 1
   rice=$(<"$HOME/.config/dots/.rice")
   assets_dir="$HOME/.config/dots/rices/$rice/assets"
-
-  # shellcheck disable=SC1091
-  source "$HOME/.cache/wal/colors.sh"
 
   # Generate notification icons with ImageMagick
   local -A icons=(
@@ -338,28 +342,23 @@ _dunst() {
   )
 
   for icon in "${!icons[@]}"; do
-    magick -size 64x64 xc:transparent \
-      -fill "${color4}" \
-      -font 'JetBrainsMono-NF-ExtraBold' \
-      -pointsize 64 \
-      -draw "gravity center text 0 0 '${icons[$icon]}'" \
-      "$assets_dir/$icon"
+    magick -pointsize 64 -size 64x64 xc:transparent \
+      -fill "${color4}" -font 'JetBrainsMono-NF-ExtraBold' \
+      -draw "gravity center text 0 0 '${icons[$icon]}'" "$assets_dir/$icon"
   done
 
   # Update lock icon colors
   for svg in locked.svg unlocked.svg; do
     [[ -f "$assets_dir/$svg" ]] &&
-      sed -i "s/color:#.*/color:${color4}; }/" "$assets_dir/$svg"
+      sed -i "s/color:#.*/color:$color4; }/" "$assets_dir/$svg"
   done
 
   procs.sh --dunst start
 }
 
 _waybar() {
-  # shellcheck disable=SC1091
-  source "$HOME/.cache/wal/colors.sh"
-  sed -i "/\/\/-clock-date/s|\"<span color='#.*'><b>{}</b></span>\"|\"<span color='${cursor}'><b>{}</b></span>\"|" "$HOME/.config/waybar/config.jsonc"
-  waybar.sh --start
+  [[ -n "$cursor" ]] &&
+    sed -i "/\/\/-clock-date/s|\"<span color='#.*'><b>{}</b></span>\"|\"<span color='${cursor}'><b>{}</b></span>\"|" "$HOME/.config/waybar/config.jsonc" && waybar.sh --start
 }
 
 _sddm() {
@@ -370,11 +369,9 @@ _sddm() {
 
   # Extract colors
   local -A colors
-  colors[1]=$(grep -oP 'color0:\s*\K#[A-Fa-f0-9]+' "$colors_wallust")
-  colors[7]=$(grep -oP 'color14:\s*\K#[A-Fa-f0-9]+' "$colors_wallust")
-  colors[10]=$(grep -oP 'color10:\s*\K#[A-Fa-f0-9]+' "$colors_wallust")
-  colors[12]=$(grep -oP 'color12:\s*\K#[A-Fa-f0-9]+' "$colors_wallust")
-  colors[13]=$(grep -oP 'color13:\s*\K#[A-Fa-f0-9]+' "$colors_wallust")
+  for i in 0 10 12 13 14; do
+    colors[$i]=$(grep -oP "color$i:\s*\K#[A-Fa-f0-9]+" "$colors_wallust")
+  done
 
   # Update the colors in the SDDM config
   sudo sed -i \
@@ -388,30 +385,90 @@ _sddm() {
     -e "s/HighlightBackgroundColor=\"#[0-9A-Fa-f]\{6\}\"/HighlightBackgroundColor=\"${colors[12]}\"/" \
     -e "s/LoginFieldTextColor=\"#[0-9A-Fa-f]\{6\}\"/LoginFieldTextColor=\"${colors[12]}\"/" \
     -e "s/PasswordFieldTextColor=\"#[0-9A-Fa-f]\{6\}\"/PasswordFieldTextColor=\"${colors[12]}\"/" \
-    -e "s/DropdownBackgroundColor=\"#[0-9A-Fa-f]\{6\}\"/DropdownBackgroundColor=\"${colors[1]}\"/" \
+    -e "s/DropdownBackgroundColor=\"#[0-9A-Fa-f]\{6\}\"/DropdownBackgroundColor=\"${colors[0]}\"/" \
     -e "s/HighlightTextColor=\"#[0-9A-Fa-f]\{6\}\"/HighlightTextColor=\"${colors[10]}\"/" \
-    -e "s/PlaceholderTextColor=\"#[0-9A-Fa-f]\{6\}\"/PlaceholderTextColor=\"${colors[7]}\"/" \
-    -e "s/UserIconColor=\"#[0-9A-Fa-f]\{6\}\"/UserIconColor=\"${colors[7]}\"/" \
-    -e "s/PasswordIconColor=\"#[0-9A-Fa-f]\{6\}\"/PasswordIconColor=\"${colors[7]}\"/" \
+    -e "s/PlaceholderTextColor=\"#[0-9A-Fa-f]\{6\}\"/PlaceholderTextColor=\"${colors[14]}\"/" \
+    -e "s/UserIconColor=\"#[0-9A-Fa-f]\{6\}\"/UserIconColor=\"${colors[14]}\"/" \
+    -e "s/PasswordIconColor=\"#[0-9A-Fa-f]\{6\}\"/PasswordIconColor=\"${colors[14]}\"/" \
     "$sddm_theme_conf"
 
   # Copy wallpaper to SDDM theme
   sudo cp "$wallpaper_path" "$sddm_simple/Backgrounds/default"
 }
 
-_cursor() {
+_album() {
+  local track track_file track_dir track_dir_hash
+  local out out_dir cover have_cover tmp_cover
+
+  track="$(MediaControl --file)"
+  [[ -n $track ]] || {
+    echo "No track playing (mpc reported empty)." >&2
+    dunstify "Album Wal" "No track playing"
+    exit 1
+  }
+  out_dir="$HOME/.cache/wal/album"
+  track_file="$HOME/Music/$track"
+  track_dir="${track_file%/*}"
+
+  have_cover=0
+  # search for folder art next to the audio file ---
+  track_dir_hash=$(echo "$track_dir" | sha256sum | cut -d' ' -f1)
+  covers=(
+    "cover.jpg"
+    "cover.png"
+    "front.jpg"
+    "front.png"
+    "AlbumArt*.jpg"
+    "AlbumArt*.png"
+  )
+  for name in "${covers[@]}"; do
+    [[ -f "$track_dir/$name" ]] && {
+      cover="$track_dir/$name"
+      out="$out_dir/$track_dir_hash.png"
+      have_cover=1 && break
+    }
+  done
+
+  # --- 2. Fallback: extract embedded cover with ffmpeg ---
+  ((!have_cover)) && {
+    track_hash=$(echo "$track" | sha256sum | cut -d' ' -f1)
+    tmp_cover="$out_dir/${track_hash}_embedded.png"
+    if ffmpeg -y -i "$track_file" -v \
+      error -an -map 0:v:0 -frames:v 1 \
+      "$tmp_cover" 2>/dev/null &&
+      [[ -s $tmp_cover ]]; then
+      cover="$tmp_cover"
+      out="$out_dir/$track_hash.png"
+      have_cover=1
+    fi
+  }
+
+  # --- Compose wallpaper ---
+  # shellcheck disable=SC2015
+  ((have_cover)) && {
+    magick "$cover" -resize 1920x1080\! "$out"
+    echo "$out" >"$WALL" && $0 --all --wait
+  } || dunstify "Album Wal" "No cover art found"
+}
+
+_cursors() {
   local cursor_dir="$builddir/cursors"
   local cursor_file="$cursor_dir/src/templates/svgs.tera"
   local cache_dir="$HOME/.cache/wal/cursors"
   [[ -f "$cursor_file" ]] || exit 1
 
-  local cache_path
-  cache_path="$cache_dir/$(echo "$wallpaper_path" | sha256sum | cut -d' ' -f1)"
+  local cache_path name
+  if [[ $1 == "--soy" ]]; then
+    name="soy"
+    cache_path="$cache_dir/soy-$(echo "$wallpaper_path" | sha256sum | cut -d' ' -f1)"
+  else
+    name="default"
+    cache_path="$cache_dir/$(echo "$wallpaper_path" | sha256sum | cut -d' ' -f1)"
+  fi
 
-  # shellcheck disable=SC1091
-  source "$HOME/.cache/wal/colors.sh"
   # Replace FF0000 with pywal color3 in cursor template
-  sed -i -E 's|(replace\(from="FF0000", to=")[^"]*(")|\1'"${color3#\#}"'\2|' "$cursor_file"
+  [[ -n "$color3" ]] &&
+    sed -i -E 's|(replace\(from="FF0000", to=")[^"]*(")|\1'"${color3#\#}"'\2|' "$cursor_file"
 
   # Use cached build if available
   if [[ -d $cache_path ]]; then
@@ -421,7 +478,7 @@ _cursor() {
   else
     log "Building new cursor theme"
     cd "$cursor_dir" && cp \
-      "$cursor_dir/src/default.svg" \
+      "$cursor_dir/src/$name.svg" \
       "$cursor_dir/src/svgs/default.svg"
     if "${NIX_SHELL_CURSOR[@]}"; then
       log "Build successful. Saving to cache."
@@ -435,6 +492,9 @@ _cursor() {
 
   hyprctl setcursor 'Catppuccin Mocha Pywal' 18
 }
+
+_cursor() { _cursors; }
+_wojak() { _cursors --soy; }
 
 _color() {
   local theme="$1"
@@ -480,7 +540,7 @@ manual=(
   "wojak"
 )
 
-# TODO: do source wal once, fix exit code, param cursors
+# TODO: fix exit code
 case $1 in
 --get) echo "${auto[@]}" "${manual[@]}" ;;
 --theme) [[ $2 =~ ^($(printf '%s|' "${auto[@]}" "${manual[@]}"))$ ]] && "_$2" ;;
@@ -493,9 +553,12 @@ case $1 in
     exit 1
   fi
 
+  COLORS="$HOME/.cache/wal/colors.sh"
   # shellcheck disable=SC1091
-  source "$HOME/.cache/wal/colors.sh"
-  log "Loaded colors from wal"
+  # shellcheck source=$COLORS
+  [[ -f "$COLORS" ]] &&
+    source "$COLORS" &&
+    log "Loaded colors from $COLORS"
 
   for theme in "${auto[@]}"; do
     _color "$theme"
@@ -514,99 +577,3 @@ case $1 in
   }
   ;;
 esac
-
-# _wojak() {
-#   local cursor_dir="$builddir/cursors"
-#   local cursor_file="$cursor_dir/src/templates/svgs.tera"
-#   local cache_dir="$HOME/.cache/wal/cursors"
-#   local cache_path
-#   cache_path="$cache_dir/soy-$(echo "$wallpaper_path" | sha256sum | cut -d' ' -f1)"
-#
-#   # shellcheck disable=SC1091
-#   source "$HOME/.cache/wal/colors.sh"
-#   # Replace FF0000 with pywal color3 in cursor template
-#   sed -i -E 's|(replace\(from="FF0000", to=")[^"]*(")|\1'"${color3#\#}"'\2|' "$cursor_file"
-#
-#   # Use cached build if available
-#   if [[ -d $cache_path ]]; then
-#     echo "Cached cursor found. Using it."
-#     rm -r "$cursor_dir/dist/"
-#     cp -r "$cache_path/" "$cursor_dir/dist/"
-#   else
-#     echo "No cache found. Building new cursor."
-#     cd "$cursor_dir" || exit
-#     cp "$cursor_dir/src/soy.svg" "$cursor_dir/src/svgs/default.svg"
-#     if "${NIX_SHELL_CURSOR[@]}"; then
-#       echo "Build successful. Saving to cache."
-#       mkdir -p "$cache_path"
-#       cp -r "$cursor_dir/dist/catppuccin-mocha-pywal-cursors" "$cache_path"
-#     else
-#       echo "Build failed. Cache not created."
-#       exit 1
-#     fi
-#   fi
-#
-#   hyprctl setcursor 'Catppuccin Mocha Pywal' 18
-# }
-
-# _album() {
-#   local track track_file track_dir track_dir_hash
-#   local out out_dir cover have_cover tmp_cover
-#
-#   track="$(MediaControl --file)"
-#   [[ -n $track ]] || {
-#     echo "No track playing (mpc reported empty)." >&2
-#     dunstify "Album Wal" "No track playing"
-#     exit 1
-#   }
-#   out_dir="$HOME/.cache/wal/album"
-#   track_file="$HOME/Music/$track"
-#   track_dir="${track_file%/*}"
-#
-#   have_cover=0
-#   # search for folder art next to the audio file ---
-#   if ((have_cover == 0)); then
-#     track_dir_hash=$(echo "$track_dir" | sha256sum | cut -d' ' -f1)
-#     covers=(
-#       "cover.jpg"
-#       "cover.png"
-#       "front.jpg"
-#       "front.png"
-#       "AlbumArt*.jpg"
-#       "AlbumArt*.png"
-#     )
-#     for name in "${covers[@]}"; do
-#       if [[ -f "$track_dir/$name" ]]; then
-#         cover="$track_dir/$name"
-#         out="$out_dir/$track_dir_hash.png"
-#         have_cover=1
-#         break
-#       fi
-#     done
-#   fi
-#
-#   # --- 2. Fallback: extract embedded cover with ffmpeg ---
-#   if ((have_cover == 0)); then
-#     track_hash=$(echo "$track" | sha256sum | cut -d' ' -f1)
-#     tmp_cover="$out_dir/${track_hash}_embedded.png"
-#     local _ffmpeg="fmmpeg -v error -y -i $track_file -an -map 0:v:0 -frames:v 1 $tmp_cover"
-#     if "$_ffmpeg" 2>/dev/null; then
-#       if [[ -s "$tmp_cover" ]]; then
-#         cover="$tmp_cover"
-#         out="$out_dir/$track_hash.png"
-#         have_cover=1
-#       fi
-#     fi
-#   fi
-#
-#   # --- Compose wallpaper ---
-#   if ((have_cover == 1)); then
-#     magick "$cover" -resize 1920x1080\! "$OUT"
-#     echo "Wallpaper created: $OUT"
-#     echo "$out" >"$WALL"
-#     wal.sh --all --wait
-#   else
-#     echo "No cover art found"
-#     dunstify "Album Wal" "No cover art found"
-#   fi
-# }
