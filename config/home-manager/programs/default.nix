@@ -126,17 +126,39 @@ args@{
     home.packages = with pkgs; [
       cargo
       rustc
-      serie
+      serie # crashes on nixpkgs
+      guitar # from /pkgs/; doest crash baut laggy
       gpg-tui
       # termscp
     ];
   };
 
-  # language
-  # anki = {
-  #   home.packages = with pkgs; [
-  #     anki
-  #   ];
-  #   # ANKI_WAYLAND = "1";
-  # };
+  # digital audio workstation
+  daw = {
+    home.packages = with pkgs; [
+      qpwgraph
+      pulsemixer
+      # bespokesynth # flatpak is better
+      lmms # from /overlays/;
+      #odin2
+      #cardinal
+      #vital
+    ];
+  };
+  xdg.desktopEntries.qpwgraph = {
+    name = "qpwgraph";
+    exec = "qpwgraph %f";
+    icon = "org.rncbc.qpwgraph";
+    categories = [
+      "Audio"
+      "Midi"
+      "X-Alsa"
+      "X-Pipewire"
+    ];
+    type = "Application";
+    startupNotify = true;
+    mimeType = [
+      "application/x-qpwgraph-patchbay"
+    ];
+  };
 }
