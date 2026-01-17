@@ -1,8 +1,9 @@
 # pkgs/overlays.nix
 { lib, inputs }:
 final: prev: {
-  shyfox = final.callPackage ./shyfox.nix { };
   niflveil = final.callPackage ./niflveil.nix { };
+  shyfox = final.callPackage ./shyfox.nix { };
+  guitar = final.callPackage ./guitar.nix { };
   guitarpro = final.callPackage ./guitarpro.nix {
     wine = final.wineWowPackages.stableFull;
     makeDesktopItem = final.makeDesktopItem;

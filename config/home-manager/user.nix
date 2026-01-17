@@ -19,9 +19,16 @@ in
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS
 
-  # https://wiki.archlinux.org/title/XDG_Base_Directory
   xdg.enable = true;
   home.sessionVariables = {
+    EDITOR = "vim";
+    VISUAL = "vim";
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    TERM = "xterm-256color";
+    TERMINFO = "/usr/share/terminfo/";
+    DISABLE_AUTO_TITLE = "true";
+    # https://wiki.archlinux.org/title/XDG_Base_Directory
     YDOTOOL_SOCKET = "$XDG_RUNTIME_DIR/ydotool_socket";
     FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
     GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc-2.0";
@@ -41,16 +48,6 @@ in
     # XRESOURCES = "${config.xdg.configHome}/x11/xresources";
   };
 
-  home.sessionVariables = {
-    EDITOR = "vim";
-    VISUAL = "vim";
-    LANG = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-    TERM = "xterm-256color";
-    TERMINFO = "/usr/share/terminfo/";
-    DISABLE_AUTO_TITLE = "true";
-  };
-
   imports =
     let
       user = lib.importDir' ./. "user.nix";
@@ -60,6 +57,7 @@ in
     [
       mpv
       vim
+      daw
       news
       pass
       auto
@@ -74,10 +72,13 @@ in
       default
       flatpak
       firefox
-      obsidian
+      discord.stable
       keyboard.vial
       keyboard.kmonad
-      discord.stable
+      obsidian
+      # {
+      #   obsidian.syncthing.enable = true;
+      # }
       hypr
       {
         hypr.hyprWorkspaceLayouts.enable = true;
@@ -142,12 +143,6 @@ in
       defaultSopsFile = sopsFile;
       defaultSopsFormat = "yaml";
       secrets = {
-        yazi-goto = {
-          mode = "0400";
-        };
-        tmuxp = {
-          mode = "0400";
-        };
         mounts-conf = {
           mode = "0400";
           path = "${config.xdg.configHome}/mounts.conf";
