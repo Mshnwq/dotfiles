@@ -1,15 +1,16 @@
-# programs/mpv.nix
+# programs/mpv/default.nix
 {
-  inputs,
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
+  inputs,
   ...
 }:
 let
   hasNvidia =
     builtins.pathExists /etc/bazzite/image_name
     && lib.strings.hasInfix "nvidia" (builtins.readFile /etc/bazzite/image_name);
+  scripts = import ./scripts.nix { inherit pkgs lib; };
 in
 {
   # https://home-manager.dev/manual/24.11/index.xhtml#sec-usage-gpu-non-nixos
@@ -23,15 +24,12 @@ in
         "nvidiaPrime"
       ]
     else
-      [
-        "mesa"
-      ];
+      [ "mesa" ];
 
   home.packages =
     with pkgs;
     [
       jellyfin-mpv-shim
-      # NOTE: run with --impure flag
       nixgl.auto.nixGLDefault
       nixgl.nixGLIntel
     ]
@@ -43,14 +41,42 @@ in
   programs.mpv = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.mpv;
+    # bindings = {
+    #   "r" = "cycle_values video-rotate 90 180 270 0";
+    #   "|" = "vf toggle vflip";
+    # };
     config = {
-      osd-level = 0;
-      title = "\${filename}";
+      # osd-level = 0;
       hwdec = "vaapi";
+      title = "\${filename}";
     };
-    bindings = {
-      "r" = "cycle_values video-rotate 90 180 270 0";
-      "|" = "vf toggle vflip";
+    # overridden by programs.mpv.config.
+    defaultProfiles = [
+      "default"
+      "minimal"
+    ];
+    profiles = {
+      default = {
+      };
+      minimal = {
+        load-scripts = "no";
+      };
+      music = {
+        osd-level = 0;
+        force-window = "yes";
+      };
     };
+    # extraInput = "";
+    # includes = "";
   };
+
+  home.file = scripts.files;
+  # imports = [
+  #   (lib.nixgl.mkNixGLWrapper {
+  #     name = "Mpv";
+  #     command = "mpv";
+  #     nixGLVariant = "nixGLIntel";
+  #   })
+  # ];
+  # TODO: shaders
 }
