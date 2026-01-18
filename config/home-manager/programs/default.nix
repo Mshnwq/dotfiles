@@ -80,6 +80,39 @@ args@{
         presets = "proc:1:default";
       };
     };
+
+    home.activation.wrapDesktop =
+      inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+        ''
+          mkdir -p "${config.xdg.dataHome}"/{applications,flatpak/overrides}
+          # --- Flatpak Override ---
+          winezgui_override="${config.xdg.dataHome}/flatpak/overrides/io.github.fastrizwaan.WineZGUI"
+          if [ ! -f "$winezgui_override" ]; then
+            cat > "$winezgui_override" <<EOF
+          [Context]
+          sockets=wayland
+          EOF
+          fi
+        '';
+  };
+
+  vim = {
+    programs.vim = {
+      enable = true;
+      packageConfigurable = pkgs.vim;
+      extraConfig = ''
+        set viminfo+=n~/.config/viminfo
+        autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
+      '';
+    };
+    # https://github.com/vim/vim/issues/5157
+    # home.file.".local/bin/vim" = {
+    #   executable = true;
+    #   text = ''
+    #     #!/usr/bin/env sh
+    #     env -u XDG_SEAT -a vim ${config.programs.vim.package}/bin/vim "$@"
+    #   '';
+    # };
   };
 
   devenv = {

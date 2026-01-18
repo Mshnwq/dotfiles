@@ -70,15 +70,14 @@ in
       neovim
       devenv
       default
-      flatpak
       firefox
       discord.stable
       keyboard.vial
       keyboard.kmonad
       obsidian
-      # {
-      #   obsidian.syncthing.enable = true;
-      # }
+      {
+        obsidian.syncthing.enable = true;
+      }
       hypr
       {
         hypr.hyprWorkspaceLayouts.enable = true;
