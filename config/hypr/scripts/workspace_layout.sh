@@ -1,1 +1,2 @@
- [[ $(hyprctl activeworkspace -j | jq '.windows') -gt 1 ]] && hyprctl dispatch layoutmsg "setlayout $1"
+#!/usr/bin/env bash
+(($(hyprctl activeworkspace -j | jq '.windows') > 1)) && hyprctl dispatch layoutmsg "setlayout $1"
