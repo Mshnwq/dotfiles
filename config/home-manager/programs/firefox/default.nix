@@ -1,8 +1,8 @@
 {
   lib,
-  inputs,
-  config,
   pkgs,
+  config,
+  inputs,
   ...
 }:
 let
@@ -75,9 +75,7 @@ let
 in
 {
   sops.secrets = {
-    browser-pinned = {
-      mode = "0400";
-    };
+    browser-pinned.mode = "0400";
     tampermonkey = {
       mode = "0400";
       path = "${config.xdg.configHome}/tampermonkey.txt";

@@ -15,9 +15,9 @@
         executable = true;
         text = ''
           #!/usr/bin/env bash
-          exec ${
-            lib.optionalString (envVars != "") "env ${envVars} "
-          }${nixGLVariant} ${command} ${extraArgs} "$@"
+          exec -a "${command}" ${
+            lib.optionalString (envVars != "") "env -a \"${command}\" ${envVars}"
+          } ${nixGLVariant} ${command} ${extraArgs}"$@"
         '';
       };
     };
