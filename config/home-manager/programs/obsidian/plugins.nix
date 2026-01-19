@@ -12,11 +12,11 @@
       rev = "1ab216b";
       hash = "sha256-Ag1XU2OEx3kM0w63g8d/a2bpJMGKPSlzQRbDjDFEjh4=";
     };
-    nativeBuildInputs = [
-      pkgs.nodejs
-      pkgs.typescript
+    nativeBuildInputs = with pkgs; [
+      nodejs_22
+      typescript
     ];
-    npmDepsHash = "sha256-fnw6Etc5TEXEwUfrj7IClAf4ID2MPAXpnqVLuFt4mjU";
+    npmDepsHash = "sha256-fnw6Etc5TEXEwUfrj7IClAf4ID2MPAXpnqVLuFt4mjU=";
     npmDepsHook = ''
       export NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
       export NPM_CONFIG_FETCH_TIMEOUT=1200000
