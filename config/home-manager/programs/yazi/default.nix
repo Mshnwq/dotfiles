@@ -92,7 +92,7 @@ in
       settings = mergedSettings;
     };
 
-    # Only inject secret paths
+    sops.secrets.yazi-goto.mode = "0400";
     home.activation.yaziKeymap = config.lib.dag.entryAfter [ "writeBoundary" ] ''
       baseToml=${(pkgs.formats.toml { }).generate "keymap.toml" mergedKeymap}
       target="${config.home.homeDirectory}/.config/yazi/keymap.toml"

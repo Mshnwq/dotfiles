@@ -23,8 +23,8 @@ in
       associations = flipAssocs {
         ### FILE BROWSER ###
         "org.kde.dolphin" = [
-          "inode/directory"
           "x-directory/normal"
+          "inode/directory"
         ];
 
         ### DOCUMENT VIEWER ###
@@ -46,12 +46,12 @@ in
             "x-bmp"
             "x-pcx"
             "x-tga"
-            "x-portable-pixmap"
-            "x-portable-bitmap"
             "x-targa"
-            "x-portable-greymap"
             "svg+xml"
             "svg-xml"
+            "x-portable-pixmap"
+            "x-portable-bitmap"
+            "x-portable-greymap"
           ]
           ++ ([
             "application/pcx"
@@ -62,9 +62,9 @@ in
           "gpx"
           "x-gpx"
           "x-gpt"
+          "x-gnuplot"
           "x-guitarpro"
           "x-guitar-pro"
-          "x-gnuplot"
         ];
       };
     in

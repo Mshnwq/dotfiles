@@ -1,44 +1,30 @@
 {
-  inputs,
-  config,
   pkgs,
+  config,
+  inputs,
   ...
 }:
+let
+  fifo = "/tmp/mpd.fifo";
+in
 {
   sops.secrets = {
-    mpd-remote-host = {
-      mode = "0400";
-      path = "${config.xdg.configHome}/mpd_remote_host";
-    };
     discogs-key.mode = "0400";
     lastfm-key.mode = "0400";
+    mpd-remote-host = {
+      mode = "0400";
+      path = ''
+        ${config.xdg.configHome}/mpd_remote_host"
+      '';
+    };
   };
 
   home.packages = with pkgs; [
-    mpd
-    mpc
-    cava
     beets
-    qpwgraph
-    pulsemixer
+    cava
+    mpc
+    mpd
   ];
-
-  xdg.desktopEntries.qpwgraph = {
-    name = "qpwgraph";
-    exec = "qpwgraph %f";
-    icon = "org.rncbc.qpwgraph";
-    categories = [
-      "Audio"
-      "Midi"
-      "X-Alsa"
-      "X-Pipewire"
-    ];
-    type = "Application";
-    startupNotify = true;
-    mimeType = [
-      "application/x-qpwgraph-patchbay"
-    ];
-  };
 
   # https://github.com/nix-community/home-manager/blob/master/modules/services/mpd.nix
   home.file."${config.xdg.configHome}/mpd/mpd.conf".text = ''
@@ -66,7 +52,7 @@
     audio_output {
       type   "fifo"
       name   "my_fifo"
-      path   "/tmp/mpd.fifo"
+      path   "${fifo}"
       format "44100:16:2"
     }
   '';
@@ -79,7 +65,7 @@
         mkdir -p "${config.xdg.stateHome}/mpd"
         chmod 700 "${config.xdg.stateHome}/mpd"
         mkdir -p "${config.xdg.dataHome}/mpd/playlists"
-        mkfifo -m 600 /tmp/mpd.fifo || true
+        mkfifo -m 600 ${fifo} || true
       '';
 
   systemd.user.services.mpd = {

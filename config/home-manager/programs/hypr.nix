@@ -24,7 +24,7 @@ in
       slurp
       swappy
       waybar
-      niflveil # mine
+      niflveil # from /pkgs/;
       hypridle
       # hyprlock TODO: broken
       hyprsunset

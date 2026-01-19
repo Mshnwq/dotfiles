@@ -62,11 +62,6 @@ in
     default = "Space";
   };
 
-  # options.tmux.position = lib.mkOption {
-  #   type = lib.types.nonEmptyStr;
-  #   default = "top";
-  # };
-
   config = {
     # Set default enable values for all available plugins
     tmux.pluginSettings = lib.mapAttrs (name: plugin: {
@@ -94,6 +89,7 @@ in
       shell = "/usr/bin/zsh";
     };
 
+    sops.secrets.tmuxp.mode = "0400";
     home.activation.extractTmuxp =
       lib.mkIf
         (config.tmux.tmuxp.enable && builtins.pathExists config.sops.secrets.tmuxp.path)

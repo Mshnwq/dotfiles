@@ -9,16 +9,15 @@ let
       hash = "sha256-TJjTUpk4BnPbghYjqEj/goTryqWqi8O82TSoDUlPiTc=";
     };
 
-  # Reusable function to wrap Discord variants
   mkDiscordVariant =
     {
       pkgs,
       config,
       inputs,
-      binaryName,
-      desktopFileName,
       iconName,
+      binaryName,
       basePackage,
+      desktopFileName,
       packageOverrides ? { },
     }:
     let
@@ -42,8 +41,8 @@ let
         icon = "${iconName}";
         type = "Application";
         categories = [
-          "Network"
           "InstantMessaging"
+          "Network"
         ];
         settings = {
           StartupWMClass = binaryName;
@@ -54,18 +53,18 @@ in
 {
   stable =
     {
-      pkgs,
       lib,
+      pkgs,
       config,
       inputs,
       ...
     }:
     mkDiscordVariant {
       inherit pkgs config inputs;
-      binaryName = "Discord";
-      desktopFileName = "discord";
       iconName = "discord";
+      binaryName = "Discord";
       basePackage = pkgs.discord;
+      desktopFileName = "discord";
       packageOverrides = {
         withOpenASAR = true;
       };
@@ -73,18 +72,18 @@ in
 
   canary =
     {
-      pkgs,
       lib,
+      pkgs,
       config,
       inputs,
       ...
     }:
     mkDiscordVariant {
       inherit pkgs config inputs;
-      binaryName = "DiscordCanary";
-      desktopFileName = "discord-canary";
       iconName = "discord-canary";
+      binaryName = "DiscordCanary";
       basePackage = pkgs.discord-canary;
+      desktopFileName = "discord-canary";
       packageOverrides = {
         withOpenASAR = true;
         nss = pkgs.nss_latest;

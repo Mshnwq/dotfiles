@@ -10,7 +10,7 @@ let
   inherit (pkgs.nur.repos.rycee) firefox-addons;
 in
 {
-  home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.shyfox;
+  home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.shyfox; # from /pkgs/;
   programs.firefox.profiles.${profile} = {
     userChrome = "";
     userContent = "";
@@ -35,9 +35,10 @@ in
       darkreader
       pywalfox # remove shortcut Ctrl+Alt+D
       sidebery # remap Ctrl+E -> Ctrl+alt+E
-      userchrome-toggle-extended # manually add shortcuts  1: Ctrl+E 2: Ctrl+Alt+S 3: Ctrl+Alt+H 4: Ctrl+Alt+C
+      userchrome-toggle-extended
     ];
 
+    # manually add shortcuts  1: Ctrl+E 2: Ctrl+Alt+S 3: Ctrl+Alt+H 4: Ctrl+Alt+C
     extensions.settings."userchrome-toggle-extended@n2ezr.ru".force = true;
     extensions.settings."userchrome-toggle-extended@n2ezr.ru".settings = {
       initialized = true;

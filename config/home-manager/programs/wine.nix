@@ -5,6 +5,9 @@
   ...
 }:
 let
+  # https://github.com/NixOS/rfcs/pull/148
+  # experimental Nix feature 'pipe-operators' is disabled;
+  # add '--extra-experimental-features pipe-operators' to enable it
   # https://github.com/emmanuelrosa/erosanix/
   foobar2000 =
     inputs.erosanix.packages.${pkgs.stdenv.hostPlatform.system}.foobar2000.overrideAttrs
@@ -18,11 +21,11 @@ let
         '';
         desktopItems = [
           (pkgs.makeDesktopItem {
-            name = old.pname;
-            icon = old.pname;
+            comment = "Advanced Freeware Audio Player";
             exec = ''env DISPLAY="" ${old.pname}'';
             desktopName = "foobar2000";
-            comment = "Advanced Freeware Audio Player";
+            name = old.pname;
+            icon = old.pname;
             categories = [
               "Music"
               "Audio"
@@ -38,14 +41,10 @@ in
   home.packages =
     with pkgs;
     [
-      guitarpro
+      guitarpro # from /pkgs/;
     ]
     ++ ([
       foobar2000
       # inputs.erosanix.packages.${pkgs.system}.microcap
     ]);
-
-  # home.file.".local/bin/microcap".source = "${
-  #   inputs.erosanix.packages.${pkgs.system}.microcap
-  # }/bin/microcap";
 }

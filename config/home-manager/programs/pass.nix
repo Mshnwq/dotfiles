@@ -45,10 +45,8 @@
   home.activation.ensureGnuPGDir =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
-        mkdir -p ${config.xdg.dataHome}/pass
-        mkdir -p ${config.xdg.dataHome}/gnupg
-        chmod 700 ${config.xdg.dataHome}/pass
-        chmod 700 ${config.xdg.dataHome}/gnupg
+        mkdir -p ${config.xdg.dataHome}/{pass,gnupg}
+        chmod 700 ${config.xdg.dataHome}/{pass,gnupg}
       '';
 
   # Override gpg-agent systemd user unit to pass GNUPGHOME
@@ -60,8 +58,8 @@
     };
     Service = {
       Environment = "GNUPGHOME=${config.xdg.dataHome}/gnupg";
-      ExecStart = "/usr/bin/gpg-agent --supervised";
       ExecReload = "/usr/bin/gpgconf --reload gpg-agent";
+      ExecStart = "/usr/bin/gpg-agent --supervised";
       Restart = "on-abort";
     };
   };

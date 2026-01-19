@@ -1,8 +1,8 @@
 # programs/pywal.nix
 {
-  inputs,
-  config,
   pkgs,
+  config,
+  inputs,
   ...
 }:
 let
@@ -17,18 +17,18 @@ let
 
   walCache = "${cache}/wal";
   walLinks = {
+    "cava/config" = "${walCache}/custom-cava";
+    "dunst/dunstrc" = "${walCache}/custom-dunstrc";
     "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
-    "kitty/custom-kitty.conf" = "${walCache}/custom-kitty.conf";
     "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
     "zathura/zathurarc" = "${walCache}/colors-zathura";
-    "waybar/colors-waybar.css" = "${walCache}/colors-waybar.css";
-    "alacritty/colors-alacritty.toml" = "${walCache}/colors-alacritty.toml";
-    "dunst/dunstrc" = "${walCache}/custom-dunstrc";
-    "cava/config" = "${walCache}/custom-cava";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
+    "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
     "rmpc/themes/pywal.ron" = "${walCache}/custom-rmpc.ron";
     "btop/themes/pywal.theme" = "${walCache}/custom-btop.theme";
-    "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
+    "kitty/custom-kitty.conf" = "${walCache}/custom-kitty.conf";
+    "waybar/colors-waybar.css" = "${walCache}/colors-waybar.css";
+    "alacritty/colors-alacritty.toml" = "${walCache}/colors-alacritty.toml";
   };
 
   system = pkgs.system;
@@ -42,45 +42,45 @@ in
     [
       qimgv
       vips
-      kdePackages.qtstyleplugin-kvantum
       papirus-folders # cli tool
       pywalfox-native # do pywalfox install
+      kdePackages.qtstyleplugin-kvantum
     ]
     ++ [
-      pkgs-stable.highlight
       pkgs-stable.pywal16
+      pkgs-stable.highlight
     ]
     ++ (with pkgs.nerd-fonts; [
-      jetbrains-mono
-      roboto-mono
-      fira-mono
       fira-code
+      fira-mono
+      roboto-mono
       inconsolata
       symbols-only
+      jetbrains-mono
     ]);
 
   home.file."${config.xdg.configHome}/qimgv/qimgv.conf" = {
     force = true;
     text = ''
       [General]
-      autoResizeWindow=false
-      backgroundOpacity=0
+      imageScrolling=1
+      defaultFitMode=0
+      folderEndAction=0
+      defaultViewMode=0
+      expandImage=false
+      confirmTrash=true
+      confirmDelete=true
       blurBackground=true
       clickableEdges=true
-      clickableEdgesVisible=false
-      confirmDelete=true
-      confirmTrash=true
-      cursorAutohiding=true
+      backgroundOpacity=0
       defaultCropAction=0
-      defaultFitMode=0
-      defaultViewMode=0
-      drawTransparencyGrid=false
-      enableSmoothScroll=true
-      expandImage=false
+      cursorAutohiding=true
+      autoResizeWindow=false
       focusPointIn1to1Mode=1
-      folderEndAction=0
       folderViewIconSize=120
-      imageScrolling=1
+      enableSmoothScroll=true
+      drawTransparencyGrid=false
+      clickableEdgesVisible=false
 
       [Controls]
       shortcuts="zoomIn=+", "frameStepBack=,", "zoomOut=-", "frameStep=.", "fitWindow=1", "fitWidth=2", "fitNormal=3", "zoomIn=eq", "exit=Alt+X", "folderView=Backspace", "copyFile=C", "zoomIn=Ctrl++", "zoomOut=Ctrl+-", "zoomIn=Ctrl+eq", "copyFileClipboard=Ctrl+C", "showInDirectory=Ctrl+D", "zoomOut=Ctrl+Down", "rotateLeft=Ctrl+L", "seekVideoBackward=Ctrl+Left", "open=Ctrl+O", "print=Ctrl+P", "rotateRight=Ctrl+R", "seekVideoForward=Ctrl+Right", "save=Ctrl+S", "copyPathClipboard=Ctrl+Shift+C", "saveAs=Ctrl+Shift+S", "zoomIn=Ctrl+Up", "pasteFile=Ctrl+V", "setWallpaper=Ctrl+W", "zoomOutCursor=Ctrl+WheelDown", "zoomInCursor=Ctrl+WheelUp", "discardEdits=Ctrl+Z", "toggleShuffle=Ctrl+`", "moveToTrash=Del", "zoomOutCursor=Down", "jumpToLast=End", "folderView=Enter", "closeFullScreenOrExit=Esc", "toggleFullscreen=F", "toggleFullscreen=F11", "renameFile=F2", "reloadImage=F5", "flipH=H", "jumpToFirst=Home", "toggleImageInfo=I", "toggleFullscreen=LMB_DoubleClick", "prevImage=Left", "moveFile=M", "contextMenu=Menu", "exit=MiddleButton", "openSettings=P", "exit=Q", "resize=R", "contextMenu=RMB", "nextImage=Right", "removeFile=Shift+Del", "toggleFullscreenInfoBar=Shift+F", "prevDirectory=Shift+Left", "nextDirectory=Shift+Right", "toggleFitMode=Space", "zoomInCursor=Up", "flipV=V", "nextImage=WheelDown", "prevImage=WheelUp", "crop=X", "prevImage=XButton1", "nextImage=XButton2", "toggleSlideshow=`"
@@ -149,8 +149,8 @@ in
         Enabled=true
 
         [GUI]
-        ApplicationTheme=classic
         TrayIconAppearance=monochrome-light
+        ApplicationTheme=classic
 
         [PasswordGenerator]
         AdditionalChars=
