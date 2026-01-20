@@ -1,3 +1,2 @@
-**/*.container linguist-language=Dockerfile
 **/devenv.* linguist-language=Nix
 **/.envrc linguist-language=Nix
