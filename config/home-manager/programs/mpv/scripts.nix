@@ -7,63 +7,63 @@
 let
   # https://github.com/stax76/awesome-mpv
   plugins = {
-    mpv_thumbnail_script =
-      let
-        baseUrl = "https://github.com/marzzzello/mpv_thumbnail_script/releases/download/0.5.4";
-      in
-      {
-        script = [
-          {
-            url = "${baseUrl}/mpv_thumbnail_script_client_osc.lua";
-            hash = "sha256-jR4mEp5fVbpg4WoyKSGA6ediJmEHheLYPhCuAqYv4vM=";
-          }
-          {
-            url = "${baseUrl}/mpv_thumbnail_script_server.lua";
-            hash = "sha256-z68RiE3j7CAmnv0gHiP9tBvmiQC8el+hgNU98JXOit8=";
-          }
-        ];
-        opts = ''
-          mpv_no_sub=yes
-          mpv_hr_seek=yes
-          thumbnail_width=200
-          thumbnail_height=200
-          min_delta=5
-          max_delta=90
-          # Remote options
-          remote_autogenerate_max_duration=1200
-          remote_thumbnail_count=60
-          remote_min_delta=15
-          remote_max_delta=120
-          storyboard_enable=no
-          storyboard_upscale=no
-          # Display options
-          vertical_offset=24
-          pad_top=10
-          pad_bot=0
-          pad_left=10
-          pad_right=10
-          pad_in_screenspace=yes
-          offset_by_pad=yes
-          background_color=000000
-          background_alpha=80
-          constrain_to_screen=yes
-          hide_progress=yes
-        '';
-      };
-
-    visualizer = {
-      script = {
-        url = "https://raw.githubusercontent.com/mfcc64/mpv-scripts/master/visualizer.lua";
-        hash = "sha256-l4gyed5seiXDOFp8UhGNpwUowmSpU6HXGqwRBwtJFG0=";
-      };
+    # https://github.com/tomasklaen/uosc
+    uosc = {
+      # https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf
       opts = ''
-        forcewindow=true
-        mode=novideo
-        name=showcqt
-        quality=low
-        height=8
+        controls=menu,items,<has_many_audio>audio,<has_many_video>video,<has_many_edition>editions,<stream>stream-quality,gap,space,space,loop-file,<video,audio>speed
+        timeline_style=bar
+        timeline_size=20
+        progress=never
+        controls_size=24
+        volume_size=30
+        speed_persistency=windowed
+        menu_type_to_search=no
+        window_border_size=1
+        font_scale=1
+        text_border=1.2
+        border_radius=4
+        #color=
+        opacity=slider=0.5,slider_gauge=0.5,speed=0.3
+        animation_duration=100
+        flash_duration=10
+        proximity_in=40
+        proximity_out=120
+        destination_time=total
+        buffered_time_threshold=0
+        autohide=yes
+        pause_indicator=manual
+        stream_quality_options=720,480,360,240,144
+        adjust_osd_margins=yes
+        disable_elements=window_border,top_bar
       '';
     };
+    # https://github.com/po5/thumbfast
+    thumbfast = {
+      opts = ''
+        quit_after_inactivity=0
+        max_height=200
+        max_width=200
+        overlay_id=42
+        spawn_first=no
+      '';
+    };
+
+    #   # https://github.com/mfcc64/mpv-scripts
+    #   visualizer = {
+    #     script = {
+    #       url = "https://raw.githubusercontent.com/mfcc64/mpv-scripts/master/visualizer.lua";
+    #       hash = "sha256-l4gyed5seiXDOFp8UhGNpwUowmSpU6HXGqwRBwtJFG0=";
+    #     };
+    #     # https://raw.githubusercontent.com/mfcc64/mpv-scripts/master/visualizer.lua
+    #     opts = ''
+    #       name=avectorscope
+    #       mode=noalbumart
+    #       quality=low
+    #       height=12
+    #     '';
+    #     # forcewindow=true
+    #   };
   };
 
   mkScriptFiles =
@@ -72,21 +72,28 @@ let
       acc: pluginName:
       let
         plugin = plugins.${pluginName};
-        scriptList =
-          if builtins.isList plugin.script then plugin.script else [ plugin.script ];
+        # Only process if plugin has a script attribute
+        hasScript = plugin ? script;
       in
-      acc
-      // lib.listToAttrs (
-        map (
-          scriptDef:
-          let
-            fileName = builtins.baseNameOf scriptDef.url;
-          in
-          lib.nameValuePair ".config/mpv/scripts/${fileName}" {
-            source = pkgs.fetchurl scriptDef;
-          }
-        ) scriptList
-      )
+      if !hasScript then
+        acc
+      else
+        let
+          scriptList =
+            if builtins.isList plugin.script then plugin.script else [ plugin.script ];
+        in
+        acc
+        // lib.listToAttrs (
+          map (
+            scriptDef:
+            let
+              fileName = builtins.baseNameOf scriptDef.url;
+            in
+            lib.nameValuePair ".config/mpv/scripts/${fileName}" {
+              source = pkgs.fetchurl scriptDef;
+            }
+          ) scriptList
+        )
     ) { } (builtins.attrNames plugins);
   mkScriptOpts =
     plugins:
