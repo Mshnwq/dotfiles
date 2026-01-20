@@ -24,6 +24,7 @@ in
       slurp
       swappy
       waybar
+      # woomer
       niflveil # from /pkgs/;
       hypridle
       # hyprlock TODO: broken

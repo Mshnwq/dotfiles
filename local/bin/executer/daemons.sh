@@ -16,7 +16,8 @@ actions=(
 app="${1##--}" && action="$2"
 
 case $1 in
---tailscaled | --syncthing)
+# --tailscaled | --syncthing)
+--tailscaled)
   { "_$action" "$app"; }
   ;;
 --bluetooth)
