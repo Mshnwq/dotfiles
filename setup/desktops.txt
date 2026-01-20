@@ -3,6 +3,7 @@ avahi-discover
 bazzite-documentation
 bazzite-steam-bpm
 btop
+bbrew
 btrfs-assistant
 blueman-manager
 discourse
