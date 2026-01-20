@@ -24,8 +24,4 @@ for socket in "$XDG_RUNTIME_DIR"/kitty_socket-*; do
 done
 
 SOCKET_FILE="$XDG_RUNTIME_DIR/init-term-kitty.sock"
-if [[ -S $SOCKET_FILE ]]; then
-  kitten @ --to unix:"$SOCKET_FILE" load-config "$CONF"
-else
-  echo "no init term"
-fi
+[[ -S $SOCKET_FILE ]] && kitten @ --to unix:"$SOCKET_FILE" load-config "$CONF"
