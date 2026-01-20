@@ -7,6 +7,7 @@
   ...
 }:
 let
+  default = "mesa";
   hasNvidia =
     builtins.pathExists /etc/bazzite/image_name
     && lib.strings.hasInfix "nvidia" (builtins.readFile /etc/bazzite/image_name);
@@ -15,16 +16,9 @@ in
 {
   # https://home-manager.dev/manual/24.11/index.xhtml#sec-usage-gpu-non-nixos
   nixGL.packages = inputs.nixgl.packages;
-  nixGL.defaultWrapper = "mesa";
+  nixGL.defaultWrapper = default;
   nixGL.offloadWrapper = lib.mkIf hasNvidia "nvidiaPrime";
-  nixGL.installScripts =
-    if hasNvidia then
-      [
-        "mesa"
-        "nvidiaPrime"
-      ]
-    else
-      [ "mesa" ];
+  nixGL.installScripts = [ default ] ++ lib.optional hasNvidia "nvidiaPrime";
 
   home.packages =
     with pkgs;
@@ -37,46 +31,72 @@ in
       nixgl.auto.nixGLNvidia
     ];
 
+  # https://wiki.archlinux.org/title/Mpv
   # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.mpv.enable
   programs.mpv = {
     enable = true;
-    package = config.lib.nixGL.wrap pkgs.mpv;
+    scripts = with pkgs.mpvScripts; [
+      thumbfast
+      uosc
+    ];
     # bindings = {
     #   "r" = "cycle_values video-rotate 90 180 270 0";
     #   "|" = "vf toggle vflip";
     # };
     config = {
-      # osd-level = 0;
+      osc = "no";
+      osd-level = 0;
       hwdec = "vaapi";
       title = "\${filename}";
     };
     # overridden by programs.mpv.config.
-    defaultProfiles = [
-      "default"
-      "minimal"
-    ];
-    profiles = {
-      default = {
-      };
-      minimal = {
-        load-scripts = "no";
-      };
-      music = {
-        osd-level = 0;
-        force-window = "yes";
-      };
-    };
+    # defaultProfiles = [
+    # "default"
+    # "minimal"
+    # ];
+    # https://github.com/mpv-player/mpv/issues/13257
+    # https://www.reddit.com/r/mpv/comments/1149cpm/recommended_profiles/
+    # profiles = {
+    #   default = {
+    #     osd-level = 0;
+    #     osc = "no";
+    #   };
+    #   minimal = {
+    #     load-scripts = "no";
+    #   };
+    #   music = {
+    #     osd-level = 0;
+    #     # force-window = "yes";
+    #   };
+    # };
     # extraInput = "";
     # includes = "";
   };
 
-  home.file = scripts.files;
-  # imports = [
-  #   (lib.nixgl.mkNixGLWrapper {
-  #     name = "Mpv";
-  #     command = "mpv";
-  #     nixGLVariant = "nixGLIntel";
-  #   })
-  # ];
+  imports = [
+    (lib.nixgl.mkNixGLWrapper {
+      name = "Mpv";
+      command = "mpv";
+      nixGLVariant = "nixGLIntel";
+    })
+  ];
+  home.file = lib.mkMerge [
+    scripts.files
+    {
+      ".local/share/applications/mpv.desktop" =
+        let
+          MPV = "${config.home.homeDirectory}/.local/bin/Mpv";
+        in
+        {
+          force = true;
+          text =
+            builtins.replaceStrings
+              [ "TryExec=mpv" "Exec=mpv" ]
+              [ "TryExec=${MPV}" "Exec=${MPV}" ]
+              (builtins.readFile "${pkgs.mpv}/share/applications/mpv.desktop");
+        };
+    }
+  ];
   # TODO: shaders
+  # TODO: https://github.com/catppuccin/mpv
 }

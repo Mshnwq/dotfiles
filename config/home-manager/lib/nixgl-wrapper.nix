@@ -6,18 +6,21 @@
     {
       name,
       command,
-      nixGLVariant ? "nixGL",
-      extraArgs ? "",
       envVars ? "",
+      extraArgs ? "",
+      nixGLVariant ? "nixGL",
     }:
+    let
+      arg0 = builtins.baseNameOf command;
+    in
     {
       home.file.".local/bin/${name}" = {
         executable = true;
         text = ''
           #!/usr/bin/env bash
-          exec -a "${command}" ${
-            lib.optionalString (envVars != "") "env -a \"${command}\" ${envVars}"
-          } ${nixGLVariant} ${command} ${extraArgs}"$@"
+          exec -a "${arg0}" ${
+            lib.optionalString (envVars != "") "env ${envVars} "
+          }${nixGLVariant} ${command} ${extraArgs} "$@"
         '';
       };
     };
