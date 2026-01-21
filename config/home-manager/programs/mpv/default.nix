@@ -36,13 +36,19 @@ in
   programs.mpv = {
     enable = true;
     scripts = with pkgs.mpvScripts; [
+      occivink.crop
+      visualizer
       thumbfast
       uosc
+      # mpvacious
     ];
-    # bindings = {
-    #   "r" = "cycle_values video-rotate 90 180 270 0";
-    #   "|" = "vf toggle vflip";
-    # };
+    extraInput = ''
+      alt+c script-message-to crop start-crop soft
+    '';
+    bindings = {
+      "r" = "cycle_values video-rotate 90 180 270 0";
+      # "|" = "vf toggle vflip";
+    };
     config = {
       osc = "no";
       osd-level = 0;
@@ -69,7 +75,6 @@ in
     #     # force-window = "yes";
     #   };
     # };
-    # extraInput = "";
     # includes = "";
   };
 
@@ -97,6 +102,5 @@ in
         };
     }
   ];
-  # TODO: shaders
   # TODO: https://github.com/catppuccin/mpv
 }

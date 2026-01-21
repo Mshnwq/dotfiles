@@ -27,10 +27,11 @@ let
     highlight article "https?://[^ ]+"    color4 color0 underline
     highlight article "\\[[0-9][0-9]*\\]" color6 color0 bold
   '';
+  # TODO: cehck Mpv
   binds = ''
     macro b open-in-browser
-    macro v set browser "setsid -f mpv %u" ; open-in-browser ; set browser linkhandler
     macro c set browser "echo %u | wl-copy" ; open-in-browser ; set browser linkhandler
+    macro v set browser "sh -c 'nohup setsid gtk-launch mpv %u >/dev/null 2>&1 &'" ; open-in-browser ; set browser linkhandler
 
     bind-key G end
     bind-key g home
