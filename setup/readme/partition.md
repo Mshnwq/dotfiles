@@ -1,3 +1,5 @@
+glow setup/readme/*
+
 https://starbeamrainbowlabs.com/blog/article.php?article=posts%2F441-resize-luks-lvm.html
 
 check notebook

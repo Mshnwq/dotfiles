@@ -1,1 +1,2 @@
+#nix run nixpkgs#mdcat -- <(curl https://style.ysap.sh/md) | less -r
 style.md
