@@ -42,12 +42,14 @@ in
       uosc
       # mpvacious
     ];
+    includes = [
+      "~~/themes/pywal.conf"
+    ];
     extraInput = ''
       alt+c script-message-to crop start-crop soft
     '';
     bindings = {
       "r" = "cycle_values video-rotate 90 180 270 0";
-      # "|" = "vf toggle vflip";
     };
     config = {
       osc = "no";
@@ -55,6 +57,7 @@ in
       hwdec = "vaapi";
       title = "\${filename}";
     };
+    # "|" = "vf toggle vflip";
     # overridden by programs.mpv.config.
     # defaultProfiles = [
     # "default"
@@ -75,7 +78,6 @@ in
     #     # force-window = "yes";
     #   };
     # };
-    # includes = "";
   };
 
   imports = [
@@ -102,5 +104,4 @@ in
         };
     }
   ];
-  # TODO: https://github.com/catppuccin/mpv
 }

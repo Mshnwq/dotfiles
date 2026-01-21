@@ -24,6 +24,7 @@ let
     "zathura/zathurarc" = "${walCache}/colors-zathura";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
     "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
+    "mpv/themes/pywal.conf" = "${walCache}/custom-mpv.conf";
     "rmpc/themes/pywal.ron" = "${walCache}/custom-rmpc.ron";
     "btop/themes/pywal.theme" = "${walCache}/custom-btop.theme";
     "kitty/custom-kitty.conf" = "${walCache}/custom-kitty.conf";
