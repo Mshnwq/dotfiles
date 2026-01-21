@@ -7,15 +7,13 @@ echo "$yazi_id" >"$STATUS_FILE"
 
 tmux set-option status off
 
-_emit() (
-  sleep 1 && YAZI_ID="$yazi_id" ya emit plugin projects "$1"
-)
+_emit() { sleep 0.5 && ya emit-to "$yazi_id" "$@"; }
 
 case "${1:---default}" in
---project) _emit "load $2" & ;;
---last) _emit "load_last" & ;;
---default) _emit "load tmux" & ;;
+--default) _emit cd "$HOME" & ;;
+--project) _emit plugin projects "load $2" & ;;
+--last) _emit plugin projects load_last & ;;
 *) exit 1 ;;
 esac
 
-zsh -ic "yazi --client-id $yazi_id"
+zsh -ic "yazi --client-id $yazi_id --remote-events=tmux"

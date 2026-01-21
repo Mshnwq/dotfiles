@@ -188,56 +188,21 @@ in
     };
     projects = {
       source = pkgs.fetchFromGitHub {
-        owner = "MasouShizuka";
+        owner = "Mshnwq";
         repo = "projects.yazi";
-        rev = "eed0657a833f56ea69f3531c89ecc7bad761d611";
-        hash = "sha256-5J0eqffUzI0GodpqwzmaQJtfh75kEbbIwbR8pFH/ZmU=";
+        rev = "ea47b5d1d780366ff68af40f4d44c71f4024d036";
+        hash = "sha256-ijxbgGZKGbBckfCcg340RvklQa8m5RcSDbcNHWSNXEI=";
       };
       initLua = ''
         require("projects"):setup({
         	save = {
-        		method = "yazi", -- yazi | lua
-        		yazi_load_event = "@projects-load", -- event name when loading projects in `yazi` method
-        		lua_save_path = "", -- path of saved file in `lua` method, comment out or assign explicitly
-        		-- default value:
-        		-- unix: "~/.local/state/yazi/projects.json"
+        		method = "yazi",
         	},
         	last = {
-        		update_after_save = true,
-        		update_after_load = true,
+        		update_after_save = false,
+        		update_after_load = false,
+        		update_before_quit = true,
         		load_after_start = false,
-        	},
-        	merge = {
-        		event = "projects-merge",
-        		quit_after_merge = false,
-        	},
-        	event = {
-        		save = {
-        			enable = true,
-        			name = "project-saved",
-        		},
-        		load = {
-        			enable = true,
-        			name = "project-loaded",
-        		},
-        		delete = {
-        			enable = true,
-        			name = "project-deleted",
-        		},
-        		delete_all = {
-        			enable = true,
-        			name = "project-deleted-all",
-        		},
-        		merge = {
-        			enable = true,
-        			name = "project-merged",
-        		},
-        	},
-        	notify = {
-        		enable = true,
-        		title = "Projects",
-        		timeout = 3,
-        		level = "info",
         	},
         })
       '';
@@ -286,7 +251,7 @@ in
         {
           on = [
             "R"
-            "p"
+            "t"
           ];
           run = "plugin projects 'load tmux'";
           desc = "Load the 'tmux' project";
