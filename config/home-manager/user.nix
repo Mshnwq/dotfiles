@@ -64,6 +64,7 @@ in
       rust
       mime
       wine
+      anki
       music
       pywal
       infra

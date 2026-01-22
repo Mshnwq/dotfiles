@@ -81,19 +81,28 @@ args@{
       };
     };
 
-    home.activation.wrapDesktop =
-      inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
-        ''
-          mkdir -p "${config.xdg.dataHome}"/{applications,flatpak/overrides}
-          # --- Flatpak Override ---
-          winezgui_override="${config.xdg.dataHome}/flatpak/overrides/io.github.fastrizwaan.WineZGUI"
-          if [ ! -f "$winezgui_override" ]; then
-            cat > "$winezgui_override" <<EOF
-          [Context]
-          sockets=wayland
-          EOF
-          fi
-        '';
+    # home.activation.flatpakOptions =
+    #   inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+    #     ''
+    #       ov_dir="${config.xdg.dataHome}/flatpak/overrides"
+    #       mkdir -p "$ov_dir"
+    #       winezgui_ov="$ov_dir/io.github.fastrizwaan.WineZGUI"
+    #       if [ ! -f "$winezgui_ov" ]; then
+    #         cat > "$winezgui_ov" <<EOF
+    #       [Context]
+    #       sockets=wayland
+    #       EOF
+    #       fi
+    #       anki_ov="$ov_dir/net.ankiweb.Anki"
+    #       if [ ! -f "$anki_ov" ]; then
+    #         cat > "$anki_ov" <<EOF
+    #       [Context]
+    #       devices=!dri
+    #       [Environment]
+    #       ANKI_WAYLAND=1
+    #       EOF
+    #       fi
+    #     '';
   };
 
   vim = {
@@ -164,6 +173,48 @@ args@{
       gpg-tui
       # termscp
     ];
+  };
+
+  # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.anki
+  anki = {
+    home.packages = with pkgs; [
+      anki
+    ];
+    programs.anki = {
+      enable = false;
+      # theme = "followSystem";
+      # style = "native";
+      # minimalistMode = true;
+      addons = with pkgs.ankiAddons; [
+        review-heatmap
+        anki-connect
+        # recolor
+        (pkgs.anki-utils.buildAnkiAddon (finalAttrs: {
+          pname = "recolor";
+          version = "12e42fc";
+          src = pkgs.fetchFromGitHub {
+            owner = "AnKing-VIP";
+            repo = "AnkiRecolor";
+            rev = finalAttrs.version;
+            hash = "sha256-TbDUVCfqDXQmCwRgDW+hLZPfIElQAW2wFFgWOc3iKiU=";
+            sparseCheckout = [ "src/addon" ];
+          };
+          sourceRoot = "${finalAttrs.src.name}/src/addon";
+        }))
+        (pkgs.anki-utils.buildAnkiAddon (finalAttrs: {
+          pname = "anking-bg";
+          version = "9706a8f";
+          src = pkgs.fetchFromGitHub {
+            owner = "AnKing-VIP";
+            repo = "Custom-background-image-and-gear-icon";
+            rev = finalAttrs.version;
+            hash = "sha256-v9/WR+3DK9+byudHFAtsCsPW3WmRVY003+ufEqIFIxM=";
+            sparseCheckout = [ "addon" ];
+          };
+          sourceRoot = "${finalAttrs.src.name}/addon";
+        }))
+      ];
+    };
   };
 
   # digital audio workstation
