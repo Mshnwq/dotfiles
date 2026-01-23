@@ -31,6 +31,7 @@ echo "=== Wal Color Apply Start: $(date '+%F %T') ===" >"$LOG_FILE"
 log() { echo "[$(date '+%T')] INFO: $*" | tee -a "$LOG_FILE" >/dev/null; }
 error() { echo "[$(date '+%T')] ERROR: $*" | tee -a "$LOG_FILE" >&2; }
 
+# TODO: handle not floated and hyprctl dispatch closewindow "address:$win_id"
 _relaunch() {
   save_state() {
     local kind="$1"
@@ -169,7 +170,7 @@ _qbit() {
   cd - || exit 1
   _relaunch \
     --kind class \
-    --kill-cmd "pkill -f qbittorrent" \
+    --kill-cmd "pkill qbittorrent" \
     --window-filter "org.qbittorrent.qBittorrent" \
     --launch-cmd "gtk-launch org.qbittorrent.qBittorrent"
 }
@@ -179,9 +180,19 @@ _telegram() {
   wal-telegram --wal -d "$HOME/.cache/wal" -g 1x1
   _relaunch \
     --kind class \
-    --kill-cmd "pkill -f Telegram" \
+    --kill-cmd "pkill Telegram" \
     --window-filter "org.telegram.desktop" \
     --launch-cmd "flatpak run org.telegram.desktop"
+}
+
+_anki() {
+  local theme_file="$HOME/.cache/wal/custom-anki-bg.json"
+  sed -i 's#"\(/[^"]*/\)\([^"/]*\.\(jpg\|png\|webp\)\)"#"\2"#g' "$theme_file"
+  _relaunch \
+    --kind class \
+    --window-filter "anki" \
+    --kill-cmd "pkill -f anki -o" \
+    --launch-cmd "gtk-launch anki"
 }
 
 _tmux() {
@@ -530,6 +541,7 @@ auto=(
   "yazi"
   "rmpc"
   "qbit"
+  "anki"
   "telegram"
   "obsidian"
   "sddm"
