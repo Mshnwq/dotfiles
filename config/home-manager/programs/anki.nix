@@ -1,45 +1,4 @@
 # # programs/anki.nix
-# {
-#   lib,
-#   pkgs,
-#   config,
-#   ...
-# }:
-# let
-#   ankiConfDir = "${config.xdg.dataHome}/Anki2";
-#   addonsDir = "${ankiConfDir}/addons21";
-#   theme = "followSystem";
-#   style = "native";
-#   minimalistMode = true;
-# in
-# {
-#   home.packages = with pkgs; [
-#     anki
-#   ];
-#   # output these addons to ankiConfDir/anki21/$id
-#   addons = [
-#     {
-#       id = "688199788";
-#       src = pkgs.fetchFromGitHub {
-#         owner = "AnKing-VIP";
-#         repo = "AnkiRecolor";
-#         rev = "12e42fc";
-#         hash = "sha256-TbDUVCfqDXQmCwRgDW+hLZPfIElQAW2wFFgWOc3iKiU=";
-#         sparseCheckout = [ "src/addon" ];
-#       };
-#     }
-#     {
-#       id = "1210908941";
-#       src = pkgs.fetchFromGitHub {
-#         owner = "AnKing-VIP";
-#         repo = "Custom-background-image-and-gear-icon";
-#         rev = "9706a8f";
-#         hash = "sha256-v9/WR+3DK9+byudHFAtsCsPW3WmRVY003+ufEqIFIxM=";
-#         sparseCheckout = [ "addon" ];
-#       };
-#     }
-#   ];
-# }
 {
   lib,
   pkgs,
@@ -54,8 +13,22 @@ let
   style = "native";
   minimalistMode = true;
 
+  # https://tatsumoto.neocities.org/blog/setting-up-anki
+  # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
   # Define addons with metadata
   addons = [
+    # TODO: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/by-name/an/anki/addons/review-heatmap/default.nix#L54
+    {
+      id = "2055492159";
+      src = pkgs.fetchFromSourcehut {
+        owner = "~foosoft";
+        repo = "anki-connect";
+        tag = "25.11.9.0";
+        hash = "sha256-cnAH4qIuxSJIM7vmSDU+eppnRi6Out9oSWHBHKCGLZI=";
+      };
+      sourcedir = "plugin";
+      extraRun = "";
+    }
     {
       id = "688199788";
       src = pkgs.fetchFromGitHub {

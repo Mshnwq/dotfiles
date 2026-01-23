@@ -65,6 +65,24 @@ let
     };
 
     # https://github.com/Ajatt-Tools/mpvacious
+    subs2srs = {
+      # https://github.com/Ajatt-Tools/mpvacious/blob/master/.github/RELEASE/subs2srs.conf
+      opts = ''
+        ankiconnect_url=127.0.0.1:8765
+        # https://github.com/alyssabedard/mpv2anki/blob/master/docs/note_types/basic/Sentence%20Mining.apkg
+        model_name=mpv2anki
+        sentence_field=Translation
+        audio_field=SentenceAudio
+        image_field=Screenshot
+        secondary_field=Sentence
+        use_forvo=no
+        secondary_sub_auto_load=yes
+        secondary_sub_lang=eng,en
+        # Default binding to cycle this value: Ctrl+v.
+        secondary_sub_visibility=auto
+      '';
+    };
+
     # https://github.com/oltodosel/interSubs
   };
 

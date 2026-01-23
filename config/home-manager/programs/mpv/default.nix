@@ -36,11 +36,11 @@ in
   programs.mpv = {
     enable = true;
     scripts = with pkgs.mpvScripts; [
-      occivink.crop
-      visualizer
-      thumbfast
       uosc
-      # mpvacious
+      thumbfast
+      mpvacious
+      visualizer
+      occivink.crop
     ];
     includes = [
       "~~/themes/pywal.conf"
