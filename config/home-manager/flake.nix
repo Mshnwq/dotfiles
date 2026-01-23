@@ -4,18 +4,18 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://devenv.cachix.org"
       "https://hyprland.cachix.org"
+      "https://devenv.cachix.org"
       "https://yazi.cachix.org"
     ];
     extra-trusted-substituters = [
-      "https://devenv.cachix.org"
       "https://hyprland.cachix.org"
+      "https://devenv.cachix.org"
       "https://yazi.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
     ];
     trusted-users = [

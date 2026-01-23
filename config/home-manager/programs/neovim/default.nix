@@ -48,6 +48,5 @@ in
         dclint
         dockerfmt
       ]);
-    extraConfig = "";
   };
 }
