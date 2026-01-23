@@ -119,7 +119,7 @@ in
         ln -sf "${cache}/wal/Plasma/color-scheme.colors" "${data}/color-schemes/Pywal.colors"
         kvantum_file="${cfg}/Kvantum/kvantum.kvconfig"
         if [ ! -f "$kvantum_file" ]; then
-          echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings, partitionmanager" > "$kvantum_file"
+          echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings" > "$kvantum_file"
         fi
 
         if [ ! -x "$HOME/.local/bin/wal-telegram" ]; then

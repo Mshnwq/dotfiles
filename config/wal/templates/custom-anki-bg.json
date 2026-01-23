@@ -1,0 +1,17 @@
+{{
+    "Image name for background": "{wallpaper}",
+    "Image name for gear": "AnKing.png",
+    "Keyboard Shortcut": "Ctrl+Shift+b",
+    "Reviewer image": true,
+    "Toolbar image": false,
+    "Toolbar top/bottom": false,
+    "background-attachment": "fixed",
+    "background-color bottom": "{background}",
+    "background-color main": "{background}",
+    "background-color top": "{background}",
+    "background opacity main": "0.5",
+    "background opacity review": "0.3",
+    "background-position": "center",
+    "background scale": "1.03",
+    "background-size": "cover"
+}} 
