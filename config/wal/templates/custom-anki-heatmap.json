@@ -1,0 +1,43 @@
+.rh-theme-lime .cal-heatmap-container .q11{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q12{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q13{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q14{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q15{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q16{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q17{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q18{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q19{{fill: {color3}}}
+.rh-theme-lime .cal-heatmap-container .q20{{fill: {color3}}}
+
+.rh-theme-lime .rh-col11{{color: {color3}}}
+.rh-theme-lime .rh-col12{{color: {color3}}}
+.rh-theme-lime .rh-col13{{color: {color3}}}
+.rh-theme-lime .rh-col14{{color: {color3}}}
+.rh-theme-lime .rh-col15{{color: {color3}}}
+.rh-theme-lime .rh-col16{{color: {color3}}}
+.rh-theme-lime .rh-col17{{color: {color3}}}
+.rh-theme-lime .rh-col18{{color: {color3}}}
+.rh-theme-lime .rh-col19{{color: {color3}}}
+.rh-theme-lime .rh-col20{{color: {color3}}}
+
+.night_mode .rh-theme-lime .cal-heatmap-container .q11{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q12{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q13{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q14{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q15{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q16{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q17{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q18{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q19{{fill: {color3}}}
+.night_mode .rh-theme-lime .cal-heatmap-container .q20{{fill: {color3}}}
+
+.night_mode .rh-theme-lime .rh-col11{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col12{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col13{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col14{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col15{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col16{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col17{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col18{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col19{{color: {color3}}}
+.night_mode .rh-theme-lime .rh-col20{{color: {color3}}}

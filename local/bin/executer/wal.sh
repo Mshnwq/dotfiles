@@ -186,13 +186,63 @@ _telegram() {
 }
 
 _anki() {
-  local theme_file="$HOME/.cache/wal/custom-anki-bg.json"
-  sed -i 's#"\(/[^"]*/\)\([^"/]*\.\(jpg\|png\|webp\)\)"#"\2"#g' "$theme_file"
+  _gradient() {
+    local color="$1"
+    local steps="$2"
+    local increment="$3"
+
+    # Hex to RGB
+    local new_r new_g new_b
+    local r=$((16#${color:0:2}))
+    local g=$((16#${color:2:2}))
+    local b=$((16#${color:4:2}))
+
+    for ((i = 0; i < steps; i++)); do
+      new_r=$((r + increment * i))
+      new_g=$((g + increment * i))
+      new_b=$((b + increment * i))
+      ((new_r > 255)) && new_r=255
+      ((new_g > 255)) && new_g=255
+      ((new_b > 255)) && new_b=255
+      printf "%02x%02x%02x\n" \
+        "$new_r" "$new_g" "$new_b"
+    done
+  }
+
+  local bg_theme_file="$HOME/.cache/wal/custom-anki-bg.json"
+  sed -i 's#"\(/[^"]*/\)\([^"/]*\.\(jpg\|png\|webp\)\)"#"\2"#g' "$bg_theme_file"
+
+  local heatmap_theme_file="$HOME/.local/share/Anki2/addons21/1771074083/web/anki-review-heatmap.js"
+  local heatmap_theme_block="$HOME/.cache/wal/custom-anki-heatmap.json"
+  local base_gradient steps=10
+
+  base_gradient="$(grep -om1 '[0-9A-Fa-f]\{6\}' "$heatmap_theme_block")"
+  mapfile -t gradient_colors < <(_gradient "$base_gradient" $steps 13)
+
+  for ((i = 0; i < steps; i++)); do
+    col_num=$((11 + i))
+    new_color="${gradient_colors[$i]}"
+    sed -i "s/\(\.q${col_num}{fill: \)#[0-9A-Fa-f]\{6\}/\1#${new_color}/g" "$heatmap_theme_block"
+    sed -i "s/\(\.rh-col${col_num}{color: \)#[0-9A-Fa-f]\{6\}/\1#${new_color}/g" "$heatmap_theme_block"
+  done
+
+  awk -v block="$(<"$heatmap_theme_block")" '
+    /\/\* lime \*\// { print; print block; skip=1; next }
+    /\/\* end \*\// { skip=0; print; next }
+    !skip
+  ' "$heatmap_theme_file" >"${heatmap_theme_file}.tmp" &&
+    mv "${heatmap_theme_file}.tmp" "$heatmap_theme_file"
+
   _relaunch \
     --kind class \
     --window-filter "anki" \
     --kill-cmd "pkill -f anki -o" \
     --launch-cmd "gtk-launch anki"
+
+  local win_title="Update Add-ons"
+  sleep 5 && hyprctl clients -j |
+    jq -e --arg title "$win_title" &&
+    hyprctl dispatch closewindow "title:$win_title"
 }
 
 _tmux() {
@@ -246,14 +296,12 @@ _p10k() {
   local p10k_file="$HOME/.config/zsh/.p10k.zsh"
   local p10k_theme="$HOME/.cache/wal/custom-p10k.sh"
   local command="source $p10k_file; clear"
-  local theme_block
 
   sed -i '/# -- start replace from rice/,/# -- end replace from rice/{
     /# -- start replace from rice/!{/# -- end replace from rice/!d}
   }' "$p10k_file"
 
-  theme_block="$(<"$p10k_theme")"
-  awk -v block="$theme_block" '
+  awk -v block="$(<"$p10k_theme")" '
     BEGIN { in_block = 0 }
     {
       if ($0 ~ /# -- start replace from rice/) {
@@ -291,9 +339,7 @@ _nvchad() {
     /  -- start replace from rice/!{/  -- end replace from rice/!d}
   }' "$nvchad_file"
 
-  local theme_block
-  theme_block="$(<"$nvchad_theme")"
-  awk -v block="$theme_block" '
+  awk -v block="$(<"$nvchad_theme")" '
   BEGIN { in_block = 0 }
   {
     if ($0 ~ /  -- start replace from rice/) {
