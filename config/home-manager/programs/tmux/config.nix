@@ -4,15 +4,15 @@
   config,
   ...
 }:
+let
+  status = "set -g status-position";
+in
 {
-
   config = lib.concatStringsSep "\n" [
     ''
       # --------------------#
       #     Keybindings     #
       # --------------------#
-
-      # reload config
       unbind r
       bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!" # quick reload
 
@@ -28,9 +28,6 @@
       bind -r S-Left resize-pane -L 15
       bind -r S-Right resize-pane -R 15
 
-      bind j choose-window 'join-pane -h -s "%%"'
-      bind J choose-window 'join-pane -s "%%"'
-
       # keep current path on new window
       bind c new-window -c "#{pane_current_path}"
 
@@ -43,6 +40,8 @@
       bind-key q kill-window
       unbind w
       bind-key w kill-pane
+      bind j choose-window 'join-pane -h -s "%%"'
+      bind J choose-window 'join-pane -s "%%"'
 
       # window swapping
       bind -r "<" swap-window -d -t -1
@@ -72,12 +71,7 @@
       # --------------------#
       #       Options       #
       # --------------------#
-
-      # Define a key binding to toggle the status bar position
-      bind-key "^" if-shell "test #{status-position} = bottom" "set-option -g status-position top" "set-option -g status-position bottom"
-
       bind-key ! break-pane
-
       bind-key '1' select-window -t 1
       bind-key '2' select-window -t 2
       bind-key '3' select-window -t 3
@@ -87,16 +81,9 @@
       bind-key '7' select-window -t 7
       bind-key '8' select-window -t 8
       bind-key '9' select-window -t 9
+      bind-key '0' select-window -t 10
+      bind-key "^" if-shell "test #{status-position} = top" "${status} bottom" "${status} top"
     ''
-    (
-      if config.tmux.server.enable then
-        ''
-          set -g status-position bottom
-        ''
-      else
-        ''
-          set -g status-position top
-        ''
-    )
+    (if config.tmux.server.enable then "${status} bottom" else "${status} top")
   ];
 }

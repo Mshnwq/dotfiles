@@ -21,7 +21,7 @@ args@{
       cmatrix
       lm_sensors
       networkmanager_dmenu
-      # TODO: broked
+      # TODO: broken
       # mtpfs
       # simple-mtpfs
       (pkgs.symlinkJoin {
@@ -101,6 +101,7 @@ args@{
       enable = true;
       packageConfigurable = pkgs.vim;
       extraConfig = ''
+        set mouse=a
         set viminfo+=n~/.config/viminfo
         autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
       '';
@@ -152,6 +153,56 @@ args@{
       buku
       # --import bookmarks.db
     ];
+  };
+
+  # git
+  git = {
+    home.packages = with pkgs; [
+      difftastic
+    ];
+    # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.git.enable
+    programs.git = {
+      enable = true;
+      package = pkgs.gitMinimal;
+      signing = {
+        key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
+        signByDefault = true;
+      };
+      settings = {
+        user = {
+          name = "mshnwq";
+          email = "mshnwq.com@gmail.com";
+        };
+        init = {
+          defaultBranch = "main";
+        };
+        rerere = {
+          enabled = true;
+        };
+        tag = {
+          gpgSign = true;
+        };
+        credential = {
+          helper = "cache --timeout=36000";
+        };
+        core = {
+          editor = "vim";
+        };
+        interactive = {
+          diffFilter = "delta --color-only";
+        };
+        delta = {
+          navigate = true;
+        };
+        merge = {
+          conflictstyle = "diff3";
+        };
+        diff = {
+          colorMoved = "default";
+          external = "difft";
+        };
+      };
+    };
   };
 
   # rust tools
