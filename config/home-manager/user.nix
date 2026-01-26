@@ -57,6 +57,7 @@ in
     [
       mpv
       vim
+      git
       daw
       news
       pass
@@ -75,6 +76,10 @@ in
       discord.stable
       keyboard.vial
       keyboard.kmonad
+      # TODO: |
+      # get email.nix (aerc,neomutt), {w3m,browser}.nix
+      # get mischa ai cli and claude code ??
+      # start using obsidian
       obsidian
       {
         obsidian.syncthing.enable = true;
@@ -130,11 +135,9 @@ in
   sops =
     let
       # NOTE: change to own key and secret
+      ageDir = "${config.xdg.configHome}/sops/age";
       ageKeyfile =
-        if inputs.useSops then
-          "${config.xdg.configHome}/sops/age/keys.txt"
-        else
-          "${config.xdg.configHome}/sops/age/dummy.txt";
+        if inputs.useSops then "${ageDir}/keys.txt" else "${ageDir}/dummy.txt";
       sopsFile =
         if inputs.useSops then ./secrets/primary.yaml else ./secrets/dummy.yaml;
     in
@@ -169,36 +172,6 @@ in
         };
       };
     };
-
-  programs.git = {
-    enable = true;
-    package = pkgs.gitMinimal;
-    signing = {
-      key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
-      signByDefault = true;
-    };
-    settings = {
-      user = {
-        name = "mshnwq";
-        email = "mshnwq.com@gmail.com";
-      };
-      init = {
-        defaultBranch = "main";
-      };
-      tag = {
-        gpgSign = true;
-      };
-      rerere = {
-        enabled = true;
-      };
-      credential = {
-        helper = "cache --timeout=36000";
-      };
-      core = {
-        editor = "vim";
-      };
-    };
-  };
 }
 
 # l | awk '{print $9}' | sed "s|nix/store/||" | sed "s|/bin/.*||" | cut -d "-" -f 2- | awk '!seen[$1]++' | sort | wc -l
