@@ -5,7 +5,7 @@
   ...
 }:
 let
-  # https://github.com/stax76/awesome-mpv
+  # TODO: https://github.com/stax76/awesome-mpv#shaders
   plugins = {
     # https://github.com/tomasklaen/uosc
     uosc = {
@@ -36,7 +36,7 @@ let
         pause_indicator=manual
         stream_quality_options=720,480,360,240,144
         adjust_osd_margins=yes
-        disable_elements=window_border,top_bar,audio_indicator
+        disable_elements=window_border,top_bar,audio_indicator,pause_indicator
       '';
     };
 
@@ -128,4 +128,3 @@ in
     (mkScriptOpts plugins)
   ];
 }
-# TODO: shaders?
