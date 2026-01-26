@@ -1,4 +1,4 @@
-# # programs/anki.nix
+# programs/anki.nix
 {
   lib,
   pkgs,
@@ -10,14 +10,23 @@ let
   cfgDir = "${config.xdg.dataHome}/Anki2";
   addonsDir = "${cfgDir}/addons21";
   theme = "followSystem";
-  style = "native";
   minimalistMode = true;
+  style = "native";
 
   # https://tatsumoto.neocities.org/blog/setting-up-anki
   # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
-  # Define addons with metadata
   addons = [
-    # TODO: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/by-name/an/anki/addons/review-heatmap/default.nix#L54
+    # https://github.com/glutanimate/review-heatmap
+    {
+      id = "1771074083";
+      src = pkgs.ankiAddons.review-heatmap;
+      sourcedir = "share/anki/addons/review-heatmap";
+      extraRun = ''
+        sed -i '484a /* end */' "$ADDON_DEST/web/anki-review-heatmap.js"
+      '';
+    }
+
+    # https://git.sr.ht/~foosoft/anki-connect
     {
       id = "2055492159";
       src = pkgs.fetchFromSourcehut {
@@ -29,6 +38,8 @@ let
       sourcedir = "plugin";
       extraRun = "";
     }
+
+    # https://github.com/AnKing-VIP/AnkiRecolor
     {
       id = "688199788";
       src = pkgs.fetchFromGitHub {
@@ -49,6 +60,8 @@ let
           "$ADDON_DEST/themes/(dark) Pywal.json"
       '';
     }
+
+    # https://github.com/AnKing-VIP/Custom-background-image-and-gear-icon
     {
       id = "1210908941";
       src = pkgs.fetchFromGitHub {
@@ -109,10 +122,7 @@ let
   '';
 in
 {
-  home.packages = with pkgs; [
-    anki
-  ];
-
+  home.packages = [ pkgs.anki ];
   home.activation.installAnkiAddons =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
