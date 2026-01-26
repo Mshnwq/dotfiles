@@ -10,28 +10,6 @@ today() { bash -c "printf 'Today is %(%A %d in %B of %Y (%r))T\n'"; }
 # file into clipboard Wayland
 wcat() { cat "$1" | wl-copy; }
 
-# Function to convert hex color to RGB byte values
-hex_to_rgb() {
-  local hex_color="$1"
-  local red_hex="${hex_color:0:2}"
-  local green_hex="${hex_color:2:2}"
-  local blue_hex="${hex_color:4:2}"
-  local red_byte=$((16#${red_hex}))
-  local green_byte=$((16#${green_hex}))
-  local blue_byte=$((16#${blue_hex}))
-  echo "$red_byte,$green_byte,$blue_byte"
-}
-
-# Function to echo text in the given hex color
-echo_in_color() {
-  local hex_color="$1"
-  local text="$2"
-  # Convert hex to RGB byte values
-  IFS=',' read -r red green blue <<< $(hex_to_rgb "$hex_color")
-  # Use ANSI escape code for 24-bit color
-  echo -e "\033[38;2;${red};${green};${blue}m$text\033[0m"
-}
-
 gitd() {
   eval $(ssh-agent)
   nix run nixpkgs#expect -- "$HOME/.config/zsh/source/scripts/add_ssh.expect" "$(pass show mshnwq/github-ssh-pass)"
@@ -48,11 +26,9 @@ vv() {
 
 # https://sw.kovidgoyal.net/kitty/kittens/ssh/
 ssh() {
-  if [ "$TERM" = "xterm-kitty" ]; then
+  [[ $TERM = "xterm-kitty" ]] && {
     kitten ssh "$@"
-  else
-    command ssh "$@"
-  fi
+  } || command ssh "$@"
 }
 
 # return last dir, doesnt work as alias

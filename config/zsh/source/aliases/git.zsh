@@ -5,6 +5,7 @@
 # Git
 # -------------------------------------------------------------------
 alias ga='git add'
+alias gd='git diff'
 alias gca='git commit --amend'
 alias gcm='git commit -m'
 alias gcl='git clone'
