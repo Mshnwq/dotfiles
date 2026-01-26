@@ -1,5 +1,6 @@
 # overlays/lmms.nix
 # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/audio/lmms/default.nix#L90
+# TODO: fix XDG
 final: prev:
 let
   lmmx3Theme = final.fetchFromGitHub {
