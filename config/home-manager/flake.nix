@@ -36,16 +36,13 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     hyprland = {
-      url = "github:hyprwm/hyprland/v0.52.0";
+      url = "github:hyprwm/hyprland/v0.53.1";
     };
     hyprWorkspaceLayouts = {
-      url = "github:zakk4223/hyprWorkspaceLayouts/e44a2db"; # v0.52.0
+      url = "github:zakk4223/hyprWorkspaceLayouts/d90c6c3"; # make sure works with hyrpland version
       inputs.hyprland.follows = "hyprland";
     };
     home-manager = {
-      # BUG:
-      # https://github.com/nix-community/home-manager/commit/44931fdc5da28366f6aa999cf833f9d62f4d26bc
-      # url = "github:nix-community/home-manager/9a5042a88caea9b729a1d3bc981069159de4fc49"; # UNTIL BIRD LIB fixes the minimal arg
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -70,6 +67,7 @@
     };
     yazi = {
       url = "github:sxyazi/yazi/v26.1.4";
+      # url = "github:sxyazi/yazi/v26.1.22 ";
     };
     nvchad-starter = {
       url = "github:Mshnwq/nvchad";
