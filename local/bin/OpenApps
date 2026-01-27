@@ -78,8 +78,15 @@ case ${1:-} in
     && rmpc --address "$(<"$HOME/.config/dots/.mpd_host"):6600" \
     || dunstify "Music is not running."'
   ;;
-  # Apps
---firefox) Firefox -P "$USER" ;;
+# Web
+--firefox) Firefox -P "$USER" "${2:-about:newtab}" ;;
+--github)
+  DOTDIR="$(sed "s|^~|$HOME|" "$HOME/.config/dotdir")"
+  hyprctl dispatch workspace 1 && $0 --firefox \
+    "$(grep 'github.com' "$DOTDIR/.git/config" |
+      sed -E 's|.*(github\.com)[:/]([^/]+).*|\1/\2|')"
+  ;;
+# Apps
 --files) dolphin ;;
 --soundcontrol) pavucontrol ;;
 --soundmixer) _alacritty SoundTerm -e pulsemixer ;;
