@@ -329,7 +329,7 @@ _p10k() {
 }
 
 _nvchad() {
-  local nvchad_file="$HOME/.config/nvim/lua/chadrc_pywal.lua"
+  local nvchad_file="$HOME/.config/nvim/lua/pywal.lua"
   local nvchad_theme="$HOME/.cache/wal/custom-nvchad.sh"
   local chadwal_theme="$HOME/.cache/wal/base46-dark.lua"
   local base46_theme="$HOME/.local/share/nvim/lazy/base46/lua/base46/themes/chadwal.lua"
