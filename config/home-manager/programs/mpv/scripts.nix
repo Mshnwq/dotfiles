@@ -83,6 +83,15 @@ let
       '';
     };
 
+    # https://github.com/Ajatt-Tools/videoclip
+    videoclip = {
+      opts = ''
+        audio_format=aac
+        audio_bitrate=128k
+        litterbox=no
+      '';
+    };
+
     # https://github.com/oltodosel/interSubs
   };
 

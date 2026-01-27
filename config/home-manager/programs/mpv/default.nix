@@ -39,6 +39,7 @@ in
       uosc
       thumbfast
       mpvacious
+      videoclip
       visualizer
       occivink.crop
     ];
@@ -49,7 +50,7 @@ in
       alt+c script-message-to crop start-crop soft
     '';
     bindings = {
-      "r" = "cycle_values video-rotate 90 180 270 0";
+      "R" = "cycle_values video-rotate 90 180 270 0";
       "L" = "cycle-values loop-file \"inf\" \"no\"";
       "H" = "cycle-values hwdec \"auto\" \"no\"";
     };
