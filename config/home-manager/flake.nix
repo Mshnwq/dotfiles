@@ -63,7 +63,7 @@
     };
     # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
     devenv = {
-      url = "github:cachix/devenv/v1.10";
+      url = "github:cachix/devenv/v1.11.2";
     };
     yazi = {
       url = "github:sxyazi/yazi/v26.1.4";
