@@ -40,7 +40,6 @@ in
       thumbfast
       mpvacious
       videoclip
-      visualizer
       occivink.crop
     ];
     includes = [

@@ -53,7 +53,16 @@ let
 
     # https://github.com/mfcc64/mpv-scripts
     visualizer = {
-      # https://raw.githubusercontent.com/mfcc64/mpv-scripts/master/visualizer.lua
+      script = [
+        {
+          url = "https://raw.githubusercontent.com/mfcc64/mpv-scripts/master/visualizer.lua";
+          hash = "sha256-l4gyed5seiXDOFp8UhGNpwUowmSpU6HXGqwRBwtJFG0=";
+          postPatch = ''
+            substituteInPlace visualizer.lua \
+              --replace 'local cycle_key = "c"' 'local cycle_key = "V"'
+          '';
+        }
+      ];
       opts = ''
         name=avectorscope
         forcewindow=true
@@ -101,7 +110,6 @@ let
       acc: pluginName:
       let
         plugin = plugins.${pluginName};
-        # Only process if plugin has a script attribute
         hasScript = plugin ? script;
       in
       if !hasScript then
@@ -117,9 +125,20 @@ let
             scriptDef:
             let
               fileName = builtins.baseNameOf scriptDef.url;
+              scriptSource = pkgs.fetchurl (removeAttrs scriptDef [ "postPatch" ]);
+              patchedScript =
+                if scriptDef ? postPatch then
+                  pkgs.runCommand fileName { } ''
+                    cp ${scriptSource} ${fileName}
+                    chmod +w ${fileName}
+                    ${scriptDef.postPatch}
+                    cp ${fileName} $out
+                  ''
+                else
+                  scriptSource;
             in
             lib.nameValuePair ".config/mpv/scripts/${fileName}" {
-              source = pkgs.fetchurl scriptDef;
+              source = patchedScript;
             }
           ) scriptList
         )
