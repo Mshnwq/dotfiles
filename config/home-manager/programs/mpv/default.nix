@@ -52,34 +52,29 @@ in
       "R" = "cycle_values video-rotate 90 180 270 0";
       "L" = "cycle-values loop-file \"inf\" \"no\"";
       "H" = "cycle-values hwdec \"auto\" \"no\"";
+      "|" = "vf toggle vflip";
+      "P" =
+        ''script-message cycle-commands "apply-profile transparent" "apply-profile default"'';
     };
+    # overrides profiles
     config = {
       osc = "no";
       osd-level = 0;
       hwdec = "vaapi";
       title = "\${filename}";
     };
-    # "|" = "vf toggle vflip";
-    # overridden by programs.mpv.config.
-    # defaultProfiles = [
-    # "default"
-    # "minimal"
-    # ];
+    defaultProfiles = [
+      "transparent"
+    ];
     # https://github.com/mpv-player/mpv/issues/13257
-    # https://www.reddit.com/r/mpv/comments/1149cpm/recommended_profiles/
-    # profiles = {
-    #   default = {
-    #     osd-level = 0;
-    #     osc = "no";
-    #   };
-    #   minimal = {
-    #     load-scripts = "no";
-    #   };
-    #   music = {
-    #     osd-level = 0;
-    #     # force-window = "yes";
-    #   };
-    # };
+    profiles = {
+      # https://github.com/mpv-player/mpv/issues/6590
+      transparent = {
+        background-color = "0/0";
+        background = "none";
+      };
+      # https://www.reddit.com/r/mpv/comments/1149cpm/recommended_profiles/
+    };
   };
 
   imports = [

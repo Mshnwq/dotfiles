@@ -101,6 +101,18 @@ let
       '';
     };
 
+    # https://github.com/CogentRedTester/mpv-scripts/blob/master/cycle-commands.lua
+    cycle-commands = {
+      script = [
+        {
+          url = "https://raw.githubusercontent.com/CogentRedTester/mpv-scripts/refs/heads/master/cycle-commands.lua";
+          hash = "sha256-v1MvoYZvF6NBJ7vv8Y3csHE+T4wX4ub6f6CNLhKt/00=";
+        }
+      ];
+      opts = "";
+    };
+
+    # https://github.com/CogentRedTester/mpv-sub-select
     # https://github.com/oltodosel/interSubs
   };
 
