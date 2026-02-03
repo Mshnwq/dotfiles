@@ -62,8 +62,18 @@ in
     };
     dupes = {
       source = pkgs.yaziPlugins.dupes;
+      # source = inputs.dupes.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      # source = pkgs.fetchFromGitHub {
+      #   owner = "mshnwq";
+      #   repo = "dupes.yazi";
+      #   rev = "1edf7a406410d5d18b4fbda7b3540e35ab3ad5d6";
+      #   hash = "sha256-7x8N1heASHlYaLzzzdO4jm6IrTgqFbybp+I9EdF7c3M=";
+      # };
       defaultEnable = false;
       initLua = ''
+        th.dupes = th.dupes or {}
+        th.dupes.mark_style = ui.Style():fg("blue")
+        th.dupes.mark_sign = "D"
         require("dupes"):setup({
         	save_op = false,
         	profiles = {
@@ -80,7 +90,7 @@ in
       keymap = [
         {
           on = [
-            "<A-J>"
+            "<A-j>"
             "i"
           ];
           run = "plugin dupes interactive";
@@ -88,7 +98,7 @@ in
         }
         {
           on = [
-            "<A-J>"
+            "<A-j>"
             "o"
           ];
           run = "plugin dupes override";
@@ -96,7 +106,7 @@ in
         }
         {
           on = [
-            "<A-J>"
+            "<A-j>"
             "d"
           ];
           run = "plugin dupes dry";
@@ -104,16 +114,12 @@ in
         }
         {
           on = [
-            "<A-J>"
+            "<A-j>"
             "a"
           ];
           run = "plugin dupes apply";
           desc = "Run dupes apply";
         }
-        # [[mgr.prepend_keymap]]
-        # on = ["<A-J>", "c"]
-        # run = "plugin dupes custom"
-        # desc = "Run dupes custom"
       ];
     };
     jump-to-char = {

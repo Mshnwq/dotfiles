@@ -73,6 +73,7 @@ in
       devenv
       default
       firefox
+      # email
       discord.stable
       keyboard.vial
       keyboard.kmonad
@@ -124,7 +125,7 @@ in
           restore.enable = true;
           dupes.enable = true;
           yamb.enable = true;
-          zoom.enable = true;
+          zoom.enable = false;
         };
       }
     ]

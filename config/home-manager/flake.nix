@@ -67,8 +67,11 @@
     };
     yazi = {
       url = "github:sxyazi/yazi/v26.1.4";
-      # url = "github:sxyazi/yazi/v26.1.22 ";
+      # url = "github:sxyazi/yazi/v26.1.22"; # broken icons colors
     };
+    # dupes = {
+    #   url = "git+ssh://git@github.com/mshnwq/dupes-dev.yazi.git?rev=f46e4a7114434be93183a0d37cee865b512a3b73";
+    # };
     nvchad-starter = {
       url = "github:Mshnwq/nvchad";
       flake = false;
