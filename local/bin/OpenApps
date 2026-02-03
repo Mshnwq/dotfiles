@@ -59,6 +59,7 @@ case ${1:-} in
 --keyboard) KeyBoardL ;;
 --wall) WallSelect ;;
 --nvim) _kitty -e nvim -c Nvdash ;;
+--mail) _kitty --term FileTerm -e neomutt ;;
 --news) _kitty --term FileTerm -e newsboat ;;
 --serie) _kitty --term FetchTerm --style hide -d "$(pwd)" -e "serie" ;;
 --hm)

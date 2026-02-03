@@ -73,7 +73,9 @@ in
       devenv
       default
       firefox
-      # email
+      email
+      # email.aerc
+      # email.neomutt
       discord.stable
       keyboard.vial
       keyboard.kmonad
