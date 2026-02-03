@@ -69,7 +69,7 @@ args@{
     #   edit="Alt+e"
     #   delete="Alt+d"
     #   # colors
-    #   help_color="#2d7ed8"
+    #   help_color="#"
     # '';
 
     programs.btop = {
@@ -224,11 +224,11 @@ args@{
       qpwgraph
       pulsemixer
       # bespokesynth # flatpak is better
-      lmms # from /overlays/;
+      # lmms # from /overlays/;
       #odin2
       #vital
       #cardinal
-      ardour
+      # ardour
     ];
   };
   xdg.desktopEntries.qpwgraph = {

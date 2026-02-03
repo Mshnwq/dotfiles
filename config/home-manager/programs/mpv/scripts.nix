@@ -112,6 +112,16 @@ let
       opts = "";
     };
 
+    # https://github.com/pvpscript/mpv-video-splice
+    # mpv-splice = {
+    #   script = [
+    #     {
+    #       url = "https://raw.githubusercontent.com/pvpscript/mpv-video-splice/refs/heads/master/mpv-splice.lua";
+    #       hash = "sha256-4/CdPgmn0hwLdnDoHmKIVE71pcveuY1I9ZSJNQqOTk4=";
+    #     }
+    #   ];
+    #   opts = "";
+    # };
     # https://github.com/CogentRedTester/mpv-sub-select
     # https://github.com/oltodosel/interSubs
   };
