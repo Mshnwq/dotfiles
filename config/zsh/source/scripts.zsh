@@ -65,3 +65,15 @@ worktreed() {
   git clone --bare "$1" .git
   cd .git && git worktree add ../main main && git worktree add ../dev dev
 }
+
+imx() {
+  [[ -n $1 ]] || return 1
+  local lang
+  case ${1#*.} in
+    py) lang="python3" ;;
+    sh) lang="bash" ;;
+    *) return 1 ;;
+  esac
+  echo "#!/usr/bin/env $lang">"$1"
+  chmod +x "$1"
+}
