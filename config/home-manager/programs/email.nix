@@ -1,10 +1,10 @@
 # programs/email.nix
 {
-  pkgs,
   config,
   ...
 }:
 let
+  # https://home-manager.dev/manual/unstable/options.xhtml#opt-accounts.email.accounts
   mkEmailAccount = name: secrets: {
     realName = secrets.realName;
     address = secrets.address;
@@ -22,8 +22,40 @@ let
       host = secrets.smtp.host;
       port = secrets.smtp.port;
     };
-    neomutt = {
+    mbsync = {
       enable = true;
+      create = "maildir";
+      patterns = [ "*" ];
+    };
+    passwordCommand = secrets.passwordCommand;
+    neomutt.enable = false;
+    aerc.enable = true;
+  };
+  emailsPath = "${config.xdg.configHome}/emails.json";
+  mailDir = "${config.home.homeDirectory}/Documents/Mail";
+in
+{
+  sops.secrets = {
+    emails = {
+      mode = "0400";
+      path = emailsPath;
+    };
+  };
+  accounts.email = {
+    maildirBasePath = mailDir;
+    accounts = builtins.mapAttrs mkEmailAccount (
+      builtins.fromJSON (builtins.readFile emailsPath)
+    );
+  };
+
+  programs = {
+    mbsync.enable = true;
+    # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.neomutt.enable
+    neomutt = {
+      enable = false;
+      vimKeys = true;
+      sort = "reverse-date";
+      sidebar.enable = true;
       extraConfig = ''
         set edit_headers = yes
         set charset = UTF-8
@@ -31,45 +63,45 @@ let
         set use_from = yes
       '';
     };
-    mbsync = {
-      enable = true;
-      create = "maildir";
-      patterns = [ "*" ];
-    };
-    passwordCommand = secrets.passwordCommand;
-  };
-
-  emailsPath = "${config.xdg.configHome}/emails.json";
-  mailDir = "${config.home.homeDirectory}/Documents/Mail";
-  emailSecrets = builtins.fromJSON (builtins.readFile emailsPath);
-  emailAccounts = builtins.mapAttrs mkEmailAccount emailSecrets;
-in
-{
-  programs = {
-    mbsync.enable = true;
-    # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.neomutt.enable
-    neomutt = {
-      enable = true;
-      vimKeys = true;
-      sort = "reverse-date";
-      sidebar.enable = true;
-    };
     # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.aerc.enable
     aerc = {
       enable = true;
+      # https://man.archlinux.org/man/aerc-config.5.en
+      extraConfig = {
+        general = {
+          unsafe-accounts-conf = true;
+          styleset-name = "default";
+        };
+        ui = {
+          mouse-enabled = true;
+        };
+        filters = {
+          "text/plain" = "less -Rc";
+          # "text/html" = "w3m";
+          # # Filters allow you to pipe an email body through a shell command to render
+          # # certain emails differently, e.g. highlighting them with ANSI escape codes.
+          # #
+          # # The first filter which matches the email's mimetype will be used, so order
+          # # them from most to least specific.
+          # #
+          # # You can also match on non-mimetypes, by prefixing with the header to match
+          # # against (non-case-sensitive) and a comma, e.g. subject,text will match a
+          # # subject which contains "text". Use header,~regex to match against a regex.
+          # subject,~^\[PATCH=awk -f /etc/nixos/config/aerc/filters/hldiff
+          # #text/html=/usr/local/Cellar/aerc/0.5.2/share/aerc/filters/html
+          # text/*=awk -f /etc/nixos/config/aerc/filters/plaintext
+          # #image/*=catimg -w $(tput cols) -
+          # [templates]
+          # # Templates are used to populate email bodies automatically.
+          # #
+          #
+          # # The directories where the templates are stored. It takes a colon-separated
+          # # list of directories.
+          # #
+          # # default: /usr/local/Cellar/aerc/0.5.2/share/aerc/templates/
+          # template-dirs=/etc/nixos/config/aerc/templates/
+        };
+      };
     };
-  };
-
-  sops.secrets = {
-    emails = {
-      mode = "0400";
-      path = emailsPath;
-    };
-  };
-
-  # https://home-manager.dev/manual/unstable/options.xhtml#opt-accounts.email.accounts
-  accounts.email = {
-    maildirBasePath = mailDir;
-    accounts = emailAccounts;
   };
 }
