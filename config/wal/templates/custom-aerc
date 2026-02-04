@@ -1,0 +1,27 @@
+# https://man.archlinux.org/man/aerc-stylesets.7.en
+*.default = true
+*.normal = true
+
+default.fg = {foreground}
+
+tab.fg = {color3}
+tab.bg = {background}
+tab.selected.fg = {background}
+tab.selected.bg ={color3}
+
+msglist_*.selected.fg = {background}
+msglist_*.selected.bg = {color8}
+
+dirlist_*.selected.fg = {background}
+dirlist_*.selected.bg = {color8}
+
+statusline_default.fg = {color8}
+spinner.fg = {color8}
+border.fg = {color8}
+header.bold = true
+header.fg = {foreground}
+title.fg = {foreground}
+
+[viewer]
+url.fg = {foreground}
+url.underline = true

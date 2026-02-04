@@ -23,6 +23,7 @@ let
     "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
     "zathura/zathurarc" = "${walCache}/colors-zathura";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
+    "aerc/stylesets/default" = "${walCache}/custom-aerc";
     "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";
     "mpv/themes/pywal.conf" = "${walCache}/custom-mpv.conf";
     "rmpc/themes/pywal.ron" = "${walCache}/custom-rmpc.ron";
