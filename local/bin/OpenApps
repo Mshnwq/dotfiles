@@ -60,7 +60,7 @@ case ${1:-} in
 --wall) WallSelect ;;
 --nvim) _kitty -e nvim -c Nvdash ;;
 --mail) _kitty --term FileTerm --style hide \
-  -e sh -c "mbsync -a 1>/dev/null & aerc" ;;
+  -d "$HOME" -e sh -c "mbsync -a &>/dev/null & aerc" ;;
 --news) _kitty --term FetchTerm --style hide -e newsboat ;;
 --serie) _kitty --term FetchTerm --style hide -d "$PWD" -e "serie" ;;
 --hm)

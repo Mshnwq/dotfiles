@@ -66,6 +66,7 @@ in
       mime
       wine
       anki
+      email
       music
       pywal
       infra
@@ -73,14 +74,10 @@ in
       devenv
       default
       firefox
-      email
-      # email.aerc
-      # email.neomutt
       discord.stable
       keyboard.vial
       keyboard.kmonad
       # TODO: |
-      # get email.nix (aerc,neomutt), {w3m,browser}.nix
       # get mischa ai cli and claude code ??
       # start using obsidian
       obsidian
