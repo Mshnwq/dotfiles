@@ -7,14 +7,13 @@
   ...
 }:
 let
+  profileName = config.home.username;
   cfgDir = "${config.xdg.dataHome}/Anki2";
-  addonsDir = "${cfgDir}/addons21";
-  theme = "followSystem";
-  minimalistMode = true;
-  style = "native";
-
   # https://tatsumoto.neocities.org/blog/setting-up-anki
-  # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
+  deckDir = "${config.home.homeDirectory}/Documents/Anki/";
+  # NOTE: if first time, get file in link, manually import, then export with legacy option to work
+  # https://github.com/alyssabedard/mpv2anki/blob/master/docs/note_types/basic/Sentence%20Mining.apkg
+
   addons = [
     # https://github.com/glutanimate/review-heatmap
     {
@@ -23,6 +22,23 @@ let
       sourcedir = "share/anki/addons/review-heatmap";
       extraRun = ''
         sed -i '484a /* end */' "$ADDON_DEST/web/anki-review-heatmap.js"
+      '';
+    }
+
+    # https://github.com/lambdadog/passfail2
+    {
+      id = "876946123";
+      src = pkgs.fetchFromGitHub {
+        owner = "lambdadog";
+        repo = "passfail2";
+        rev = "d5313e4f1217e968b36edbc0a4fe92386209ffe6";
+        hash = "sha256-HMe6/fHpYj/MN0dUFj3W71vK7qqcp9l1xm8SAiKkJLs=";
+      };
+      sourcedir = "";
+      extraRun = ''
+        IN="$ADDON_DEST/build_info.py.in"
+        OUT="''${IN%.in}"
+        sed 's/\$version/"0.3.0"/' "$IN" > "$OUT"
       '';
     }
 
@@ -104,7 +120,7 @@ let
   ];
 
   installAddons = pkgs.writeShellScript "install-anki-addons" ''
-    ADDONS_DIR="${addonsDir}"
+    ADDONS_DIR="${cfgDir}/addons21"
     mkdir -p "$ADDONS_DIR"
     ${lib.concatMapStringsSep "\n" (addon: ''
       ADDON_SRC="${addon.src}/${addon.sourcedir}"
@@ -120,12 +136,89 @@ let
       fi
     '') addons}
   '';
-in
-{
-  home.packages = [ pkgs.anki ];
-  home.activation.installAnkiAddons =
-    inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
-      ''
-        $DRY_RUN_CMD ${installAddons}
-      '';
-}
+
+#   # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
+#   # https://devotd.wordpress.com/2021/02/10/anki-decks-in-python-import-export/
+#   initAnkiConfig = pkgs.writeShellScript "init-anki-config" ''
+#     if [ ! -f "${cfgDir}/prefs21.db" ]; then
+#       mkdir -p "${cfgDir}"
+#       echo "sh: Initializing Anki configuration..."
+#       export PYTHONPATH="${pkgs.anki.lib}/lib/python3.13/site-packages:$PYTHONPATH"
+#       ${pkgs.python3}/bin/python3 <<'EOF'
+#     import os, sys, glob
+#
+#     from aqt.profiles import ProfileManager
+#     from aqt.theme import Theme, WidgetStyle, theme_manager
+#     from anki.collection import Collection
+#     from anki.importing.apkg import AnkiPackageImporter
+#
+#     profile_manager = ProfileManager(
+#       ProfileManager.get_created_base_folder("${cfgDir}")
+#     )
+#     _ = profile_manager.setupMeta()
+#     profile_manager.meta["firstRun"] = False
+#     profile_manager.setLang("en_US")
+#
+#     widget_style: WidgetStyle = WidgetStyle.NATIVE
+#     theme_manager.apply_style = lambda: None
+#     profile_manager.set_widget_style(widget_style)
+#     profile_manager.set_minimalist_mode(True)
+#     profile_manager.set_answer_key(1, "h") # Again (Fail)
+#     profile_manager.set_answer_key(3, "j") # Good  (Pass)
+#     # profile_manager.set_answer_key(2, "2") # Hard  (Fail)
+#     # profile_manager.set_answer_key(4, "4") # Easy  (Pass)
+#
+#     profile_manager.create("${profileName}")
+#     profile_manager.openProfile("${profileName}")
+#     profile_manager.profile["lastOptimize"] = None
+#     profile_manager.save()
+#
+#     col_path = profile_manager.collectionPath()
+#     col = Collection(col_path)
+#     col.decks.add_normal_deck_with_name("Learning")
+#     deck_dir = "${deckDir}"
+#     if os.path.exists(deck_dir):
+#       apkg_files = glob.glob(os.path.join(deck_dir, "*.apkg"))
+#       for deck_path in apkg_files:
+#         importer = AnkiPackageImporter(col, deck_path)
+#         importer.run()
+#     col.close()
+#
+#     print("py: Configuration ${profileName} saved successfully")
+#     EOF
+#       chmod -R u+w "${cfgDir}"
+#       echo "sh: Anki configuration initialized"
+#     fi
+#   '';
+#
+#   closeAnkiUpdateDialog = pkgs.writeShellScript "close-anki-update-dialog" ''
+#     sleep 5
+#     for i in {1..50}; do
+#       # Check if the window exists
+#       WINDOW=$(hyprctl clients -j | jq -r '.[] | select(.title == "Update Add-ons") | .address')
+#       if [ -n "$WINDOW" ]; then
+#         hyprctl dispatch closewindow address:$WINDOW
+#         exit 0
+#       fi
+#       sleep 0.1
+#     done
+#   '';
+#
+# in
+# {
+#   home.packages = [ pkgs.anki ];
+#   home.activation.installAnkiAddons =
+#     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+#       ''
+#         $DRY_RUN_CMD ${initAnkiConfig}
+#         $DRY_RUN_CMD ${installAddons}
+#       '';
+#   home.file.".local/share/applications/anki.desktop" = {
+#     force = true;
+#     text =
+#       builtins.replaceStrings
+#         [ "Exec=anki %f" ]
+#         [ "Exec=sh -c '${closeAnkiUpdateDialog} & anki'" ]
+#         (builtins.readFile "${pkgs.anki}/share/applications/anki.desktop");
+#   };
+# }
