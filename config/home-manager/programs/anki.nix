@@ -185,18 +185,18 @@ let
     fi
   '';
 
-  # closeAnkiUpdateDialog = pkgs.writeShellScript "close-anki-update-dialog" ''
-  #   sleep 5
-  #   for i in {1..50}; do
-  #     # Check if the window exists
-  #     WINDOW=$(hyprctl clients -j | jq -r '.[] | select(.title == "Update Add-ons") | .address')
-  #     if [ -n "$WINDOW" ]; then
-  #       hyprctl dispatch closewindow address:$WINDOW
-  #       exit 0
-  #     fi
-  #     sleep 0.1
-  #   done
-  # '';
+  closeAnkiUpdateDialog = pkgs.writeShellScript "close-anki-update-dialog" ''
+    sleep 5
+    for i in {1..50}; do
+      # Check if the window exists
+      WINDOW=$(hyprctl clients -j | jq -r '.[] | select(.title == "Update Add-ons") | .address')
+      if [ -n "$WINDOW" ]; then
+        hyprctl dispatch closewindow address:$WINDOW
+        exit 0
+      fi
+      sleep 0.1
+    done
+  '';
 
 in
 {
