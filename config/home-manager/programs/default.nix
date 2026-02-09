@@ -220,7 +220,7 @@ args@{
   # digital audio workstation
   daw = {
     home.packages = with pkgs; [
-      audacity # WAYLAND is in v4 pre release still maybe overlay it
+      # audacity # WAYLAND is in v4 pre release still maybe overlay it
       qpwgraph
       pulsemixer
       # bespokesynth # flatpak is better
