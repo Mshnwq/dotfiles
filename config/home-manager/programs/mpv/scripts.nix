@@ -65,7 +65,6 @@ let
       ];
       opts = ''
         name=avectorscope
-        forcewindow=true
         #mode=noalbumart
         mode=novideo
         quality=low
