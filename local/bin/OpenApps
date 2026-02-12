@@ -54,9 +54,10 @@ case ${1:-} in
   cliphist list | rofi -theme "$CLIP_THEME" -dmenu | cliphist decode | wl-copy
   ;;
 --screenshot) shift && [[ $# -eq 0 || $# -eq 2 ]] && ScreenShot "$@" ;;
+--translate) _alacritty FileTerm -o font.size="10" -e gtt ;;
+--keyboard) KeyBoardL ;;
 --powermenu) PowerMenu ;;
 --android) AndroidMount ;;
---keyboard) KeyBoardL ;;
 --wall) WallSelect ;;
 --nvim) _kitty -e nvim -c Nvdash ;;
 --mail) _kitty --term FileTerm --style hide \

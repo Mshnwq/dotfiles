@@ -200,7 +200,13 @@ let
 
 in
 {
-  home.packages = [ pkgs.anki ];
+  home.packages = with pkgs; [
+    (pkgs.writeShellScriptBin "gtt" ''
+      export ALSA_PLUGIN_DIR=${pkgs.alsa-plugins}/lib/alsa-lib
+      exec ${pkgs.gtt}/bin/gtt "$@"
+    '')
+    anki
+  ];
   home.activation.installAnkiAddons =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
