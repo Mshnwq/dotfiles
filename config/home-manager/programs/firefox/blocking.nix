@@ -113,7 +113,6 @@ in
         '';
       in
       {
-        # adminSettings = builtins.toJSON {
         userSettings = {
           advancedUserEnabled = true;
           dynamicFilteringEnabled = true;

@@ -6,9 +6,11 @@
   ...
 }:
 let
-  profile = "mshnwq.default";
-  profileName = "mshnwq";
-  profile2 = "mshnwq.dummy";
+
+  name = config.home.username;
+  profile = "${name}.default";
+  profileName = "${name}";
+  profile2 = "${name}.dummy";
   profileName2 = "dummy";
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
