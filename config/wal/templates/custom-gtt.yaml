@@ -1,0 +1,13 @@
+gruvbox:
+  bg: 0x{background.strip}
+  fg: 0x{foreground.strip}
+  # source
+  red: 0x{color3.strip}
+  # destination
+  blue: 0x{color8.strip}
+  # gray: 0x414868
+  # green: 0x9ece6a
+  # yellow: 0xe0af68
+  # purple: 0xbb9af7
+  # cyan: 0x7dcfff
+  # orange: 0xff9e64

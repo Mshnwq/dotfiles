@@ -19,6 +19,7 @@ let
   walLinks = {
     "cava/config" = "${walCache}/custom-cava";
     "dunst/dunstrc" = "${walCache}/custom-dunstrc";
+    "gtt/theme.yaml" = "${walCache}/custom-gtt.yaml";
     "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
     "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
     "zathura/zathurarc" = "${walCache}/colors-zathura";
