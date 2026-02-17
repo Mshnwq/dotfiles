@@ -6,7 +6,7 @@ let
   mkParams = lib.mapAttrsToList lib.nameValuePair;
 in
 {
-  nixpkgs-unstable = {
+  nixpkgs = {
     name = "Nixpkgs (unstable)";
     icon = "https://nixos.org/favicon.ico";
     urls = [
@@ -20,13 +20,12 @@ in
     ];
     definedAliases = [
       "@pkg"
-      "@nixpkgs"
     ];
   };
 
-  home-manager-master = {
-    name = "Home Manager Options (master)";
-    icon = "https://home-manager-options.extranix.com/images/favicon.ico";
+  home-manager = {
+    name = "Home Manager (master)";
+    icon = "https://home-manager.dev/favicon.ico";
     urls = [
       {
         template = "https://home-manager-options.extranix.com";
@@ -38,24 +37,88 @@ in
     ];
     definedAliases = [
       "@hm"
-      "@home-manager"
     ];
   };
 
-  noogle = {
-    name = "Noogle - Nixpkgs Functions";
-    # The Noogle favicon is just the Nix logo, but lower quality.
-    # icon = "https://noogle.dev/favicon.png";
-    icon = "https://nixos.org/favicon.ico";
+  # noogle = {
+  #   name = "Noogle - Nixpkgs Functions";
+  #   # The Noogle favicon is just the Nix logo, but lower quality.
+  #   # icon = "https://noogle.dev/favicon.png";
+  #   icon = "https://nixos.org/favicon.ico";
+  #   urls = [
+  #     {
+  #       template = "https://noogle.dev/q";
+  #       params = mkParams { term = "{searchTerms}"; };
+  #     }
+  #   ];
+  #   definedAliases = [
+  #     "@ngl"
+  #     "@noogle"
+  #   ];
+  # };
+
+  nix = {
+    name = "MyNixos";
+    icon = "https://mynixos.com/favicon.ico";
     urls = [
       {
-        template = "https://noogle.dev/q";
-        params = mkParams { term = "{searchTerms}"; };
+        template = "https://mynixos.com/search";
+        params = mkParams {
+          q = "{searchTerms}";
+        };
       }
     ];
     definedAliases = [
-      "@ngl"
-      "@noogle"
+      "@nx"
     ];
   };
+
+  arch = {
+    name = "Arch Wiki";
+    icon = "https://archlinux.org/favicon.ico";
+    urls = [
+      {
+        template = "https://wiki.archlinux.org/index.php";
+        params = mkParams {
+          search = "{searchTerms}";
+        };
+      }
+    ];
+    definedAliases = [
+      "@aw"
+    ];
+  };
+
+  # metallum = {
+  #   name = "Metal Encyclopedia";
+  #   icon = "https://www.metal-archives.com/favicon.ico";
+  #   urls = [
+  #     {
+  #       template = "https://www.metal-archives.com/search";
+  #       params = mkParams {
+  #         searchString = "{searchTerms}";
+  #         type = "band_name";
+  #       };
+  #     }
+  #   ];
+  #   definedAliases = [
+  #     "@mt"
+  #   ];
+  # };
+  #
+  # songsterr = {
+  #   name = "Songsterr";
+  #   icon = "https://songsterr.com/favicon.ico";
+  #   urls = [
+  #     {
+  #       template = "https://songsterr.com/";
+  #       params = mkParams {
+  #         pattern = "{searchTerms}";
+  #       };
+  #     }
+  #   ];
+  #   definedAliases = [
+  #     "@sg"
+  #   ];
+  # };
 }
