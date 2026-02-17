@@ -7,3 +7,6 @@ nix() {
     command nix "$@"
   fi
 }
+
+# https://github.com/nix-community/comma
+,() { nix run nixpkgs#$1 -- ${@:2}; }
