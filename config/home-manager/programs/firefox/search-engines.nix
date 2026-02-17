@@ -89,36 +89,36 @@ in
     ];
   };
 
-  # metallum = {
-  #   name = "Metal Encyclopedia";
-  #   icon = "https://www.metal-archives.com/favicon.ico";
-  #   urls = [
-  #     {
-  #       template = "https://www.metal-archives.com/search";
-  #       params = mkParams {
-  #         searchString = "{searchTerms}";
-  #         type = "band_name";
-  #       };
-  #     }
-  #   ];
-  #   definedAliases = [
-  #     "@mt"
-  #   ];
-  # };
-  #
-  # songsterr = {
-  #   name = "Songsterr";
-  #   icon = "https://songsterr.com/favicon.ico";
-  #   urls = [
-  #     {
-  #       template = "https://songsterr.com/";
-  #       params = mkParams {
-  #         pattern = "{searchTerms}";
-  #       };
-  #     }
-  #   ];
-  #   definedAliases = [
-  #     "@sg"
-  #   ];
-  # };
+  metallum = {
+    name = "Metal Encyclopedia";
+    icon = "https://www.metal-archives.com/favicon.ico";
+    urls = [
+      {
+        template = "https://www.metal-archives.com/search";
+        params = mkParams {
+          searchString = "{searchTerms}";
+          type = "band_name";
+        };
+      }
+    ];
+    definedAliases = [
+      "@mt"
+    ];
+  };
+
+  songsterr = {
+    name = "Songsterr";
+    icon = "https://songsterr.com/favicon.ico";
+    urls = [
+      {
+        template = "https://songsterr.com/";
+        params = mkParams {
+          pattern = "{searchTerms}";
+        };
+      }
+    ];
+    definedAliases = [
+      "@sg"
+    ];
+  };
 }
