@@ -61,7 +61,8 @@ in
       osc = "no";
       osd-level = 0;
       hwdec = "vaapi";
-      title = "\${filename}";
+      #title = "\${title}";
+      title = "\${filename}"; # TODO: fix correct title
     };
     defaultProfiles = [
       "transparent"
