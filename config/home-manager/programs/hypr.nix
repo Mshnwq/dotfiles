@@ -30,14 +30,15 @@ in
       # hyprlock TODO: broken
       hyprsunset
       hyprpicker
+      wlr-which-key
       libinput-gestures
       # TODO: quickshell
     ];
 
     home.file.".config/libinput-gestures.conf".text = ''
-      gesture swipe up 	3 niflveil restore-last
+      gesture swipe up 	  3 niflveil restore-last
       gesture swipe down	3 niflveil minimize
-      gesture swipe up	4 hyprctl dispatch fullscreen 0
+      gesture swipe up	  4 hyprctl dispatch fullscreen 0
       gesture swipe down	4 hyprctl dispatch togglefloating
     '';
 
@@ -74,21 +75,23 @@ in
               validCodes = builtins.filter (code: code != "") codes;
             in
             lib.concatStringsSep "," validCodes;
-
           kbLayouts = parseLayouts layoutConfigContent;
+          confFiles =
+            let
+              dir = builtins.readDir hyprConfDir;
+            in
+            builtins.filter (
+              file: dir.${file} == "regular" && builtins.match ".*\\.conf$" file != null
+            ) (builtins.attrNames dir);
+          confSources = lib.concatStringsSep "\n" (
+            map (file: "source = ${hyprConfDir}/${file}") confFiles
+          );
         in
         lib.concatStringsSep "\n" [
           ''
             exec-once = dbus-update-activation-environment --systemd --all
             exec-once = /usr/bin/lxpolkit
-            source = ${hyprConfDir}/autostart.conf
-            source = ${hyprConfDir}/env.conf
-            source = ${hyprConfDir}/general.conf
-            source = ${hyprConfDir}/input.conf
-            source = ${hyprConfDir}/keybindings.conf
-            source = ${hyprConfDir}/layouts.conf
-            source = ${hyprConfDir}/monitors.conf
-            source = ${hyprConfDir}/rules.conf
+            ${confSources}
             input {
                 kb_layout=${kbLayouts}
             }
@@ -124,5 +127,6 @@ in
         path = "${config.xdg.configHome}/keyboard_layouts.conf";
       };
     };
-  };
+
 }
+# TODO: find way to dynmaiclyy add menu item
