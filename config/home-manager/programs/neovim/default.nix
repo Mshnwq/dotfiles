@@ -51,29 +51,29 @@ in
       ]);
   };
 
-  # # BUG: Strange that doesnt work on empty .md file
-  # # ohhh because its an Mimetype:   inode/empty
-  # # move to obsidian
-  # xdg.desktopEntries.nvim = {
-  #   name = "Neovim";
-  #   icon = "nvim";
-  #   terminal = false;
-  #   exec = "nvim-open %F";
-  #   type = "Application";
-  #   categories = [ "TextEditor" ];
-  #   mimeType = [
-  #     "text/markdown"
-  #     "text/plain"
-  #   ];
-  # };
-  # home.packages = [
-  #   (pkgs.writeShellScriptBin "nvim-open" ''
-  #     SOCKET="/tmp/nvim-server.sock"
-  #     if [ -S "$SOCKET" ]; then
-  #       nvim --server "$SOCKET" --remote "$1"
-  #     else
-  #       kitty -d "''${1%/*}" -o font_size=8 -e nvim --listen "$SOCKET" "$1"
-  #     fi
-  #   '')
-  # ];
+  # BUG: Strange that doesnt work on empty .md file
+  # ohhh because its an Mimetype:   inode/empty
+  # move to obsidian
+  xdg.desktopEntries.nvim = {
+    name = "Neovim";
+    icon = "nvim";
+    terminal = false;
+    exec = "nvim-open %F";
+    type = "Application";
+    categories = [ "TextEditor" ];
+    mimeType = [
+      "text/markdown"
+      "text/plain"
+    ];
+  };
+  home.packages = [
+    (pkgs.writeShellScriptBin "nvim-open" ''
+      SOCKET="/tmp/nvim-server.sock"
+      if [ -S "$SOCKET" ]; then
+        nvim --server "$SOCKET" --remote "$1"
+      else
+        kitty -d "''${1%/*}" -o font_size=8 -e nvim --listen "$SOCKET" "$1"
+      fi
+    '')
+  ];
 }
