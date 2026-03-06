@@ -1,5 +1,8 @@
 # pkgs/guitar.nix
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 let
   version = "0.1.39";
 in

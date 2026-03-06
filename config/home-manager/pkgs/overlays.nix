@@ -1,6 +1,7 @@
 # pkgs/overlays.nix
 { lib, inputs }:
 final: prev: {
+  mermaid-ascii = final.callPackage ./mermaid-ascii.nix { };
   niflveil = final.callPackage ./niflveil.nix { };
   shyfox = final.callPackage ./shyfox.nix { };
   guitar = final.callPackage ./guitar.nix { };
