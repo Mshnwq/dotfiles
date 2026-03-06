@@ -1,7 +1,6 @@
 # flake.nix
 {
   description = "Mshnwq Home Manager configuration";
-
   nixConfig = {
     extra-substituters = [
       "https://hyprland.cachix.org"
@@ -26,22 +25,10 @@
   };
 
   inputs = {
-    # systems.url = "github:nix-systems/default";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
     nixpkgs.follows = "nixpkgs-unstable";
-    nixgl = {
-      url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    hyprland = {
-      url = "github:hyprwm/hyprland/v0.53.1";
-    };
-    hyprWorkspaceLayouts = {
-      url = "github:zakk4223/hyprWorkspaceLayouts/d90c6c3"; # make sure works with hyrpland version
-      inputs.hyprland.follows = "hyprland";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,28 +37,38 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # nixgl = {
+    #   url = "github:nix-community/nixGL";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # hyprland = {
+    #   url = "github:hyprwm/hyprland/v0.54.3";
+    # };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     };
     bird-nix-lib = {
       url = "github:spikespaz/bird-nix-lib";
     };
-    # for mkWine
-    erosanix = {
-      url = "github:emmanuelrosa/erosanix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
-    devenv = {
-      url = "github:cachix/devenv/v1.11.2";
-    };
-    yazi = {
-      url = "github:sxyazi/yazi/v26.1.4";
-      # url = "github:sxyazi/yazi/v26.1.22"; # broken icons colors
-    };
+    # # for mkWine
+    # erosanix = {
+    #   url = "github:emmanuelrosa/erosanix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # devenv = {
+    #   url = "github:cachix/devenv/v1.11.2"; # TODO: upgrade to v2
+    # };
+    # yazi = {
+    #   url = "github:sxyazi/yazi/v26.1.4";
+    #   # url = "github:sxyazi/yazi/v26.1.22"; # BUG: broken icons colors
+    # };
     # dupes = {
     #   url = "git+ssh://git@github.com/mshnwq/dupes-dev.yazi.git?rev=f46e4a7114434be93183a0d37cee865b512a3b73";
     # };
+    # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
+    neovim = {
+      url = "github:nix-community/neovim-nightly-overlay/28962d1"; # v0.12
+    };
     nvchad-starter = {
       url = "github:Mshnwq/nvchad";
       flake = false;
