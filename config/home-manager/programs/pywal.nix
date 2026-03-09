@@ -22,6 +22,7 @@ let
     "gtt/theme.yaml" = "${walCache}/custom-gtt.yaml";
     "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
     "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
+    # "glow/pywal.json" = "${walCache}/custom-glow.json";
     "zathura/zathurarc" = "${walCache}/colors-zathura";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
     "aerc/stylesets/default" = "${walCache}/custom-aerc";
@@ -33,11 +34,6 @@ let
     "waybar/colors-waybar.css" = "${walCache}/colors-waybar.css";
     "alacritty/colors-alacritty.toml" = "${walCache}/colors-alacritty.toml";
   };
-
-  system = pkgs.system;
-  pkgs-stable = import inputs.nixpkgs-stable {
-    inherit system;
-  };
 in
 {
   home.packages =
@@ -45,13 +41,11 @@ in
     [
       qimgv
       vips
+      pywal16
+      pywalfox-native # install
       papirus-folders # cli tool
-      pywalfox-native # do pywalfox install
+      highlight # from /overlays/;
       kdePackages.qtstyleplugin-kvantum
-    ]
-    ++ [
-      pkgs-stable.pywal16
-      pkgs-stable.highlight
     ]
     ++ (with pkgs.nerd-fonts; [
       fira-code
@@ -62,6 +56,7 @@ in
       jetbrains-mono
     ]);
 
+  # TODO: use mpv eventually
   home.file."${config.xdg.configHome}/qimgv/qimgv.conf" = {
     force = true;
     text = ''
@@ -93,6 +88,15 @@ in
     '';
   };
 
+  # # https://github.com/charmbracelet/glamour/blob/master/styles/gallery/README.md
+  # home.file."${config.xdg.configHome}/glow/glow.yml" = {
+  #   force = true;
+  #   text = ''
+  #     style: "${config.xdg.configHome}/glow/pywal.json"
+  #     width: 80
+  #   '';
+  # };
+  #
   home.activation.linkWalTheme =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
