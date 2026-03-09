@@ -64,8 +64,9 @@ in
       auto
       rust
       mime
-      wine
+      # wine
       anki
+      hypr
       email
       music
       pywal
@@ -77,16 +78,10 @@ in
       discord.stable
       keyboard.vial
       keyboard.kmonad
-      # TODO: |
-      # get mischa ai cli and claude code ??
-      # start using obsidian
+      # TODO: get mischa ai cli and claude code ??
       obsidian
       {
         obsidian.syncthing.enable = true;
-      }
-      hypr
-      {
-        hypr.hyprWorkspaceLayouts.enable = true;
       }
       zsh
       {
@@ -119,6 +114,7 @@ in
         yazi.pluginSettings = {
           relative-motions.enable = true;
           jump-to-char.enable = true;
+          preview-epub.enable = true;
           mediainfo.enable = true;
           projects.enable = true;
           restore.enable = true;
