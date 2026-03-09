@@ -93,7 +93,7 @@ let
         # Remove AnKing folder
         rm -rf "$ADDON_DEST/AnKing"
         # Copy default_gear to gear
-        if [ -d "$USER_FILES/default_gear" ]; then
+        if [[ -d "$USER_FILES/default_gear" ]]; then
           cp -r "$USER_FILES/default_gear" "$USER_FILES/gear"
         fi
         # Remove default_background and background directories
@@ -102,10 +102,10 @@ let
         # Create symlink to rice wallpapers
         ln -sf "$HOME/.cache/wal/custom-anki-bg.json" "$ADDON_DEST/config.json"
         RICE_FILE="$HOME/.config/dots/.rice"
-        if [ -f "$RICE_FILE" ]; then
+        if [[ -f $RICE_FILE ]]; then
           RICE=$(cat "$RICE_FILE")
           WALLS_DIR="$HOME/.config/dots/rices/$RICE/walls"
-          if [ -d "$WALLS_DIR" ]; then
+          if [[ -d $WALLS_DIR ]]; then
             ln -sf "$WALLS_DIR" "$USER_FILES/background"
             ln -sf "$WALLS_DIR" "$USER_FILES/default_background"
             echo "  Linked background to $WALLS_DIR"
@@ -125,12 +125,15 @@ let
     ${lib.concatMapStringsSep "\n" (addon: ''
       ADDON_SRC="${addon.src}/${addon.sourcedir}"
       ADDON_DEST="$ADDONS_DIR/${addon.id}"
-      if [ -d "$ADDON_SRC" ]; then
-        rm -rf "$ADDON_DEST"
-        cp -r "$ADDON_SRC" "$ADDON_DEST"
-        chmod -R u+w "$ADDON_DEST"
-        echo "Installed ${addon.id} to $ADDON_DEST"
-        ${addon.extraRun}
+      if [[ -d $ADDON_SRC ]]; then
+        if [[ -d $ADDON_DEST ]]; then
+          echo "Skipping ${addon.id} (already installed)"
+        else
+          cp -r "$ADDON_SRC" "$ADDON_DEST"
+          chmod -R u+w "$ADDON_DEST"
+          echo "Installed ${addon.id} to $ADDON_DEST"
+          ${addon.extraRun}
+        fi
       else
         echo "Warning: Source directory not found for ${addon.id}"
       fi
@@ -140,7 +143,7 @@ let
   # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
   # https://devotd.wordpress.com/2021/02/10/anki-decks-in-python-import-export/
   initAnkiConfig = pkgs.writeShellScript "init-anki-config" ''
-    if [ ! -f "${cfgDir}/prefs21.db" ]; then
+    if [[ ! -f "${cfgDir}/prefs21.db" ]]; then
       mkdir -p "${cfgDir}"
       echo "sh: Initializing Anki configuration..."
       export PYTHONPATH="${pkgs.anki.lib}/lib/python3.13/site-packages:$PYTHONPATH"
@@ -187,19 +190,39 @@ let
 
   closeAnkiUpdateDialog = pkgs.writeShellScript "close-anki-update-dialog" ''
     sleep 5
-    for i in {1..50}; do
+    for i in {1..25}; do
       # Check if the window exists
       WINDOW=$(hyprctl clients -j | jq -r '.[] | select(.title == "Update Add-ons") | .address')
-      if [ -n "$WINDOW" ]; then
+      if [[ -n $WINDOW ]]; then
         hyprctl dispatch closewindow address:$WINDOW
         exit 0
       fi
-      sleep 0.1
+      sleep 0.2
     done
   '';
-
 in
 {
+  # sops.secrets = {
+  #   gtt-languages = {
+  #     mode = "0400";
+  #     path = "${config.xdg.configHome}/gtt_languages";
+  #   };
+  # };
+  # home.file.".config/gtt/keymap.yaml".text = ''
+  #   exit: C-q
+  #   clear: C-c
+  #   translate: C-j
+  #   swap_language: C-s
+  #   copy_selected: C-y
+  #   copy_source: C-g
+  #   copy_destination: C-r
+  #   tts_source: C-o
+  #   tts_destination: C-p
+  #   stop_tts: C-x
+  #   toggle_transparent: C-t
+  #   toggle_below: C-\
+  # '';
+  #
   home.packages = with pkgs; [
     (pkgs.writeShellScriptBin "gtt" ''
       export ALSA_PLUGIN_DIR=${pkgs.alsa-plugins}/lib/alsa-lib
