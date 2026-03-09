@@ -22,7 +22,7 @@ let
     "gtt/theme.yaml" = "${walCache}/custom-gtt.yaml";
     "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
     "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
-    # "glow/pywal.json" = "${walCache}/custom-glow.json";
+    "glow/pywal.json" = "${walCache}/custom-glow.json";
     "zathura/zathurarc" = "${walCache}/colors-zathura";
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
     "aerc/stylesets/default" = "${walCache}/custom-aerc";
@@ -88,15 +88,15 @@ in
     '';
   };
 
-  # # https://github.com/charmbracelet/glamour/blob/master/styles/gallery/README.md
-  # home.file."${config.xdg.configHome}/glow/glow.yml" = {
-  #   force = true;
-  #   text = ''
-  #     style: "${config.xdg.configHome}/glow/pywal.json"
-  #     width: 80
-  #   '';
-  # };
-  #
+  # https://github.com/charmbracelet/glamour/blob/master/styles/gallery/README.md
+  home.file."${config.xdg.configHome}/glow/glow.yml" = {
+    force = true;
+    text = ''
+      style: "${config.xdg.configHome}/glow/pywal.json"
+      width: 80
+    '';
+  };
+
   home.activation.linkWalTheme =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
       ''
