@@ -1,6 +1,7 @@
 # programs/keyboard.nix
 {
   pkgs,
+  config,
   ...
 }:
 {
@@ -14,11 +15,19 @@
       kmonad
     ];
 
+    sops.secrets = {
+      keyboard-device-id = {
+        mode = "0400";
+      };
+    };
+
     # https://github.com/kmonad/kmonad/blob/master/keymap/tutorial.kbd
     # https://github.com/sunaku/enthium
     home.file.".config/kmonad/config.kbd".text = ''
       (defcfg
-        input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+        input  (device-file "${
+          builtins.readFile config.sops.secrets."keyboard-device-id".path
+        }")
         output (uinput-sink "KMonad output")
         fallthrough true
       )
