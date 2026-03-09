@@ -25,7 +25,7 @@
   };
 
   inputs = {
-    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
     nixpkgs.follows = "nixpkgs-unstable";
@@ -50,7 +50,7 @@
     bird-nix-lib = {
       url = "github:spikespaz/bird-nix-lib";
     };
-    # # for mkWine
+    # for mkWine
     # erosanix = {
     #   url = "github:emmanuelrosa/erosanix";
     #   inputs.nixpkgs.follows = "nixpkgs";

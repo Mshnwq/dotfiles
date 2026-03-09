@@ -34,6 +34,10 @@ let
           })
         ];
       });
+  # i dont know both ways even with nanogl only works on install, and none with DISPLAY
+  guitarpro =
+    inputs.erosanix.lib.${pkgs.stdenv.hostPlatform.system}.nanogl pkgs.guitarpro
+      [ ];
 in
 {
   # to garbage collect
@@ -41,10 +45,14 @@ in
   home.packages =
     with pkgs;
     [
+      # need to run env DISPLAY="" nixGL guitarpro
+      # TODO: broken
+      # need to run nixGL guitarpro
       guitarpro # from /pkgs/;
     ]
     ++ ([
       foobar2000
+      # guitarpro # from /pkgs/;
       # inputs.erosanix.packages.${pkgs.system}.microcap
     ]);
 }
