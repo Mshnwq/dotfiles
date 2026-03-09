@@ -6,6 +6,10 @@
 }:
 let
   fifo = "/tmp/mpd.fifo";
+  system = pkgs.system;
+  pkgs-stable = import inputs.nixpkgs-stable {
+    inherit system;
+  };
 in
 {
   sops.secrets = {
@@ -20,7 +24,6 @@ in
   };
 
   home.packages = with pkgs; [
-    beets
     cava
     mpc
     mpd
@@ -273,6 +276,7 @@ in
     # extract year my plugin
     {
       enable = true;
+      package = pkgs-stable.beets;
       settings = {
         directory = "~/Music";
         import = {
