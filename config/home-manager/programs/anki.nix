@@ -202,27 +202,27 @@ let
   '';
 in
 {
-  # sops.secrets = {
-  #   gtt-languages = {
-  #     mode = "0400";
-  #     path = "${config.xdg.configHome}/gtt_languages";
-  #   };
-  # };
-  # home.file.".config/gtt/keymap.yaml".text = ''
-  #   exit: C-q
-  #   clear: C-c
-  #   translate: C-j
-  #   swap_language: C-s
-  #   copy_selected: C-y
-  #   copy_source: C-g
-  #   copy_destination: C-r
-  #   tts_source: C-o
-  #   tts_destination: C-p
-  #   stop_tts: C-x
-  #   toggle_transparent: C-t
-  #   toggle_below: C-\
-  # '';
-  #
+  sops.secrets = {
+    gtt-languages = {
+      mode = "0400";
+      path = "${config.xdg.configHome}/gtt_languages";
+    };
+  };
+  home.file.".config/gtt/keymap.yaml".text = ''
+    exit: C-q
+    clear: C-c
+    translate: C-j
+    swap_language: C-s
+    copy_selected: C-y
+    copy_source: C-g
+    copy_destination: C-r
+    tts_source: C-o
+    tts_destination: C-p
+    stop_tts: C-x
+    toggle_transparent: C-t
+    toggle_below: C-\
+  '';
+
   home.packages = with pkgs; [
     (pkgs.writeShellScriptBin "gtt" ''
       export ALSA_PLUGIN_DIR=${pkgs.alsa-plugins}/lib/alsa-lib
