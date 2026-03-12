@@ -21,9 +21,16 @@ args@{
       cmatrix
       lm_sensors
       networkmanager_dmenu
-      # TODO: broken
-      # mtpfs
-      # simple-mtpfs
+      mtpfs
+      simple-mtpfs
+      # (pkgs.symlinkJoin {
+      #   name = "less";
+      #   buildInputs = [ pkgs.makeWrapper ];
+      #   paths = [ pkgs.less ];
+      #   postBuild = ''
+      #     wrapProgram $out/bin/less --add-flags "--mouse"
+      #   '';
+      # })
       (pkgs.symlinkJoin {
         name = "rofi-bluetooth-wrapped";
         buildInputs = [ pkgs.makeWrapper ];
@@ -33,6 +40,17 @@ args@{
             --add-flags "-- -theme ${config.xdg.configHome}/rofi/Bluetooth.rasi"
         '';
       })
+      # use it with kitty image support
+      # (pkgs.symlinkJoin {
+      #   name = "w3m";
+      #   buildInputs = [ pkgs.makeWrapper ];
+      #   paths = [ pkgs.w3m ];
+      #   postBuild = ''
+      #     wrapProgram $out/bin/w3m \
+      #       --set W3M_DIR "${config.xdg.stateHome}/w3m" \
+      #       --add-flags "-o display_image=1 -o inline_img_protocol=4"
+      #   '';
+      # })
     ];
 
     # https://wiki.archlinux.org/title/NetworkManager#Set_up_PolicyKit_permissions
@@ -211,7 +229,7 @@ args@{
       cargo
       rustc
       serie # crashes on nixpkgs
-      guitar # from /pkgs/; doest crash baut laggy
+      # guitar # from /pkgs/; doest crash baut laggy
       gpg-tui
       # termscp
     ];
@@ -231,6 +249,7 @@ args@{
       # ardour
     ];
   };
+  # BUG: where is this?
   xdg.desktopEntries.qpwgraph = {
     name = "qpwgraph";
     exec = "qpwgraph %f";
