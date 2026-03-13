@@ -3,7 +3,6 @@
   lib,
   pkgs,
   config,
-  inputs,
   ...
 }:
 let
@@ -68,10 +67,6 @@ in
       enable = lib.mkDefault plugin.defaultEnable;
     }) availablePlugins;
 
-    home.sessionVariables = {
-      TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmux/tmuxp";
-    };
-
     programs.tmux = {
       enable = true;
       sensibleOnTop = true;
@@ -80,8 +75,8 @@ in
       baseIndex = 1;
       keyMode = "vi";
       mouse = true;
-      shortcut = config.tmux.shortcut;
       tmuxp.enable = config.tmux.tmuxp.enable;
+      shortcut = config.tmux.shortcut;
       extraConfig = (import ./config.nix { inherit lib config; }).config;
       plugins = enabledPlugins;
     }
@@ -89,6 +84,9 @@ in
       shell = "/usr/bin/zsh";
     };
 
+    home.sessionVariables = lib.mkIf config.tmux.tmuxp.enable {
+      TMUXP_CONFIGDIR = "${config.xdg.configHome}/tmux/tmuxp";
+    };
     sops.secrets.tmuxp.mode = "0400";
     home.activation.extractTmuxp =
       lib.mkIf
