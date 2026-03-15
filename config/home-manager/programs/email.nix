@@ -49,9 +49,7 @@ in
     );
   };
   home.packages = with pkgs; [
-    catimg
-    dante
-    w3m
+    dante # for socksify
   ];
 
   programs = {
@@ -66,14 +64,17 @@ in
           unsafe-accounts-conf = true;
           styleset-name = "default";
         };
+        viewer = {
+          show-images = true;
+        };
         ui = {
           mouse-enabled = true;
         };
+        # https://github.com/open-community-docs/aerc-docs/blob/main/src/content/docs/
         filters = {
           "subject,~^\\[PATCH" = "awk -f ${config.xdg.configHome}/aerc/filters/hldiff";
-          "text/html" = "${config.xdg.configHome}/aerc/filters/html";
-          "text/*" = "awk -f ${config.xdg.configHome}/aerc/filters/plaintext";
-          "image/*" = "catimg -w $(tput cols) -";
+          "text/plain" = "awk -f ${config.xdg.configHome}/aerc/filters/plain";
+          "text/html" = "! ${config.xdg.configHome}/aerc/filters/html";
         };
         templates = {
           template-dirs = "${config.xdg.configHome}/aerc/templates/";
