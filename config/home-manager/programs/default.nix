@@ -23,14 +23,14 @@ args@{
       networkmanager_dmenu
       mtpfs
       simple-mtpfs
-      # (pkgs.symlinkJoin {
-      #   name = "less";
-      #   buildInputs = [ pkgs.makeWrapper ];
-      #   paths = [ pkgs.less ];
-      #   postBuild = ''
-      #     wrapProgram $out/bin/less --add-flags "--mouse"
-      #   '';
-      # })
+      (pkgs.symlinkJoin {
+        name = "less";
+        buildInputs = [ pkgs.makeWrapper ];
+        paths = [ pkgs.less ];
+        postBuild = ''
+          wrapProgram $out/bin/less --add-flags "--mouse"
+        '';
+      })
       (pkgs.symlinkJoin {
         name = "rofi-bluetooth-wrapped";
         buildInputs = [ pkgs.makeWrapper ];
