@@ -41,16 +41,16 @@ args@{
         '';
       })
       # use it with kitty image support
-      # (pkgs.symlinkJoin {
-      #   name = "w3m";
-      #   buildInputs = [ pkgs.makeWrapper ];
-      #   paths = [ pkgs.w3m ];
-      #   postBuild = ''
-      #     wrapProgram $out/bin/w3m \
-      #       --set W3M_DIR "${config.xdg.stateHome}/w3m" \
-      #       --add-flags "-o display_image=1 -o inline_img_protocol=4"
-      #   '';
-      # })
+      (pkgs.symlinkJoin {
+        name = "w3m";
+        buildInputs = [ pkgs.makeWrapper ];
+        paths = [ pkgs.w3m ];
+        postBuild = ''
+          wrapProgram $out/bin/w3m \
+            --set W3M_DIR "${config.xdg.stateHome}/w3m" \
+            --add-flags "-o display_image=1 -o inline_img_protocol=4"
+        '';
+      })
     ];
 
     # https://wiki.archlinux.org/title/NetworkManager#Set_up_PolicyKit_permissions
