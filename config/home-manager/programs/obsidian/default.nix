@@ -84,25 +84,25 @@
 #         # mermaid-ascii # from /pkgs/
 #         glow
 #       ];
-#
-#       # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.obsidian
-#       programs.obsidian = {
-#         enable = true;
-#         vaults = vaults;
-#         # global settings
-#         defaultSettings = {
-#           communityPlugins = with plugins; [
-#             # advancedUri
-#             excalidraw
-#           ];
-#           cssSnippets = import ./snippets.nix { inherit pkgs; };
-#           appearance = {
-#             "cssTheme" = "pywal-theme"; # no need theme = {} with my init script
-#             "showRibbon" = false;
-#             # "showViewHeader" = false; # First figure out how to access the options list
-#           };
-#         };
-#       };
+
+      # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.obsidian
+      programs.obsidian = {
+        enable = true;
+        vaults = vaults;
+        # global settings
+        defaultSettings = {
+          communityPlugins = with plugins; [
+            # advancedUri
+            excalidraw
+          ];
+          cssSnippets = import ./snippets.nix { inherit pkgs; };
+          appearance = {
+            "cssTheme" = "pywal-theme"; # no need theme = {} with my init script
+            "showRibbon" = false;
+            # "showViewHeader" = false; # First figure out how to access the options list
+          };
+        };
+      };
 
       home.activation.obsidianInit =
         inputs.home-manager.lib.hm.dag.entryAfter [ "obsidian" ]
