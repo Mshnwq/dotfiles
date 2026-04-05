@@ -3,4 +3,5 @@ inputs: [
   inputs.nixgl.overlay
   inputs.nur.overlays.default
   (import ./lmms.nix)
+  (import ./highlight.nix)
 ]
