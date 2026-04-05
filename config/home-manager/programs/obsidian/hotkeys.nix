@@ -84,4 +84,22 @@
       "key" = ";";
     }
   ];
+  "editor:delete-paragraph" = [ ];
+  "app:delete-file" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "D";
+    }
+  ];
+  "insert-template" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "T";
+    }
+  ];
+  "workspace:new-tab" = [ ];
 }
