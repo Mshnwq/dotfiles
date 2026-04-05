@@ -103,21 +103,21 @@
 #           };
 #         };
 #       };
-#
-#       home.activation.obsidianInit =
-#         inputs.home-manager.lib.hm.dag.entryAfter [ "obsidian" ]
-#           ''
-#             for vault in ${lib.concatStringsSep " " vaultDirs}; do
-#               theme_dir="${obsidian-dir}/$vault/.obsidian/themes/pywal-theme"
-#               if [ ! -f "$theme_dir/manifest.json" ]; then
-#                 mkdir -p "$theme_dir"
-#                 ln -sf \
-#                   "${config.xdg.cacheHome}/wal/custom-obsidian.css" \
-#                   "$theme_dir/theme.css"
-#                 ${lib.getExe pkgs.jq} -n \
-#                   '{ name: "Pywal", version: "1.0.0", author: "Mshnwq" }' \
-#                   > "$theme_dir/manifest.json"
-#               fi
+
+      home.activation.obsidianInit =
+        inputs.home-manager.lib.hm.dag.entryAfter [ "obsidian" ]
+          ''
+            for vault in ${lib.concatStringsSep " " vaultDirs}; do
+              theme_dir="${obsidian-dir}/$vault/.obsidian/themes/pywal-theme"
+              if [ ! -f "$theme_dir/manifest.json" ]; then
+                mkdir -p "$theme_dir"
+                ln -sf \
+                  "${config.xdg.cacheHome}/wal/custom-obsidian.css" \
+                  "$theme_dir/theme.css"
+                ${lib.getExe pkgs.jq} -n \
+                  '{ name: "Pywal", version: "1.0.0", author: "Mshnwq" }' \
+                  > "$theme_dir/manifest.json"
+              fi
             done
             # https://github.com/nix-community/home-manager/blob/master/modules/programs/obsidian.nix#L581
             OBSIDIAN_CONFIG="${config.xdg.configHome}/obsidian/obsidian.json"
