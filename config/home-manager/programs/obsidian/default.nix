@@ -69,21 +69,21 @@
 #     };
 #   };
 #   vaultDirs = map (v: builtins.baseNameOf v.target) (builtins.attrValues vaults);
-# in
-# {
-#   options.obsidian.syncthing.enable = lib.mkOption {
-#     type = lib.types.bool;
-#     default = false;
-#   };
-#
-#   config = lib.mkMerge [
-#     {
-#       home.packages = with pkgs; [
-#         # https://github.com/charmbracelet/glow/issues/342#issuecomment-3731554599
-#         # Note: bad, only works for simple graphs :(
-#         # mermaid-ascii # from /pkgs/
-#         glow
-#       ];
+in
+{
+  options.obsidian.syncthing.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
+
+  config = lib.mkMerge [
+    {
+      home.packages = with pkgs; [
+        # https://github.com/charmbracelet/glow/issues/342#issuecomment-3731554599
+        # Note: bad, only works for simple graphs :(
+        # mermaid-ascii # from /pkgs/
+        glow
+      ];
 
       # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.obsidian
       programs.obsidian = {
