@@ -12,6 +12,8 @@ let
   profileName = "${name}";
   profile2 = "${name}.dummy";
   profileName2 = "dummy";
+  profile3 = "${name}.ict";
+  profileName3 = "ict";
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     custom = pkgs.callPackage ./addons.nix {
@@ -123,6 +125,8 @@ in
     (import ./shortcuts.nix profile)
     (import ./shyfox.nix profile2)
     (import ./shortcuts.nix profile2)
+    (import ./shyfox.nix profile3)
+    (import ./shortcuts.nix profile3)
     (lib.nixgl.mkNixGLWrapper {
       name = "Firefox";
       command = "firefox";
@@ -175,6 +179,25 @@ in
     isDefault = false;
     name = profileName2;
     settings = commonSettings;
+    extensions.force = true;
+    extensions.packages =
+      with extensions.rycee;
+      [
+        clearurls
+        search-by-image
+      ]
+      ++ (with extensions.custom; [
+        duplicate-tab-shortcut
+      ]);
+  };
+
+  programs.firefox.profiles.${profile3} = {
+    id = 2;
+    isDefault = false;
+    name = profileName3;
+    settings = commonSettings // {
+      "network.protocol-handler.expose.obsidian" = false;
+    };
     extensions.force = true;
     extensions.packages =
       with extensions.rycee;
