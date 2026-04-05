@@ -30,4 +30,35 @@
       runHook postInstall
     '';
   };
+  # https://excalidraw-obsidian.online/
+  excalidraw =
+    let
+      version = "2.22.0";
+      # https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/tag/2.22.0
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/main.js";
+        hash = "sha256:8f7d5dc538228020805a255db9615ba2fdb82a9c0e6081f1b37ee7c2750ab37e";
+      };
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/manifest.json";
+        hash = "sha256:e4788bd00c9890f62c939d51676ed2eaa392748a738f292d47721df6fe100553";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/styles.css";
+        hash = "sha256:5581af67d9a8cc133774420c7974d03a7cbcb5ebce209d6e8e0a53e00bde3f00";
+      };
+    in
+    pkgs.stdenvNoCC.mkDerivation {
+      pname = "obsidian-excalidraw-plugin";
+      version = "v${version}";
+      dontUnpack = true;
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out
+        cp ${mainJs} $out/main.js
+        cp ${manifestJson} $out/manifest.json
+        cp ${stylesCss} $out/styles.css
+        runHook postInstall
+      '';
+    };
 }
