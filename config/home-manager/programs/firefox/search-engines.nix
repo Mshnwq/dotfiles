@@ -89,6 +89,23 @@ in
     ];
   };
 
+  kube = {
+    name = "Kubernetes Wiki";
+    icon = "https://kubernetes.io/icons/favicon-16.png";
+    urls = [
+      {
+        template = "https://kubernetes.io/search";
+        params = mkParams {
+          q = "{searchTerms}";
+        };
+      }
+    ];
+    definedAliases = [
+      "@kube"
+      "@k8"
+    ];
+  };
+
   metallum = {
     name = "Metal Encyclopedia";
     icon = "https://www.metal-archives.com/favicon.ico";
@@ -103,6 +120,7 @@ in
     ];
     definedAliases = [
       "@mt"
+      "@ml"
     ];
   };
 
