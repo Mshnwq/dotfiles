@@ -1,74 +1,74 @@
-# {
-#   lib,
-#   pkgs,
-#   config,
-#   inputs,
-#   ...
-# }:
-# let
-#   plugins = pkgs.callPackage ./plugins.nix { inherit pkgs; };
-#   obsidian-dir = "Documents/Obsidian";
-#   vaults = {
-#     Home = {
-#       enable = true;
-#       target = "${obsidian-dir}/Home";
-#     };
-#     Dummy = {
-#       enable = true;
-#       target = "${obsidian-dir}/Dummy";
-#       settings = {
-#         # move to global when figured it all
-#         hotkeys = import ./hotkeys.nix { };
-#         app = {
-#           "attachmentFolderPath" = "Assets";
-#           "alwaysUpdateLinks" = true;
-#           "showInlineTitle" = false;
-#           "trashOption" = "local";
-#           "spellcheck" = false;
-#           "vimMode" = true;
-#         };
-#         corePlugins = [
-#           # "audio-recorder"
-#           "backlink"
-#           "bases"
-#           # "bookmarks"
-#           "canvas"
-#           "command-palette"
-#           "daily-notes"
-#           "editor-status"
-#           "file-explorer"
-#           "file-recovery"
-#           # "footnotes"
-#           "global-search"
-#           "graph"
-#           # "markdown-importer"
-#           "note-composer"
-#           "outgoing-link"
-#           "outline"
-#           "page-preview"
-#           "properties"
-#           # "publish"
-#           # "random-note"
-#           # "slash-command"
-#           # "slides"
-#           "switcher"
-#           # "sync"
-#           "tag-pane"
-#           {
-#             name = "templates";
-#             settings = {
-#               "folder" = "Templates";
-#             };
-#           }
-#           # "webviewer"
-#           "word-count"
-#           # "workspaces"
-#           # "zk-prefixer"
-#         ];
-#       };
-#     };
-#   };
-#   vaultDirs = map (v: builtins.baseNameOf v.target) (builtins.attrValues vaults);
+{
+  lib,
+  pkgs,
+  config,
+  inputs,
+  ...
+}:
+let
+  plugins = pkgs.callPackage ./plugins.nix { inherit pkgs; };
+  obsidian-dir = "Documents/Obsidian";
+  vaults = {
+    Home = {
+      enable = true;
+      target = "${obsidian-dir}/Home";
+    };
+    Dummy = {
+      enable = true;
+      target = "${obsidian-dir}/Dummy";
+      settings = {
+        # move to global when figured it all
+        hotkeys = import ./hotkeys.nix { };
+        # app = {
+        #   "attachmentFolderPath" = "Assets";
+        #   "alwaysUpdateLinks" = true;
+        #   "showInlineTitle" = false;
+        #   "trashOption" = "local";
+        #   "spellcheck" = false;
+        #   "vimMode" = true;
+        # };
+        corePlugins = [
+          # "audio-recorder"
+          "backlink"
+          "bases"
+          # "bookmarks"
+          "canvas"
+          "command-palette"
+          "daily-notes"
+          "editor-status"
+          "file-explorer"
+          "file-recovery"
+          # "footnotes"
+          "global-search"
+          "graph"
+          # "markdown-importer"
+          "note-composer"
+          "outgoing-link"
+          "outline"
+          "page-preview"
+          "properties"
+          # "publish"
+          # "random-note"
+          # "slash-command"
+          # "slides"
+          "switcher"
+          # "sync"
+          "tag-pane"
+          {
+            name = "templates";
+            settings = {
+              "folder" = "Templates";
+            };
+          }
+          # "webviewer"
+          "word-count"
+          # "workspaces"
+          # "zk-prefixer"
+        ];
+      };
+    };
+  };
+  vaultDirs = map (v: builtins.baseNameOf v.target) (builtins.attrValues vaults);
 in
 {
   options.obsidian.syncthing.enable = lib.mkOption {
