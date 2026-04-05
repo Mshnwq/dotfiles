@@ -82,6 +82,7 @@ in
       obsidian
       {
         obsidian.syncthing.enable = true;
+        obsidian.nvim-desktop.enable = true;
       }
       zsh
       {

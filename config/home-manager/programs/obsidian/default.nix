@@ -75,6 +75,10 @@ in
     type = lib.types.bool;
     default = false;
   };
+  options.obsidian.nvim-desktop.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
 
   config = lib.mkMerge [
     {
@@ -188,6 +192,35 @@ in
         [Install]
         WantedBy=
       '';
+    })
+    (lib.mkIf config.obsidian.nvim-desktop.enable {
+      # BUG: Does not work on empty .md file
+      # because its an Mimetype: inode/empty
+      xdg.desktopEntries.nvim-obsidian = {
+        name = "Neovim Obsidian";
+        icon = "nvim";
+        terminal = false;
+        exec = "nvim-open-obsidian %F";
+        type = "Application";
+        categories = [ "TextEditor" ];
+        mimeType = [
+          "text/markdown"
+          "text/plain"
+        ];
+      };
+      home.packages = [
+        (pkgs.writeShellScriptBin "nvim-open-obsidian" ''
+          SOCKET="/tmp/nvim-obsidian-server.sock"
+          if [ -S "$SOCKET" ]; then
+            nvim --server "$SOCKET" --remote "$1"
+          else
+            kitty -d "''${1%/*}" -o font_size=10 -e nvim --listen "$SOCKET" "$1" &
+            sleep 1
+            hyprctl dispatch layoutmsg swapwithmaster
+            hyprctl dispatch layoutmsg mfact exact 0.55
+          fi
+        '')
+      ];
     })
   ];
 }
