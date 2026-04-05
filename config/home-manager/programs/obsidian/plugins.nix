@@ -30,18 +30,4 @@
       runHook postInstall
     '';
   };
-  pywalPlugin = pkgs.stdenv.mkDerivation {
-    pname = "obsidian-pywal-theme";
-    version = "git-1001939";
-    src = pkgs.fetchFromGitHub {
-      owner = "Schweem";
-      repo = "Pywal-Obsidian";
-      rev = "1001939";
-      hash = "sha256-CnGhNBtRKBG6bmemXaG9x41qM9/0s1/eTdLRyJpcsk4=";
-    };
-    installPhase = ''
-      mkdir -p $out
-      cp -r pywal-theme/* $out/
-    '';
-  };
 }
