@@ -1,0 +1,25 @@
+.theme-dark, .theme-light {{
+    --background-primary: {background};
+    --background-secondary: {background};
+    --background-secondary-alt: {background};
+    --background-modifier-border: {color8};
+    --text-normal: {foreground};
+    --text-muted: {foreground};
+    --text-accent: {color4};
+    --text-accent-hover: {color6};
+    --interactive-accent: {color4};
+    --interactive-accent-hover: {color6};
+    --text-highlight-bg: {color2}40; /* 40 adds 25% alpha transparency */
+
+    --color-red: {color1};
+    --color-green: {color2};
+    --color-yellow: {color3};
+    --color-blue: {color4};
+    --color-magenta: {color5};
+    --color-cyan: {color6};
+}}
+
+.mermaid svg .node rect {{
+  fill: {color1}40 !important;
+  stroke: {background}40 !important;
+}}
