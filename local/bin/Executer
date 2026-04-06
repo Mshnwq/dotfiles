@@ -14,10 +14,15 @@ _opts() {
     "$1" | sed 's# | #\n#g' | sed -E 's|^--([a-z-]+)\)?|\1|'
 }
 
-scripts="$(find "$BASE_DIR" -type f -executable -not -name ".*.sh" -printf "%f\n")"
-mapfile -t locals < <(_opts "$0")
-selected=$(printf '%s\n' "${scripts//.sh/}" "${locals[@]}" | sort | rofi -dmenu -theme "$EXECR_THEME")
-[[ -n $selected ]] || exit 0
+auto="${1:-}"
+if [[ -n $auto ]]; then
+  selected="${auto/--/}"
+else
+  scripts="$(find "$BASE_DIR" -type f -executable -not -name ".*.sh" -printf "%f\n")"
+  mapfile -t locals < <(_opts "$0")
+  selected=$(printf '%s\n' "${scripts//.sh/}" "${locals[@]}" | sort | rofi -dmenu -theme "$EXECR_THEME")
+  [[ -n $selected ]] || exit 0
+fi
 
 # if selected in here case
 _alacritty() { alacritty --class FloaTerm,"$1" --title="$1" "${@:2}"; }
