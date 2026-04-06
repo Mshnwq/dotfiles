@@ -244,4 +244,30 @@ in
         [ "Exec=sh -c '${closeAnkiUpdateDialog} & anki'" ]
         (builtins.readFile "${pkgs.anki}/share/applications/anki.desktop");
   };
+
+  programs.which-key = {
+    entries = [
+      {
+        key = "a";
+        desc = "Anki";
+        cmd = "gtk-launch anki";
+      }
+      {
+        key = "t";
+        desc = "Translate";
+        submenu = [
+          {
+            key = "x";
+            desc = "Extract";
+            cmd = "~/.local/bin/executer/.gtt.sh --extract";
+          }
+          {
+            key = "a";
+            desc = "Anki";
+            cmd = "~/.local/bin/executer/.gtt.sh --anki";
+          }
+        ];
+      }
+    ];
+  };
 }
