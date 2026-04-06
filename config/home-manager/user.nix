@@ -82,6 +82,7 @@ in
       obsidian
       {
         obsidian.syncthing.enable = true;
+        obsidian.which-key.enable = true;
         obsidian.nvim-desktop.enable = true;
       }
       zsh
@@ -127,7 +128,39 @@ in
     ]
     ++ [
       inputs.sops-nix.homeManagerModules.sops
+      ./modules/which-key.nix
     ];
+  programs.which-key = {
+    enable = true;
+    entries = [
+      {
+        key = "x";
+        desc = "Executer";
+        submenu = [
+          {
+            key = "d";
+            desc = "Daemons";
+            cmd = "~/.local/bin/Executer --daemons";
+          }
+          {
+            key = "p";
+            desc = "Procs";
+            cmd = "~/.local/bin/Executer --procs";
+          }
+          {
+            key = "v";
+            desc = "VPN";
+            cmd = "~/.local/bin/Executer --vpn";
+          }
+          {
+            key = "w";
+            desc = "Wal";
+            cmd = "~/.local/bin/Executer --wal";
+          }
+        ];
+      }
+    ];
+  };
 
   sops =
     let
