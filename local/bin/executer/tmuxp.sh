@@ -5,9 +5,8 @@ tmpfile=$(mktemp)
 TMUXP_DIR="$HOME/.config/tmux/tmuxp"
 
 TMPFILE=$tmpfile &&
-  kitty --name=FloatTerm --title=FloatTerm --class=FloaTerm \
-    --config ~/.config/kitty/kitty-hide.conf -d "$TMUXP_DIR" \
-    -e zsh -c "
+  alacritty --class FloaTerm,ExecTerm --title=ExecTerm \
+    --working-directory "$TMUXP_DIR" -e sh -c "
     source $HOME/.cache/wal/custom-fzf.sh
     ls *.yaml | sed 's|.yaml$||' | fzf \
       --preview='highlight -O ansi {}.yaml' \
