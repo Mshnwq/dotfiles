@@ -19,22 +19,22 @@
     "bold": true
   }},
   "h1": {{
-    "prefix": "# "
+    "prefix": "󰲡 "
   }},
   "h2": {{
-    "prefix": "## "
+    "prefix": "󰲣 "
   }},
   "h3": {{
-    "prefix": "### "
+    "prefix": "󰲥 "
   }},
   "h4": {{
-    "prefix": "#### "
+    "prefix": "󰲧 "
   }},
   "h5": {{
-    "prefix": "##### "
+    "prefix": "󰲩 "
   }},
   "h6": {{
-    "prefix": "###### "
+    "prefix": "󰲫 "
   }},
   "text": {{}},
   "strikethrough": {{
@@ -48,7 +48,7 @@
   }},
   "hr": {{
     "color": "{color8}",
-    "format": "\n--------\n"
+    "format": "\n───────────\n"
   }},
   "item": {{
     "block_prefix": "• "
