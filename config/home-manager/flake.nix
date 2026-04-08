@@ -55,13 +55,13 @@
     #   url = "github:emmanuelrosa/erosanix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-    # devenv = {
-    #   url = "github:cachix/devenv/v1.11.2"; # TODO: upgrade to v2
-    # };
-    # yazi = {
-    #   url = "github:sxyazi/yazi/v26.1.4";
-    #   # url = "github:sxyazi/yazi/v26.1.22"; # BUG: broken icons colors
-    # };
+    devenv = {
+      url = "github:cachix/devenv/v1.11.2"; # TODO: upgrade to v2
+    };
+    yazi = {
+      url = "github:sxyazi/yazi/v26.1.4";
+      # url = "github:sxyazi/yazi/v26.1.22"; # BUG: broken icons colors
+    };
     # dupes = {
     #   url = "git+ssh://git@github.com/mshnwq/dupes-dev.yazi.git?rev=f46e4a7114434be93183a0d37cee865b512a3b73";
     # };
