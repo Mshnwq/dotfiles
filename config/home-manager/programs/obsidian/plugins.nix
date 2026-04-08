@@ -1,35 +1,55 @@
+# programs/obsidian/plugins.nix
 {
   pkgs,
   ...
 }:
 {
-  advancedUri = pkgs.buildNpmPackage {
-    pname = "obsidian-advanced-uri";
-    version = "git-1ab216b";
-    src = pkgs.fetchFromGitHub {
-      owner = "Mshnwq";
-      repo = "obsidian-advanced-uri";
-      rev = "1ab216b";
-      hash = "sha256-Ag1XU2OEx3kM0w63g8d/a2bpJMGKPSlzQRbDjDFEjh4=";
+  advancedUri =
+    let
+      version = "1.46.1";
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/Vinzent03/obsidian-advanced-uri/releases/download/${version}/main.js";
+        hash = "sha256:d10300fb667eb9e93417427fc3ea010f46db020885d29c5decc78735c14ab162";
+      };
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/Vinzent03/obsidian-advanced-uri/releases/download/${version}/manifest.json";
+        hash = "sha256:fa12d5488bf1d61b829272b15de72fea27d1f2d6ac854f97ec97a6cc2784c2f1";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-advanced-uri";
+        version = "v${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      settings = {
+        "openFileOnWrite" = true;
+        "openDailyInNewPane" = false;
+        "openFileOnWriteInNewPane" = false;
+        "openFileWithoutWriteInNewPane" = true;
+        "idField" = "id";
+        "useUID" = false;
+        "addFilepathWhenUsingUID" = false;
+        "allowEval" = false;
+        "includeVaultName" = true;
+        "vaultParam" = "name";
+        "linkFormats" = [
+          {
+            "name" = "Markdown";
+            "format" = "[{{name}}]({{uri}})";
+          }
+        ];
+      };
     };
-    nativeBuildInputs = with pkgs; [
-      nodejs_22
-      typescript
-    ];
-    npmDepsHash = "sha256-fnw6Etc5TEXEwUfrj7IClAf4ID2MPAXpnqVLuFt4mjU=";
-    npmDepsHook = ''
-      export NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
-      export NPM_CONFIG_FETCH_TIMEOUT=1200000
-      export NPM_CONFIG_FETCH_RETRIES=10
-    '';
-    npmBuildScript = "build";
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out
-      cp main.js manifest.json $out/
-      runHook postInstall
-    '';
-  };
+
   # https://excalidraw-obsidian.online/
   excalidraw =
     let
