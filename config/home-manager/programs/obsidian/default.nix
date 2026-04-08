@@ -1,3 +1,4 @@
+# programs/obsidian/default.nix
 {
   lib,
   pkgs,
@@ -71,11 +72,15 @@ let
   vaultDirs = map (v: builtins.baseNameOf v.target) (builtins.attrValues vaults);
 in
 {
-  options.obsidian.syncthing.enable = lib.mkOption {
+  options.syncthing.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
-  options.obsidian.nvim-desktop.enable = lib.mkOption {
+  options.nvim.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
+  options.which-key.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
@@ -96,7 +101,27 @@ in
         # global settings
         defaultSettings = {
           communityPlugins = with plugins; [
-            # advancedUri
+            advancedUri
+            # {
+            #   settings = {
+            #     "openFileOnWrite" = true;
+            #     "openDailyInNewPane" = false;
+            #     "openFileOnWriteInNewPane" = false;
+            #     "openFileWithoutWriteInNewPane" = true;
+            #     "idField" = "id";
+            #     "useUID" = false;
+            #     "addFilepathWhenUsingUID" = false;
+            #     "allowEval" = false;
+            #     "includeVaultName" = true;
+            #     "vaultParam" = "name";
+            #     "linkFormats" = [
+            #       {
+            #         "name" = "Markdown";
+            #         "format" = "[{{name}}]({{uri}})";
+            #       }
+            #     ];
+            #   };
+            # }
             excalidraw
           ];
           cssSnippets = import ./snippets.nix { inherit pkgs; };
@@ -134,7 +159,7 @@ in
           '';
     }
 
-    (lib.mkIf config.obsidian.syncthing.enable {
+    (lib.mkIf config.syncthing.enable {
       # Lifecycle: socket triggers → proxy starts → container starts → idle timeout → all stop
       systemd.user.sockets.syncthing-proxy = {
         Unit = {
@@ -193,10 +218,17 @@ in
         WantedBy=
       '';
     })
-    (lib.mkIf config.obsidian.nvim-desktop.enable {
+
+    (lib.mkIf config.nvim.enable {
+      xdg.mimeApps = {
+        # for advanced uri to work
+        defaultApplications = {
+          "x-scheme-handler/obsidian" = "obsidian.desktop";
+        };
+      };
       # BUG: Does not work on empty .md file
       # because its an Mimetype: inode/empty
-      xdg.desktopEntries.nvim-obsidian = {
+      xdg.desktopEntries.obsidian-nvim = {
         name = "Neovim Obsidian";
         icon = "nvim";
         terminal = false;
@@ -210,17 +242,34 @@ in
       };
       home.packages = [
         (pkgs.writeShellScriptBin "nvim-open-obsidian" ''
+          #!/usr/bin/env bash
+          _send() { sleep 0.2 && nvim --server "$SOCKET" --remote-send "$1"; }
           SOCKET="/tmp/nvim-obsidian-server.sock"
           if [ -S "$SOCKET" ]; then
             nvim --server "$SOCKET" --remote "$1"
           else
             kitty -d "''${1%/*}" -o font_size=10 -e nvim --listen "$SOCKET" "$1" &
-            sleep 1
-            hyprctl dispatch layoutmsg swapwithmaster
+            sleep 0.8
             hyprctl dispatch layoutmsg mfact exact 0.55
+            hyprctl dispatch layoutmsg swapwithmaster
+            _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
+            _send ':lua require("nvchad.utils").reload()<CR>'
+            _send ':lua require("render-markdown").toggle()<CR>'
           fi
         '')
       ];
+    })
+
+    (lib.mkIf config.which-key.enable {
+      programs.which-key = {
+        entries = [
+          {
+            key = "o";
+            desc = "Obsidian";
+            cmd = "gtk-launch obsidian";
+          }
+        ];
+      };
     })
   ];
 }
