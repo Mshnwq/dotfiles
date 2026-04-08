@@ -37,13 +37,13 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nixgl = {
-    #   url = "github:nix-community/nixGL";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # hyprland = {
-    #   url = "github:hyprwm/hyprland/v0.54.3";
-    # };
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland = {
+      url = "github:hyprwm/hyprland/v0.54.3";
+    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     };
