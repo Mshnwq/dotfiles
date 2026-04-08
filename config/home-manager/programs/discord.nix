@@ -69,6 +69,15 @@ in
         withOpenASAR = true;
       };
     };
+  # programs.which-key = {
+  #   entries = [
+  #     {
+  #       key = "d";
+  #       desc = "Discord";
+  #       cmd = "gtk-launch discord";
+  #     }
+  #   ];
+  # };
 
   canary =
     {

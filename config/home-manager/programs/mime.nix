@@ -21,6 +21,12 @@ in
   xdg.mimeApps =
     let
       associations = flipAssocs {
+        ### TEXT EDITOR ###
+        "obsidian-nvim" = [
+          "text/markdown"
+          "text/plain"
+        ];
+
         ### FILE BROWSER ###
         "org.kde.dolphin" = [
           "x-directory/normal"

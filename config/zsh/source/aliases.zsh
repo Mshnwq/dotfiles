@@ -15,8 +15,9 @@ alias -s json="jless"
 # Program renames
 alias py='python'
 alias hm='home-manager'
-alias n="nvim"
 alias v="vim"
+alias n="nvim"
+alias n.="n ."
 alias gdl="gallery-dl"
 alias ydl="yt-dlp"
 alias grep='grep --color'
