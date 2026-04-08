@@ -81,48 +81,54 @@ in
       # TODO: get mischa ai cli and claude code ??
       obsidian
       {
-        obsidian.syncthing.enable = true;
-        obsidian.which-key.enable = true;
-        obsidian.nvim-desktop.enable = true;
+        syncthing.enable = true;
+        which-key.enable = true;
+        nvim.enable = true;
       }
       zsh
       {
-        zsh.debug.enable = false;
-        zsh.direnv.enable = true;
-        zsh.pluginSettings = {
-          history-substring-search.enable = true;
-          syntax-highlighting.enable = true;
-          autosuggestions.enable = true;
-          nix-shell.enable = true;
-          fzf-tab.enable = true;
-          fzf.enable = true;
+        zsh = {
+          debug.enable = false;
+          direnv.enable = true;
+          pluginSettings = {
+            history-substring-search.enable = true;
+            syntax-highlighting.enable = true;
+            autosuggestions.enable = true;
+            nix-shell.enable = true;
+            fzf-tab.enable = true;
+            fzf.enable = true;
+          };
         };
       }
       tmux
       {
-        tmux.tmuxp.enable = true;
-        tmux.server.enable = false;
-        tmux.systemShell.enable = true;
-        tmux.pluginSettings = {
-          dracula.enable = true;
-          floax.enable = true;
-          yank.enable = true;
-          fzf.enable = true;
+        tmux = {
+          tmuxp.enable = true;
+          server.enable = false;
+          systemShell.enable = true;
+          pluginSettings = {
+            dracula.enable = true;
+            floax.enable = true;
+            yank.enable = true;
+            fzf.enable = true;
+          };
         };
       }
       yazi
       {
-        yazi.sops.enable = true;
-        yazi.pluginSettings = {
-          relative-motions.enable = true;
-          jump-to-char.enable = true;
-          preview-epub.enable = true;
-          mediainfo.enable = true;
-          projects.enable = true;
-          restore.enable = true;
-          dupes.enable = true;
-          yamb.enable = true;
-          zoom.enable = false;
+        yazi = {
+          sops.enable = true;
+          pluginSettings = {
+            relative-motions.enable = true;
+            jump-to-char.enable = true;
+            preview-epub.enable = true;
+            mediainfo.enable = true;
+            projects.enable = true;
+            restore.enable = true;
+            dupes.enable = true;
+            yamb.enable = true;
+            zoom.enable = false;
+          };
         };
       }
     ]
