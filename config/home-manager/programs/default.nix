@@ -122,6 +122,12 @@ args@{
         set mouse=a
         set viminfo+=n~/.config/viminfo
         autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
+        nnoremap n nzzzv
+        nnoremap N Nzzzv
+        nnoremap <C-d> <C-d>zz
+        nnoremap <C-u> <C-u>zz
+        nnoremap { {zz
+        nnoremap } }zz
       '';
     };
     # https://github.com/vim/vim/issues/5157
