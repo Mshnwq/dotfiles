@@ -234,31 +234,31 @@ in
           "text/plain"
         ];
       };
-    #   home.packages = [
-    #     (pkgs.writeShellScriptBin "nvim-open-obsidian" ''
-    #       _send() { sleep 0.4 && nvim --server "$SOCKET" --remote-send "$1"; }
-    #       SOCKET="/tmp/nvim-obsidian-server.sock"
-    #       OBSIDIAN_DIR="$HOME/${obsidian-dir}"
-    #       if [[ -S "$SOCKET" ]]; then
-    #         nvim --server "$SOCKET" --remote "$1"
-    #       else
-    #         relative="''${1#$OBSIDIAN_DIR/}"
-    #         vault_name="''${relative%%/*}"
-    #         vault_dir="$OBSIDIAN_DIR/$vault_name"
-    #         kitty -c $HOME/.config/kitty/kitty-hide.conf -d "$vault_dir" \
-    #           -o font_size=10 -e tmux new -s Obsidian nvim --listen "$SOCKET" "$1" &
-    #         sleep 0.8
-    #         tmux rename-window nvim
-    #         hyprctl dispatch tagwindow +$vault_name
-    #         hyprctl dispatch layoutmsg swapwithmaster
-    #         hyprctl dispatch layoutmsg mfact exact 0.55
-    #         _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
-    #         _send ':lua require("nvchad.utils").reload()<CR>'
-    #         _send ':lua require("render-markdown").toggle()<CR>'
-    #       fi
-    #     '')
-    #   ];
-    # })
+      home.packages = [
+        (pkgs.writeShellScriptBin "nvim-open-obsidian" ''
+          _send() { sleep 0.4 && nvim --server "$SOCKET" --remote-send "$1"; }
+          SOCKET="/tmp/nvim-obsidian-server.sock"
+          OBSIDIAN_DIR="$HOME/${obsidian-dir}"
+          if [[ -S "$SOCKET" ]]; then
+            nvim --server "$SOCKET" --remote "$1"
+          else
+            relative="''${1#$OBSIDIAN_DIR/}"
+            vault_name="''${relative%%/*}"
+            vault_dir="$OBSIDIAN_DIR/$vault_name"
+            kitty -c $HOME/.config/kitty/kitty-hide.conf -d "$vault_dir" \
+              -o font_size=10 -e tmux new -s Obsidian nvim --listen "$SOCKET" "$1" &
+            sleep 0.8
+            tmux rename-window nvim
+            hyprctl dispatch tagwindow +$vault_name
+            hyprctl dispatch layoutmsg swapwithmaster
+            hyprctl dispatch layoutmsg mfact exact 0.55
+            _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
+            _send ':lua require("nvchad.utils").reload()<CR>'
+            _send ':lua require("render-markdown").toggle()<CR>'
+          fi
+        '')
+      ];
+    })
 
     (lib.mkIf config.which-key.enable {
       programs.which-key = {
