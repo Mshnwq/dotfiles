@@ -20,14 +20,19 @@ let
       settings = {
         # move to global when figured it all
         hotkeys = import ./hotkeys.nix { };
-        # app = {
-        #   "attachmentFolderPath" = "Assets";
-        #   "alwaysUpdateLinks" = true;
-        #   "showInlineTitle" = false;
-        #   "trashOption" = "local";
-        #   "spellcheck" = false;
-        #   "vimMode" = true;
-        # };
+        app = {
+          "alwaysUpdateLinks" = true;
+          "attachmentFolderPath" = "Assets";
+          "defaultViewMode" = "preview";
+          "newFileFolderPath" = "Notes";
+          "newFileLocation" = "folder";
+          "openBehavior" = "";
+          "promptDelete" = false;
+          "showInlineTitle" = false;
+          "spellcheck" = false;
+          "trashOption" = "local";
+          "vimMode" = false;
+        };
         corePlugins = [
           # "audio-recorder"
           "backlink"
@@ -35,7 +40,14 @@ let
           # "bookmarks"
           "canvas"
           "command-palette"
-          "daily-notes"
+          {
+            name = "daily-notes";
+            settings = {
+              "folder" = "Notes";
+              "format" = "YYYY-MM-DD-dddd";
+              "template" = "Templates/daily";
+            };
+          }
           "editor-status"
           "file-explorer"
           "file-recovery"
@@ -43,11 +55,11 @@ let
           "global-search"
           "graph"
           # "markdown-importer"
-          "note-composer"
+          # "note-composer"
           "outgoing-link"
           "outline"
-          "page-preview"
-          "properties"
+          # "page-preview"
+          # "properties"
           # "publish"
           # "random-note"
           # "slash-command"
@@ -59,6 +71,8 @@ let
             name = "templates";
             settings = {
               "folder" = "Templates";
+              "dateFormat" = "YYYY-MM-DD";
+              "timeFormat" = "HH:mm A";
             };
           }
           # "webviewer"
@@ -102,26 +116,6 @@ in
         defaultSettings = {
           communityPlugins = with plugins; [
             advancedUri
-            # {
-            #   settings = {
-            #     "openFileOnWrite" = true;
-            #     "openDailyInNewPane" = false;
-            #     "openFileOnWriteInNewPane" = false;
-            #     "openFileWithoutWriteInNewPane" = true;
-            #     "idField" = "id";
-            #     "useUID" = false;
-            #     "addFilepathWhenUsingUID" = false;
-            #     "allowEval" = false;
-            #     "includeVaultName" = true;
-            #     "vaultParam" = "name";
-            #     "linkFormats" = [
-            #       {
-            #         "name" = "Markdown";
-            #         "format" = "[{{name}}]({{uri}})";
-            #       }
-            #     ];
-            #   };
-            # }
             excalidraw
           ];
           cssSnippets = import ./snippets.nix { inherit pkgs; };
@@ -240,25 +234,31 @@ in
           "text/plain"
         ];
       };
-      home.packages = [
-        (pkgs.writeShellScriptBin "nvim-open-obsidian" ''
-          #!/usr/bin/env bash
-          _send() { sleep 0.2 && nvim --server "$SOCKET" --remote-send "$1"; }
-          SOCKET="/tmp/nvim-obsidian-server.sock"
-          if [ -S "$SOCKET" ]; then
-            nvim --server "$SOCKET" --remote "$1"
-          else
-            kitty -d "''${1%/*}" -o font_size=10 -e nvim --listen "$SOCKET" "$1" &
-            sleep 0.8
-            hyprctl dispatch layoutmsg mfact exact 0.55
-            hyprctl dispatch layoutmsg swapwithmaster
-            _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
-            _send ':lua require("nvchad.utils").reload()<CR>'
-            _send ':lua require("render-markdown").toggle()<CR>'
-          fi
-        '')
-      ];
-    })
+    #   home.packages = [
+    #     (pkgs.writeShellScriptBin "nvim-open-obsidian" ''
+    #       _send() { sleep 0.4 && nvim --server "$SOCKET" --remote-send "$1"; }
+    #       SOCKET="/tmp/nvim-obsidian-server.sock"
+    #       OBSIDIAN_DIR="$HOME/${obsidian-dir}"
+    #       if [[ -S "$SOCKET" ]]; then
+    #         nvim --server "$SOCKET" --remote "$1"
+    #       else
+    #         relative="''${1#$OBSIDIAN_DIR/}"
+    #         vault_name="''${relative%%/*}"
+    #         vault_dir="$OBSIDIAN_DIR/$vault_name"
+    #         kitty -c $HOME/.config/kitty/kitty-hide.conf -d "$vault_dir" \
+    #           -o font_size=10 -e tmux new -s Obsidian nvim --listen "$SOCKET" "$1" &
+    #         sleep 0.8
+    #         tmux rename-window nvim
+    #         hyprctl dispatch tagwindow +$vault_name
+    #         hyprctl dispatch layoutmsg swapwithmaster
+    #         hyprctl dispatch layoutmsg mfact exact 0.55
+    #         _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
+    #         _send ':lua require("nvchad.utils").reload()<CR>'
+    #         _send ':lua require("render-markdown").toggle()<CR>'
+    #       fi
+    #     '')
+    #   ];
+    # })
 
     (lib.mkIf config.which-key.enable {
       programs.which-key = {
