@@ -1,18 +1,80 @@
 # programs/yazi/plugins.nix
 {
   pkgs,
+  inputs,
   ...
 }:
 let
+  system = pkgs.system;
+  pkgs-stable = import inputs.nixpkgs-stable {
+    inherit system;
+  };
+
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
     rev = "03cdd4b5b15341b3c0d0f4c850d633fadd05a45f";
     hash = "sha256-5dMAJ6W/L66XuH4CCwRRFpKSLy0ZDFIABAYleFX0AsQ=";
   };
+  yazi-plugins-aa = pkgs.fetchFromGitHub {
+    owner = "AminurAlam";
+    repo = "yazi-plugins";
+    rev = "1d28640882b13d5724c6225f22ef999da458bf9d";
+    hash = "sha256-iE1UFF7U/yRABOucDMPYyncm0VTCpNBgRQy+GoyXM1Y=";
+  };
 in
 {
   plugins = {
+    preview-epub = {
+      source = "${yazi-plugins-aa}/preview-epub.yazi";
+      defaultEnable = false;
+      settings = {
+        plugin = {
+          prepend_preloaders = [
+            {
+              url = "*.epub";
+              run = "preview-epub";
+            }
+          ];
+          prepend_previewers = [
+            {
+              url = "*.epub";
+              run = "preview-epub";
+            }
+          ];
+        };
+      };
+    };
+    mediainfo = {
+      source = pkgs-stable.yaziPlugins.mediainfo;
+      defaultEnable = false;
+      settings = {
+        plugin = {
+          prepend_preloaders = [
+            {
+              mime = "{audio,video}/*";
+              run = "mediainfo";
+            }
+          ];
+          prepend_previewers = [
+            {
+              mime = "{audio,video}/*";
+              run = "mediainfo";
+            }
+          ];
+        };
+        opener = {
+          play = [
+            {
+              run = ''mediainfo "$1"; echo "Press enter to exit"; read _'';
+              block = true;
+              desc = "Show media info";
+              for = "unix";
+            }
+          ];
+        };
+      };
+    };
     zoom = {
       source = "${yazi-plugins}/zoom.yazi";
       defaultEnable = false;
@@ -28,37 +90,6 @@ in
           desc = "Zoom out hovered file";
         }
       ];
-    };
-    mediainfo = {
-      source = pkgs.yaziPlugins.mediainfo;
-      defaultEnable = false;
-      settings = {
-        # BUG: overwritting instead of appending
-        # opener = {
-        #   play = [
-        #     {
-        #       run = ''mediainfo "$1"; echo "Press enter to exit"; read _'';
-        #       block = true;
-        #       desc = "Show media info";
-        #       for = "unix";
-        #     }
-        #   ];
-        # };
-        plugin = {
-          prepend_preloaders = [
-            {
-              mime = "{audio,video}/*";
-              run = "mediainfo";
-            }
-          ];
-          prepend_previewers = [
-            {
-              mime = "{audio,video}/*";
-              run = "mediainfo";
-            }
-          ];
-        };
-      };
     };
     dupes = {
       source = pkgs.yaziPlugins.dupes;
