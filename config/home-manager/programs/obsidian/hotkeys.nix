@@ -102,4 +102,28 @@
     }
   ];
   "workspace:new-tab" = [ ];
+  "app:go-back" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "ArrowLeft";
+    }
+  ];
+  "app:go-forward" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "ArrowRight";
+    }
+  ];
+  "file-explorer:move-file" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "M";
+    }
+  ];
 }
