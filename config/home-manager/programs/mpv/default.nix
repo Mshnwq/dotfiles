@@ -54,15 +54,15 @@ in
       "H" = "cycle-values hwdec \"auto\" \"no\"";
       "|" = "vf toggle vflip";
       "P" =
-        ''script-message cycle-commands "apply-profile transparent" "apply-profile default"'';
+        ''script-message cycle-commands/osd "apply-profile transparent" "apply-profile default"'';
     };
     # overrides profiles
     config = {
       osc = "no";
       osd-level = 0;
-      hwdec = "vaapi";
-      #title = "\${title}";
-      title = "\${filename}"; # TODO: fix correct title
+      # vaapi with i965 too hot
+      hwdec = "vaapi-copy"; # i hate you
+      title = "\${filename}";
     };
     defaultProfiles = [
       "transparent"
@@ -74,6 +74,12 @@ in
         background-color = "0/0";
         background = "none";
       };
+      # NOT POSSIBLE i guess make a seperat script of Mpv-Anki?
+      # https://github.com/mpv-player/mpv/issues/14475
+      # anki = {
+      #   "input-commands" =
+      #     "load-script '${pkgs.mpvScripts.mpvacious}/share/mpv/scripts/mpvacious'";
+      # };
       # https://www.reddit.com/r/mpv/comments/1149cpm/recommended_profiles/
     };
   };
@@ -83,6 +89,7 @@ in
       name = "Mpv";
       command = "mpv";
       nixGLVariant = "nixGLIntel";
+      # envVars = "LIBVA_DRIVER_NAME=\"i965\"";
     })
   ];
   home.file = lib.mkMerge [

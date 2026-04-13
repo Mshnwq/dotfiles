@@ -74,7 +74,7 @@ let
 
     # https://github.com/Ajatt-Tools/mpvacious
     subs2srs = {
-      # https://github.com/Ajatt-Tools/mpvacious/blob/master/.github/RELEASE/subs2srs.conf
+      # https://github.com/Ajatt-Tools/mpvacious/blob/master/mpvacious/config/default_config.conf
       opts = ''
         ankiconnect_url=127.0.0.1:8765
         # https://github.com/alyssabedard/mpv2anki/blob/master/docs/note_types/basic/Sentence%20Mining.apkg
