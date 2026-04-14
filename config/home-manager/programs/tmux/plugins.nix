@@ -12,8 +12,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mshnwq";
       repo = "tmux-dracula";
-      rev = "ae4e0a0de7a1f4a993039a96a6ec77a5c1f4b36a";
-      hash = "sha256-KpQTjPfUd42Q5ZaQdN7k5C+b1Mz5sJ29m6u5spywt34=";
+      rev = "07b904c6e4be23d75dc33c6bc5bbd1273a9d5338";
+      hash = "sha256-d8Yv/FC8SQZY+Aha4VSaSmEiaF8KGRGlGBgD9xucJSU=";
     };
   };
   tmux-floax = pkgs.tmuxPlugins.mkTmuxPlugin {
