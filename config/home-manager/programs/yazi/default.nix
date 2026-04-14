@@ -10,7 +10,8 @@ let
   cfg = config.yazi;
 
   # Import plugin definitions
-  pluginDefs = import ./plugins.nix { inherit pkgs; };
+  pluginDefs = import ./plugins.nix { inherit pkgs inputs; };
+  # TODO: add ClipBoard Plugin
   availablePlugins = pluginDefs.plugins;
 
   # Filter enabled plugins
@@ -37,7 +38,28 @@ let
   pluginsSettings = lib.mapAttrsToList (
     name: plugin: plugin.settings or { }
   ) enabledPlugins;
-  mergedSettings = lib.foldl' lib.recursiveUpdate baseSettings pluginsSettings;
+  # mergedSettings = lib.foldl' lib.recursiveUpdate baseSettings pluginsSettings;
+  # TODO: so ugly
+  mergePluginSettings =
+    a: b:
+    let
+      mergePlugin = key: (a.plugin.${key} or [ ]) ++ (b.plugin.${key} or [ ]);
+      mergeOpener = key: (a.opener.${key} or [ ]) ++ (b.opener.${key} or [ ]);
+      openerKeys = [ "play" ];
+      pluginKeys = [
+        "prepend_preloaders"
+        "prepend_previewers"
+      ];
+    in
+    lib.recursiveUpdate a (
+      (lib.optionalAttrs (b ? plugin) {
+        plugin = lib.genAttrs pluginKeys mergePlugin;
+      })
+      // (lib.optionalAttrs (b ? opener) {
+        opener = lib.genAttrs openerKeys mergeOpener;
+      })
+    );
+  mergedSettings = lib.foldl' mergePluginSettings baseSettings pluginsSettings;
 
   # Import base initlua and merge with enabled plugin initlua
   baseInitLua = builtins.readFile ./init.lua;
@@ -76,6 +98,7 @@ in
     }) availablePlugins;
 
     home.packages = with pkgs; [
+      gnome-epub-thumbnailer
       trash-cli
       mediainfo
       exiftool
