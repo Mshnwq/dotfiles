@@ -251,8 +251,10 @@ _tmux() {
 }
 
 _obsidian() {
-  hyprctl clients -j | jq -e --arg title "Obsidian" '.[] | select(.title | contains($title))' &&
-    xdg-open "obsidian://adv-uri?vault=Home&commandid=obsidian-pywal-theme%3Areload-pywal-theme"
+  :
+  # TODO: relaunch
+  # hyprctl clients -j | jq -e --arg title "Obsidian" '.[] | select(.title | contains($title))' &&
+  #   xdg-open "obsidian://adv-uri?vault=Home&commandid=obsidian-pywal-theme%3Areload-pywal-theme"
 }
 
 _kitten() { kitten @ --to unix:"$1" "${@:2}"; }
@@ -360,7 +362,7 @@ _nvchad() {
 
   for addr in "$XDG_RUNTIME_DIR"/nvim.*; do
     nvim --server "$addr" --remote-send \
-      ':lua require("nvchad.utils").reload() <cr>' ||
+      ':lua require("nvchad.utils").reload()<CR>' ||
       touch "$HOME/.cache/wal/nvim_reload"
   done
 }
@@ -416,6 +418,22 @@ _dunst() {
 _waybar() {
   [[ -n "$cursor" ]] &&
     sed -i "/\/\/-clock-date/s|\"<span color='#.*'><b>{}</b></span>\"|\"<span color='${cursor}'><b>{}</b></span>\"|" "$HOME/.config/waybar/config.jsonc" && waybar.sh --start
+}
+
+_wlr() {
+  local wlr_conf="$HOME/.config/wlr-which-key/config.yaml"
+  local colors_file="$HOME/.cache/wal/colors"
+
+  local -A colors
+  for i in 1 9 8; do
+    colors[$i]=$(head "$colors_file" -n $i | tail -n 1)
+  done
+
+  sudo sed -i \
+    -e "s/background: \"#[0-9A-Fa-f]\{8\}\"/background: \"${colors[1]}88\"/" \
+    -e "s/border: \"#[0-9A-Fa-f]\{6\}\"/border: \"${colors[9]}\"/" \
+    -e "s/color: \"#[0-9A-Fa-f]\{6\}\"/color: \"${colors[8]}\"/" \
+    "$wlr_conf"
 }
 
 _sddm() {
@@ -581,6 +599,7 @@ auto=(
   "kitty"
   "p10k"
   "dunst"
+  "wlr"
   "waybar"
   "nvchad"
   "btop"
