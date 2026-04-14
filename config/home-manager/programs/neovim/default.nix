@@ -31,6 +31,7 @@ in
         stylua
         luajitPackages.luacheck
         # Markdown
+        harper # grammar
         markdown-oxide
         doctoc
         rumdl

@@ -97,11 +97,19 @@
     {
       "modifiers" = [
         "Mod"
+        "Shift"
       ];
       "key" = "T";
     }
   ];
-  "workspace:new-tab" = [ ];
+  "workspace:new-tab" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "T";
+    }
+  ];
   "app:go-back" = [
     {
       "modifiers" = [
@@ -124,6 +132,23 @@
         "Mod"
       ];
       "key" = "M";
+    }
+  ];
+  "graph:open-local" = [
+    {
+      "modifiers" = [
+        "Mod"
+        "Shift"
+      ];
+      "key" = "G";
+    }
+  ];
+  "daily-notes" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "Y";
     }
   ];
 }
