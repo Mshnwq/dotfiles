@@ -230,7 +230,7 @@
       }
       {
         on = "_";
-        run = "link --relative";
+        run = "link --relative"; # BUG: doesn't work properly
         desc = "Symlink the relative path of yanked files";
       }
       {
