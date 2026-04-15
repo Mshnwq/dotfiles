@@ -27,6 +27,7 @@ let
           "newFileFolderPath" = "Notes";
           "newFileLocation" = "folder";
           "openBehavior" = "";
+          "propertiesInDocument" = "hidden";
           "promptDelete" = false;
           "showInlineTitle" = false;
           "spellcheck" = false;

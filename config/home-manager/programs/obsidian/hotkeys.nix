@@ -151,4 +151,20 @@
       "key" = "Y";
     }
   ];
+  "workspace:copy-full-path" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "P";
+    }
+  ];
+  "command-palette:open" = [
+    {
+      "modifiers" = [
+        "Shift"
+      ];
+      "key" = ";";
+    }
+  ];
 }
