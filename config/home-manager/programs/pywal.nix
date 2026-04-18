@@ -23,7 +23,7 @@ let
     "yazi/theme.toml" = "${walCache}/custom-yazi.toml";
     "tmux/pywal.conf" = "${walCache}/custom-tmux.conf";
     "glow/pywal.json" = "${walCache}/custom-glow.json";
-    "zathura/zathurarc" = "${walCache}/colors-zathura";
+    "zathura/zathurarc" = "${walCache}/colors-zathura"; # Ctrl+r toggle recolor
     "rofi/shared.rasi" = "${walCache}/custom-rofi.rasi";
     "aerc/stylesets/default" = "${walCache}/custom-aerc";
     "k9s/skins/pywal.yaml" = "${walCache}/custom-k9s.yaml";

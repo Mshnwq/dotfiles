@@ -140,6 +140,11 @@ in
     enable = true;
     entries = [
       {
+        key = "k";
+        desc = "Keepass";
+        cmd = "gtk-launch keepassxc";
+      }
+      {
         key = "x";
         desc = "Executer";
         submenu = [

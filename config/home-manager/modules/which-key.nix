@@ -81,7 +81,7 @@ in
           border_width: 1.5
           corner_r: 5
           padding: 20
-          rows_per_column: 4
+          rows_per_column: 6
           column_padding: 20
           auto_kbd_layout: true
           menu:

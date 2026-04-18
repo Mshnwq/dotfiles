@@ -44,4 +44,6 @@
     RenderMarkdownDash = {{ fg = "{color8}" }},
     CheckBoxed = {{ fg = "{color8}", strikethrough = true }},
     LspCodeLens = {{ fg = "grey_fg2" }},
+    RenderMarkdownQuoteTitle = {{ bg = "black2", fg = "{color3}", bold = true }},
+    RenderMarkdownQuoteIcon = {{ bg = "none", fg = "{color3}" }},
   }},
