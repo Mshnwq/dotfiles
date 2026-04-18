@@ -8,6 +8,29 @@
 }:
 let
   cfg = config.yazi;
+  # https://github.com/sxyazi/yazi/issues/694
+  # https://forum.obsidian.md/t/enable-use-access-to-hidden-files-and-folders-starting-with-a-dot-dotfiles-dotfolders-within-obsidian/26908
+  patched-yazi =
+    let
+      yazi-unwrapped-patched =
+        inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.yazi-unwrapped.overrideAttrs
+          (old: {
+            postPatch = (old.postPatch or "") + ''
+              awk '
+                /starts_with\("\."\)/ {
+                  print "\t\t\tif _name.as_strand().starts_with(\".\") || (_meta.is_dir() && (_name.as_strand().starts_with(\"_templates\") || _name.as_strand().starts_with(\"_attachments\"))) {"
+                  next
+                }
+                { print }
+              ' yazi-fs/src/cha/kind.rs > kind.rs.tmp && mv kind.rs.tmp yazi-fs/src/cha/kind.rs
+              echo "=== PATCHED kind.rs ===" >&2
+              cat yazi-fs/src/cha/kind.rs >&2
+            '';
+          });
+    in
+    inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.yazi.override {
+      yazi-unwrapped = yazi-unwrapped-patched;
+    };
 
   # Import plugin definitions
   pluginDefs = import ./plugins.nix { inherit pkgs inputs; };
@@ -106,8 +129,8 @@ in
 
     programs.yazi = {
       enable = true;
-      # https://github.com/sxyazi/yazi/blob/main/CHANGELOG.md#v251229
-      package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      # package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      package = patched-yazi;
       enableZshIntegration = false;
       enableBashIntegration = false;
       plugins = pluginsConfig;
