@@ -9,6 +9,8 @@
 let
   plugins = pkgs.callPackage ./plugins.nix { inherit pkgs; };
   obsidian-dir = "Documents/Obsidian";
+  inbox-dir = "0_Inbox";
+  templates-dir = "_templates";
   vaults = {
     Home = {
       enable = true;
@@ -22,9 +24,9 @@ let
         hotkeys = import ./hotkeys.nix { };
         app = {
           "alwaysUpdateLinks" = true;
-          "attachmentFolderPath" = "Assets";
+          "attachmentFolderPath" = "_attachments";
           "defaultViewMode" = "preview";
-          "newFileFolderPath" = "Notes";
+          "newFileFolderPath" = inbox-dir;
           "newFileLocation" = "folder";
           "openBehavior" = "";
           "propertiesInDocument" = "hidden";
@@ -44,9 +46,9 @@ let
           {
             name = "daily-notes";
             settings = {
-              "folder" = "Notes";
+              "folder" = inbox-dir;
               "format" = "YYYY-MM-DD-dddd";
-              "template" = "Templates/daily";
+              "template" = "${templates-dir}/daily";
             };
           }
           "editor-status"
@@ -71,7 +73,7 @@ let
           {
             name = "templates";
             settings = {
-              "folder" = "Templates";
+              "folder" = templates-dir;
               "dateFormat" = "YYYY-MM-DD";
               "timeFormat" = "HH:mm A";
             };
@@ -118,6 +120,7 @@ in
           communityPlugins = with plugins; [
             advancedUri
             excalidraw
+            nodeFactor
           ];
           cssSnippets = import ./snippets.nix { inherit pkgs; };
           appearance = {
@@ -251,7 +254,7 @@ in
             sleep 1 && tmux rename-window nvim
             hyprctl dispatch tagwindow +$vault_name
             hyprctl dispatch layoutmsg swapwithmaster
-            hyprctl dispatch layoutmsg mfact exact 0.5625
+            hyprctl dispatch layoutmsg mfact exact 0.5525
             _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
             _send ':lua require("nvchad.utils").reload()<CR>'
             _send ':lua require("render-markdown").toggle()<CR>'

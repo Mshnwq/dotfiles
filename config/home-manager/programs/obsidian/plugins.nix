@@ -81,4 +81,40 @@
         runHook postInstall
       '';
     };
+
+  nodeFactor =
+    let
+      version = "3.0.0";
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/CalfMoon/node-factor/releases/download/${version}/main.js";
+        hash = "sha256:d9cacb6d0bb2e0a99a129412e6924e2c7e9fc4bea4351947529863270d8fbb41";
+      };
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/CalfMoon/node-factor/releases/download/${version}/manifest.json";
+        hash = "sha256:6b95c3e67c2c72af9a3c8e46b9cceb96158b1ac2932ca6481151f3b9f271a211";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "node-factor";
+        version = "v${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      # still figuring it out
+      settings = {
+        "fwdMultiplier" = 2;
+        "fwdTree" = false;
+        "bwdMultiplier" = 4;
+        "lettersPerWt" = 0;
+        "manual" = [ ];
+      };
+    };
 }
