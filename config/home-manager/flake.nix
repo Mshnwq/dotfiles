@@ -70,7 +70,7 @@
       url = "github:nix-community/neovim-nightly-overlay/28962d1"; # v0.12 - 563f9ef
     };
     nvchad-starter = {
-      url = "github:Mshnwq/nvchad/1ae54a4";
+      url = "github:Mshnwq/nvchad/b29f1f2";
       flake = false;
     };
     nix4nvchad = {
