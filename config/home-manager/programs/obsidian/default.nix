@@ -121,6 +121,7 @@ in
             advancedUri
             excalidraw
             nodeFactor
+            dataView
           ];
           cssSnippets = import ./snippets.nix { inherit pkgs; };
           appearance = {

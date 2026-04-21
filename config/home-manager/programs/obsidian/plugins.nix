@@ -117,4 +117,64 @@
         "manual" = [ ];
       };
     };
+
+  dataView =
+    let
+      version = "0.5.70";
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/main.js";
+        hash = "sha256-a7HPcBCvrYMOc1dfyg4r+9MnnFYuPZ0k8tL0UWHrfQA=";
+      };
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/manifest.json";
+        hash = "sha256-kjXbRxEtqBuFWRx57LmuJXTl5yIHBW6XZHL5BhYoYYU=";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/styles.css";
+        hash = "sha256-MwbdkDLgD5ibpyM6N/0lW8TT9DQM7mYXYulS8/aqHek=";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-dataview";
+        version = "v${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      settings = {
+        "renderNullAs" = "\\-";
+        "taskCompletionTracking" = false;
+        "taskCompletionUseEmojiShorthand" = false;
+        "taskCompletionText" = "completion";
+        "taskCompletionDateFormat" = "yyyy-MM-dd";
+        "recursiveSubTaskCompletion" = false;
+        "warnOnEmptyResult" = true;
+        "refreshEnabled" = true;
+        "refreshInterval" = 2500;
+        "defaultDateFormat" = "MMMM dd, yyyy";
+        "defaultDateTimeFormat" = "h:mm a - MMMM dd, yyyy";
+        "maxRecursiveRenderDepth" = 4;
+        "tableIdColumnName" = "File";
+        "tableGroupColumnName" = "Group";
+        "showResultCount" = true;
+        "allowHtml" = true;
+        "inlineQueryPrefix" = "=";
+        "inlineJsQueryPrefix" = "$=";
+        "inlineQueriesInCodeblocks" = true;
+        "enableInlineDataview" = true;
+        "enableDataviewJs" = true;
+        "enableInlineDataviewJs" = true;
+        "prettyRenderInlineFields" = true;
+        "prettyRenderInlineFieldsInLivePreview" = true;
+        "dataviewJsKeyword" = "dataviewjs";
+      };
+    };
 }
