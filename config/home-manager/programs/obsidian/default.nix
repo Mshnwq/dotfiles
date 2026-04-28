@@ -29,7 +29,7 @@ let
           "newFileFolderPath" = inbox-dir;
           "newFileLocation" = "folder";
           "openBehavior" = "";
-          "propertiesInDocument" = "hidden";
+          "propertiesInDocument" = "visible";
           "promptDelete" = false;
           "showInlineTitle" = false;
           "spellcheck" = false;

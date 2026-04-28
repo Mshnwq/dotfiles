@@ -6,7 +6,7 @@
   ...
 }:
 let
-
+  # TODO: attr set it
   name = config.home.username;
   profile = "${name}.default";
   profileName = "${name}";
@@ -196,7 +196,7 @@ in
     isDefault = false;
     name = profileName3;
     settings = commonSettings // {
-      "network.protocol-handler.expose.obsidian" = false;
+      "network.protocol-handler.expose.obsidian" = true;
     };
     extensions.force = true;
     extensions.packages =
