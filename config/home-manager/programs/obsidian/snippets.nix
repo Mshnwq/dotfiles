@@ -3,7 +3,7 @@
   pkgs,
   ...
 }:
-# TODO: find good snippets
+# TODO: find good snippets, translucent
 # https://prakashjoshipax.com/obsidian-css-snippets/
 # also Ctrl + Shift + i | to use console and manually modify
 [
@@ -20,6 +20,15 @@
       }
       .workspace-ribbon.mod-left:before {
         display: none;
+      }
+    '';
+  }
+  {
+    name = "hide-vault-profiles";
+    enable = true;
+    text = ''
+      .workspace-sidedock-vault-profile {
+        display: none !important;
       }
     '';
   }
