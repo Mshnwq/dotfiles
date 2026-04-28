@@ -20,6 +20,14 @@ let
       enable = true;
       target = "${obsidian-dir}/Dummy";
       settings = {
+        communityPlugins = with plugins; [
+          notebookNavigator
+          advancedUri
+          excalidraw
+          nodeFactor
+          dataView
+          # calendar
+        ];
         # move to global when figured it all
         hotkeys = import ./hotkeys.nix { };
         app = {
@@ -118,6 +126,7 @@ in
         # global settings
         defaultSettings = {
           communityPlugins = with plugins; [
+            # notebookNavigator
             advancedUri
             excalidraw
             nodeFactor
