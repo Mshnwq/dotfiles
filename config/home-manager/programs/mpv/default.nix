@@ -23,7 +23,7 @@ in
   home.packages =
     with pkgs;
     [
-      jellyfin-mpv-shim
+      # jellyfin-mpv-shim
       nixgl.auto.nixGLDefault
       nixgl.nixGLIntel
     ]
@@ -63,6 +63,8 @@ in
       # vaapi with i965 too hot
       hwdec = "vaapi-copy"; # i hate you
       title = "\${filename}";
+      vo = "gpu"; # use gpu instead of gpu-next
+      gpu-api = "opengl"; # skip vulkan entirely
     };
     defaultProfiles = [
       "transparent"
@@ -105,7 +107,7 @@ in
             builtins.replaceStrings
               [ "TryExec=mpv" "Exec=mpv" ]
               [ "TryExec=${MPV}" "Exec=${MPV}" ]
-              (builtins.readFile "${pkgs.mpv}/share/applications/mpv.desktop");
+              (builtins.readFile "${pkgs.mpv-unwrapped}/share/applications/mpv.desktop");
         };
     }
   ];

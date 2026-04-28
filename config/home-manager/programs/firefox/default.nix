@@ -117,6 +117,8 @@ in
 
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox;
+  # TODO: migrate to xdg
+  programs.firefox.configPath = ".mozilla/firefox";
 
   imports = [
     (import ./blocking.nix profile)
@@ -163,7 +165,7 @@ in
         cookies-txt
         search-by-image
         pwas-for-firefox
-        keepassxc-browser
+        # keepassxc-browser
         web-clipper-obsidian
         (tampermonkey.override {
           meta.license.free = true;
@@ -204,7 +206,7 @@ in
       [
         clearurls
         search-by-image
-        keepassxc-browser
+        # keepassxc-browser
         web-clipper-obsidian
       ]
       ++ (with extensions.custom; [

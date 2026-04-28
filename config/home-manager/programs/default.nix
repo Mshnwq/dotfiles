@@ -167,16 +167,16 @@ args@{
   # automation tools
   auto = {
     home.packages = with pkgs; [
-      # gallery-dl
-      # https://github.com/NixOS/nixpkgs/blob/1c3fe55ad329cbcb28471bb30f05c9827f724c76/pkgs/by-name/yt/yt-dlp/package.nix#L40
-      # yt-dlp stupid pulling deno garbage
       rclone
       jdupes
       # aria2
       # wireshark # TODO: try on other device it brok my wi-fi
       nmap
-      buku
-      # --import bookmarks.db
+      buku # --import bookmarks.db
+      # These are quite some glorious garbage I aught to stick them in some python venv and be done
+      # https://github.com/NixOS/nixpkgs/blob/1c3fe55ad329cbcb28471bb30f05c9827f724c76/pkgs/by-name/yt/yt-dlp/package.nix#L40
+      # (pkgs.yt-dlp.override { javascriptSupport = false; })
+      # gallery-dl
     ];
   };
 
