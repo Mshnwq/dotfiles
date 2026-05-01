@@ -167,8 +167,9 @@ args@{
   # automation tools
   auto = {
     home.packages = with pkgs; [
-      gallery-dl
-      yt-dlp
+      # gallery-dl
+      # https://github.com/NixOS/nixpkgs/blob/1c3fe55ad329cbcb28471bb30f05c9827f724c76/pkgs/by-name/yt/yt-dlp/package.nix#L40
+      # yt-dlp stupid pulling deno garbage
       rclone
       jdupes
       # aria2
