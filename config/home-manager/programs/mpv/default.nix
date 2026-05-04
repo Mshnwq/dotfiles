@@ -15,10 +15,12 @@ let
 in
 {
   # https://home-manager.dev/manual/24.11/index.xhtml#sec-usage-gpu-non-nixos
-  nixGL.packages = inputs.nixgl.packages;
-  nixGL.defaultWrapper = default;
-  nixGL.offloadWrapper = lib.mkIf hasNvidia "nvidiaPrime";
-  nixGL.installScripts = [ default ] ++ lib.optional hasNvidia "nvidiaPrime";
+  targets.genericLinux.nixGL = {
+    packages = inputs.nixgl.packages;
+    defaultWrapper = default;
+    offloadWrapper = lib.mkIf hasNvidia "nvidiaPrime";
+    installScripts = [ default ] ++ lib.optional hasNvidia "nvidiaPrime";
+  };
 
   home.packages =
     with pkgs;

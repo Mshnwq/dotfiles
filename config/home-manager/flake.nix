@@ -38,7 +38,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixgl = {
-      url = "github:nix-community/nixGL";
+      # url = "github:nix-community/nixGL";
+      # https://github.com/nix-community/nixGL/issues/220
+      # https://github.com/nix-community/nixGL/commit/5a49a7b7e4263b621d001519187ce4d23462b72c
+      # https://github.com/nix-community/nixGL/commit/894cbfcdfcb969a5ec18dea5dbe37df16fe93346
+      url = "github:KeeTraxx/nixgl/fix-nvidia-kernel-param";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland = {
@@ -70,7 +74,7 @@
       url = "github:nix-community/neovim-nightly-overlay/28962d1"; # v0.12 - 563f9ef
     };
     nvchad-starter = {
-      url = "github:Mshnwq/nvchad/aebc3b8";
+      url = "github:Mshnwq/nvchad/17a52c5";
       flake = false;
     };
     nix4nvchad = {
