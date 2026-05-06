@@ -249,41 +249,41 @@
 #     {
 #       inherit pkg;
 #     };
-
-  # https://aitorllamas.com/obsidian-lovely-bases/
-  lovelyBases =
-    let
-      version = "0.2.2";
-      manifestJson = pkgs.fetchurl {
-        url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/manifest.json";
-        hash = "sha256:1c39e53a9e01f2c4fa8da250b592b8569de24ccec47bfcc6964b361fff1e4a2d";
-      };
-      mainJs = pkgs.fetchurl {
-        url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/main.js";
-        hash = "sha256:f512b3279ad1344d90956380a287e546bd22cdd2a7c386e26a7dd53805b578ec";
-      };
-      stylesCss = pkgs.fetchurl {
-        url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/styles.css";
-        hash = "sha256:b5075812a991be0816f773c37f049943b08296a08ffadf43afc090b4d9f6dcdb";
-      };
-      pkg = pkgs.stdenvNoCC.mkDerivation {
-        pname = "obsidian-lovely-bases";
-        version = "v${version}";
-        dontUnpack = true;
-        installPhase = ''
-          runHook preInstall
-          mkdir -p $out
-          cp ${mainJs} $out/main.js
-          cp ${stylesCss} $out/styles.css
-          cp ${manifestJson} $out/manifest.json
-          runHook postInstall
-        '';
-      };
-    in
-    {
-      inherit pkg;
-    };
-
+#
+#   # https://aitorllamas.com/obsidian-lovely-bases/
+#   lovelyBases =
+#     let
+#       version = "0.2.2";
+#       manifestJson = pkgs.fetchurl {
+#         url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/manifest.json";
+#         hash = "sha256:1c39e53a9e01f2c4fa8da250b592b8569de24ccec47bfcc6964b361fff1e4a2d";
+#       };
+#       mainJs = pkgs.fetchurl {
+#         url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/main.js";
+#         hash = "sha256:f512b3279ad1344d90956380a287e546bd22cdd2a7c386e26a7dd53805b578ec";
+#       };
+#       stylesCss = pkgs.fetchurl {
+#         url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/styles.css";
+#         hash = "sha256:b5075812a991be0816f773c37f049943b08296a08ffadf43afc090b4d9f6dcdb";
+#       };
+#       pkg = pkgs.stdenvNoCC.mkDerivation {
+#         pname = "obsidian-lovely-bases";
+#         version = "v${version}";
+#         dontUnpack = true;
+#         installPhase = ''
+#           runHook preInstall
+#           mkdir -p $out
+#           cp ${mainJs} $out/main.js
+#           cp ${stylesCss} $out/styles.css
+#           cp ${manifestJson} $out/manifest.json
+#           runHook postInstall
+#         '';
+#       };
+#     in
+#     {
+#       inherit pkg;
+#     };
+#
 #   omnisearch =
 #     let
 #       version = "1.28.2";
@@ -517,46 +517,46 @@
 #         "transparentButton" = false;
 #       };
 #     };
-#
-#   jupymd =
-#     let
-#       version = "1.7.0";
-#       manifestJson = pkgs.fetchurl {
-#         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/manifest.json";
-#         hash = "sha256:3a324148fb4b9e6b9e6a2dcfb02ae309fb213f21dfcbab392df2dd656a22a21f";
-#       };
-#       mainJs = pkgs.fetchurl {
-#         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/main.js";
-#         hash = "sha256:61b8a581fb34e836dc76607ad92f19ad73e272a5d82209b78c10a8df8da72b86";
-#       };
-#       stylesCss = pkgs.fetchurl {
-#         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/styles.css";
-#         hash = "sha256:d7c82ed859ee3233d057dda47be29841729f52c49761a3543e477751029ab80d";
-#       };
-#       pkg = pkgs.stdenvNoCC.mkDerivation {
-#         pname = "jupymd";
-#         version = "${version}";
-#         dontUnpack = true;
-#         installPhase = ''
-#           runHook preInstall
-#           mkdir -p $out
-#           cp ${mainJs} $out/main.js
-#           cp ${manifestJson} $out/manifest.json
-#           cp ${stylesCss} $out/styles.css
-#           runHook postInstall
-#         '';
-#       };
-#     in
-#     {
-#       inherit pkg;
-#       settings = {
-#         "autoSync" = false;
-#         "bidirectionalSync" = false;
-#         "autoConvertToNotebookOnRun" = true;
-#         "pythonInterpreter" =
-#           "/home/${config.home.username}/Documents/Obsidian/jupython";
-#         "notebookEditorCommand" = "jupyter-lab";
-#         "enableCodeBlocks" = true; # uses prismjs instead expressive-code
-#       };
-#     };
-# }
+
+  jupymd =
+    let
+      version = "1.7.0";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/d-eniz/jupymd/releases/download/${version}/manifest.json";
+        hash = "sha256:3a324148fb4b9e6b9e6a2dcfb02ae309fb213f21dfcbab392df2dd656a22a21f";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/d-eniz/jupymd/releases/download/${version}/main.js";
+        hash = "sha256:61b8a581fb34e836dc76607ad92f19ad73e272a5d82209b78c10a8df8da72b86";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/d-eniz/jupymd/releases/download/${version}/styles.css";
+        hash = "sha256:d7c82ed859ee3233d057dda47be29841729f52c49761a3543e477751029ab80d";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "jupymd";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      settings = {
+        "autoSync" = false;
+        "bidirectionalSync" = false;
+        "autoConvertToNotebookOnRun" = true;
+        "pythonInterpreter" =
+          "/home/${config.home.username}/Documents/Obsidian/jupython";
+        "notebookEditorCommand" = "jupyter-lab";
+        "enableCodeBlocks" = true; # uses prismjs instead expressive-code
+      };
+    };
+}
