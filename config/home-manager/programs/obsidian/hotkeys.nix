@@ -3,6 +3,16 @@
   ...
 }:
 {
+  # clear ones with conflicts
+  "editor:delete-paragraph" = [ ];
+  "workspace:edit-file-title" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "R";
+    }
+  ];
   "app:open-settings" = [
     {
       "modifiers" = [
@@ -11,20 +21,13 @@
       "key" = "`";
     }
   ];
-  "app:toggle-left-sidebar" = [
-    {
-      "modifiers" = [
-        "Mod"
-      ];
-      "key" = "E";
-    }
-  ];
   "app:toggle-ribbon" = [
     {
       "modifiers" = [
         "Mod"
+        "Alt"
       ];
-      "key" = "R";
+      "key" = "S";
     }
   ];
   "markdown:toggle-preview" = [
@@ -35,10 +38,36 @@
       "key" = "Escape";
     }
   ];
+  # just Alt Down when right side bar is focused
   "app:toggle-right-sidebar" = [
     {
       "modifiers" = [
         "Mod"
+      ];
+      "key" = "\\";
+    }
+  ];
+  # Alt + []\ for top box tabs
+  "backlink:open" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "[";
+    }
+  ];
+  "outgoing-links:open" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "]";
+    }
+  ];
+  "outline:open" = [
+    {
+      "modifiers" = [
+        "Alt"
       ];
       "key" = "\\";
     }
@@ -68,6 +97,14 @@
       "key" = "-";
     }
   ];
+  "editor:toggle-fold-properties" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = ".";
+    }
+  ];
   "markdown:add-metadata-property" = [
     {
       "modifiers" = [
@@ -84,7 +121,6 @@
       "key" = ";";
     }
   ];
-  "editor:delete-paragraph" = [ ];
   "app:delete-file" = [
     {
       "modifiers" = [
@@ -97,7 +133,7 @@
     {
       "modifiers" = [
         "Mod"
-        "Shift"
+        "Alt"
       ];
       "key" = "T";
     }
@@ -110,7 +146,7 @@
       "key" = "T";
     }
   ];
-  "app:go-back" = [
+  "editor:focus-left" = [
     {
       "modifiers" = [
         "Alt"
@@ -118,12 +154,45 @@
       "key" = "ArrowLeft";
     }
   ];
-  "app:go-forward" = [
+  "editor:focus-bottom" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "ArrowDown";
+    }
+  ];
+  "editor:focus-top" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "ArrowUp";
+    }
+  ];
+  "editor:focus-right" = [
     {
       "modifiers" = [
         "Alt"
       ];
       "key" = "ArrowRight";
+    }
+  ];
+  "app:go-back" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "O";
+    }
+  ];
+  "app:go-forward" = [
+    {
+      "modifiers" = [
+        "Mod"
+        "Shift"
+      ];
+      "key" = "O";
     }
   ];
   "file-explorer:move-file" = [
@@ -167,4 +236,148 @@
       "key" = ";";
     }
   ];
+  # "app:toggle-left-sidebar" = [
+  #   {
+  #     "modifiers" = [
+  #       "Mod"
+  #     ];
+  #     "key" = "E";
+  #   }
+  # ];
+  # use this one because it focuses
+  "notebook-navigator:toggle-left-sidebar" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "E";
+    }
+  ];
+  "notebook-navigator:toggle-dual-pane" = [
+    {
+      "modifiers" = [
+        "Mod"
+        "Shift"
+      ];
+      "key" = "[";
+    }
+  ];
+  "notebook-navigator:toggle-dual-pane-orientation" = [
+    {
+      "modifiers" = [
+        "Mod"
+        "Shift"
+      ];
+      "key" = "]";
+    }
+  ];
+  "notebook-navigator:toggle-compact-mode" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "'";
+    }
+  ];
+  "notebook-navigator:collapse-expand" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "W";
+    }
+  ];
+  "notebook-navigator:toggle-descendants" = [
+    {
+      "modifiers" = [
+        "Alt"
+        "Mod"
+      ];
+      "key" = "W";
+    }
+  ];
+  "notebook-navigator:reveal-file" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "R";
+    }
+  ];
+  # Request notebook-navigator search using omnisearch command
+  "omnisearch:show-modal" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "Z";
+    }
+  ];
+  "notebook-navigator:search-vault" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "S";
+    }
+  ];
+  "notebook-navigator:search" = [
+    {
+      "modifiers" = [
+        "Alt"
+        "Shift"
+      ];
+      "key" = "S";
+    }
+  ];
 }
+// builtins.listToAttrs (
+  map (n: {
+    name = "notebook-navigator:open-shortcut-${toString n}";
+    value = [
+      {
+        modifiers = [
+          "Mod"
+          "Shift"
+        ];
+        key = toString n;
+      }
+    ];
+  }) (builtins.genList (x: x + 1) 9)
+)
+
+# not needed for now
+# "cycle-in-sidebar:cycle-right-sidebar"= [
+#   {
+#     "modifiers"= [
+#       "Mod"
+#     ];
+#     "key"= "]"
+#   }
+# ];
+# "cycle-in-sidebar:cycle-right-sidebar-reverse"= [
+#   {
+#     "modifiers"= [
+#       "Mod"
+#     ];
+#     "key"= "["
+#   }
+# ]
+# "cycle-in-sidebar:cycle-left-sidebar"= [
+#   {
+#     "modifiers"= [
+#       "Mod"
+#       "Shift"
+#     ];
+#     "key"= "."
+#   }
+# ];
+# "cycle-in-sidebar:cycle-left-sidebar-reverse"= [
+#   {
+#     "modifiers"= [
+#       "Mod"
+#       "Shift"
+#     ];
+#     "key"= ";"
+#   }
+# ]
