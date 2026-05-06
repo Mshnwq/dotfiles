@@ -78,34 +78,34 @@
 #       }
 #     '';
 #   }
-  {
-    name = "theme-shiki-code";
-    enable = true;
-    text = ''
-      .has-collapse-button.ccb-code-block,
-      code.ccb-hide-vertical-scrollbar {
-        background: var(--background-primary) !important;
-      }
-      .code {
-        --shiki-code-punctuation: var(--text-normal);
-        --shiki-code-important: var(--text-normal);
-        --shiki-code-operator: var(--text-normal);
-        --shiki-code-function: var(--color-red);
-        --shiki-code-keyword: var(--color-cyan);
-        --shiki-code-string: var(--color-blue);
-        --shiki-code-value: var(--color-green);
-      }
-    '';
-  }
-#   # BUG: no background when custom colors
 #   {
-#     name = "lovely-bases-card";
+#     name = "theme-shiki-code";
 #     enable = true;
 #     text = ''
-#       .theme-dark .lovely-bases,
-#       .theme-light .lovely-bases {
-#         --card: color-mix(in srgb, var(--background-primary) 95%, white);
+#       .has-collapse-button.ccb-code-block,
+#       code.ccb-hide-vertical-scrollbar {
+#         background: var(--background-primary) !important;
+#       }
+#       .code {
+#         --shiki-code-punctuation: var(--text-normal);
+#         --shiki-code-important: var(--text-normal);
+#         --shiki-code-operator: var(--text-normal);
+#         --shiki-code-function: var(--color-red);
+#         --shiki-code-keyword: var(--color-cyan);
+#         --shiki-code-string: var(--color-blue);
+#         --shiki-code-value: var(--color-green);
 #       }
 #     '';
 #   }
-# ]
+  # BUG: no background when custom colors
+  {
+    name = "lovely-bases-card";
+    enable = true;
+    text = ''
+      .theme-dark .lovely-bases,
+      .theme-light .lovely-bases {
+        --card: color-mix(in srgb, var(--background-primary) 95%, white);
+      }
+    '';
+  }
+]
