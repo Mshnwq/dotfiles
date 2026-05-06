@@ -7,9 +7,10 @@
   ...
 }:
 let
-  plugins = pkgs.callPackage ./plugins.nix { inherit pkgs; };
+  plugins = pkgs.callPackage ./plugins.nix { inherit pkgs config; };
   obsidian-dir = "Documents/Obsidian";
   inbox-dir = "0_Inbox";
+  daily-dir = "1_Notes/Daily";
   templates-dir = "_templates";
   vaults = {
     Home = {
@@ -20,77 +21,8 @@ let
       enable = true;
       target = "${obsidian-dir}/Dummy";
       settings = {
-        communityPlugins = with plugins; [
-          notebookNavigator
-          advancedUri
-          excalidraw
-          nodeFactor
-          dataView
-          # calendar
-        ];
         # move to global when figured it all
         hotkeys = import ./hotkeys.nix { };
-        app = {
-          "alwaysUpdateLinks" = true;
-          "attachmentFolderPath" = "_attachments";
-          "defaultViewMode" = "preview";
-          "newFileFolderPath" = inbox-dir;
-          "newFileLocation" = "folder";
-          "openBehavior" = "";
-          "propertiesInDocument" = "visible";
-          "promptDelete" = false;
-          "showInlineTitle" = false;
-          "spellcheck" = false;
-          "trashOption" = "local";
-          "vimMode" = false;
-        };
-        corePlugins = [
-          # "audio-recorder"
-          "backlink"
-          "bases"
-          # "bookmarks"
-          "canvas"
-          "command-palette"
-          {
-            name = "daily-notes";
-            settings = {
-              "folder" = inbox-dir;
-              "format" = "YYYY-MM-DD-dddd";
-              "template" = "${templates-dir}/daily";
-            };
-          }
-          "editor-status"
-          "file-explorer"
-          "file-recovery"
-          # "footnotes"
-          "global-search"
-          "graph"
-          # "markdown-importer"
-          # "note-composer"
-          "outgoing-link"
-          "outline"
-          # "page-preview"
-          # "properties"
-          # "publish"
-          # "random-note"
-          # "slash-command"
-          # "slides"
-          "switcher"
-          # "sync"
-          "tag-pane"
-          {
-            name = "templates";
-            settings = {
-              "folder" = templates-dir;
-              "dateFormat" = "YYYY-MM-DD";
-              "timeFormat" = "HH:mm A";
-            };
-          }
-          # "webviewer"
-          "word-count"
-          # "workspaces"
-          # "zk-prefixer"
-        ];
       };
     };
   };
@@ -126,11 +58,18 @@ in
         # global settings
         defaultSettings = {
           communityPlugins = with plugins; [
-            # notebookNavigator
+            collapsibleCodeBlocks
+            notebookNavigator
+            shikiHighlighter
+            styleSettings
+            lovelyBases
             advancedUri
-            excalidraw
+            # excalidraw
+            omnisearch
             nodeFactor
+            metaBind
             dataView
+            jupymd
           ];
           cssSnippets = import ./snippets.nix { inherit pkgs; };
           appearance = {
@@ -138,6 +77,75 @@ in
             "showRibbon" = false;
             # "showViewHeader" = false; # First figure out how to access the options list
           };
+          app = {
+            "alwaysUpdateLinks" = true;
+            "attachmentFolderPath" = "_attachments";
+            "defaultViewMode" = "preview";
+            "newFileFolderPath" = inbox-dir;
+            "newFileLocation" = "folder";
+            "openBehavior" = "";
+            "propertiesInDocument" = "visible";
+            "promptDelete" = false;
+            "showInlineTitle" = false;
+            "spellcheck" = false;
+            "trashOption" = "local";
+            "vimMode" = false;
+            "userIgnoreFilters" = [
+              "_templates/"
+            ];
+          };
+          corePlugins = [
+            # "audio-recorder"
+            {
+              name = "backlink";
+              settings = {
+                "backlinkInDocument" = false;
+              };
+            }
+            "bases"
+            # "bookmarks"
+            "canvas"
+            "command-palette"
+            {
+              name = "daily-notes";
+              settings = {
+                "folder" = daily-dir;
+                "format" = "YYYY-MM-DD-ddd";
+                "template" = "${templates-dir}/daily";
+              };
+            }
+            "editor-status"
+            # "file-explorer" # use notebookNavigator
+            "file-recovery"
+            # "footnotes"
+            # "global-search" # use omnisearch
+            "graph"
+            # "markdown-importer"
+            # "note-composer"
+            "outgoing-link"
+            "outline"
+            # "page-preview"
+            # "properties"
+            # "publish"
+            # "random-note"
+            # "slash-command"
+            # "slides"
+            # "switcher" # use notebookNavigator/omnisearch
+            # "sync"
+            # "tag-pane" # use notebookNavigator
+            {
+              name = "templates";
+              settings = {
+                "folder" = templates-dir;
+                "dateFormat" = "YYYY-MM-DD";
+                "timeFormat" = "HH:mm A";
+              };
+            }
+            # "webviewer"
+            "word-count"
+            # "workspaces"
+            # "zk-prefixer"
+          ];
         };
       };
 
@@ -154,6 +162,12 @@ in
                 ${lib.getExe pkgs.jq} -n \
                   '{ name: "Pywal", version: "1.0.0", author: "Mshnwq" }' \
                   > "$theme_dir/manifest.json"
+              fi
+              style_dir="${obsidian-dir}/$vault/.obsidian/plugins/obsidian-style-settings"
+              if [ -d "$style_dir" ]; then
+                ln -sf \
+                  "${config.xdg.cacheHome}/wal/custom-obsidian-style-settings.json" \
+                  "$style_dir/data.json"
               fi
             done
             # https://github.com/nix-community/home-manager/blob/master/modules/programs/obsidian.nix#L581
@@ -236,6 +250,7 @@ in
       };
       # BUG: Does not work on empty .md file
       # because its an Mimetype: inode/empty
+      # same for jupymd, text/script.python
       xdg.desktopEntries.obsidian-nvim = {
         name = "Neovim Obsidian";
         icon = "nvim";
@@ -261,7 +276,7 @@ in
             vault_dir="$OBSIDIAN_DIR/$vault_name"
             kitty -c $HOME/.config/kitty/kitty-hide.conf -d "$vault_dir" \
               -o font_size=10 -e tmux new -s Obsidian nvim --listen "$SOCKET" "$1" &
-            sleep 1 && tmux rename-window nvim
+            sleep 1 || tmux rename-window nvim
             hyprctl dispatch tagwindow +$vault_name
             hyprctl dispatch layoutmsg swapwithmaster
             hyprctl dispatch layoutmsg mfact exact 0.5525
