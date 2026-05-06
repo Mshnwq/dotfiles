@@ -1,19 +1,20 @@
 # programs/obsidian/plugins.nix
 {
   pkgs,
+  config,
   ...
 }:
 {
   advancedUri =
     let
       version = "1.46.1";
-      mainJs = pkgs.fetchurl {
-        url = "https://github.com/Vinzent03/obsidian-advanced-uri/releases/download/${version}/main.js";
-        hash = "sha256:d10300fb667eb9e93417427fc3ea010f46db020885d29c5decc78735c14ab162";
-      };
       manifestJson = pkgs.fetchurl {
         url = "https://github.com/Vinzent03/obsidian-advanced-uri/releases/download/${version}/manifest.json";
         hash = "sha256:fa12d5488bf1d61b829272b15de72fea27d1f2d6ac854f97ec97a6cc2784c2f1";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/Vinzent03/obsidian-advanced-uri/releases/download/${version}/main.js";
+        hash = "sha256:d10300fb667eb9e93417427fc3ea010f46db020885d29c5decc78735c14ab162";
       };
       pkg = pkgs.stdenvNoCC.mkDerivation {
         pname = "obsidian-advanced-uri";
@@ -22,8 +23,8 @@
         installPhase = ''
           runHook preInstall
           mkdir -p $out
-          cp ${mainJs} $out/main.js
           cp ${manifestJson} $out/manifest.json
+          cp ${mainJs} $out/main.js
           runHook postInstall
         '';
       };
@@ -55,43 +56,46 @@
     let
       version = "2.22.0";
       # https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/tag/2.22.0
-      mainJs = pkgs.fetchurl {
-        url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/main.js";
-        hash = "sha256:8f7d5dc538228020805a255db9615ba2fdb82a9c0e6081f1b37ee7c2750ab37e";
-      };
       manifestJson = pkgs.fetchurl {
         url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/manifest.json";
         hash = "sha256:e4788bd00c9890f62c939d51676ed2eaa392748a738f292d47721df6fe100553";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/main.js";
+        hash = "sha256:8f7d5dc538228020805a255db9615ba2fdb82a9c0e6081f1b37ee7c2750ab37e";
       };
       stylesCss = pkgs.fetchurl {
         url = "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/download/${version}/styles.css";
         hash = "sha256:5581af67d9a8cc133774420c7974d03a7cbcb5ebce209d6e8e0a53e00bde3f00";
       };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-excalidraw-plugin";
+        version = "v${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${stylesCss} $out/styles.css
+          cp ${manifestJson} $out/manifest.json
+          runHook postInstall
+        '';
+      };
     in
-    pkgs.stdenvNoCC.mkDerivation {
-      pname = "obsidian-excalidraw-plugin";
-      version = "v${version}";
-      dontUnpack = true;
-      installPhase = ''
-        runHook preInstall
-        mkdir -p $out
-        cp ${mainJs} $out/main.js
-        cp ${manifestJson} $out/manifest.json
-        cp ${stylesCss} $out/styles.css
-        runHook postInstall
-      '';
+    {
+      inherit pkg;
     };
 
   nodeFactor =
     let
       version = "3.0.0";
-      mainJs = pkgs.fetchurl {
-        url = "https://github.com/CalfMoon/node-factor/releases/download/${version}/main.js";
-        hash = "sha256:d9cacb6d0bb2e0a99a129412e6924e2c7e9fc4bea4351947529863270d8fbb41";
-      };
       manifestJson = pkgs.fetchurl {
         url = "https://github.com/CalfMoon/node-factor/releases/download/${version}/manifest.json";
         hash = "sha256:6b95c3e67c2c72af9a3c8e46b9cceb96158b1ac2932ca6481151f3b9f271a211";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/CalfMoon/node-factor/releases/download/${version}/main.js";
+        hash = "sha256:d9cacb6d0bb2e0a99a129412e6924e2c7e9fc4bea4351947529863270d8fbb41";
       };
       pkg = pkgs.stdenvNoCC.mkDerivation {
         pname = "node-factor";
@@ -121,13 +125,13 @@
   dataView =
     let
       version = "0.5.70";
-      mainJs = pkgs.fetchurl {
-        url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/main.js";
-        hash = "sha256-a7HPcBCvrYMOc1dfyg4r+9MnnFYuPZ0k8tL0UWHrfQA=";
-      };
       manifestJson = pkgs.fetchurl {
         url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/manifest.json";
         hash = "sha256-kjXbRxEtqBuFWRx57LmuJXTl5yIHBW6XZHL5BhYoYYU=";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/main.js";
+        hash = "sha256-a7HPcBCvrYMOc1dfyg4r+9MnnFYuPZ0k8tL0UWHrfQA=";
       };
       stylesCss = pkgs.fetchurl {
         url = "https://github.com/blacksmithgu/obsidian-dataview/releases/download/${version}/styles.css";
@@ -141,8 +145,8 @@
           runHook preInstall
           mkdir -p $out
           cp ${mainJs} $out/main.js
-          cp ${manifestJson} $out/manifest.json
           cp ${stylesCss} $out/styles.css
+          cp ${manifestJson} $out/manifest.json
           runHook postInstall
         '';
       };
@@ -177,560 +181,194 @@
         "dataviewJsKeyword" = "dataviewjs";
       };
     };
-  #
-  # # https://github.com/johansan/notebook-navigator#8-custom-hotkeys
-  # notebookNavigator =
-  #   let
-  #     version = "2.6.3";
-  #     mainJs = pkgs.fetchurl {
-  #       url = "https://github.com/johansan/notebook-navigator/releases/download/${version}/main.js";
-  #       hash = "sha256:efba56b71c3f7f9ede5a0fca871fcdb3ee349ed5911849822049780a36b0989a";
-  #     };
-  #     manifestJson = pkgs.fetchurl {
-  #       url = "https://github.com/johansan/notebook-navigator/releases/download/${version}/manifest.json";
-  #       hash = "sha256:5d2cfb1aed3978f7647eecab037316f38420a7db1e745d6c5012d039edbfbc2b";
-  #     };
-  #     stylesCss = pkgs.fetchurl {
-  #       url = "https://github.com/johansan/notebook-navigator/releases/download/${version}/styles.css";
-  #       hash = "sha256:cfd3528c84126ec694e6115d08ddd6e5d57c5b47c360c9d15c4ddcda13ada7bd";
-  #     };
-  #     pkg = pkgs.stdenvNoCC.mkDerivation {
-  #       pname = "notebook-navigator";
-  #       version = "${version}";
-  #       dontUnpack = true;
-  #       installPhase = ''
-  #         runHook preInstall
-  #         mkdir -p $out
-  #         cp ${mainJs} $out/main.js
-  #         cp ${manifestJson} $out/manifest.json
-  #         cp ${stylesCss} $out/styles.css
-  #         runHook postInstall
-  #       '';
-  #     };
-  #   in
-  #   {
-  #     inherit pkg;
-  #     # settings = {
-  #     #   "vaultProfiles": [
-  #     #     {
-  #     #       "id": "default",
-  #     #       "name": "Default",
-  #     #       "fileVisibility": "documents",
-  #     #       "propertyKeys": [],
-  #     #       "hiddenFolders": [
-  #     #         "_*"
-  #     #       ],
-  #     #       "hiddenTags": [],
-  #     #       "hiddenFileNames": [],
-  #     #       "hiddenFileTags": [],
-  #     #       "hiddenFileProperties": [],
-  #     #       "navigationBanner": null,
-  #     #       "periodicNotesFolder": "",
-  #     #       "shortcuts": [
-  #     #         {
-  #     #           "type": "note",
-  #     #           "path": "obsidian-nvim-guide.md"
-  #     #         }
-  #     #       ],
-  #     #       "navRainbow": {
-  #     #         "mode": "none",
-  #     #         "balanceHueLuminance": true,
-  #     #         "separateThemeColors": false,
-  #     #         "shortcuts": {
-  #     #           "enabled": false,
-  #     #           "firstColor": "#ef4444",
-  #     #           "lastColor": "#8b5cf6",
-  #     #           "darkFirstColor": "#ef4444",
-  #     #           "darkLastColor": "#8b5cf6",
-  #     #           "transitionStyle": "rgb"
-  #     #         },
-  #     #         "recent": {
-  #     #           "enabled": false,
-  #     #           "firstColor": "#ef4444",
-  #     #           "lastColor": "#8b5cf6",
-  #     #           "darkFirstColor": "#ef4444",
-  #     #           "darkLastColor": "#8b5cf6",
-  #     #           "transitionStyle": "rgb"
-  #     #         },
-  #     #         "folders": {
-  #     #           "enabled": true,
-  #     #           "firstColor": "#ef4444",
-  #     #           "lastColor": "#8b5cf6",
-  #     #           "darkFirstColor": "#fb7185",
-  #     #           "darkLastColor": "#c084fc",
-  #     #           "transitionStyle": "hue",
-  #     #           "scope": "root"
-  #     #         },
-  #     #         "tags": {
-  #     #           "enabled": false,
-  #     #           "firstColor": "#ef4444",
-  #     #           "lastColor": "#8b5cf6",
-  #     #           "darkFirstColor": "#fb7185",
-  #     #           "darkLastColor": "#c084fc",
-  #     #           "transitionStyle": "hue",
-  #     #           "scope": "root"
-  #     #         },
-  #     #         "properties": {
-  #     #           "enabled": false,
-  #     #           "firstColor": "#ef4444",
-  #     #           "lastColor": "#8b5cf6",
-  #     #           "darkFirstColor": "#fb7185",
-  #     #           "darkLastColor": "#c084fc",
-  #     #           "transitionStyle": "hue",
-  #     #           "scope": "root"
-  #     #         }
-  #     #       }
-  #     #     }
-  #     #   ],
-  #     #   "vaultProfile": "default",
-  #     #   "vaultTitle": "header",
-  #     #   "syncModes": {
-  #     #     "vaultProfile": "synced",
-  #     #     "homepage": "synced",
-  #     #     "folderSortOrder": "synced",
-  #     #     "tagSortOrder": "synced",
-  #     #     "propertySortOrder": "synced",
-  #     #     "includeDescendantNotes": "synced",
-  #     #     "useFloatingToolbars": "synced",
-  #     #     "dualPane": "synced",
-  #     #     "dualPaneOrientation": "synced",
-  #     #     "paneTransitionDuration": "synced",
-  #     #     "toolbarVisibility": "synced",
-  #     #     "pinNavigationBanner": "synced",
-  #     #     "navIndent": "synced",
-  #     #     "navItemHeight": "synced",
-  #     #     "navItemHeightScaleText": "synced",
-  #     #     "calendarPlacement": "synced",
-  #     #     "calendarLeftPlacement": "synced",
-  #     #     "calendarWeeksToShow": "synced",
-  #     #     "compactItemHeight": "synced",
-  #     #     "compactItemHeightScaleText": "synced",
-  #     #     "featureImageSize": "synced",
-  #     #     "featureImagePixelSize": "synced",
-  #     #     "uiScale": "synced"
-  #     #   },
-  #     #   "createNewNotesInNewTab": false,
-  #     #   "autoRevealActiveFile": true,
-  #     #   "autoRevealShortestPath": true,
-  #     #   "autoRevealIgnoreRightSidebar": true,
-  #     #   "autoRevealIgnoreOtherWindows": true,
-  #     #   "paneTransitionDuration": 150,
-  #     #   "multiSelectModifier": "cmdCtrl",
-  #     #   "enterToOpenFiles": true,
-  #     #   "shiftEnterOpenContext": "split",
-  #     #   "cmdCtrlEnterOpenContext": "tab",
-  #     #   "mouseBackForwardAction": "history",
-  #     #   "startView": "navigation",
-  #     #   "showInfoButtons": true,
-  #     #   "homepage": {
-  #     #     "source": "none",
-  #     #     "file": null,
-  #     #     "createMissingPeriodicNote": true
-  #     #   },
-  #     #   "dualPane": true,
-  #     #   "dualPaneOrientation": "horizontal",
-  #     #   "showTooltips": false,
-  #     #   "showTooltipPath": true,
-  #     #   "desktopBackground": "separate",
-  #     #   "desktopScale": 1.1,
-  #     #   "mobileScale": 1,
-  #     #   "useFloatingToolbars": true,
-  #     #   "toolbarVisibility": {
-  #     #     "navigation": {
-  #     #       "toggleDualPane": false,
-  #     #       "expandCollapse": false,
-  #     #       "calendar": false,
-  #     #       "hiddenItems": false,
-  #     #       "rootReorder": false,
-  #     #       "newFolder": false
-  #     #     },
-  #     #     "list": {
-  #     #       "back": true,
-  #     #       "search": false,
-  #     #       "descendants": true,
-  #     #       "sort": false,
-  #     #       "appearance": true,
-  #     #       "newNote": false
-  #     #     }
-  #     #   },
-  #     #   "interfaceIcons": {},
-  #     #   "colorIconOnly": false,
-  #     #   "dateFormat": "MMM D, YYYY",
-  #     #   "timeFormat": "h:mm a",
-  #     #   "calendarTemplateFolder": "",
-  #     #   "confirmBeforeDelete": true,
-  #     #   "deleteAttachments": "ask",
-  #     #   "moveFileConflicts": "ask",
-  #     #   "externalIconProviders": {},
-  #     #   "checkForUpdatesOnStart": true,
-  #     #   "pinNavigationBanner": false,
-  #     #   "showNoteCount": true,
-  #     #   "separateNoteCounts": false,
-  #     #   "showIndentGuides": true,
-  #     #   "rootLevelSpacing": 0,
-  #     #   "navIndent": 10,
-  #     #   "navItemHeight": 28,
-  #     #   "navItemHeightScaleText": false,
-  #     #   "collapseBehavior": "all",
-  #     #   "smartCollapse": true,
-  #     #   "autoSelectFirstFileOnFocusChange": false,
-  #     #   "autoExpandNavItems": true,
-  #     #   "springLoadedFolders": true,
-  #     #   "springLoadedFoldersInitialDelay": 0.5,
-  #     #   "springLoadedFoldersSubsequentDelay": 0.5,
-  #     #   "showSectionIcons": true,
-  #     #   "showShortcuts": true,
-  #     #   "shortcutBadgeDisplay": "index",
-  #     #   "skipAutoScroll": false,
-  #     #   "showRecentNotes": true,
-  #     #   "hideRecentNotes": "none",
-  #     #   "pinRecentNotesWithShortcuts": false,
-  #     #   "recentNotesCount": 5,
-  #     #   "showFolderIcons": true,
-  #     #   "showRootFolder": true,
-  #     #   "inheritFolderColors": true,
-  #     #   "folderSortOrder": "alpha-asc",
-  #     #   "enableFolderNotes": false,
-  #     #   "folderNoteType": "markdown",
-  #     #   "folderNoteName": "",
-  #     #   "folderNoteNamePattern": "",
-  #     #   "folderNoteTemplate": null,
-  #     #   "enableFolderNoteLinks": true,
-  #     #   "hideFolderNoteInList": true,
-  #     #   "pinCreatedFolderNote": false,
-  #     #   "openFolderNotesInNewTab": false,
-  #     #   "showTags": true,
-  #     #   "showTagIcons": true,
-  #     #   "showAllTagsFolder": true,
-  #     #   "showUntagged": true,
-  #     #   "scopeTagsToCurrentContext": false,
-  #     #   "tagSortOrder": "alpha-asc",
-  #     #   "inheritTagColors": true,
-  #     #   "keepEmptyTagsProperty": false,
-  #     #   "showProperties": true,
-  #     #   "showPropertyIcons": true,
-  #     #   "inheritPropertyColors": true,
-  #     #   "propertySortOrder": "alpha-asc",
-  #     #   "showAllPropertiesFolder": true,
-  #     #   "scopePropertiesToCurrentContext": false,
-  #     #   "defaultListMode": "standard",
-  #     #   "includeDescendantNotes": true,
-  #     #   "defaultFolderSort": "modified-desc",
-  #     #   "propertySortKey": "",
-  #     #   "propertySortSecondary": "title",
-  #     #   "revealFileOnListChanges": true,
-  #     #   "listPaneTitle": "header",
-  #     #   "noteGrouping": "date",
-  #     #   "showSelectedNavigationPills": false,
-  #     #   "filterPinnedByFolder": false,
-  #     #   "showPinnedGroupHeader": true,
-  #     #   "showPinnedIcon": true,
-  #     #   "optimizeNoteHeight": true,
-  #     #   "compactItemHeight": 28,
-  #     #   "compactItemHeightScaleText": true,
-  #     #   "showQuickActions": false,
-  #     #   "quickActionRevealInFolder": false,
-  #     #   "quickActionAddTag": true,
-  #     #   "quickActionAddToShortcuts": false,
-  #     #   "quickActionPinNote": false,
-  #     #   "quickActionOpenInNewTab": false,
-  #     #   "useFrontmatterMetadata": false,
-  #     #   "frontmatterIconField": "icon",
-  #     #   "frontmatterColorField": "color",
-  #     #   "frontmatterBackgroundField": "background",
-  #     #   "frontmatterNameField": "",
-  #     #   "frontmatterCreatedField": "",
-  #     #   "frontmatterModifiedField": "",
-  #     #   "frontmatterDateFormat": "",
-  #     #   "showFileIconUnfinishedTask": false,
-  #     #   "showFileBackgroundUnfinishedTask": false,
-  #     #   "unfinishedTaskBackgroundColor": "#ef000050",
-  #     #   "showFileIcons": false,
-  #     #   "showFilenameMatchIcons": false,
-  #     #   "fileNameIconMap": {},
-  #     #   "showCategoryIcons": false,
-  #     #   "fileTypeIconMap": {},
-  #     #   "fileNameRows": 1,
-  #     #   "showFilePreview": true,
-  #     #   "skipHeadingsInPreview": true,
-  #     #   "skipCodeBlocksInPreview": true,
-  #     #   "stripHtmlInPreview": true,
-  #     #   "stripLatexInPreview": true,
-  #     #   "previewRows": 1,
-  #     #   "previewProperties": [],
-  #     #   "previewPropertiesFallback": true,
-  #     #   "showFeatureImage": false,
-  #     #   "featureImageProperties": [],
-  #     #   "featureImageExcludeProperties": [],
-  #     #   "featureImageSize": "64",
-  #     #   "featureImagePixelSize": "256",
-  #     #   "forceSquareFeatureImage": true,
-  #     #   "downloadExternalFeatureImages": true,
-  #     #   "showFileTags": true,
-  #     #   "colorFileTags": true,
-  #     #   "prioritizeColoredFileTags": true,
-  #     #   "showFileTagAncestors": false,
-  #     #   "showFileTagsInCompactMode": false,
-  #     #   "showFileProperties": true,
-  #     #   "colorFileProperties": true,
-  #     #   "prioritizeColoredFileProperties": true,
-  #     #   "showFilePropertiesInCompactMode": false,
-  #     #   "showPropertiesOnSeparateRows": false,
-  #     #   "enablePropertyInternalLinks": true,
-  #     #   "enablePropertyExternalLinks": true,
-  #     #   "notePropertyType": "none",
-  #     #   "showFileDate": false,
-  #     #   "alphabeticalDateMode": "modified",
-  #     #   "showParentFolder": false,
-  #     #   "parentFolderClickRevealsFile": false,
-  #     #   "showParentFolderColor": false,
-  #     #   "showParentFolderIcon": false,
-  #     #   "calendarEnabled": true,
-  #     #   "calendarPlacement": "right-sidebar",
-  #     #   "calendarConfirmBeforeCreate": true,
-  #     #   "calendarLocale": "system-default",
-  #     #   "calendarWeekendDays": "fri-sat",
-  #     #   "calendarMonthHeadingFormat": "full",
-  #     #   "calendarHighlightToday": true,
-  #     #   "calendarShowFeatureImage": false,
-  #     #   "calendarMonthHighlights": {},
-  #     #   "calendarShowWeekNumber": false,
-  #     #   "calendarShowQuarter": false,
-  #     #   "calendarShowYearCalendar": false,
-  #     #   "calendarLeftPlacement": "below",
-  #     #   "calendarWeeksToShow": 1,
-  #     #   "calendarIntegrationMode": "daily-notes",
-  #     #   "calendarCustomFilePattern": "YYYY/YYYYMMDD",
-  #     #   "calendarCustomWeekPattern": "gggg/[W]ww",
-  #     #   "calendarCustomMonthPattern": "YYYY/YYYYMM",
-  #     #   "calendarCustomQuarterPattern": "YYYY/[Q]Q",
-  #     #   "calendarCustomYearPattern": "YYYY",
-  #     #   "calendarCustomFileTemplate": null,
-  #     #   "calendarCustomWeekTemplate": null,
-  #     #   "calendarCustomMonthTemplate": null,
-  #     #   "calendarCustomQuarterTemplate": null,
-  #     #   "calendarCustomYearTemplate": null,
-  #     #   "keyboardShortcuts": {
-  #     #     "pane:move-up": [
-  #     #       {
-  #     #         "key": "ArrowUp",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "pane:move-down": [
-  #     #       {
-  #     #         "key": "ArrowDown",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "pane:page-up": [
-  #     #       {
-  #     #         "key": "PageUp",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "pane:page-down": [
-  #     #       {
-  #     #         "key": "PageDown",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "pane:home": [
-  #     #       {
-  #     #         "key": "Home",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "pane:end": [
-  #     #       {
-  #     #         "key": "End",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "navigation:collapse-or-parent": [
-  #     #       {
-  #     #         "key": "ArrowLeft",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "navigation:expand-or-focus-list": [
-  #     #       {
-  #     #         "key": "ArrowRight",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "navigation:focus-list": [
-  #     #       {
-  #     #         "key": "Tab",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "pane:delete-selected": [
-  #     #       {
-  #     #         "key": "Delete",
-  #     #         "modifiers": []
-  #     #       },
-  #     #       {
-  #     #         "key": "Backspace",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "list:focus-navigation": [
-  #     #       {
-  #     #         "key": "ArrowLeft",
-  #     #         "modifiers": []
-  #     #       },
-  #     #       {
-  #     #         "key": "Tab",
-  #     #         "modifiers": [
-  #     #           "Shift"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "list:focus-editor": [
-  #     #       {
-  #     #         "key": "ArrowRight",
-  #     #         "modifiers": []
-  #     #       },
-  #     #       {
-  #     #         "key": "Tab",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "list:select-all": [
-  #     #       {
-  #     #         "key": "A",
-  #     #         "modifiers": [
-  #     #           "Mod"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "list:extend-selection-up": [
-  #     #       {
-  #     #         "key": "ArrowUp",
-  #     #         "modifiers": [
-  #     #           "Shift"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "list:extend-selection-down": [
-  #     #       {
-  #     #         "key": "ArrowDown",
-  #     #         "modifiers": [
-  #     #           "Shift"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "list:range-to-start": [
-  #     #       {
-  #     #         "key": "Home",
-  #     #         "modifiers": [
-  #     #           "Shift"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "list:range-to-end": [
-  #     #       {
-  #     #         "key": "End",
-  #     #         "modifiers": [
-  #     #           "Shift"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "search:focus-list": [
-  #     #       {
-  #     #         "key": "Tab",
-  #     #         "modifiers": []
-  #     #       },
-  #     #       {
-  #     #         "key": "Enter",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ],
-  #     #     "search:focus-navigation": [
-  #     #       {
-  #     #         "key": "Tab",
-  #     #         "modifiers": [
-  #     #           "Shift"
-  #     #         ]
-  #     #       }
-  #     #     ],
-  #     #     "search:close": [
-  #     #       {
-  #     #         "key": "Escape",
-  #     #         "modifiers": []
-  #     #       }
-  #     #     ]
-  #     #   },
-  #     #   "customVaultName": "",
-  #     #   "pinnedNotes": {},
-  #     #   "fileIcons": {},
-  #     #   "fileColors": {},
-  #     #   "fileBackgroundColors": {},
-  #     #   "folderIcons": {},
-  #     #   "folderColors": {},
-  #     #   "folderBackgroundColors": {},
-  #     #   "folderSortOverrides": {},
-  #     #   "folderTreeSortOverrides": {},
-  #     #   "folderAppearances": {
-  #     #     "3_Indexes/Dates": {
-  #     #       "previewRows": 1
-  #     #     }
-  #     #   },
-  #     #   "tagIcons": {},
-  #     #   "tagColors": {},
-  #     #   "tagBackgroundColors": {},
-  #     #   "tagSortOverrides": {},
-  #     #   "tagTreeSortOverrides": {},
-  #     #   "tagAppearances": {},
-  #     #   "propertyIcons": {},
-  #     #   "propertyColors": {},
-  #     #   "propertyBackgroundColors": {},
-  #     #   "propertySortOverrides": {},
-  #     #   "propertyTreeSortOverrides": {},
-  #     #   "propertyAppearances": {},
-  #     #   "virtualFolderColors": {},
-  #     #   "virtualFolderBackgroundColors": {},
-  #     #   "navigationSeparators": {},
-  #     #   "userColors": [
-  #     #     "#ffffff",
-  #     #     "#d9d9d9",
-  #     #     "#a6a6a6",
-  #     #     "#737373",
-  #     #     "#000000",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040",
-  #     #     "#404040"
-  #     #   ],
-  #     #   "lastShownVersion": "2.6.2",
-  #     #   "rootFolderOrder": [],
-  #     #   "rootTagOrder": [],
-  #     #   "rootPropertyOrder": []
-  #     # };
-  #   };
+
+  # https://github.com/johansan/notebook-navigator#8-custom-hotkeys
+  notebookNavigator =
+    let
+      version = "2.6.3";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/johansan/notebook-navigator/releases/download/${version}/manifest.json";
+        hash = "sha256:5d2cfb1aed3978f7647eecab037316f38420a7db1e745d6c5012d039edbfbc2b";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/johansan/notebook-navigator/releases/download/${version}/main.js";
+        hash = "sha256:efba56b71c3f7f9ede5a0fca871fcdb3ee349ed5911849822049780a36b0989a";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/johansan/notebook-navigator/releases/download/${version}/styles.css";
+        hash = "sha256:cfd3528c84126ec694e6115d08ddd6e5d57c5b47c360c9d15c4ddcda13ada7bd";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "notebook-navigator";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${stylesCss} $out/styles.css
+          cp ${manifestJson} $out/manifest.json
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      # settings = builtins.fromJSON (builtins.readFile ./notebookNavigator.json);
+    };
+
+  styleSettings =
+    let
+      version = "1.0.9";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/obsidian-community/obsidian-style-settings/releases/download/${version}/manifest.json";
+        hash = "sha256-nP/cIM8qoTVIIOAFC2lLD5tXZEbj1dRKNq6LAYflv7g=";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/obsidian-community/obsidian-style-settings/releases/download/${version}/main.js";
+        hash = "sha256-GCirqs2rTFV4twWmJcWFswUS+O+tTHz8WhjnDMNVdGg=";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/obsidian-community/obsidian-style-settings/releases/download/${version}/styles.css";
+        hash = "sha256-7nk30r5QZTqJzLMK5fBXKyNQfVt/EyjQBScaNjB1v9g=";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-style-settings";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${stylesCss} $out/styles.css
+          cp ${manifestJson} $out/manifest.json
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+    };
+
+  # https://aitorllamas.com/obsidian-lovely-bases/
+  lovelyBases =
+    let
+      version = "0.2.2";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/manifest.json";
+        hash = "sha256:1c39e53a9e01f2c4fa8da250b592b8569de24ccec47bfcc6964b361fff1e4a2d";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/main.js";
+        hash = "sha256:f512b3279ad1344d90956380a287e546bd22cdd2a7c386e26a7dd53805b578ec";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/aitorllj93/obsidian-lovely-bases/releases/download/${version}/styles.css";
+        hash = "sha256:b5075812a991be0816f773c37f049943b08296a08ffadf43afc090b4d9f6dcdb";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-lovely-bases";
+        version = "v${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${stylesCss} $out/styles.css
+          cp ${manifestJson} $out/manifest.json
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+    };
+
+  omnisearch =
+    let
+      version = "1.28.2";
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/scambier/obsidian-omnisearch/releases/download/${version}/main.js";
+        hash = "sha256:787e80d61a7f482ae4a69940c8e34f972f9eb264c5c69dd83c50ddde9458a958";
+      };
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/scambier/obsidian-omnisearch/releases/download/${version}/manifest.json";
+        hash = "sha256:9f741ed48b1017efc73e67fc7cd113e910cb35daf3e6b996e8ba0215c5546dae";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/scambier/obsidian-omnisearch/releases/download/${version}/styles.css";
+        hash = "sha256:b70b786c51a899e376fb936954f655908709fe3cb746d98f1ba1f5171852ae2b";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-omnisearch";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      settings = {
+        "useCache" = true;
+        "hideExcluded" = true;
+        "recencyBoost" = "0";
+        "downrankedFoldersFilters" = [ ];
+        "ignoreDiacritics" = true;
+        "ignoreArabicDiacritics" = false;
+        "indexedFileTypes" = [ ];
+        "displayTitle" = "";
+        "PDFIndexing" = false;
+        "officeIndexing" = false;
+        "imagesIndexing" = false;
+        "aiImageIndexing" = false;
+        "unsupportedFilesIndexing" = "default";
+        "splitCamelCase" = false;
+        "openInNewPane" = false;
+        "vimLikeNavigationShortcut" = false;
+        "ribbonIcon" = true;
+        "showExcerpt" = true;
+        "maxEmbeds" = 5;
+        "renderLineReturnInExcerpts" = true;
+        "showCreateButton" = false;
+        "highlight" = true;
+        "showPreviousQueryResults" = true;
+        "simpleSearch" = false;
+        "tokenizeUrls" = false;
+        "fuzziness" = "1";
+        "weightBasename" = 10;
+        "weightDirectory" = 7;
+        "weightH1" = 6;
+        "weightH2" = 5;
+        "weightH3" = 4;
+        "weightUnmarkedTags" = 2;
+        "weightCustomProperties" = [ ];
+        "httpApiEnabled" = false;
+        "httpApiPort" = "51361";
+        "httpApiNotice" = true;
+        "welcomeMessage" = "1.21.0";
+        "verboseLogging" = false;
+        "DANGER_httpHost" = null;
+        "DANGER_forceSaveCache" = false;
+      };
+    };
 
   calendar =
     let
       version = "1.5.10";
-      mainJs = pkgs.fetchurl {
-        url = "https://github.com/liamcain/obsidian-calendar-plugin/releases/download/${version}/main.js";
-        hash = "sha256-f7M56c+f2+WoAforirhbNmtbN3f70ZPLyHKLwncR0SU=";
-      };
       manifestJson = pkgs.fetchurl {
         url = "https://github.com/liamcain/obsidian-calendar-plugin/releases/download/${version}/manifest.json";
         hash = "sha256-8+lYEzhkhRK6oS1bRYSQ9/02eRj3vba9hhcc5Xvn0Is=";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/liamcain/obsidian-calendar-plugin/releases/download/${version}/main.js";
+        hash = "sha256-f7M56c+f2+WoAforirhbNmtbN3f70ZPLyHKLwncR0SU=";
       };
       pkg = pkgs.stdenvNoCC.mkDerivation {
         pname = "obsidian-calendar-plugin";
@@ -758,4 +396,167 @@
         "localeOverride" = "system-default";
       };
     };
-}
+
+  metaBind =
+    let
+      version = "1.4.9";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/mProjectsCode/obsidian-meta-bind-plugin/releases/download/${version}/manifest.json";
+        hash = "sha256:d6a43929b67dcf62e6daa94560c527680646afa69aa96c21b8b03e44e0854a1e";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/mProjectsCode/obsidian-meta-bind-plugin/releases/download/${version}/main.js";
+        hash = "sha256:99f60f4db8295fedc4b7014f2d341027500f43294b810b1a9cd00cecbb79821f";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/mProjectsCode/obsidian-meta-bind-plugin/releases/download/${version}/styles.css";
+        hash = "sha256:02bdee47f0e9173e52df663f92730d2cd26892ab510b572ce6d65503f6427f17";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-meta-bind-plugin";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+#     };
+#
+#   shikiHighlighter =
+#     let
+#       version = "0.7.7";
+#       manifestJson = pkgs.fetchurl {
+#         url = "https://github.com/mProjectsCode/obsidian-shiki-plugin/releases/download/${version}/manifest.json";
+#         hash = "sha256:be23d7efe11afcd12f929b9c741c98b3ef335937cfcba1f762b43de6c77fd791";
+#       };
+#       mainJs = pkgs.fetchurl {
+#         url = "https://github.com/mProjectsCode/obsidian-shiki-plugin/releases/download/${version}/main.js";
+#         hash = "sha256:b82bfad0caa11b91abb9014c347b4a9faef9575bd63d75b129bb027aab5e60c0";
+#       };
+#       stylesCss = pkgs.fetchurl {
+#         url = "https://github.com/mProjectsCode/obsidian-shiki-plugin/releases/download/${version}/styles.css";
+#         hash = "sha256:ccac7b68b996db9d53264cb789688579b142b4725142210af54f311e9b665525";
+#       };
+#       pkg = pkgs.stdenvNoCC.mkDerivation {
+#         pname = "obsidian-shiki-plugin";
+#         version = "${version}";
+#         dontUnpack = true;
+#         installPhase = ''
+#           runHook preInstall
+#           mkdir -p $out
+#           cp ${mainJs} $out/main.js
+#           cp ${manifestJson} $out/manifest.json
+#           cp ${stylesCss} $out/styles.css
+#           runHook postInstall
+#         '';
+#       };
+#     in
+#     {
+#       inherit pkg;
+#       settings = {
+#         "disabledLanguages" = [ ];
+#         "customThemeFolder" = "";
+#         "customLanguageFolder" = "";
+#         "darkTheme" = "obsidian-theme";
+#         "lightTheme" = "obsidian-theme";
+#         "preferThemeColors" = true;
+#         "inlineHighlighting" = true;
+#         "ecDefaultShowLineNumbers" = false;
+#         "ecDefaultWrap" = false;
+#         "ecDefaultFrame" = "none";
+#       };
+#     };
+#
+#   # collapsibleCodeBlocks =
+#   #   let
+#   #     version = "1.0.6";
+#   #     manifestJson = pkgs.fetchurl {
+#   #       url = "https://github.com/bwya77/collapsible-code-blocks/releases/download/${version}/manifest.json";
+#   #       hash = "sha256:59d21a58fe00d01a153b76d6639cf1bc572115be980a381634441ead105ea68c";
+#   #     };
+#   #     mainJs = pkgs.fetchurl {
+#   #       url = "https://github.com/bwya77/collapsible-code-blocks/releases/download/${version}/main.js";
+#   #       hash = "sha256:aab7dfc6b589d3006178bd603c70169b8396dc28abf3d643e4daffd64c522933";
+#   #     };
+#   #     stylesCss = pkgs.fetchurl {
+#   #       url = "https://github.com/bwya77/collapsible-code-blocks/releases/download/${version}/styles.css";
+#   #       hash = "sha256:4f2de342f0d79b67138c1827ec24939588542c76ddddc6340566452ba6a7383f";
+#   #     };
+#   #     pkg = pkgs.stdenvNoCC.mkDerivation {
+#   #       pname = "collapsible-code-blocks";
+#   #       version = "${version}";
+#   #       dontUnpack = true;
+#   #       installPhase = ''
+#   #         runHook preInstall
+#   #         mkdir -p $out
+#   #         cp ${mainJs} $out/main.js
+#   #         cp ${manifestJson} $out/manifest.json
+#   #         cp ${stylesCss} $out/styles.css
+#   #         runHook postInstall
+#   #       '';
+#   #     };
+#   #   in
+#   #   {
+#   #     inherit pkg;
+#   #     settings = {
+#   #       "defaultCollapsed" = false;
+#   #       "collapseIcon" = ">";
+#   #       "expandIcon" = "<";
+#   #       "enableHorizontalScroll" = true;
+#   #       # have first line be context and highlight it with ```lang {1}
+#   #       "collapsedLines" = 1;
+#   #       "buttonAlignment" = "left";
+#   #       "transparentButton" = false;
+#   #     };
+#   #   };
+#   #
+# #   jupymd =
+# #     let
+# #       version = "1.7.0";
+# #       manifestJson = pkgs.fetchurl {
+# #         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/manifest.json";
+# #         hash = "sha256:3a324148fb4b9e6b9e6a2dcfb02ae309fb213f21dfcbab392df2dd656a22a21f";
+# #       };
+# #       mainJs = pkgs.fetchurl {
+# #         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/main.js";
+# #         hash = "sha256:61b8a581fb34e836dc76607ad92f19ad73e272a5d82209b78c10a8df8da72b86";
+# #       };
+# #       stylesCss = pkgs.fetchurl {
+# #         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/styles.css";
+# #         hash = "sha256:d7c82ed859ee3233d057dda47be29841729f52c49761a3543e477751029ab80d";
+# #       };
+# #       pkg = pkgs.stdenvNoCC.mkDerivation {
+# #         pname = "jupymd";
+# #         version = "${version}";
+# #         dontUnpack = true;
+# #         installPhase = ''
+# #           runHook preInstall
+# #           mkdir -p $out
+# #           cp ${mainJs} $out/main.js
+# #           cp ${manifestJson} $out/manifest.json
+# #           cp ${stylesCss} $out/styles.css
+# #           runHook postInstall
+# #         '';
+# #       };
+# #     in
+# #     {
+# #       inherit pkg;
+# #       settings = {
+# #         "autoSync" = false;
+# #         "bidirectionalSync" = false;
+# #         "autoConvertToNotebookOnRun" = true;
+# #         "pythonInterpreter" =
+# #           "/home/${config.home.username}/Documents/Obsidian/jupython";
+# #         "notebookEditorCommand" = "jupyter-lab";
+# #         "enableCodeBlocks" = true; # uses prismjs instead expressive-code
+# #       };
+# #     };
+# # }
