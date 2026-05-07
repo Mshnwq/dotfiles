@@ -75,15 +75,15 @@ in
       devenv
       default
       firefox
-      discord.stable
+      # discord.stable
       keyboard.vial
       keyboard.kmonad
       # TODO: get mischa ai cli and claude code ??
       obsidian
       {
+        nvim.enable = true;
         syncthing.enable = true;
         which-key.enable = true;
-        nvim.enable = true;
       }
       zsh
       {
