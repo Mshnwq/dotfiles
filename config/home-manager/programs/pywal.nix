@@ -6,7 +6,8 @@
   ...
 }:
 let
-  data = config.xdg.dataHome;
+  share = config.xdg.dataHome;
+  state = config.xdg.stateHome;
   cfg = config.xdg.configHome;
   cache = config.xdg.cacheHome;
 
@@ -46,8 +47,10 @@ in
       papirus-folders # cli tool
       highlight # from /overlays/;
       kdePackages.qtstyleplugin-kvantum
+      noto-fonts # has the ancient texts
     ]
     ++ (with pkgs.nerd-fonts; [
+      noto
       fira-code
       fira-mono
       roboto-mono
@@ -121,8 +124,8 @@ in
         ln -sf "${cache}/wal/Plasma/Pywal" "${cfg}/Kvantum/Pywal"
         ln -sf "${cache}/wal/Plasma/PywalNT" "${cfg}/Kvantum/PywalNT"
 
-        mkdir -p "${data}/color-schemes"
-        ln -sf "${cache}/wal/Plasma/color-scheme.colors" "${data}/color-schemes/Pywal.colors"
+        mkdir -p "${share}/color-schemes"
+        ln -sf "${cache}/wal/Plasma/color-scheme.colors" "${share}/color-schemes/Pywal.colors"
         kvantum_file="${cfg}/Kvantum/kvantum.kvconfig"
         if [ ! -f "$kvantum_file" ]; then
           echo -e "[General]\ntheme=Pywal\n\n[Applications]\nPywalNT=gwenview, systemsettings" > "$kvantum_file"
@@ -139,9 +142,9 @@ in
           ${pkgs.git}/bin/git clone https://github.com/mshnwq/cursors $BUILDDIR/cursors
         fi
         mkdir -p "$BUILDDIR/cursors/dist"
-        mkdir -p "${data}/icons"
+        mkdir -p "${share}/icons"
         ln -sf "$BUILDDIR/cursors/dist/catppuccin-mocha-pywal-cursors" \
-            "${config.xdg.dataHome}/icons/catppuccin-mocha-pywal-cursors"
+            "${share}/icons/catppuccin-mocha-pywal-cursors"
         mkdir -p "${cache}/wal/cursors"
 
         mkdir -p "${cfg}/keepassxc"
@@ -175,6 +178,11 @@ in
           "$BUILDDIR/qbittorrent/src/catppuccin-pywal"
         ln -sf "${cache}/wal/qbit/icons/pywal" \
           "$BUILDDIR/qbittorrent/src/icons/pywal"
+
+        FONTS_DIR="$HOME/.local/share/fonts"
+        if [ ! -d "$FONTS_DIR" ]; then
+          ln -sf "${state}/nix/profile/share/fonts" "$FONTS_DIR"
+        fi
 
         ICONS_DIR="$HOME/.local/share/icons"
         if [ ! -d "$ICONS_DIR/Papirus" ]; then
