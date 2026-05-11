@@ -518,23 +518,23 @@
 #       };
 #     };
 
-  jupymd =
+  metadataHider =
     let
-      version = "1.7.0";
+      version = "1.0.2";
       manifestJson = pkgs.fetchurl {
-        url = "https://github.com/d-eniz/jupymd/releases/download/${version}/manifest.json";
-        hash = "sha256:3a324148fb4b9e6b9e6a2dcfb02ae309fb213f21dfcbab392df2dd656a22a21f";
+        url = "https://github.com/Benature/obsidian-metadata-hider/releases/download/${version}/manifest.json";
+        hash = "sha256-4DR4T1rYU7ubVEJiPPC8OsiC2Waqe4zceJdt8lMV9vs=";
       };
       mainJs = pkgs.fetchurl {
-        url = "https://github.com/d-eniz/jupymd/releases/download/${version}/main.js";
-        hash = "sha256:61b8a581fb34e836dc76607ad92f19ad73e272a5d82209b78c10a8df8da72b86";
+        url = "https://github.com/Benature/obsidian-metadata-hider/releases/download/${version}/main.js";
+        hash = "sha256-j/6ZBAl/8a7sWlYmOjQ95YgMI4jqCZVehg2+ErrWm3g=";
       };
       stylesCss = pkgs.fetchurl {
-        url = "https://github.com/d-eniz/jupymd/releases/download/${version}/styles.css";
-        hash = "sha256:d7c82ed859ee3233d057dda47be29841729f52c49761a3543e477751029ab80d";
+        url = "https://github.com/Benature/obsidian-metadata-hider/releases/download/${version}/styles.css";
+        hash = "sha256-utJZCbaByOorMcOjAkw9t7Yd7XW0bcUdlcykJ0JdouM=";
       };
       pkg = pkgs.stdenvNoCC.mkDerivation {
-        pname = "jupymd";
+        pname = "obsidian-metadata-hider";
         version = "${version}";
         dontUnpack = true;
         installPhase = ''
@@ -550,13 +550,90 @@
     {
       inherit pkg;
       settings = {
-        "autoSync" = false;
-        "bidirectionalSync" = false;
-        "autoConvertToNotebookOnRun" = true;
-        "pythonInterpreter" =
-          "/home/${config.home.username}/Documents/Obsidian/jupython";
-        "notebookEditorCommand" = "jupyter-lab";
-        "enableCodeBlocks" = true; # uses prismjs instead expressive-code
+        "autoFold" = true;
+        "hideEmptyEntry" = true;
+        "hideEmptyEntryInSideDock" = false;
+        "propertiesVisible" = "";
+        "propertyHideAll" = "hide";
+        "entries" = [ ];
       };
     };
-}
+
+  # frontmatterViewmode =
+  #   let
+  #     version = "1.0.3";
+  #     manifestJson = pkgs.fetchurl {
+  #       url = "https://github.com/yunidev-uk/obsidian-frontmatter-viewmode/releases/download/${version}/manifest.json";
+  #       hash = "sha256-bzBc2K13Cg4vlkkFRzX8FFiMKtdi9blRvpdv5NPsTxM=";
+  #     };
+  #     mainJs = pkgs.fetchurl {
+  #       url = "https://github.com/yunidev-uk/obsidian-frontmatter-viewmode/releases/download/${version}/main.js";
+  #       hash = "sha256-jW8uiXOVs2t48Vhd1VVBT1g7p0tpvkhPn8czZci8ROo=";
+  #     };
+  #     pkg = pkgs.stdenvNoCC.mkDerivation {
+  #       pname = "obsidian-frontmatter-viewmode";
+  #       version = "${version}";
+  #       dontUnpack = true;
+  #       installPhase = ''
+  #         runHook preInstall
+  #         mkdir -p $out
+  #         cp ${mainJs} $out/main.js
+  #         cp ${manifestJson} $out/manifest.json
+  #         runHook postInstall
+  #       '';
+  #     };
+  #   in
+  #   {
+  #     inherit pkg;
+  #     settings = {
+  #       "autoFold" = true;
+  #       "hideEmptyEntry" = true;
+  #       "hideEmptyEntryInSideDock" = false;
+  #       "propertiesVisible" = "";
+  #       "propertyHideAll" = "hide";
+  #       "entries" = [ ];
+  #     };
+  #   };
+#
+#   jupymd =
+#     let
+#       version = "1.7.0";
+#       manifestJson = pkgs.fetchurl {
+#         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/manifest.json";
+#         hash = "sha256:3a324148fb4b9e6b9e6a2dcfb02ae309fb213f21dfcbab392df2dd656a22a21f";
+#       };
+#       mainJs = pkgs.fetchurl {
+#         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/main.js";
+#         hash = "sha256:61b8a581fb34e836dc76607ad92f19ad73e272a5d82209b78c10a8df8da72b86";
+#       };
+#       stylesCss = pkgs.fetchurl {
+#         url = "https://github.com/d-eniz/jupymd/releases/download/${version}/styles.css";
+#         hash = "sha256:d7c82ed859ee3233d057dda47be29841729f52c49761a3543e477751029ab80d";
+#       };
+#       pkg = pkgs.stdenvNoCC.mkDerivation {
+#         pname = "jupymd";
+#         version = "${version}";
+#         dontUnpack = true;
+#         installPhase = ''
+#           runHook preInstall
+#           mkdir -p $out
+#           cp ${mainJs} $out/main.js
+#           cp ${manifestJson} $out/manifest.json
+#           cp ${stylesCss} $out/styles.css
+#           runHook postInstall
+#         '';
+#       };
+#     in
+#     {
+#       inherit pkg;
+#       settings = {
+#         "autoSync" = false;
+#         "bidirectionalSync" = false;
+#         "autoConvertToNotebookOnRun" = true;
+#         "pythonInterpreter" =
+#           "/home/${config.home.username}/Documents/Obsidian/jupython";
+#         "notebookEditorCommand" = "jupyter-lab";
+#         "enableCodeBlocks" = true; # uses prismjs instead expressive-code
+#       };
+#     };
+# }
