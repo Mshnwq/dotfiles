@@ -59,9 +59,11 @@ in
         defaultSettings = {
           communityPlugins = with plugins; [
             collapsibleCodeBlocks
+            frontmatterViewmode
             notebookNavigator
             shikiHighlighter
             styleSettings
+            metadataHider
             lovelyBases
             advancedUri
             # excalidraw
@@ -250,7 +252,6 @@ in
       };
       # BUG: Does not work on empty .md file
       # because its an Mimetype: inode/empty
-      # same for jupymd, text/script.python
       xdg.desktopEntries.obsidian-nvim = {
         name = "Neovim Obsidian";
         icon = "nvim";
@@ -259,6 +260,7 @@ in
         type = "Application";
         categories = [ "TextEditor" ];
         mimeType = [
+          "text/x-script.python"
           "text/markdown"
           "text/plain"
         ];
@@ -276,10 +278,14 @@ in
             vault_dir="$OBSIDIAN_DIR/$vault_name"
             kitty -c $HOME/.config/kitty/kitty-hide.conf -d "$vault_dir" \
               -o font_size=10 -e tmux new -s Obsidian nvim --listen "$SOCKET" "$1" &
-            sleep 1 || tmux rename-window nvim
+            # sleep 1 || tmux rename-window nvim
+            sleep 1
             hyprctl dispatch tagwindow +$vault_name
             hyprctl dispatch layoutmsg swapwithmaster
             hyprctl dispatch layoutmsg mfact exact 0.5525
+            sleep 0.4
+            _send ':lua require("lazy").load({ plugins = "obsidian.nvim" })<CR>'
+            sleep 0.4
             _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
             _send ':lua require("nvchad.utils").reload()<CR>'
             _send ':lua require("render-markdown").toggle()<CR>'
