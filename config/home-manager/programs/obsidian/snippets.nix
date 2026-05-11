@@ -3,7 +3,8 @@
   pkgs,
   ...
 }:
-# TODO: snippet the callout colors
+# TODO: Add CyanVoxel Habit Tracker snippets,
+# and use the cssclasses: [] frontmatter with them.
 # also Ctrl + Shift + i | to use console and manually modify
 [
   {
@@ -97,6 +98,35 @@
       }
     '';
   }
+  {
+    name = "mermaid-theme";
+    enable = true;
+    text = ''
+      .mermaid svg .node rect {
+        fill: color-mix(in srgb, var(--color-red) 25%, transparent) !important;
+        stroke: color-mix(in srgb, var(--background-primary) 25%, transparent) !important;
+      }
+    '';
+  }
+  # # https://briannalaird.com/content/blog-posts/2025-06-17-making-callouts-obsidian.html
+  # {
+  #   name = "callout-theme";
+  #   enable = true;
+  #   text = ''
+  #     .callout[data-callout^="important"],
+  #     .callout[data-callout^="bug"],
+  #     .callout[data-callout^="tip"],
+  #     .callout[data-callout^="faq"],
+  #     .callout[data-callout^="info"],
+  #     .callout[data-callout^="hint"],
+  #     .callout[data-callout^="todo"],
+  #     .callout[data-callout^="note"],
+  #     .callout[data-callout^="tldr"] {
+  #         background-color: color-mix(in srgb, var(--color-red) 25%, transparent);
+  #         --callout-color: var(--text-normal);
+  #     }
+  #   '';
+  # }
   # BUG: no background when custom colors
   {
     name = "lovely-bases-card";
