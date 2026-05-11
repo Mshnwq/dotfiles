@@ -1,0 +1,8 @@
+{{
+  "notebook-navigator-style-settings@@nn-theme-calendar-day-today-bg@@dark": "{color8}",
+  "notebook-navigator-style-settings@@nn-theme-calendar-day-active-border-color@@dark": "{color8}",
+  "notebook-navigator-style-settings@@nn-theme-navitem-selected-bg@@dark": "{color8}",
+  "notebook-navigator-style-settings@@nn-theme-tag-positive-bg@@dark": "{color8}",
+  "notebook-navigator-style-settings@@nn-theme-tag-negative-bg@@dark": "{color5}",
+  "notebook-navigator-style-settings@@nn-theme-file-selected-bg@@dark": "{color8}"
+}}

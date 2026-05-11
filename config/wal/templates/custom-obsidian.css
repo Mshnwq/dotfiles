@@ -18,8 +18,3 @@
     --color-magenta: {color5};
     --color-cyan: {color6};
 }}
-
-.mermaid svg .node rect {{
-  fill: {color1}40 !important;
-  stroke: {background}40 !important;
-}}
