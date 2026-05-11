@@ -108,25 +108,25 @@
       }
     '';
   }
-  # # https://briannalaird.com/content/blog-posts/2025-06-17-making-callouts-obsidian.html
-  # {
-  #   name = "callout-theme";
-  #   enable = true;
-  #   text = ''
-  #     .callout[data-callout^="important"],
-  #     .callout[data-callout^="bug"],
-  #     .callout[data-callout^="tip"],
-  #     .callout[data-callout^="faq"],
-  #     .callout[data-callout^="info"],
-  #     .callout[data-callout^="hint"],
-  #     .callout[data-callout^="todo"],
-  #     .callout[data-callout^="note"],
-  #     .callout[data-callout^="tldr"] {
-  #         background-color: color-mix(in srgb, var(--color-red) 25%, transparent);
-  #         --callout-color: var(--text-normal);
-  #     }
-  #   '';
-  # }
+  # https://briannalaird.com/content/blog-posts/2025-06-17-making-callouts-obsidian.html
+  {
+    name = "callout-theme";
+    enable = true;
+    text = ''
+      .callout[data-callout^="important"],
+      .callout[data-callout^="bug"],
+      .callout[data-callout^="tip"],
+      .callout[data-callout^="faq"],
+      .callout[data-callout^="info"],
+      .callout[data-callout^="hint"],
+      .callout[data-callout^="todo"],
+      .callout[data-callout^="note"],
+      .callout[data-callout^="tldr"] {
+          background-color: color-mix(in srgb, var(--color-red) 25%, transparent);
+          --callout-color: var(--text-normal);
+      }
+    '';
+  }
   # BUG: no background when custom colors
   {
     name = "lovely-bases-card";
