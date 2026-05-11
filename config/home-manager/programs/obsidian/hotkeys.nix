@@ -220,6 +220,24 @@
       "key" = "Y";
     }
   ];
+  "daily-notes:goto-next" = [
+    {
+      "modifiers" = [
+        "Mod"
+        "Shift"
+      ];
+      "key" = "Y";
+    }
+  ];
+  "daily-notes:goto-prev" = [
+    {
+      "modifiers" = [
+        "Alt"
+        "Mod"
+      ];
+      "key" = "Y";
+    }
+  ];
   "workspace:copy-full-path" = [
     {
       "modifiers" = [
@@ -234,6 +252,32 @@
         "Shift"
       ];
       "key" = ";";
+    }
+  ];
+  "jupymd:run-all-code-blocks" = [
+    {
+      "modifiers" = [
+        "Mod"
+      ];
+      "key" = "J";
+    }
+  ];
+  "jupymd:clear-all-code-block-outputs" = [
+    {
+      "modifiers" = [
+        "Mod"
+        "Shift"
+      ];
+      "key" = "J";
+    }
+  ];
+  "jupymd:force-sync" = [
+    {
+      "modifiers" = [
+        "Alt"
+        "Mod"
+      ];
+      "key" = "J";
     }
   ];
   # "app:toggle-left-sidebar" = [
