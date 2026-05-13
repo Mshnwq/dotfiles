@@ -713,144 +713,144 @@
       };
     };
 
-  # # https://publish.obsidian.md/tasks/Introduction
-  # tasks =
-  #   let
-  #     version = "8.0.0";
-  #     manifestJson = pkgs.fetchurl {
-  #       url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/${version}/manifest.json";
-  #       hash = "sha256:150cec115dfd83f2f95c4edd515df7254e1102c116032bd0998dc90d67138737";
-  #     };
-  #     mainJs = pkgs.fetchurl {
-  #       url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/${version}/main.js";
-  #       hash = "sha256:7a47cc91576d2a78932f925073a8688cfcb06bc1fdfa19565043f8ab9979ab56";
-  #     };
-  #     stylesCss = pkgs.fetchurl {
-  #       url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/${version}/styles.css";
-  #       hash = "sha256:62865e01fbaf8418635c0eeacc27d4f7352c90f07e81b1be396acd1a1f7eabbc";
-  #     };
-  #     pkg = pkgs.stdenvNoCC.mkDerivation {
-  #       pname = "obsidian-tasks-plugin";
-  #       version = "${version}";
-  #       dontUnpack = true;
-  #       installPhase = ''
-  #         runHook preInstall
-  #         mkdir -p $out
-  #         cp ${mainJs} $out/main.js
-  #         cp ${manifestJson} $out/manifest.json
-  #         cp ${stylesCss} $out/styles.css
-  #         runHook postInstall
-  #       '';
-  #     };
-  #   in
-  #   {
-  #     inherit pkg;
-  #     settings = {
-  #       "presets" = {
-  #         "this_file" = "path includes {{query.file.path}}";
-  #         "this_folder" = "folder includes {{query.file.folder}}";
-  #         "this_folder_only" =
-  #           "filter by function task.file.folder === query.file.folder";
-  #         "this_root" = "root includes {{query.file.root}}";
-  #         "hide_date_fields" =
-  #           "hide due date\nhide scheduled date\nhide start date\nhide created date\nhide done date\nhide cancelled date";
-  #         "hide_non_date_fields" =
-  #           "hide id\nhide depends on\nhide recurrence rule\nhide on completion\nhide priority";
-  #         "hide_query_elements" =
-  #           "hide toolbar\nhide postpone button\nhide edit button\nhide backlinks";
-  #         "hide_everything" =
-  #           "preset hide_date_fields\npreset hide_non_date_fields\npreset hide_query_elements";
-  #       };
-  #       "globalQuery" = "";
-  #       "globalFilter" = "";
-  #       "removeGlobalFilter" = false;
-  #       "taskFormat" = "tasksPluginEmoji";
-  #       "setCreatedDate" = false;
-  #       "setDoneDate" = true;
-  #       "setCancelledDate" = false;
-  #       "autoSuggestInEditor" = true;
-  #       "autoSuggestMinMatch" = 0;
-  #       "autoSuggestMaxItems" = 20;
-  #       "provideAccessKeys" = true;
-  #       "useFilenameAsScheduledDate" = false;
-  #       "filenameAsScheduledDateFormat" = "";
-  #       "filenameAsDateFolders" = [ ];
-  #       "recurrenceOnNextLine" = true;
-  #       "removeScheduledDateOnRecurrence" = false;
-  #       "searchResults" = {
-  #         "taskCountLocation" = "top";
-  #       };
-  #       "statusSettings" = {
-  #         "coreStatuses" = [
-  #           {
-  #             "symbol" = " ";
-  #             "name" = "Todo";
-  #             "nextStatusSymbol" = "x";
-  #             "availableAsCommand" = true;
-  #             "type" = "TODO";
-  #           }
-  #           {
-  #             "symbol" = "x";
-  #             "name" = "Done";
-  #             "nextStatusSymbol" = " ";
-  #             "availableAsCommand" = true;
-  #             "type" = "DONE";
-  #           }
-  #         ];
-  #         "customStatuses" = [
-  #           {
-  #             "symbol" = "/";
-  #             "name" = "In Progress";
-  #             "nextStatusSymbol" = "x";
-  #             "availableAsCommand" = true;
-  #             "type" = "IN_PROGRESS";
-  #           }
-  #           {
-  #             "symbol" = "-";
-  #             "name" = "Cancelled";
-  #             "nextStatusSymbol" = " ";
-  #             "availableAsCommand" = true;
-  #             "type" = "CANCELLED";
-  #           }
-  #         ];
-  #       };
-  #       "isShownInEditModal" = {
-  #         "priority" = true;
-  #         "recurrence" = true;
-  #         "due" = true;
-  #         "scheduled" = true;
-  #         "start" = true;
-  #         "before_this" = true;
-  #         "after_this" = true;
-  #         "status" = true;
-  #         "created" = true;
-  #         "done" = true;
-  #         "cancelled" = true;
-  #       };
-  #       "features" = {
-  #         "INTERNAL_TESTING_ENABLED_BY_DEFAULT" = true;
-  #       };
-  #       "generalSettings" = { };
-  #       "headingOpened" = {
-  #         "Core Statuses" = true;
-  #         "Custom Statuses" = true;
-  #       };
-  #       "debugSettings" = {
-  #         "ignoreSortInstructions" = false;
-  #         "showTaskHiddenData" = false;
-  #         "recordTimings" = false;
-  #       };
-  #       "loggingOptions" = {
-  #         "minLevels" = {
-  #           "" = "info";
-  #           "tasks" = "info";
-  #           "tasks.Cache" = "info";
-  #           "tasks.Events" = "info";
-  #           "tasks.File" = "info";
-  #           "tasks.Query" = "info";
-  #           "tasks.Task" = "info";
-  #         };
-  #       };
-  #     };
-  #   };
+  # https://publish.obsidian.md/tasks/Introduction
+  tasks =
+    let
+      version = "8.0.0";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/${version}/manifest.json";
+        hash = "sha256:150cec115dfd83f2f95c4edd515df7254e1102c116032bd0998dc90d67138737";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/${version}/main.js";
+        hash = "sha256:7a47cc91576d2a78932f925073a8688cfcb06bc1fdfa19565043f8ab9979ab56";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/download/${version}/styles.css";
+        hash = "sha256:62865e01fbaf8418635c0eeacc27d4f7352c90f07e81b1be396acd1a1f7eabbc";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-tasks-plugin";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+      settings = {
+        "presets" = {
+          "this_file" = "path includes {{query.file.path}}";
+          "this_folder" = "folder includes {{query.file.folder}}";
+          "this_folder_only" =
+            "filter by function task.file.folder === query.file.folder";
+          "this_root" = "root includes {{query.file.root}}";
+          "hide_date_fields" =
+            "hide due date\nhide scheduled date\nhide start date\nhide created date\nhide done date\nhide cancelled date";
+          "hide_non_date_fields" =
+            "hide id\nhide depends on\nhide recurrence rule\nhide on completion\nhide priority";
+          "hide_query_elements" =
+            "hide toolbar\nhide postpone button\nhide edit button\nhide backlinks";
+          "hide_everything" =
+            "preset hide_date_fields\npreset hide_non_date_fields\npreset hide_query_elements";
+        };
+        "globalQuery" = "";
+        "globalFilter" = "";
+        "removeGlobalFilter" = false;
+        "taskFormat" = "tasksPluginEmoji";
+        "setCreatedDate" = false;
+        "setDoneDate" = true;
+        "setCancelledDate" = false;
+        "autoSuggestInEditor" = true;
+        "autoSuggestMinMatch" = 0;
+        "autoSuggestMaxItems" = 20;
+        "provideAccessKeys" = true;
+        "useFilenameAsScheduledDate" = false;
+        "filenameAsScheduledDateFormat" = "";
+        "filenameAsDateFolders" = [ ];
+        "recurrenceOnNextLine" = true;
+        "removeScheduledDateOnRecurrence" = false;
+        "searchResults" = {
+          "taskCountLocation" = "top";
+        };
+        "statusSettings" = {
+          "coreStatuses" = [
+            {
+              "symbol" = " ";
+              "name" = "Todo";
+              "nextStatusSymbol" = "x";
+              "availableAsCommand" = true;
+              "type" = "TODO";
+            }
+            {
+              "symbol" = "x";
+              "name" = "Done";
+              "nextStatusSymbol" = " ";
+              "availableAsCommand" = true;
+              "type" = "DONE";
+            }
+          ];
+          "customStatuses" = [
+            {
+              "symbol" = "/";
+              "name" = "In Progress";
+              "nextStatusSymbol" = "x";
+              "availableAsCommand" = true;
+              "type" = "IN_PROGRESS";
+            }
+            {
+              "symbol" = "-";
+              "name" = "Cancelled";
+              "nextStatusSymbol" = " ";
+              "availableAsCommand" = true;
+              "type" = "CANCELLED";
+            }
+          ];
+        };
+        "isShownInEditModal" = {
+          "priority" = true;
+          "recurrence" = true;
+          "due" = true;
+          "scheduled" = true;
+          "start" = true;
+          "before_this" = true;
+          "after_this" = true;
+          "status" = true;
+          "created" = true;
+          "done" = true;
+          "cancelled" = true;
+        };
+        "features" = {
+          "INTERNAL_TESTING_ENABLED_BY_DEFAULT" = true;
+        };
+        "generalSettings" = { };
+        "headingOpened" = {
+          "Core Statuses" = true;
+          "Custom Statuses" = true;
+        };
+        "debugSettings" = {
+          "ignoreSortInstructions" = false;
+          "showTaskHiddenData" = false;
+          "recordTimings" = false;
+        };
+        "loggingOptions" = {
+          "minLevels" = {
+            "" = "info";
+            "tasks" = "info";
+            "tasks.Cache" = "info";
+            "tasks.Events" = "info";
+            "tasks.File" = "info";
+            "tasks.Query" = "info";
+            "tasks.Task" = "info";
+          };
+        };
+      };
+    };
 }
