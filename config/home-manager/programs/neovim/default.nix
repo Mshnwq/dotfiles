@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   lib,
@@ -15,6 +16,8 @@ let
             --replace-fail 'return M' $'M._Provider = Provider\nreturn M'
         '';
       });
+  # stylua = ".stylua.toml";
+  # stylelua = "${config.xdg.configHome}/nvim/${stylua}";
 in
 {
   imports = [ inputs.nix4nvchad.homeManagerModules.nvchad ];
@@ -65,4 +68,10 @@ in
         dockerfmt
       ]);
   };
+  home.activation.copyNvchadStyleToml =
+    inputs.home-manager.lib.hm.dag.entryAfter [ "copyNvChad" ]
+      ''
+        ${pkgs.coreutils}/bin/cp ${inputs.nvchad-starter}/.stylua.toml "${config.xdg.configHome}/nvim/.stylua.toml"
+        chmod 664 "${config.xdg.configHome}/nvim/.stylua.toml"
+      '';
 }

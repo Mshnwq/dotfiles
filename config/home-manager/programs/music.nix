@@ -275,7 +275,7 @@ in
     in
     # extract year my plugin
     {
-      enable = true;
+      enable = false;
       package = pkgs-stable.beets;
       settings = {
         directory = "~/Music";
