@@ -75,9 +75,9 @@ in
       devenv
       default
       firefox
-      # discord.stable
       keyboard.vial
       keyboard.kmonad
+      discord.stable
       # TODO: get mischa ai cli and claude code ??
       obsidian
       {

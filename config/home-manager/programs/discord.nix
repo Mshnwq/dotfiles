@@ -66,7 +66,7 @@ in
       basePackage = pkgs.discord;
       desktopFileName = "discord";
       packageOverrides = {
-        withOpenASAR = true;
+        withOpenASAR = false;
       };
     };
   # programs.which-key = {
