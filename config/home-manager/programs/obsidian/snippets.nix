@@ -127,6 +127,32 @@
       }
     '';
   }
+  {
+    name = "mp-input-theme";
+    enable = true;
+    text = ''
+      .search-input-container input {
+        background: color-mix(in srgb, var(--color-green) 25%, transparent);
+        border-radius: 14px;
+      }
+      .mb-input-type-time input[type=time] {
+        background: color-mix(in srgb, var(--checkbox-color) 75%, transparent);
+      }
+      .mb-input-type-toggle .checkbox-container[aria-checked="false"] {
+        background-color: var(--background-primary);
+      }
+    '';
+  }
+  {
+    name = "tasks-backlink";
+    enable = true;
+    text = ''
+      .tasks-backlink {
+        font-size: 0.9em;
+        opacity: 0.8;
+      }
+    '';
+  }
   # BUG: no background when custom colors
   {
     name = "lovely-bases-card";

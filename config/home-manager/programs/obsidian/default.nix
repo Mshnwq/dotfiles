@@ -69,9 +69,12 @@ in
             # excalidraw
             omnisearch
             nodeFactor
+            tasknotes
+            templater
             metaBind
             dataView
             jupymd
+            tasks
           ];
           cssSnippets = import ./snippets.nix { inherit pkgs; };
           appearance = {
