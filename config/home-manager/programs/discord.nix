@@ -48,6 +48,16 @@ let
           StartupWMClass = binaryName;
         };
       };
+
+      programs.which-key = {
+        entries = [
+          {
+            key = "d";
+            desc = "Discord";
+            cmd = "gtk-launch discord";
+          }
+        ];
+      };
     };
 in
 {
@@ -69,15 +79,6 @@ in
         withOpenASAR = false;
       };
     };
-  # programs.which-key = {
-  #   entries = [
-  #     {
-  #       key = "d";
-  #       desc = "Discord";
-  #       cmd = "gtk-launch discord";
-  #     }
-  #   ];
-  # };
 
   canary =
     {

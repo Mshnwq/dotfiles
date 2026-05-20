@@ -42,6 +42,7 @@ in
     enable = true;
     package = config.lib.nixGL.wrap hyprPkgs.hyprland;
     portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
+    configType = "hyprlang";
     extraConfig =
       let
         layoutConfigContent =
