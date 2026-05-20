@@ -428,6 +428,26 @@
     in
     {
       inherit pkg;
+      settings = {
+        "devMode" = false;
+        "ignoreCodeBlockRestrictions" = false;
+        "preferredDateFormat" = "YYYY-MM-DD";
+        "firstWeekday" = {
+          "index" = 1;
+          "name" = "Monday";
+          "shortName" = "Mo";
+        };
+        "syncInterval" = 200;
+        "enableJs" = false;
+        "viewFieldDisplayNullAsEmpty" = false;
+        "enableSyntaxHighlighting" = true;
+        "enableEditorRightClickMenu" = true;
+        "inputFieldTemplates" = [ ];
+        "buttonTemplates" = [ ];
+        "excludedFolders" = [
+          "templates"
+        ];
+      };
     };
 
   shikiHighlighter =
@@ -760,6 +780,12 @@
             "hide toolbar\nhide postpone button\nhide edit button\nhide backlinks";
           "hide_everything" =
             "preset hide_date_fields\npreset hide_non_date_fields\npreset hide_query_elements";
+          "this_recurring" =
+            "hide toolbar\nhappens on or before today\nnot done\nshort mode\nhide recurrence rule\nhide scheduled date\nhide postpone button\nhide edit button\nhide backlink";
+          "this_today_daily" =
+            "hide toolbar\nhide edit button\nfilter by function task.file.property('tags').contains('#daily')\nfilter by function task.file.property('date') === new Date().toLocaleDateString('en-CA')";
+          "this_older_daily" =
+            "not done\nhide toolbar\nhide edit button\nfilter by function task.file.property('tags').contains('#daily')\nfilter by function task.file.property('date') < new Date().toLocaleDateString('en-CA')";
         };
         "globalQuery" = "";
         "globalFilter" = "";
@@ -852,5 +878,39 @@
           };
         };
       };
+    };
+
+  # https://tasknotes.dev/
+  tasknotes =
+    let
+      version = "4.7.2";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/callumalpass/tasknotes/releases/download/${version}/manifest.json";
+        hash = "sha256:68381a3c17aecf586b5ac081f6ec45592efa5735e37ee260cbbda2c283175e43";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/callumalpass/tasknotes/releases/download/${version}/main.js";
+        hash = "sha256:f1f8c7e5a0e0bba19464790d7b1e36b1a9f0088d7e259a5bdaadd50f693ab316";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/callumalpass/tasknotes/releases/download/${version}/styles.css";
+        hash = "sha256:7d36c0741e747b5e7d361df32b5d75ec46d1eb69dd82881bc902094147b271d9";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "tasknotes";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
     };
 }
