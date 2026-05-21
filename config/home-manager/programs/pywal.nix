@@ -32,6 +32,7 @@ let
     "rmpc/themes/pywal.ron" = "${walCache}/custom-rmpc.ron";
     "btop/themes/pywal.theme" = "${walCache}/custom-btop.theme";
     "kitty/custom-kitty.conf" = "${walCache}/custom-kitty.conf";
+    "hypr/configs/pywal.lua" = "${walCache}/custom-hyprland.lua";
     "waybar/colors-waybar.css" = "${walCache}/colors-waybar.css";
     "alacritty/colors-alacritty.toml" = "${walCache}/colors-alacritty.toml";
   };
