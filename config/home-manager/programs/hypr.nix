@@ -8,21 +8,23 @@
 }:
 let
   hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
-  hyprConfDir = "${config.xdg.configHome}/hypr/conf.d";
+  hyprConfDir = "${config.xdg.configHome}/hypr/configs";
 in
 {
   home.packages = with pkgs; [
+    rofi
     awww
     grim
     slurp
     swappy
     waybar
     # woomer
-    niflveil # from /pkgs/;
+    niflveil # from /pkgs/
     hypridle
-    # hyprlock TODO: broken
+    hyprlock
     hyprsunset
     hyprpicker
+    hyprshutdown
     libinput-gestures
     # TODO: quickshell
   ];
@@ -42,7 +44,7 @@ in
     enable = true;
     package = config.lib.nixGL.wrap hyprPkgs.hyprland;
     portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
-    configType = "hyprlang";
+    configType = "lua";
     extraConfig =
       let
         layoutConfigContent =
@@ -75,19 +77,23 @@ in
             dir = builtins.readDir hyprConfDir;
           in
           builtins.filter (
-            file: dir.${file} == "regular" && builtins.match ".*\\.conf$" file != null
+            file: dir.${file} == "regular" && builtins.match ".*\\.lua$" file != null
           ) (builtins.attrNames dir);
         confSources = lib.concatStringsSep "\n" (
-          map (file: "source = ${hyprConfDir}/${file}") confFiles
+          map (file: "require('configs.${lib.removeSuffix ".lua" file}')") confFiles
         );
       in
       ''
-        exec-once = dbus-update-activation-environment --systemd --all
-        exec-once = /usr/bin/lxpolkit
+        hl.on("hyprland.start", function()
+          hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+          hl.exec_cmd("/usr/bin/lxpolkit")
+        end)
         ${confSources}
-        input {
-            kb_layout=${kbLayouts}
-        }
+        hl.config({
+          input = {
+            kb_layout="${kbLayouts}",
+          },
+        })
       '';
   };
 

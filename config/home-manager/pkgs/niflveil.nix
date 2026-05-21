@@ -17,8 +17,8 @@ pkgs.rustPlatform.buildRustPackage {
   src = pkgs.fetchFromGitHub {
     owner = "mauitron";
     repo = "niflveil";
-    rev = "40d57fc";
-    hash = "sha256-l5byrdtLjWgbiBLRT/TkUJiYPupHdzur23Et/wEAIBA=";
+    rev = "54208d5b054b1a09e6c491159ac784fdb0f54703";
+    hash = "sha256-oE0gKk2IMKiipiOgPhAjIElzL5QjSO/AhUXXGpcLtQ0=";
   };
   nativeBuildInputs = [ pkgs.gcc ];
   sourceRoot = "source/niflveil";
@@ -28,7 +28,10 @@ pkgs.rustPlatform.buildRustPackage {
     lockFile = cargoLock;
   };
   postPatch = ''
-    sed -i '341c\        println!("{{\\"text\\":\\" \\",\\"class\\":\\"empty\\",\\"tooltip\\":\\"No minimized windows\\"}}");' src/main.rs
+    substituteInPlace src/main.rs \
+      --replace-fail \
+        'println!("{{\"text\":\"󰘸\",\"class\":\"empty\",\"tooltip\":\"No minimized windows\"}}");' \
+        'println!("{{\"text\":\" \",\"class\":\"empty\",\"tooltip\":\"No minimized windows\"}}");'
     ln -s ${cargoLock} Cargo.lock
   '';
 }
