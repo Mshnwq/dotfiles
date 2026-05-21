@@ -1,0 +1,1 @@
+/home/mshnwq/.cache/wal/custom-hyprland.lua
