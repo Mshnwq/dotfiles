@@ -2,7 +2,7 @@
 set -euo pipefail
 
 lock() { :; }
-logout() { hyprctl dispatch exit; }
+logout() { hyprshutdown; }
 suspend() { MediaControl --stop && systemctl suspend; }
 reboot() { systemctl reboot; }
 poweroff() { systemctl poweroff; }

@@ -49,9 +49,9 @@
     "custom/power"
   ],
   "hyprland/workspaces": {
-    "on-scroll-up": "hyprctl dispatch workspace -1",
-    "on-scroll-down": "hyprctl dispatch workspace +1",
-	  "format": "{icon}",
+    // "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = 'r+1' })",
+    // "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = 'r-1' })",
+    "format": "{icon}",
     "format-icons": {
       "active": "",
       "empty": "",
