@@ -253,7 +253,7 @@ in
         cmd = "gtk-launch anki";
       }
       {
-        key = "t";
+        key = "T";
         desc = "Translate";
         submenu = [
           {

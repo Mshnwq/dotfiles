@@ -145,6 +145,11 @@ in
         cmd = "gtk-launch keepassxc";
       }
       {
+        key = "t";
+        desc = "Telegram";
+        cmd = " flatpak run org.telegram.desktop";
+      }
+      {
         key = "x";
         desc = "Executer";
         submenu = [
