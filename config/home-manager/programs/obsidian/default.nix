@@ -51,6 +51,12 @@ in
         glow
       ];
 
+      # ensure it matches in notebookNavigator.settings
+      sops.secrets.notebook-navigator = {
+        mode = "0400";
+        path = "${config.xdg.configHome}/obsidian-notebook-navigator.json";
+      };
+
       # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.obsidian
       programs.obsidian = {
         enable = true;

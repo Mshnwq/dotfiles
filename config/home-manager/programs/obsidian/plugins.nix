@@ -214,7 +214,10 @@
     in
     {
       inherit pkg;
-      # settings = builtins.fromJSON (builtins.readFile ./notebookNavigator.json);
+      # ensure it matches in sops.secrets.notebook-navigator.path
+      settings = builtins.fromJSON (
+        builtins.readFile "${config.xdg.configHome}/obsidian-notebook-navigator.json"
+      );
     };
 
   styleSettings =
