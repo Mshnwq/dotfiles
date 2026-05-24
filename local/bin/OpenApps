@@ -83,7 +83,7 @@ case ${1:-} in
     || dunstify "Music is not running."'
   ;;
 # Web
---firefox) Firefox -P "$USER" "${2:-about:newtab}" ;;
+--firefox) Firefox -P "default" "${2:-about:newtab}" ;;
 --github)
   DOTDIR="$(sed "s|^~|$HOME|" "$HOME/.config/dotdir")"
   hyprctl dispatch 'hl.dsp.focus({ workspace = 1 })' && $0 --firefox \
