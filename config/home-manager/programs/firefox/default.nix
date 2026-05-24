@@ -1,3 +1,4 @@
+# firefox/default.nix
 {
   lib,
   pkgs,
@@ -6,29 +7,50 @@
   ...
 }:
 let
-  # TODO: attr set it
-  name = config.home.username;
-  profile = "${name}.default";
-  profileName = "${name}";
-  profile2 = "${name}.dummy";
-  profileName2 = "dummy";
-  profile3 = "${name}.ict";
-  profileName3 = "ict";
-  extensions = {
-    rycee = pkgs.nur.repos.rycee.firefox-addons;
-    custom = pkgs.callPackage ./addons.nix {
-      inherit lib;
-      inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
+  user = config.home.username;
+  profileId = key: "${user}.${key}";
+
+  mkDefaultTheme =
+    key:
+    (import ./shyfox.nix) {
+      profile = key;
+      inherit extensions;
+    };
+
+  profiles = {
+    default = {
+      id = 0;
+      extraSettings = {
+        "browser.newtabpage.pinned" = browser-pinned;
+      };
+      extraExtensions = with extensions.rycee; [
+        cookies-txt
+        (tampermonkey.override { meta.license.free = true; })
+      ];
+      search = {
+        force = true;
+        default = "ddg";
+        engines = import ./search-engines.nix { inherit lib; };
+      };
+      imports = key: [
+        ((import ./blocking.nix) (profileId key))
+        ((import ./youtube.nix) (profileId key))
+        (mkDefaultTheme (profileId key))
+      ];
+    };
+    dummy = {
+      id = 1;
+      imports = key: [
+        (mkDefaultTheme (profileId key))
+      ];
+    };
+    ict = {
+      id = 2;
+      imports = key: [
+        (mkDefaultTheme (profileId key))
+      ];
     };
   };
-  browser-pinned =
-    if
-      config.sops.secrets ? "browser-pinned"
-      && builtins.pathExists config.sops.secrets."browser-pinned".path
-    then
-      builtins.readFile config.sops.secrets."browser-pinned".path
-    else
-      ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://github.com/","baseDomain":"github.com"}]'';
 
   commonSettings = {
     # https://github.com/nix-community/home-manager/pull/6389
@@ -76,6 +98,28 @@ let
     "browser.urlbar.suggest.recentsearches" = false;
     "browser.urlbar.suggest.searches" = false;
   };
+
+  extensions = {
+    rycee = pkgs.nur.repos.rycee.firefox-addons;
+    custom = pkgs.callPackage ./addons.nix {
+      inherit lib;
+      inherit (inputs.firefox-addons.lib."x86_64-linux") buildFirefoxXpiAddon;
+    };
+  };
+  baseExtensions = with extensions.rycee; [
+    clearurls
+    search-by-image
+    # keepassxc-browser
+  ];
+
+  browser-pinned =
+    if
+      config.sops.secrets ? "browser-pinned"
+      && builtins.pathExists config.sops.secrets."browser-pinned".path
+    then
+      builtins.readFile config.sops.secrets."browser-pinned".path
+    else
+      ''[{"url":"https://www.youtube.com/","baseDomain":"youtube.com"},{"url":"https://github.com/","baseDomain":"github.com"}]'';
 in
 {
   sops.secrets = {
@@ -83,6 +127,10 @@ in
     tampermonkey = {
       mode = "0400";
       path = "${config.xdg.configHome}/tampermonkey.txt";
+    };
+    obsidian-web-clipper = {
+      mode = "0400";
+      path = "${config.xdg.configHome}/obsidian-web-clipper.json";
     };
   };
 
@@ -110,107 +158,38 @@ in
       "application/x-extension-xht"
     ];
   };
-
-  home.sessionVariables = {
-    BROWSER = "firefox";
-  };
+  home.sessionVariables.BROWSER = "firefox";
+  # home.packages = [ pkgs.firefoxpwa ];
+  # programs.firefox.nativeMessagingHosts = [
+  #   pkgs.firefoxpwa
+  #   # pkgs.ff2mpv
+  # ];
 
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox;
-  # TODO: migrate to xdg
   programs.firefox.configPath = ".mozilla/firefox";
 
-  imports = [
-    (import ./blocking.nix profile)
-    (import ./youtube.nix profile)
-    (import ./shyfox.nix profile)
-    (import ./shortcuts.nix profile)
-    (import ./shyfox.nix profile2)
-    (import ./shortcuts.nix profile2)
-    (import ./shyfox.nix profile3)
-    (import ./shortcuts.nix profile3)
-    (lib.nixgl.mkNixGLWrapper {
-      name = "Firefox";
-      command = "firefox";
-      nixGLVariant = "nixGLIntel";
-      # libva is needed for intel vaapi Hardware decoding
-      envVars = "LIBVA_DRIVER_NAME=\"i965\" DISPLAY=\"\" MOZ_ENABLE_WAYLAND=1 MOZ_USE_XINPUT2=1";
-    })
-  ];
+  imports =
+    (lib.flatten (lib.mapAttrsToList (key: p: p.imports key) profiles))
+    ++ [
+      (lib.nixgl.mkNixGLWrapper {
+        name = "Firefox";
+        command = "firefox";
+        nixGLVariant = "nixGLIntel";
+        envVars = "LIBVA_DRIVER_NAME=\"i965\" DISPLAY=\"\" MOZ_ENABLE_WAYLAND=1 MOZ_USE_XINPUT2=1";
+      })
+    ];
 
-  home.packages = [ pkgs.firefoxpwa ];
-  programs.firefox.nativeMessagingHosts = [
-    pkgs.firefoxpwa
-    # pkgs.ff2mpv
-  ];
-
-  programs.firefox.profiles.${profile} = {
-    id = 0;
-    isDefault = true;
-    name = profileName;
-
-    search.force = true;
-    search.default = "ddg";
-    search.engines = import ./search-engines.nix { inherit lib; };
-    settings = commonSettings // {
-      "browser.newtabpage.pinned" = "${browser-pinned}";
-      "network.protocol-handler.expose.obsidian" = false;
-    };
-
-    extensions.force = true;
-    extensions.packages =
-      with extensions.rycee;
-      [
-        clearurls
-        cookies-txt
-        search-by-image
-        pwas-for-firefox
-        # keepassxc-browser
-        web-clipper-obsidian
-        (tampermonkey.override {
-          meta.license.free = true;
-        })
-      ]
-      ++ (with extensions.custom; [
-        duplicate-tab-shortcut
-      ]);
-  };
-
-  programs.firefox.profiles.${profile2} = {
-    id = 1;
-    isDefault = false;
-    name = profileName2;
-    settings = commonSettings;
-    extensions.force = true;
-    extensions.packages =
-      with extensions.rycee;
-      [
-        clearurls
-        search-by-image
-      ]
-      ++ (with extensions.custom; [
-        duplicate-tab-shortcut
-      ]);
-  };
-
-  programs.firefox.profiles.${profile3} = {
-    id = 2;
-    isDefault = false;
-    name = profileName3;
-    settings = commonSettings // {
-      "network.protocol-handler.expose.obsidian" = true;
-    };
-    extensions.force = true;
-    extensions.packages =
-      with extensions.rycee;
-      [
-        clearurls
-        search-by-image
-        # keepassxc-browser
-        web-clipper-obsidian
-      ]
-      ++ (with extensions.custom; [
-        duplicate-tab-shortcut
-      ]);
-  };
+  programs.firefox.profiles = lib.mapAttrs' (
+    key: p:
+    lib.nameValuePair (profileId key) {
+      isDefault = key == "default" && p.id == 0;
+      id = p.id;
+      name = key;
+      search = p.search or { };
+      settings = commonSettings // (p.extraSettings or { });
+      extensions.packages = baseExtensions ++ (p.extraExtensions or [ ]);
+      extensions.force = true;
+    }
+  ) profiles;
 }
