@@ -44,7 +44,6 @@ in
       qimgv
       vips
       pywal16
-      pywalfox-native # install
       papirus-folders # cli tool
       highlight # from /overlays/;
       kdePackages.qtstyleplugin-kvantum
