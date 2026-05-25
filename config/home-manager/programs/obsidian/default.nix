@@ -283,12 +283,12 @@ in
               -o font_size=10 -e tmux new -s Obsidian nvim --listen "$SOCKET" "$1" &
             # sleep 1 || tmux rename-window nvim
             sleep 1
-            hyprctl dispatch 'hl.dsp.window.tag({ tag = "+$vault_name" })' 
+            hyprctl dispatch "hl.dsp.window.tag({ tag = \"+$vault_name\" })" 
             hyprctl dispatch 'hl.dsp.layout("swapwithmaster")'
             hyprctl dispatch 'hl.dsp.layout("mfact exact 0.5525")'
-            sleep 0.4
+            sleep 0.8
             _send ':lua require("lazy").load({ plugins = "obsidian.nvim" })<CR>'
-            sleep 0.4
+            sleep 0.8
             _send ':lua require("lazy").load({ plugins = "render-markdown.nvim" })<CR>'
             _send ':lua require("nvchad.utils").reload()<CR>'
             _send ':lua require("render-markdown").toggle()<CR>'
