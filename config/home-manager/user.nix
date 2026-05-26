@@ -68,6 +68,9 @@ in
       anki
       hypr
       email
+      # {
+      #   which-key.enable = true;
+      # }
       music
       pywal
       infra
@@ -186,37 +189,27 @@ in
         if inputs.useSops then "${ageDir}/keys.txt" else "${ageDir}/dummy.txt";
       sopsFile =
         if inputs.useSops then ./secrets/primary.yaml else ./secrets/dummy.yaml;
+      sshDir = "${config.home.homeDirectory}/.ssh";
+      mkSecret = name: path: {
+        inherit name;
+        value = {
+          mode = if builtins.match ".*\\.pub$" path != null then "0444" else "0400";
+          inherit path;
+        };
+      };
     in
     {
       age.keyFile = ageKeyfile;
       defaultSopsFile = sopsFile;
       defaultSopsFormat = "yaml";
-      secrets = {
-        mounts-conf = {
-          mode = "0400";
-          path = "${config.xdg.configHome}/mounts.conf";
-        };
-        ssh-config = {
-          mode = "0400";
-          path = "${config.home.homeDirectory}/.ssh/config";
-        };
-        gitlab-ssh-priv = {
-          mode = "0400";
-          path = "${config.home.homeDirectory}/.ssh/gitlab";
-        };
-        gitlab-ssh-pub = {
-          mode = "0444";
-          path = "${config.home.homeDirectory}/.ssh/gitlab.pub";
-        };
-        github-ssh-priv = {
-          mode = "0400";
-          path = "${config.home.homeDirectory}/.ssh/github";
-        };
-        github-ssh-pub = {
-          mode = "0444";
-          path = "${config.home.homeDirectory}/.ssh/github.pub";
-        };
-      };
+      secrets = builtins.listToAttrs [
+        (mkSecret "mounts-conf" "${config.xdg.configHome}/mounts.conf")
+        (mkSecret "ssh-config" "${sshDir}/config")
+        (mkSecret "gitlab-ssh-priv" "${sshDir}/gitlab")
+        (mkSecret "gitlab-ssh-pub" "${sshDir}/gitlab.pub")
+        (mkSecret "github-ssh-priv" "${sshDir}/github")
+        (mkSecret "github-ssh-pub" "${sshDir}/github.pub")
+      ];
     };
 }
 

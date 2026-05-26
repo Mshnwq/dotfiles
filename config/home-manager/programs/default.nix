@@ -195,7 +195,7 @@ args@{
       settings = {
         user = {
           name = "mshnwq";
-          email = "mshnwq.com@gmail.com";
+          email = "hmachnouk@proton.me";
         };
         init = {
           defaultBranch = "main";
