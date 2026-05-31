@@ -19,6 +19,7 @@ alias v="vim"
 alias n="nvim"
 alias n.="n ."
 alias gdl="gallery-dl"
+alias ts="tailscale"
 alias ydl="yt-dlp"
 alias grep='grep --color'
 alias diff='diff --color'
