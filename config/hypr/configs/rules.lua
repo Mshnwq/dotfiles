@@ -13,7 +13,7 @@ hl.workspace_rule({ workspace = "6", layout = "master" })
 for _, rule in ipairs({
 	{ match = { class = ".*" }, opacity = "1 override 1 override 1 override" },
 	{ match = { class = "firefox", title = "^Mozilla Firefox$" }, opacity = "0.8 override 0.9 override 1 override" },
-	{ match = { class = "org.pwmt.zathura" }, opacity = "0.9 override 0.95 override 1 override" },
+	{ match = { class = "org.pwmt.zathura" }, opacity = "0.9 override 0.95 override 1 override", float = true, },
 	{ match = { class = "obsidian", title = ".*Obsidian.*" }, opacity = "0.93 override 0.91 override 1 override" },
 }) do
 	hl.window_rule(rule)
@@ -35,6 +35,14 @@ hl.window_rule({
 	name = "desktops",
 	match = {
 		class = "org.(kde.gwenview|fkoehler.KTailctl|telegram.desktop|pulseaudio.pavucontrol|qbittorrent.qBittorrent|rncbc.qpwgraph|keepassxc.KeePassXC)",
+	},
+	float = true,
+	size = { 1080, 620 },
+})
+hl.window_rule({
+	name = "zap",
+	match = {
+		class = "com.rtosta.zapzap",
 	},
 	float = true,
 	size = { 1080, 620 },
@@ -73,6 +81,13 @@ for _, rule in ipairs({
 		match = { class = "lmms", title = "Settings" },
 		size = { 640, 570 },
 		float = true,
+	},
+	-- ZapZap Download
+	{
+		name = "zapzap",
+		match = { class = "com.rtosta.zapzap", title = "Download" },
+		size = { 540, 360 },
+		center = true,
 	},
 }) do
 	hl.window_rule(rule)
@@ -145,9 +160,9 @@ hl.window_rule({
 		fullscreen = false,
 		xwayland = true,
 		float = true,
-		pin = false,
 		class = "^$",
 		title = "^$",
+		pin = false,
 	},
 	no_focus = true,
 })

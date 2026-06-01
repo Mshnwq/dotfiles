@@ -107,10 +107,10 @@ let
     };
   };
   baseExtensions = with extensions.rycee; [
-    clearurls
     search-by-image
-    # keepassxc-browser
+    clearurls
   ];
+  # keepassxc-browser
 
   browser-pinned =
     if
