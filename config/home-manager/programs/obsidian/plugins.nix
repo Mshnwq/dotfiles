@@ -437,8 +437,8 @@
         "preferredDateFormat" = "YYYY-MM-DD";
         "firstWeekday" = {
           "index" = 1;
-          "name" = "Monday";
-          "shortName" = "Mo";
+          "name" = "Sunday";
+          "shortName" = "Su";
         };
         "syncInterval" = 200;
         "enableJs" = false;
@@ -448,9 +448,42 @@
         "inputFieldTemplates" = [ ];
         "buttonTemplates" = [ ];
         "excludedFolders" = [
-          "templates"
+          "_templates"
         ];
       };
+    };
+
+  jsEngine =
+    let
+      version = "0.3.5";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/mProjectsCode/obsidian-js-engine-plugin/releases/download/${version}/manifest.json";
+        hash = "sha256:a138c322a59e1d1b911be28c5fb2ef3ad63778434b020b5bb440d5c97f7d872d";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/mProjectsCode/obsidian-js-engine-plugin/releases/download/${version}/main.js";
+        hash = "sha256:5913472073b68af7665dbf83b27041538167c83d7edfb8becc3a821ff9665d8c";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/mProjectsCode/obsidian-js-engine-plugin/releases/download/${version}/styles.css";
+        hash = "sha256:d183d8d88730dd8c7bb15ddf11de7347bea2719547b50048c054d4027b5ac599";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-js-engine-plugin";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
     };
 
   shikiHighlighter =

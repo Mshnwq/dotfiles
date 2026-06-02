@@ -78,6 +78,7 @@ in
             tasknotes
             templater
             metaBind
+            jsEngine
             dataView
             jupymd
             tasks
