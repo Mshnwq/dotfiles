@@ -62,7 +62,7 @@
     ];
     play = [
       {
-        run = ''xdg-open "$1"'';
+        run = ''xdg-open "$@"'';
         desc = "Open";
         for = "linux";
       }

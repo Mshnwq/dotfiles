@@ -6,7 +6,7 @@
 }:
 let
   system = pkgs.system;
-  pkgs-stable = import inputs.nixpkgs-stable {
+  pkgs-old = import inputs.nixpkgs-old {
     inherit system;
   };
 
@@ -46,7 +46,7 @@ in
       };
     };
     mediainfo = {
-      source = pkgs-stable.yaziPlugins.mediainfo;
+      source = pkgs-old.yaziPlugins.mediainfo;
       defaultEnable = false;
       settings = {
         plugin = {

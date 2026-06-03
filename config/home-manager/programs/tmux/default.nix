@@ -97,11 +97,15 @@ in
             import yaml
             import os
             import sys
+            verbose = os.environ.get("VERBOSE", "0") == "1"
+            def log(msg):
+              if verbose:
+                print(msg)
             secret_path = "${config.sops.secrets.tmuxp.path}";
             output_dir = "${config.xdg.configHome}/tmux/tmuxp";
             os.makedirs(output_dir, exist_ok=True)
             if not os.path.exists(secret_path):
-              print(f"Warning: secret not found: {secret_path}")
+              log(f"Warning: secret not found: {secret_path}")
               sys.exit(0)
             try:
               with open(secret_path, 'r') as f:
@@ -112,10 +116,11 @@ in
                   with open(file_path, 'w') as f:
                       yaml.dump(content, f)
                   os.chmod(file_path, 0o444)
+                  log(f"Wrote {file_path}")
                 except PermissionError:
-                  print(f"Warning: Could not write {file_path}, skipping.")
+                  log(f"Warning: Could not write {file_path}, skipping.")
             except Exception as e:
-              print(f"Warning: Failed: {e}")
+              log(f"Warning: Failed: {e}")
               sys.exit(0)
             EOF
           ''
