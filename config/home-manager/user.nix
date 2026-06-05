@@ -14,6 +14,7 @@ in
   home.username = username;
   home.homeDirectory = "/home/${config.home.username}";
   home.stateVersion = "25.05";
+  home.enableNixpkgsReleaseCheck = false;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -151,6 +152,11 @@ in
         key = "t";
         desc = "Telegram";
         cmd = " flatpak run org.telegram.desktop";
+      }
+      {
+        key = "z";
+        desc = "ZapZap";
+        cmd = " flatpak run com.rtosta.zapzap";
       }
       {
         key = "x";
