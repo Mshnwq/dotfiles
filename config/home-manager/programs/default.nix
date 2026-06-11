@@ -19,6 +19,7 @@ args@{
       dialog
       zathura
       cmatrix
+      alacritty
       lm_sensors
       networkmanager_dmenu
       mtpfs
