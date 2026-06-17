@@ -47,9 +47,20 @@ in
     configType = "lua";
     extraConfig =
       let
+        # layoutConfigContent =
+        #   builtins.readFile
+        #     config.sops.secrets."keyboard-conf".path;
         layoutConfigContent =
-          builtins.readFile
-            config.sops.secrets."keyboard-conf".path;
+          if
+            config.sops.secrets ? "keyboard-conf"
+            && builtins.pathExists config.sops.secrets."keyboard-conf".path
+          then
+            builtins.readFile config.sops.secrets."keyboard-conf".path
+          else
+            ''
+              US English=us
+              AR ﺎﻠﻋﺮﺒﻳﺓ=ara
+            '';
         # Parse lines and extract layout codes (values after =)
         parseLayouts =
           content:
