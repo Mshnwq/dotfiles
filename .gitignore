@@ -14,4 +14,4 @@ devenv.local.nix
 config/dots/rices/.wall
 .env
 
-config/hypr/conf.d/workspaceLayouts.conf
+local/bin/executer/.caishen.sh

@@ -35,7 +35,7 @@ case ${1:-} in
   _kitty --style hide --watcher tab_focus.py \
     --class=InitTerm --listen-on "$socket" -e tmux new -s init &
   sleep 0.3 && kitty @ --to "$socket" "set-tab-title" "Tmux"
-  sleep 2 && hyprctl dispatch 'hl.dsp.window.tag({ tag = "+Tmux" })' 
+  sleep 2 && hyprctl dispatch 'hl.dsp.window.tag({ tag = "+Tmux" })'
   ;;
 --top) _alacritty TopTerm -e btop -p 1 ;;
 --disk) _alacritty DiskTerm -e disk --hold ;;
@@ -84,6 +84,7 @@ case ${1:-} in
   ;;
 # Web
 --firefox) Firefox -P "default" "${2:-about:newtab}" ;;
+--caishen) .caishen.sh ;;
 --github)
   DOTDIR="$(sed "s|^~|$HOME|" "$HOME/.config/dotdir")"
   hyprctl dispatch 'hl.dsp.focus({ workspace = 1 })' && $0 --firefox \
