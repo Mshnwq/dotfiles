@@ -30,6 +30,7 @@ in
       lazydocker
       # veracrypt
     ]
+    # NOTE: needs to be version compatible with k3s on servers
     ++ (with pkgs-stable; [
       kubectl
       kubectx
