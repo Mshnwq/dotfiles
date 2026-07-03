@@ -39,6 +39,7 @@ hl.bind(M .. " + ALT + semicolon", hl.dsp.exec_cmd(open .. " --hm"))
 hl.bind(M .. " + b", hl.dsp.exec_cmd(open .. " --firefox"))
 hl.bind(M .. " + ALT + y", hl.dsp.exec_cmd(open .. " --firefox 'https://www.youtube.com/'"))
 hl.bind(M .. " + ALT + g", hl.dsp.exec_cmd(open .. " --github"))
+hl.bind(M .. " + ALT + c", hl.dsp.exec_cmd(open .. " --caishen"))
 
 -- ─────────────────────────────────────────────
 -- Desktop Apps

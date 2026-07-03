@@ -34,7 +34,7 @@ end
 hl.window_rule({
 	name = "desktops",
 	match = {
-		class = "org.(kde.gwenview|fkoehler.KTailctl|telegram.desktop|pulseaudio.pavucontrol|qbittorrent.qBittorrent|rncbc.qpwgraph|keepassxc.KeePassXC)",
+		class = "org.(fkoehler.KTailctl|telegram.desktop|pulseaudio.pavucontrol|qbittorrent.qBittorrent|rncbc.qpwgraph|keepassxc.KeePassXC)",
 	},
 	float = true,
 	size = { 1080, 620 },
