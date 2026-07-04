@@ -6,10 +6,6 @@
 }:
 let
   fifo = "/tmp/mpd.fifo";
-  system = pkgs.system;
-  pkgs-stable = import inputs.nixpkgs-stable {
-    inherit system;
-  };
 in
 {
   sops.secrets = {
@@ -17,9 +13,11 @@ in
     lastfm-key.mode = "0400";
     mpd-remote-host = {
       mode = "0400";
-      path = ''
-        ${config.xdg.configHome}/mpd_remote_host"
-      '';
+      path = "${config.xdg.configHome}/mpd_remote_host";
+    };
+    mpd-remote-host-vpn = {
+      mode = "0400";
+      path = "${config.xdg.configHome}/mpd_remote_host_vpn";
     };
   };
 
@@ -68,7 +66,7 @@ in
         mkdir -p "${config.xdg.stateHome}/mpd"
         chmod 700 "${config.xdg.stateHome}/mpd"
         mkdir -p "${config.xdg.dataHome}/mpd/playlists"
-        mkfifo -m 600 ${fifo} || true
+        [[ -p ${fifo} ]] || mkfifo -m 600 ${fifo}
       '';
 
   systemd.user.services.mpd = {
@@ -275,8 +273,7 @@ in
     in
     # extract year my plugin
     {
-      enable = false;
-      package = pkgs-stable.beets;
+      enable = true;
       settings = {
         directory = "~/Music";
         import = {

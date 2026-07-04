@@ -2,6 +2,7 @@
 set -uo pipefail
 
 readonly REMOTE_HOST_FILE="$HOME/.config/mpd_remote_host"
+readonly REMOTE_HOST_FILE_VPN="$HOME/.config/mpd_remote_host_vpn"
 readonly MEDIA_CONTROL="$HOME/.local/bin/MediaControl"
 readonly WAYBAR="$HOME/.local/bin/executer/waybar.sh"
 ROFI_THEME="$HOME/.config/rofi/Selector.rasi"
@@ -9,7 +10,7 @@ DOTS_DIR="$HOME/.config/dots"
 OPTIONS=(
   "Local"
   "Remote"
-  # TODO: "VPN"
+  "VPN"
 )
 
 STATUS_FILE="$DOTS_DIR/.mpd_status"
@@ -52,6 +53,12 @@ _stop() {
     [[ -f $CONF_FILE ]] && rm -f "$CONF_FILE"
     systemctl --user restart pipewire-pulse
     ;;
+  "vpn")
+    host="$(<"$REMOTE_HOST_FILE_VPN")"
+    { _firewall remove "$host"; }
+    [[ -f $CONF_FILE ]] && rm -f "$CONF_FILE"
+    systemctl --user restart pipewire-pulse
+    ;;
   esac
 
   : | tee "$STATUS_FILE" "$HOST_FILE" >/dev/null
@@ -85,6 +92,16 @@ EOF
     { _firewall add "$host"; }
     systemctl --user restart pipewire-pulse
     ;;
+  "vpn")
+    host="$(<"$REMOTE_HOST_FILE_VPN")"
+    cat >"$CONF_FILE" <<-EOF
+pulse.cmd = [
+  { cmd = "load-module" args = "module-native-protocol-tcp auth-ip-acl=$host auth-anonymous=1" }
+]
+EOF
+    { _firewall add "$host"; }
+    systemctl --user restart pipewire-pulse
+    ;;
   esac
 
   echo "$mode" >"$STATUS_FILE"
@@ -98,8 +115,8 @@ else
   choice=$(
     printf '%s\n' "${OPTIONS[@]}" |
       rofi -dmenu -no-custom -selected-row 0 \
-        -theme-str 'listview { columns: 1; lines: 2; }' \
-        -p "Host" -mesg "[ Select MPD Host ]" -theme "$ROFI_THEME"
+        -p "Host" -mesg "[ Select MPD Host ]" -theme "$ROFI_THEME" \
+        -theme-str "listview { columns: 1; lines: ${#OPTIONS[@]}; }"
   )
   [[ -n $choice ]] && {
     dunstify -r 1001 "MPC" "Starting $choice"
