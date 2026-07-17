@@ -251,7 +251,14 @@ _tmux() {
 }
 
 _obsidian() {
-  :
+  local colors_wallust="$HOME/.cache/wal/colors.css"
+  local -A colors
+  for i in 1 9; do
+    colors[$i]=$(grep -oP "color$i:\s*\K#[A-Fa-f0-9]+" "$colors_wallust")
+  done
+  local obsidian_calendar_file="$HOME/Documents/Obsidian/Home/.obsidian/plugins/tasknotes/data.json"
+  sed -i "/\"id\": \"normal\"/,/\"weight\": 2/s/\"color\": \"#[^\"]*\"/\"color\": \"${colors[9]}\"/" "$obsidian_calendar_file"
+
   # TODO: relaunch
   # hyprctl clients -j | jq -e --arg title "Obsidian" '.[] | select(.title | contains($title))' &&
   #   xdg-open "obsidian://adv-uri?vault=Home&commandid=obsidian-pywal-theme%3Areload-pywal-theme"
