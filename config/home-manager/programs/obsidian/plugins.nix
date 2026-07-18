@@ -984,4 +984,38 @@
       inherit pkg;
     };
 
+  # https://github.com/Vinzent03/obsidian-git
+  # https://publish.obsidian.md/git-doc/Start+here
+  git =
+    let
+      version = "2.38.6";
+      manifestJson = pkgs.fetchurl {
+        url = "https://github.com/Vinzent03/obsidian-git/releases/download/${version}/manifest.json";
+        hash = "sha256:67391efa84093d56011f43764ff4f1c846dd8ad52b1f1dfd010ab628b217c2a3";
+      };
+      mainJs = pkgs.fetchurl {
+        url = "https://github.com/Vinzent03/obsidian-git/releases/download/${version}/main.js";
+        hash = "sha256:31ad89d3d973cb5520647d527f50d8c23fcd42176768361741a543af56d56287";
+      };
+      stylesCss = pkgs.fetchurl {
+        url = "https://github.com/Vinzent03/obsidian-git/releases/download/${version}/styles.css";
+        hash = "sha256:f5ab93f4d5b4dd1bd1e577864c5c79087f7adfd448ac346e0489e5847ce6922d";
+      };
+      pkg = pkgs.stdenvNoCC.mkDerivation {
+        pname = "obsidian-git";
+        version = "${version}";
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp ${mainJs} $out/main.js
+          cp ${manifestJson} $out/manifest.json
+          cp ${stylesCss} $out/styles.css
+          runHook postInstall
+        '';
+      };
+    in
+    {
+      inherit pkg;
+    };
 }
