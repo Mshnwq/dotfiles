@@ -16,8 +16,6 @@ let
             --replace-fail 'return M' $'M._Provider = Provider\nreturn M'
         '';
       });
-  # stylua = ".stylua.toml";
-  # stylelua = "${config.xdg.configHome}/nvim/${stylua}";
 in
 {
   imports = [ inputs.nix4nvchad.homeManagerModules.nvchad ];
@@ -69,9 +67,12 @@ in
       ]);
   };
   home.activation.copyNvchadStyleToml =
-    inputs.home-manager.lib.hm.dag.entryAfter [ "copyNvChad" ]
-      ''
-        ${pkgs.coreutils}/bin/cp ${inputs.nvchad-starter}/.stylua.toml "${config.xdg.configHome}/nvim/.stylua.toml"
-        chmod 664 "${config.xdg.configHome}/nvim/.stylua.toml"
-      '';
+    let
+      stylua = ".stylua.toml";
+      stylelua = "${config.xdg.configHome}/nvim/${stylua}";
+    in
+    inputs.home-manager.lib.hm.dag.entryAfter [ "copyNvChad" ] ''
+      ${pkgs.coreutils}/bin/cp ${inputs.nvchad-starter}/${stylua} "${stylelua}"
+      chmod 664 "${stylelua}"
+    '';
 }
