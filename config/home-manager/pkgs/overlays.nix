@@ -5,6 +5,8 @@ final: prev: {
   niflveil = final.callPackage ./niflveil.nix { };
   shyfox = final.callPackage ./shyfox.nix { };
   guitar = final.callPackage ./guitar.nix { };
+  fff-mcp = final.callPackage ./fff-mcp.nix { };
+  # outlook-mcp = final.callPackage ./outlook-mcp.nix { };
   guitarpro = final.callPackage ./guitarpro.nix {
     wine = final.wineWowPackages.stableFull;
     makeDesktopItem = final.makeDesktopItem;
