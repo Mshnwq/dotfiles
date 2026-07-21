@@ -20,6 +20,8 @@ args@{
       zathura
       cmatrix
       alacritty
+      kitty
+      dunst
       lm_sensors
       networkmanager_dmenu
       mtpfs
@@ -41,236 +43,237 @@ args@{
             --add-flags "-- -theme ${config.xdg.configHome}/rofi/Bluetooth.rasi"
         '';
       })
-      # use it with kitty image support
-      (pkgs.symlinkJoin {
-        name = "w3m";
-        buildInputs = [ pkgs.makeWrapper ];
-        paths = [ pkgs.w3m ];
-        postBuild = ''
-          wrapProgram $out/bin/w3m \
-            --set W3M_DIR "${config.xdg.stateHome}/w3m" \
-            --add-flags "-o display_image=1 -o inline_img_protocol=4"
-        '';
-      })
-    ];
-
-    # https://wiki.archlinux.org/title/NetworkManager#Set_up_PolicyKit_permissions
-    home.file.".config/networkmanager-dmenu/config.ini".source =
-      pkgs.runCommand "NetManagerDM.ini" { }
-        ''
-          ${pkgs.gnused}/bin/sed \
-            -e "s|bspwm/config/rofi-themes|rofi|" \
-            -e "s/pinentry =/pinentry = pinentry-qt/" \
-            ${
-              pkgs.fetchurl {
-                url =
-                  "https://raw.githubusercontent.com/gh0stzk/dotfiles/"
-                  + "7fe6e5966ebcc51110855ff5e82dadc601393ae9/"
-                  + "config/bspwm/config/NetManagerDM.ini";
-                sha256 = "sha256-X1sucruwzSZiM3Qo3ydVZiRMX/5jjDQ+TduST8M9xU4=";
-              }
-            } > $out
-        '';
-
-    # home.file.".config/rofi-buku.config".text = ''
-    #   #!/usr/bin/env bash
-    #   _rofi () {
-    #     rofi -dmenu -i -no-levenshtein-sort -width 1000 \
-    #       -theme "${config.xdg.configHome}/rofi/Buku.rasi" "$@"
-    #   }
-    #   # display settings
-    #   display_type=3
-    #   max_str_width=35
-    #   # keybindings
-    #   switch_view="Alt+Tab"
-    #   new_bookmark="Alt+n"
-    #   actions="Alt+a"
-    #   edit="Alt+e"
-    #   delete="Alt+d"
-    #   # colors
-    #   help_color="#"
-    # '';
-
-    programs.btop = {
-      enable = true;
-      settings = {
-        color_theme = "pywal";
-        theme_background = false;
-        presets = "proc:1:default";
-      };
-    };
-
-    # home.activation.flatpakOptions =
-    #   inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
-    #     ''
-    #       ov_dir="${config.xdg.dataHome}/flatpak/overrides"
-    #       mkdir -p "$ov_dir"
-    #       winezgui_ov="$ov_dir/io.github.fastrizwaan.WineZGUI"
-    #       if [ ! -f "$winezgui_ov" ]; then
-    #         cat > "$winezgui_ov" <<EOF
-    #       [Context]
-    #       sockets=wayland
-    #       EOF
-    #       fi
-    #     '';
-  };
-
-  vim = {
-    programs.vim = {
-      enable = true;
-      packageConfigurable = pkgs.vim;
-      extraConfig = ''
-        set mouse=a
-        set viminfo+=n~/.config/viminfo
-        autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
-        nnoremap n nzzzv
-        nnoremap N Nzzzv
-        nnoremap <C-d> <C-d>zz
-        nnoremap <C-u> <C-u>zz
-        nnoremap { {zz
-        nnoremap } }zz
-      '';
-    };
-    # https://github.com/vim/vim/issues/5157
-    # home.file.".local/bin/vim" = {
-    #   executable = true;
-    #   text = ''
-    #     #!/usr/bin/env sh
-    #     env -u XDG_SEAT -a vim ${config.programs.vim.package}/bin/vim "$@"
-    #   '';
-    # };
-  };
-
-  devenv = {
-    home.packages = [
-      pkgs.direnv
-      inputs.devenv.packages.x86_64-linux.devenv
-    ];
-    home.file."${config.xdg.configHome}/direnv/config.toml" = {
-      force = true;
-      text = ''
-        [global]
-        log_format = "-"
-        log_filter = "^$"
-      '';
-    };
-    home.file."${config.xdg.configHome}/npm/npmrc" = {
-      force = true;
-      text = ''
-        prefix=$XDG_DATA_HOME/npm
-        cache=$XDG_CACHE_HOME/npm
-        init-module=$XDG_CONFIG_HOME/npm/config/npm-init.js
-        logs-dir=$XDG_STATE_HOME/npm/logs
-      '';
-    };
-  };
-
-  # automation tools
-  auto = {
-    home.packages = with pkgs; [
-      rclone
-      jdupes
-      # aria2
-      # wireshark # TODO: try on other device it brok my wi-fi
-      nmap
-      buku # --import bookmarks.db
-      # These are quite some glorious garbage I aught to stick them in some python venv and be done
-      yt-dlp
-      gallery-dl
-    ];
-  };
-
-  # git
-  git = {
-    home.packages = with pkgs; [
-      difftastic
-    ];
-    # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.git.enable
-    programs.git = {
-      enable = true;
-      package = pkgs.gitMinimal;
-      signing = {
-        key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
-        signByDefault = true;
-      };
-      settings = {
-        user = {
-          name = "mshnwq";
-          email = "hmachnouk@proton.me";
-        };
-        init = {
-          defaultBranch = "main";
-        };
-        rerere = {
-          enabled = true;
-        };
-        tag = {
-          gpgSign = true;
-        };
-        credential = {
-          helper = "cache --timeout=36000";
-        };
-        core = {
-          editor = "vim";
-        };
-        interactive = {
-          diffFilter = "delta --color-only";
-        };
-        delta = {
-          navigate = true;
-        };
-        merge = {
-          conflictstyle = "diff3";
-        };
-        diff = {
-          colorMoved = "default";
-          external = "difft";
-        };
-      };
-    };
-  };
-
-  # rust tools
-  rust = {
-    home.packages = with pkgs; [
-      cargo
-      rustc
-      serie # crashes on nixpkgs
-      # guitar # from /pkgs/; doest crash baut laggy
-      gpg-tui
-      # termscp
-    ];
-  };
-
-  # digital audio workstation
-  daw = {
-    home.packages = with pkgs; [
-      # audacity # WAYLAND is in v4 pre release still maybe overlay it
-      qpwgraph
-      pulsemixer
-      # bespokesynth # flatpak is better
-      # lmms # from /overlays/;
-      #odin2
-      #vital
-      #cardinal
-      # ardour
-    ];
-  };
-  # BUG: where is this?
-  xdg.desktopEntries.qpwgraph = {
-    name = "qpwgraph";
-    exec = "qpwgraph %f";
-    icon = "org.rncbc.qpwgraph";
-    categories = [
-      "Audio"
-      "Midi"
-      "X-Alsa"
-      "X-Pipewire"
-    ];
-    type = "Application";
-    startupNotify = true;
-    mimeType = [
-      "application/x-qpwgraph-patchbay"
-    ];
-  };
-}
+#       # https://www.youtube.com/watch?v=fjoGZ90bOzw
+#       # claude-code # I need cli ? XXX pipes to w3m, & ?? XXX to claude
+#       # use it with kitty image support
+#       (pkgs.symlinkJoin {
+#         name = "w3m";
+#         buildInputs = [ pkgs.makeWrapper ];
+#         paths = [ pkgs.w3m ];
+#         postBuild = ''
+#           wrapProgram $out/bin/w3m \
+#             --set W3M_DIR "${config.xdg.stateHome}/w3m" \
+#             --add-flags "-o display_image=1 -o inline_img_protocol=4"
+#         '';
+#       })
+#     ];
+#
+#     # https://wiki.archlinux.org/title/NetworkManager#Set_up_PolicyKit_permissions
+#     home.file.".config/networkmanager-dmenu/config.ini".source =
+#       pkgs.runCommand "NetManagerDM.ini" { }
+#         ''
+#           ${pkgs.gnused}/bin/sed \
+#             -e "s|bspwm/config/rofi-themes|rofi|" \
+#             -e "s/pinentry =/pinentry = pinentry-qt/" \
+#             ${
+#               pkgs.fetchurl {
+#                 url =
+#                   "https://raw.githubusercontent.com/gh0stzk/dotfiles/"
+#                   + "7fe6e5966ebcc51110855ff5e82dadc601393ae9/"
+#                   + "config/bspwm/config/NetManagerDM.ini";
+#                 sha256 = "sha256-X1sucruwzSZiM3Qo3ydVZiRMX/5jjDQ+TduST8M9xU4=";
+#               }
+#             } > $out
+#         '';
+#
+#     # home.file.".config/rofi-buku.config".text = ''
+#     #   #!/usr/bin/env bash
+#     #   _rofi () {
+#     #     rofi -dmenu -i -no-levenshtein-sort -width 1000 \
+#     #       -theme "${config.xdg.configHome}/rofi/Buku.rasi" "$@"
+#     #   }
+#     #   # display settings
+#     #   display_type=3
+#     #   max_str_width=35
+#     #   # keybindings
+#     #   switch_view="Alt+Tab"
+#     #   new_bookmark="Alt+n"
+#     #   actions="Alt+a"
+#     #   edit="Alt+e"
+#     #   delete="Alt+d"
+#     #   # colors
+#     #   help_color="#"
+#     # '';
+#
+#     programs.btop = {
+#       enable = true;
+#       settings = {
+#         color_theme = "pywal";
+#         theme_background = false;
+#         presets = "proc:1:default";
+#       };
+#     };
+#
+#     # home.activation.flatpakOptions =
+#     #   inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+#     #     ''
+#     #       ov_dir="${config.xdg.dataHome}/flatpak/overrides"
+#     #       mkdir -p "$ov_dir"
+#     #       winezgui_ov="$ov_dir/io.github.fastrizwaan.WineZGUI"
+#     #       if [ ! -f "$winezgui_ov" ]; then
+#     #         cat > "$winezgui_ov" <<EOF
+#     #       [Context]
+#     #       sockets=wayland
+#     #       EOF
+#     #       fi
+#     #     '';
+#   };
+#
+#   vim = {
+#     programs.vim = {
+#       enable = true;
+#       packageConfigurable = pkgs.vim;
+#       extraConfig = ''
+#         set mouse=a
+#         set viminfo+=n~/.config/viminfo
+#         autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
+#         nnoremap n nzzzv
+#         nnoremap N Nzzzv
+#         nnoremap <C-d> <C-d>zz
+#         nnoremap <C-u> <C-u>zz
+#         nnoremap { {zz
+#         nnoremap } }zz
+#       '';
+#     };
+#     # https://github.com/vim/vim/issues/5157
+#     # home.file.".local/bin/vim" = {
+#     #   executable = true;
+#     #   text = ''
+#     #     #!/usr/bin/env sh
+#     #     env -u XDG_SEAT -a vim ${config.programs.vim.package}/bin/vim "$@"
+#     #   '';
+#     # };
+#   };
+#
+#   devenv = {
+#     home.packages = [
+#       inputs.devenv.packages.x86_64-linux.devenv
+#     ];
+#     # home.file."${config.xdg.configHome}/direnv/config.toml" = {
+#     #   force = true;
+#     #   text = ''
+#     #     [global]
+#     #     log_format = "-"
+#     #     log_filter = "^$"
+#     #   '';
+#     # };
+#     # home.file."${config.xdg.configHome}/npm/npmrc" = {
+#     #   force = true;
+#     #   text = ''
+#     #     prefix=$XDG_DATA_HOME/npm
+#     #     cache=$XDG_CACHE_HOME/npm
+#     #     init-module=$XDG_CONFIG_HOME/npm/config/npm-init.js
+#     #     logs-dir=$XDG_STATE_HOME/npm/logs
+#     #   '';
+#     # };
+#   };
+#
+#   # automation tools
+#   auto = {
+#     home.packages = with pkgs; [
+#       rclone
+#       jdupes
+#       # aria2
+#       # wireshark # TODO: try on other device it brok my wi-fi
+#       nmap
+#       buku # --import bookmarks.db
+#       # These are quite some glorious garbage I aught to stick them in some python venv and be done
+#       yt-dlp
+#       gallery-dl
+#     ];
+#   };
+#
+#   # git
+#   git = {
+#     home.packages = with pkgs; [
+#       difftastic
+#     ];
+#     # https://home-manager.dev/manual/unstable/options.xhtml#opt-programs.git.enable
+#     programs.git = {
+#       enable = true;
+#       package = pkgs.gitMinimal;
+#       signing = {
+#         key = "3387826BA9F3479C5B1EC96574D232B4C78840C9";
+#         signByDefault = true;
+#       };
+#       settings = {
+#         user = {
+#           name = "mshnwq";
+#           email = "hmachnouk@proton.me";
+#         };
+#         init = {
+#           defaultBranch = "main";
+#         };
+#         rerere = {
+#           enabled = true;
+#         };
+#         tag = {
+#           gpgSign = true;
+#         };
+#         credential = {
+#           helper = "cache --timeout=36000";
+#         };
+#         core = {
+#           editor = "vim";
+#         };
+#         interactive = {
+#           diffFilter = "delta --color-only";
+#         };
+#         delta = {
+#           navigate = true;
+#         };
+#         merge = {
+#           conflictstyle = "diff3";
+#         };
+#         diff = {
+#           colorMoved = "default";
+#           external = "difft";
+#         };
+#       };
+#     };
+#   };
+#
+#   # rust tools
+#   rust = {
+#     home.packages = with pkgs; [
+#       cargo
+#       rustc
+#       serie # crashes on nixpkgs
+#       # guitar # from /pkgs/; doest crash baut laggy
+#       gpg-tui
+#       # termscp
+#     ];
+#   };
+#
+#   # digital audio workstation
+#   daw = {
+#     home.packages = with pkgs; [
+#       # audacity # WAYLAND is in v4 pre release still maybe overlay it
+#       qpwgraph
+#       pulsemixer
+#       # bespokesynth # flatpak is better
+#       # lmms # from /overlays/;
+#       #odin2
+#       #vital
+#       #cardinal
+#       # ardour
+#     ];
+#   };
+#   # BUG: where is this?
+#   xdg.desktopEntries.qpwgraph = {
+#     name = "qpwgraph";
+#     exec = "qpwgraph %f";
+#     icon = "org.rncbc.qpwgraph";
+#     categories = [
+#       "Audio"
+#       "Midi"
+#       "X-Alsa"
+#       "X-Pipewire"
+#     ];
+#     type = "Application";
+#     startupNotify = true;
+#     mimeType = [
+#       "application/x-qpwgraph-patchbay"
+#     ];
+#   };
+# }
