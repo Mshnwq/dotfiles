@@ -26,7 +26,8 @@
 
   inputs = {
     nixpkgs-old.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11"; # TODO: upgrade to 26.05
+    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
+    # # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
     nixpkgs.follows = "nixpkgs-unstable";
@@ -47,7 +48,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland = {
-      url = "github:hyprwm/hyprland/v0.55.2";
+      url = "github:hyprwm/hyprland/v0.56.0";
     };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -61,7 +62,8 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     devenv = {
-      url = "github:cachix/devenv/v1.11.2"; # TODO: upgrade to v2
+      # url = "github:cachix/devenv/v2.1.2";
+      url = "github:ruslanSorokin/devenv/backport/v2.1.2/feat/add-status-line-visibility-option";
     };
     yazi = {
       url = "github:sxyazi/yazi/v26.1.4";
@@ -73,6 +75,7 @@
     # waifu-cursors.url = "github:maotseantonio/waifu-cursors";
     neovim = {
       url = "github:nix-community/neovim-nightly-overlay/28962d1"; # v0.12 - 563f9ef
+      inputs.nixpkgs.follows = "nixpkgs-old";
     };
     nvchad-starter = {
       url = "github:Mshnwq/nvchad/20ee5e4";
@@ -83,9 +86,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nvchad-starter.follows = "nvchad-starter";
     };
+    # # https://github.com/dryvist/nix-claude-code/
+    # # https://github.com/sadjow/claude-code-nix
+    # # claude-code = {
+    # #   url = "github:sadjow/claude-code-nix?ref=v2.1.215";
+    # #   inputs.nixpkgs.follows = "nixpkgs";
+    # # };
+    # claude-desktop = {
+    #   url = "github:aaddrick/claude-desktop-debian";
+    # };
     sops-nix = {
       url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
