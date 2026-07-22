@@ -76,14 +76,9 @@ let
       bindkey '^R' fzf-history-widget
     ''}
     ${lib.optionalString (config.zsh.direnv.enable) ''
-      # UV completions (lazy load)
-      # if command -v uv &>/dev/null; then
-      #   # autoload -Uz compinit && compinit
-      #   _uv() { eval "$(uv generate-shell-completion zsh)" }
-      #   compdef _uv uv
-      # fi
-      # Direnv hook
-      eval "$(direnv hook zsh)"
+      # Devenv hook >=v2.1
+      export DEVENV_STATUS_LINE=false # fork
+      eval "$(devenv hook zsh)"
     ''}
     ${lib.optionalString (config.zsh.debug.enable) ''
       _zprof() {

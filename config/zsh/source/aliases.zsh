@@ -1,5 +1,5 @@
 alias chmox='chmod +x'
-alias dev='devenv shell $SHELL'
+alias dev='devenv shell'
 alias ...='cd ../..'
 
 _OpenApps() {
