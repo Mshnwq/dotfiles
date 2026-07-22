@@ -37,7 +37,6 @@ in
       k9s
     ]);
   home.sessionVariables = {
-    # AZURE_CONFIG_DIR=$XDG_CONFIG_HOME/azure
     KUBECONFIG = "${config.xdg.configHome}/kube";
     KUBECACHEDIR = "${config.xdg.cacheHome}/kube";
     TUF_ROOT = "${config.xdg.dataHome}/sigstore/root";
