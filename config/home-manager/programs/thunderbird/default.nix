@@ -1,8 +1,8 @@
-# thunderbird.nix
+# thunderbird/default.nix
 {
   lib,
   pkgs,
-  config,
+  # config,
   ...
 }:
 let
@@ -10,25 +10,21 @@ let
     inherit lib pkgs;
   };
 in
+# https://home-manager-options.extranix.com/?query=thunder&release=master
 {
-  # home.packages = [
-  #   pkgs.thunderbird-mcp
-  # ];
   programs.thunderbird = {
     enable = true;
     package = pkgs.thunderbird;
-    # Preferences applied to ALL profiles below.
-    # settings = {
-    #   "general.useragent.override" = "";
-    #   "privacy.donottrackheader.enabled" = true;
-    #   "mail.spellcheck.inline" = true;
-    # };
+    settings = {
+      "general.useragent.override" = "";
+      "privacy.donottrackheader.enabled" = true;
+      "mail.spellcheck.inline" = true;
+    };
     profiles = {
       # "default" profile — the one Thunderbird opens on startup.
       default = {
-        isDefault = true;
+        # isDefault = true;
         # settings = {
-        #   "mail.spellcheck.inline" = true;
         #   "mailnews.start_page.enabled" = false;
         # };
         # extraConfig = ''
@@ -39,26 +35,22 @@ in
         #   force = true;
         # };
       };
-      dummy = {
-        # isDefault = false;
-        # settings = {
-        #   "mail.spellcheck.inline" = false;
-        # };
-        # extraConfig = ''
-        #   // Extra raw prefs for this profile go here.
-        # '';
-      };
       ict = {
-        # isDefault = false;
-        # settings = {
-        # "mail.spellcheck.inline" = true;
-        # "extensions.autoDisableScopes" = 0;
-        # };
-        # extraConfig = ''
-        #   // Extra raw prefs for this profile go here.
-        # '';
-        extensions = [ addons.thunderbirdMcpXpi ];
+        isDefault = true;
+        extensions = [
+          addons.mcp
+          addons.cli
+        ];
       };
     };
+  };
+  programs.which-key = {
+    entries = [
+      {
+        key = "e";
+        desc = "Email";
+        cmd = "thunderbird";
+      }
+    ];
   };
 }
