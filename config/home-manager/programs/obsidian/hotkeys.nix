@@ -138,6 +138,15 @@
       "key" = "T";
     }
   ];
+  # "templater-obsidian:replace-in-file-templater": [],
+  "templater-obsidian:insert-templater" = [
+    {
+      "modifiers" = [
+        "Alt"
+      ];
+      "key" = "T";
+    }
+  ];
   "workspace:new-tab" = [
     {
       "modifiers" = [
