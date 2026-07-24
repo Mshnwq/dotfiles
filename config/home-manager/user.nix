@@ -78,10 +78,8 @@ in
       devenv
       default
       firefox
-      email
-      thunderbird
       # email.aerc
-      # email.thunderbird
+      email.thunderbird
       keyboard.vial
       keyboard.kmonad
       discord.stable
