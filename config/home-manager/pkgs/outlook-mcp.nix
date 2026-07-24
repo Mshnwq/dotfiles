@@ -1,1 +1,0 @@
-# pkgs/outlook-mcp.nix
