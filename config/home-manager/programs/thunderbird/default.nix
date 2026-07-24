@@ -50,10 +50,10 @@ in
       };
       ict = {
         # isDefault = false;
-        settings = {
-          "mail.spellcheck.inline" = true;
-          "extensions.autoDisableScopes" = 0;
-        };
+        # settings = {
+        # "mail.spellcheck.inline" = true;
+        # "extensions.autoDisableScopes" = 0;
+        # };
         # extraConfig = ''
         #   // Extra raw prefs for this profile go here.
         # '';
@@ -62,10 +62,3 @@ in
     };
   };
 }
-# programs.thunderbird.profiles.<name>.extensions
-#
-# List of ‹name› add-on packages to install for this profile.
-#
-# Note that it is necessary to manually enable extensions inside ‹name› after the first installation.
-#
-# To automatically enable extensions add "extensions.autoDisableScopes" = 0; to programs.thunderbird.profiles.<profile>.settings

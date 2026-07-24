@@ -10,7 +10,7 @@
       owner = "TKasperczyk";
       repo = "thunderbird-mcp";
       rev = "e6e9014b2baefea68ab97db76586cf875aca77ba"; # v0.7.4
-      hash = lib.fakeHash; # <-- replace with the real hash Nix reports
+      hash = "sha256-jrmHqToe+lJTpoG1QYaYHVk84PaO5zKAXLwr3Opl0A4=";
     };
     dontUnpack = true;
     dontConfigure = true;
@@ -30,3 +30,7 @@
     };
   };
 }
+# Note that it is necessary to manually enable extensions inside ‹name› after the first installation.
+# To automatically enable extensions add "extensions.autoDisableScopes" = 0; to programs.thunderbird.profiles.<profile>.settings
+
+# TODO: https://services.addons.thunderbird.net/en-us/thunderbird/addon/pywalfox/
