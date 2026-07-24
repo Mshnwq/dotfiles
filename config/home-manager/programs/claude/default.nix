@@ -14,11 +14,10 @@
   };
   home.packages = with pkgs; [
     # TODO: find way to work with keyring (KWallet not gnome-keyring)
-    # claude-desktop # from /overlays
-    # claude-monitor # https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor
-    fff-mcp # from /pkgs
-    # outlook-mcp # from /pkgs
-    # openclaw
+    claude-desktop # from /overlays
+    claude-monitor # https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor
+    # fff-mcp # from /pkgs
+    # openclaw # needs sandboxing https://buduroiu.com/blog/openclaw-microvm/
   ];
   programs.which-key = {
     entries = [
