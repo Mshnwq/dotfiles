@@ -238,6 +238,60 @@ args@{
     ];
   };
 
+  # whatsapp
+  zapzap = {
+    programs.zapzap = {
+      enable = true;
+      settings = {
+        notification = {
+          app = true;
+          show_msg = true;
+          show_name = true;
+          show_photo = true;
+          # donation_message = false;
+        };
+        onboarding = {
+          initial_setup_completed = true;
+        };
+        permissions = {
+          "auto_grant\\camera" = false;
+          "auto_grant\\microphone" = false;
+          "auto_grant\\screen_contents" = false;
+        };
+        privacy = {
+          webrtc_shield = false;
+        };
+        system = {
+          scale = 100;
+          wayland = true;
+          confirm_on_close = false;
+          download_path = "${config.home.homeDirectory}/Downloads";
+          interface_language = "system";
+          notificationCounter = true;
+          quit_in_close = false;
+          sidebar = true;
+          spellCheckers = false;
+          start_background = false;
+          start_system = false;
+          theme = "auto";
+          tray_icon = true;
+        };
+        website = {
+          open_page = false;
+        };
+      };
+    };
+    programs.which-key = {
+      entries = [
+        {
+          key = "z";
+          desc = "ZapZap";
+          cmd = "QT_QPA_PLATFORM=wayland QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu zapzap";
+        }
+      ];
+    };
+  };
+
   # digital audio workstation
   daw = {
     home.packages = with pkgs; [

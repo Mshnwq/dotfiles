@@ -40,6 +40,7 @@ in
     CARGO_HOME = "${config.xdg.dataHome}/cargo";
     NPM_CONFIG_PREFIX = "${config.xdg.dataHome}";
     NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
+    # CLAUDE_CONFIG_DIR = "${config.xdg.configHome}/claude";
     # GOPATH = "${config.xdg.dataHome}/go";
     # GOBIN = "${GOPATH}/bin";
     # GOMODCACHE = "${config.xdg.cacheHome}/go/mod";
@@ -68,21 +69,22 @@ in
       # wine
       anki
       hypr
-      email
-      # {
-      #   which-key.enable = true;
-      # }
       music
       pywal
       infra
+      zapzap
+      claude
       neovim
       devenv
       default
       firefox
+      email
+      thunderbird
+      # email.aerc
+      # email.thunderbird
       keyboard.vial
       keyboard.kmonad
       discord.stable
-      # TODO: get mischa ai cli and claude code ??
       obsidian
       {
         nvim.enable = true;
@@ -152,11 +154,6 @@ in
         key = "t";
         desc = "Telegram";
         cmd = " flatpak run org.telegram.desktop";
-      }
-      {
-        key = "z";
-        desc = "ZapZap";
-        cmd = " flatpak run com.rtosta.zapzap";
       }
       {
         key = "x";
