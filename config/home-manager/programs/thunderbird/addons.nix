@@ -5,7 +5,6 @@
 }:
 # Note that it is necessary to manually enable extensions inside ‹name› after the first installation.
 # To automatically enable extensions add "extensions.autoDisableScopes" = 0; to programs.thunderbird.profiles.<profile>.settings
-# TODO: https://services.addons.thunderbird.net/en-us/thunderbird/addon/pywalfox/
 {
   mcp = pkgs.stdenvNoCC.mkDerivation {
     pname = "thunderbird-mcp-xpi";
@@ -33,6 +32,7 @@
       platforms = platforms.all;
     };
   };
+
   cli = pkgs.stdenvNoCC.mkDerivation {
     pname = "thunderbird-cli-xpi";
     version = "2.0.0"; # extension manifest version (repo tag is v1.0.2)
@@ -56,6 +56,32 @@
       description = "Thunderbird AI Bridge add-on for thunderbird-cli (pinned to a GitHub commit)";
       homepage = "https://github.com/vitalio-sh/thunderbird-cli";
       license = licenses.mit;
+      platforms = platforms.all;
+    };
+  };
+
+  # do Ctrl + Alt + F to fetch pywal colors
+  pywalfox = pkgs.stdenvNoCC.mkDerivation {
+    pname = "pywalfox-xpi";
+    version = "2.0.11";
+    src = pkgs.fetchurl {
+      url = "https://addons.thunderbird.net/thunderbird/downloads/file/1021692/pywalfox-2.0.11-tb.xpi";
+      hash = "sha256-CDnmwAM0Hhkqe+GAL6QNiwWELa0aOjvqyI9n+6gUnew=";
+    };
+    dontUnpack = true;
+    dontConfigure = true;
+    dontBuild = true;
+    installPhase = ''
+      runHook preInstall
+      dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+      mkdir -p "$dst"
+      install -m644 "$src" "$dst/pywalfox@frewacom.org.xpi"
+      runHook postInstall
+    '';
+    meta = with lib; {
+      description = "Pywalfox theming add-on for Thunderbird (fetched from addons.thunderbird.net)";
+      homepage = "https://github.com/Frewacom/pywalfox";
+      license = licenses.mpl20;
       platforms = platforms.all;
     };
   };

@@ -19,14 +19,19 @@ in
       "general.useragent.override" = "";
       "privacy.donottrackheader.enabled" = true;
       "mail.spellcheck.inline" = true;
+      "extensions.autoDisableScopes" = 0;
+      "mailnews.start_page.enabled" = false;
     };
+    nativeMessagingHosts = [ pkgs.pywalfox-native ];
     profiles = {
       # "default" profile — the one Thunderbird opens on startup.
       default = {
+        extensions = [
+          addons.mcp
+          addons.cli
+          addons.pywalfox
+        ];
         # isDefault = true;
-        # settings = {
-        #   "mailnews.start_page.enabled" = false;
-        # };
         # extraConfig = ''
         #   // Extra raw prefs for this profile go here.
         # '';
@@ -40,6 +45,7 @@ in
         extensions = [
           addons.mcp
           addons.cli
+          addons.pywalfox
         ];
       };
     };
