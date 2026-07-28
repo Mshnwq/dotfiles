@@ -79,6 +79,16 @@ let
       # Devenv hook >=v2.1
       export DEVENV_STATUS_LINE=false # fork
       eval "$(devenv hook zsh)"
+      # Silence the "run 'devenv allow'"
+      if (( ''${+functions[_devenv_hook]} )); then
+        eval "_devenv_hook_orig() { ''${functions[_devenv_hook]} }"
+        _devenv_hook() {
+          local errfile="''${TMPDIR:-/tmp}/devenv-hook.$$.err"
+          _devenv_hook_orig 2>| "$errfile"
+          grep -v -E "is not allowed|devenv allow" "$errfile" >&2 || true
+          rm -f "$errfile"
+        }
+      fi
     ''}
     ${lib.optionalString (config.zsh.debug.enable) ''
       _zprof() {
@@ -107,3 +117,17 @@ in
     zshConfigAfter
   ];
 }
+# ${lib.optionalString (config.zsh.direnv.enable) ''
+#   # Devenv hook >=v2.1
+#   export DEVENV_STATUS_LINE=false # fork
+#   eval "$(devenv hook zsh)"
+# 
+#   # Silence the untrusted-directory nag from the prompt hook
+#   devenv() {
+#     if [[ "$1" == "hook-should-activate" ]]; then
+#       command devenv "$@" 2>/dev/null
+#     else
+#       command devenv "$@"
+#     fi
+#   }
+# ''}
