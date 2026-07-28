@@ -30,6 +30,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-fork.url = "github:mshnwq/nixpkgs/66595d469ee964a75e30a08eb9abcaaab4d30a5e";
     nixpkgs.follows = "nixpkgs-unstable";
+    # r-ryantm's auto-update branch — thunderbird 153 bin
+    # nixpkgs-tb = {
+    #   url = "github:r-ryantm/nixpkgs/e3b7e02870930bf7f34e6e105e6c27f4a8942350";
+    # };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -92,7 +96,8 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     claude-desktop = {
-      url = "github:aaddrick/claude-desktop-debian";
+      # url = "github:aaddrick/claude-desktop-debian";
+      url = "github:patrickjaja/claude-desktop-bin";
     };
     sops-nix = {
       url = "github:mic92/sops-nix";
@@ -116,7 +121,6 @@
       lib = nixpkgs.lib.extend (
         nixpkgs.lib.composeManyExtensions (import ./lib/default.nix inputs')
       );
-
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
       ];

@@ -2,6 +2,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -38,6 +39,36 @@ let
       rm -rf "$work"
     '';
   });
+  claude-desktop-fixed =
+    inputs.claude-desktop.packages.x86_64-linux.default.overrideAttrs
+      (old: {
+        src =
+          inputs.claude-desktop.packages.x86_64-linux.default.src.overrideAttrs
+            (_: {
+              outputHash = "sha256-aNSPrzIIs/7fvlCVLRh4QX/igEf2m8SZly+R+3LqXGQ=";
+            });
+        # CLAUDE_NATIVE_TITLEBAR=1 makes the window use a native frame
+        # (frame:true, no titleBarOverlay). The min/max/close buttons are the
+        # Electron Window-Controls-Overlay — drawn by Chromium, not in the DOM,
+        # so CSS can't hide them; this is the only real off-switch. On Hyprland
+        # (no client-side titlebar) it means no window buttons at all.
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
+        postInstall = (old.postInstall or "") + ''
+          wrapProgram $out/bin/claude-desktop --set CLAUDE_NATIVE_TITLEBAR 1
+        '';
+      });
+
+  # The patrickjaja build themes via ~/.config/Claude/claude-desktop-bin.jsonc.
+  # Generate a "pywal" theme in it from the current palette (see ./gen-theme.py).
+  # Runs on switch; re-run after a `wal` change to re-theme (then restart the app).
+  genPywalTheme = pkgs.writeShellScript "claude-desktop-pywal-theme" ''
+    colors="${config.xdg.cacheHome}/wal/colors.json"
+    out="${config.xdg.configHome}/Claude/claude-desktop-bin.jsonc"
+    if [ -f "$colors" ]; then
+      mkdir -p "${config.xdg.configHome}/Claude"
+      ${pkgs.python3}/bin/python3 ${./gen-theme.py} "$colors" "$out"
+    fi
+  '';
 in
 {
   programs.claude-code = {
@@ -48,17 +79,21 @@ in
     # };
   };
   home.packages = with pkgs; [
-    claude-desktop-pywal # from /overlays, patched with ./pywal-theme.js
+    # claude-desktop-pywal # from /overlays, patched with ./pywal-theme.js
+    # claude-desktop # from /overlays
     # TODO: patch https://github.com/patrickjaja/claude-desktop-bin/tree/master/themes
     # a theme into claude desktop
     # https://github.com/aaddrick/claude-desktop-debian/blob/main/nix/claude-desktop.nix
     # https://github.com/aaddrick/claude-desktop-debian/blob/main/nix/fhs.nix
-    # claude-desktop # from /overlays
+    claude-desktop-fixed
     # TODO: find way to work with keyring (KWallet not gnome-keyring)
     claude-monitor # https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor
     # fff-mcp # from /pkgs
     # openclaw # needs sandboxing https://buduroiu.com/blog/openclaw-microvm/
   ];
+  home.activation.claudeDesktopPywalTheme =
+    inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
+      "$DRY_RUN_CMD ${genPywalTheme}";
   programs.which-key = {
     entries = [
       {
