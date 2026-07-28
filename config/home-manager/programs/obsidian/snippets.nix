@@ -128,7 +128,7 @@
     '';
   }
   {
-    name = "mp-input-theme";
+    name = "metabind-theme";
     enable = true;
     text = ''
       .search-input-container input {
@@ -138,8 +138,23 @@
       .mb-input-type-time input[type=time] {
         background: color-mix(in srgb, var(--checkbox-color) 75%, transparent);
       }
+      .mb-progress-bar-progress {
+        background-color: color-mix(in srgb, var(--checkbox-color) 75%, transparent);
+      }
       .mb-input-type-toggle .checkbox-container[aria-checked="false"] {
         background-color: var(--background-primary);
+      }
+      .mb-progress-bar-progress {
+        background-color: color-mix(in srgb, var(--checkbox-color) 75%, transparent);
+      }
+      .mb-progress-bar-input {
+        background-color: color-mix(in srgb, var(--background-primary) 75%, transparent);
+      }
+      .mb-input-type-number input[type=number] {
+        background-color: color-mix(in srgb, var(--background-primary) 85%, transparent);
+      }
+      .mb-card {
+        background-color: color-mix(in srgb, var(--color-red) 25%, transparent);
       }
     '';
   }
@@ -153,6 +168,21 @@
       }
     '';
   }
+  # {
+  #   name = "calendar-theme";
+  #   enable = true;
+  #   text = ''
+  #     .advanced-calendar-view .fc-timegrid-now-indicator-line,
+  #     .advanced-calendar-view .fc-timegrid-now-indicator-arrow {
+  #       border-color: var(--color-red);
+  #       border-width: 4px;
+  #       margin-top: -4px;
+  #     }
+  #     .advanced-calendar-view .fc-event.fc-task-event {
+  #       background-color: color-mix(in srgb, var(--color-red) 25%, transparent) !important;
+  #     }
+  #   '';
+  # }
   # BUG: no background when custom colors
   {
     name = "lovely-bases-card";
