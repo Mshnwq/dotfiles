@@ -578,6 +578,8 @@ _cursors() {
 _cursor() { _cursors; }
 _wojak() { _cursors --soy; }
 
+_claude() { python3 "$HOME/Documents/.dotfiles/config/home-manager/programs/claude/gen-theme.py" "$HOME/.cache/wal/colors.json" "$HOME/.config/Claude/claude-desktop-bin.jsonc"; }
+
 _color() {
   local theme="$1"
   local pid_file="/tmp/wal_${theme}.pid"
@@ -616,6 +618,7 @@ auto=(
   "anki"
   "telegram"
   "obsidian"
+  "claude"
   "sddm"
 )
 
