@@ -20,10 +20,6 @@ let
     Dummy = {
       enable = true;
       target = "${obsidian-dir}/Dummy";
-      settings = {
-        # move to global when figured it all
-        hotkeys = import ./hotkeys.nix { };
-      };
     };
   };
   vaultDirs = map (v: builtins.baseNameOf v.target) (builtins.attrValues vaults);
@@ -80,9 +76,12 @@ in
             metaBind
             jsEngine
             dataView
+            # liveSync
             jupymd
             tasks
+            git
           ];
+          hotkeys = import ./hotkeys.nix { };
           cssSnippets = import ./snippets.nix { inherit pkgs; };
           appearance = {
             "cssTheme" = "pywal-theme"; # no need theme = {} with my init script
