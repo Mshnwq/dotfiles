@@ -168,21 +168,21 @@
       }
     '';
   }
-  # {
-  #   name = "calendar-theme";
-  #   enable = true;
-  #   text = ''
-  #     .advanced-calendar-view .fc-timegrid-now-indicator-line,
-  #     .advanced-calendar-view .fc-timegrid-now-indicator-arrow {
-  #       border-color: var(--color-red);
-  #       border-width: 4px;
-  #       margin-top: -4px;
-  #     }
-  #     .advanced-calendar-view .fc-event.fc-task-event {
-  #       background-color: color-mix(in srgb, var(--color-red) 25%, transparent) !important;
-  #     }
-  #   '';
-  # }
+  {
+    name = "calendar-theme";
+    enable = true;
+    text = ''
+      .advanced-calendar-view .fc-timegrid-now-indicator-line,
+      .advanced-calendar-view .fc-timegrid-now-indicator-arrow {
+        border-color: var(--color-red);
+        border-width: 4px;
+        margin-top: -4px;
+      }
+      .advanced-calendar-view .fc-event.fc-task-event {
+        background-color: color-mix(in srgb, var(--color-red) 25%, transparent) !important;
+      }
+    '';
+  }
   # BUG: no background when custom colors
   {
     name = "lovely-bases-card";
