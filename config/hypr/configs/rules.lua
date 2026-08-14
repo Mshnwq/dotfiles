@@ -13,8 +13,9 @@ hl.workspace_rule({ workspace = "6", layout = "master" })
 for _, rule in ipairs({
 	{ match = { class = ".*" }, opacity = "1 override 1 override 1 override" },
 	{ match = { class = "firefox", title = "^Mozilla Firefox$" }, opacity = "0.8 override 0.9 override 1 override" },
-	{ match = { class = "org.pwmt.zathura" }, opacity = "0.9 override 0.95 override 1 override", float = true, },
+	{ match = { class = "org.pwmt.zathura" }, opacity = "0.9 override 0.95 override 1 override", float = true },
 	{ match = { class = "obsidian", title = ".*Obsidian.*" }, opacity = "0.93 override 0.91 override 1 override" },
+	-- com.anthropic.Claude
 }) do
 	hl.window_rule(rule)
 end
@@ -53,6 +54,13 @@ for _, rule in ipairs({
 		name = "keepass",
 		match = { class = "org.keepassxc.KeePassXC", title = "^Generate Password$" },
 		size = { 540, 360 },
+		center = true,
+	},
+	-- Zap portal file-picker
+	{
+		name = "zap",
+		match = { class = "com.rtosta.zapzap", title = "^Open$" },
+		size = { 720, 480 },
 		center = true,
 	},
 	-- XDG portal file-picker
@@ -143,6 +151,14 @@ end
 hl.layer_rule({
 	match = { namespace = "rofi" },
 	dim_around = true,
+})
+hl.layer_rule({
+	match = { namespace = "wlr_which_key" },
+	dim_around = true,
+})
+hl.layer_rule({
+	match = { namespace = "kcaster" },
+	blur = true,
 })
 
 -- ── Misc / global rules ──────────────────────────────────────
