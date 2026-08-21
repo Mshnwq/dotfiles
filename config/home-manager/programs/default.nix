@@ -11,7 +11,6 @@ args@{
   lib.importDir' ./. "default.nix"
 ))
 // {
-
   default = {
     home.packages = with pkgs; [
       age
