@@ -32,7 +32,7 @@ in
     ]
     # NOTE: needs to be version compatible with k3s on servers
     ++ (with pkgs-stable; [
-      kubectl
+      kubectl # @stable kubectl v1.36.2, k3s_1_36_2, GOOD!
       kubectx
       k9s
     ]);

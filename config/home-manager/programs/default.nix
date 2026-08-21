@@ -24,8 +24,6 @@ args@{
       dunst
       lm_sensors
       networkmanager_dmenu
-      mtpfs
-      simple-mtpfs
       (pkgs.symlinkJoin {
         name = "less";
         buildInputs = [ pkgs.makeWrapper ];
