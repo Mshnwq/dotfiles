@@ -8,15 +8,6 @@ A Nix flake providing a single [home-manager](https://home-manager.dev) configur
 
 This directory is `config/home-manager` inside a larger dotfiles repo whose parent is managed with GNU Stow (see `.stow-local-ignore`), but this directory is also a fully self-contained flake on its own.
 
-## Commands
-
-- `home-manager switch --flake .#mshnwq` — build and activate the configuration.
-- `nix flake check` — evaluate/check the flake.
-- `nix flake update` — update all flake inputs; `nix flake lock --update-input <name>` to bump one input.
-- `ENABLE_SOPS=true home-manager switch --flake .#mshnwq` — activate with real secrets decryption enabled (see Secrets below); without this env var, sops uses dummy/placeholder secrets so the config still evaluates and builds for anyone without the real age key.
-
-There is no repo-level formatter/lint entrypoint (`nix fmt`, treefmt, pre-commit) — `nixfmt`/`nixd` are only wired up as LSP tooling inside the managed Neovim config (`programs/neovim/default.nix`), not as a repo command.
-
 ## Architecture
 
 ### Entry point and lib extension

@@ -45,7 +45,8 @@ let
         src =
           inputs.claude-desktop.packages.x86_64-linux.default.src.overrideAttrs
             (_: {
-              outputHash = "sha256-aNSPrzIIs/7fvlCVLRh4QX/igEf2m8SZly+R+3LqXGQ=";
+              #outputHash = "sha256-aNSPrzIIs/7fvlCVLRh4QX/igEf2m8SZly+R+3LqXGQ=";
+              outputHash = "sha256-+0wfDiDg4gz3paQ+348efHy+30IGlLuItLOZitzC/Hc=";
             });
         # CLAUDE_NATIVE_TITLEBAR=1 makes the window use a native frame
         # (frame:true, no titleBarOverlay). The min/max/close buttons are the
