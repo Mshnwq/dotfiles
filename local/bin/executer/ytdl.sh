@@ -31,7 +31,7 @@ _run_with_progress() {
 
 _ytdl_vid() {
   local downloads_path url yt_args
-  downloads_path="$HOME/Videos"
+  downloads_path="$HOME/Videos/YT-DLP"
   [[ -n $1 ]] || exit 1
   url="$1" && shift
   [[ -d $downloads_path ]] || mkdir -p "$downloads_path"
