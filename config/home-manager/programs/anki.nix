@@ -7,8 +7,49 @@
   ...
 }:
 let
+
+  # lowerFirst =
+  #   s: lib.toLower (lib.substring 0 1 s) + lib.substring 1 (lib.stringLength s) s;
+  # entry = key: desc: cmd: { inherit key desc cmd; };
+  # menu = key: desc: submenu: { inherit key desc submenu; };
+  # gtt =
+  #   key: desc: entry key desc "~/.local/bin/executer/.gtt.sh --${lowerFirst desc}";
+
   profileName = config.home.username;
   cfgDir = "${config.xdg.dataHome}/Anki2";
+
+  # QtWebEngine's zero-copy compositing path segfaults on this machine:
+  # NativeSkiaOutputDeviceOpenGL::texture() -> _mesa_TexStorageMem2DEXT ->
+  # iris_resource_from_memobj derefs NULL, killing Anki a second or two after
+  # the media server comes up. Disabling only GPU *compositing* dodges the
+  # shared-texture import while leaving rasterisation and video decode on GPU
+  # (--disable-gpu also works but forces full software rendering).
+  # ankiPkg = pkgs.symlinkJoin {
+  #   name = "anki-${pkgs.anki.version}-wrapped";
+  #   paths = [ pkgs.anki ];
+  #   nativeBuildInputs = [ pkgs.makeWrapper ];
+  #   postBuild = ''
+  #     wrapProgram $out/bin/anki \
+  #       --prefix QTWEBENGINE_CHROMIUM_FLAGS " " "--disable-gpu-compositing"
+  #   '';
+  # };
+  # Locally authored add-on, assembled here because Anki wants a directory
+  # with __init__.py + manifest.json while the source lives as one flat file
+  # next to this module (programs/ subdirectories are auto-imported as Nix
+  # modules, so the add-on cannot be a directory in here).
+  transparentManifest = pkgs.writeText "manifest.json" (
+    builtins.toJSON {
+      package = "pywal_transparent";
+      name = "Pywal Transparent";
+      mod = 0;
+    }
+  );
+  transparentAddon = pkgs.runCommand "anki-addon-transparent" { } ''
+    mkdir -p $out
+    cp ${./anki-transparent.py} $out/__init__.py
+    cp ${transparentManifest} $out/manifest.json
+  '';
+
   # https://tatsumoto.neocities.org/blog/setting-up-anki
   deckDir = "${config.home.homeDirectory}/Documents/Anki/";
   # NOTE: if first time, get file in link, manually import, then export with legacy option to work
@@ -77,77 +118,97 @@ let
       '';
     }
 
-    # https://github.com/AnKing-VIP/Custom-background-image-and-gear-icon
+    # # https://github.com/sajee05/anki_obsidian_sync
+    # # One-way Anki -> Obsidian mirror: exports the collection to markdown so
+    # # cards are searchable/linkable in the vault. Nothing flows back; edits to
+    # # generated files are overwritten on the next run.
+    # #
+    # # NOTE: obsolete notes are removed with Path.unlink(), i.e. deleted
+    # # outright, not sent to the recycle bin as the README claims. Deletion is
+    # # scoped to obsidianSyncPath, so that folder must be one the addon owns
+    # # exclusively -- never a folder holding hand-written notes.
+    # {
+    #   id = "1162061440";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "sajee05";
+    #     repo = "anki_obsidian_sync";
+    #     rev = "22e48e4debe541269fe917ad0d005eec5bc88b87";
+    #     hash = "sha256-c62wmjK7u7RVjczuSul6HXgqM15WRDj6i82xM0+vfTM=";
+    #   };
+    #   sourcedir = "";
+    #   extraRun = ''
+    #     # 36MB of demo media that would otherwise live in addons21 forever.
+    #     rm -f "$ADDON_DEST/demo.gif" "$ADDON_DEST"/SS*.png
+    #     # Upstream ships the author's own Windows path and UPSC deck list as
+    #     # defaults. Blank it so a sync cannot run until it is pointed
+    #     # somewhere deliberately, via Tools -> Add-ons -> Config.
+    #     echo '{"obsidianSyncPath": "", "excludedDecks": []}' \
+    #       > "$ADDON_DEST/config.json"
+    #     # Keep [sound:...] out of generated filenames; see the script header.
+    #     ${pkgs.python3}/bin/python3 ${./anki-obsidian-sync-filename.py} \
+    #       "$ADDON_DEST/state_builder.py"
+    #   '';
+    # }
+
+    # Real window transparency: the compositor's wallpaper and blur show
+    # through Anki, rather than a wallpaper being painted inside the window
+    # (which is what AnKing's Custom-background-image add-on used to do here).
     {
-      id = "1210908941";
-      src = pkgs.fetchFromGitHub {
-        owner = "AnKing-VIP";
-        repo = "Custom-background-image-and-gear-icon";
-        rev = "9706a8f";
-        hash = "sha256-v9/WR+3DK9+byudHFAtsCsPW3WmRVY003+ufEqIFIxM=";
-        sparseCheckout = [ "addon" ];
-      };
-      sourcedir = "addon";
-      extraRun = ''
-        USER_FILES="$ADDON_DEST/user_files"
-        # Remove AnKing folder
-        rm -rf "$ADDON_DEST/AnKing"
-        # Copy default_gear to gear
-        if [[ -d "$USER_FILES/default_gear" ]]; then
-          cp -r "$USER_FILES/default_gear" "$USER_FILES/gear"
-        fi
-        # Remove default_background and background directories
-        rm -rf "$USER_FILES/default_background"
-        rm -rf "$USER_FILES/background"
-        # Create symlink to rice wallpapers
-        ln -sf "$HOME/.cache/wal/custom-anki-bg.json" "$ADDON_DEST/config.json"
-        RICE_FILE="$HOME/.config/dots/.rice"
-        if [[ -f $RICE_FILE ]]; then
-          RICE=$(cat "$RICE_FILE")
-          WALLS_DIR="$HOME/.config/dots/rices/$RICE/walls"
-          if [[ -d $WALLS_DIR ]]; then
-            ln -sf "$WALLS_DIR" "$USER_FILES/background"
-            ln -sf "$WALLS_DIR" "$USER_FILES/default_background"
-            echo "  Linked background to $WALLS_DIR"
-          else
-            echo "  Warning: Wallpapers directory not found: $WALLS_DIR"
-          fi
-        else
-          echo "  Warning: Rice config file not found: $RICE_FILE"
-        fi
-      '';
+      id = "pywal_transparent";
+      src = transparentAddon;
+      sourcedir = "";
+      # Local add-on: re-copy on every switch so edits to the source file
+      # actually reach the profile.
+      force = true;
+      extraRun = "";
     }
   ];
 
-  installAddons = pkgs.writeShellScript "install-anki-addons" ''
-    ADDONS_DIR="${cfgDir}/addons21"
-    mkdir -p "$ADDONS_DIR"
-    ${lib.concatMapStringsSep "\n" (addon: ''
-      ADDON_SRC="${addon.src}/${addon.sourcedir}"
-      ADDON_DEST="$ADDONS_DIR/${addon.id}"
-      if [[ -d $ADDON_SRC ]]; then
-        if [[ -d $ADDON_DEST ]]; then
-          echo "Skipping ${addon.id} (already installed)"
-        else
-          cp -r "$ADDON_SRC" "$ADDON_DEST"
-          chmod -R u+w "$ADDON_DEST"
-          echo "Installed ${addon.id} to $ADDON_DEST"
-          ${addon.extraRun}
-        fi
-      else
-        echo "Warning: Source directory not found for ${addon.id}"
-      fi
-    '') addons}
-  '';
-
-  # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
-  # https://devotd.wordpress.com/2021/02/10/anki-decks-in-python-import-export/
-  initAnkiConfig = pkgs.writeShellScript "init-anki-config" ''
-    if [[ ! -f "${cfgDir}/prefs21.db" ]]; then
-      mkdir -p "${cfgDir}"
-      echo "sh: Initializing Anki configuration..."
-      export PYTHONPATH="${pkgs.anki.lib}/lib/python3.13/site-packages:$PYTHONPATH"
-      ${pkgs.python3}/bin/python3 <<'EOF'
+  # # Add-ons that were installed by an earlier revision of this module. The
+  # # install step below only ever copies, so dropping an entry from `addons`
+  # # would otherwise leave it running forever in the live profile.
+  # removedAddons = [
+  #   "1210908941" # AnKing Custom-background-image-and-gear-icon
+  # ];
+  #
+  # installAddons = pkgs.writeShellScript "install-anki-addons" ''
+  #   ADDONS_DIR="${cfgDir}/addons21"
+  #   mkdir -p "$ADDONS_DIR"
+  #   ${lib.concatMapStringsSep "\n" (id: ''
+  #     if [[ -d "$ADDONS_DIR/${id}" ]]; then
+  #       rm -rf "$ADDONS_DIR/${id}"
+  #       echo "Removed ${id} (no longer managed)"
+  #     fi
+  #   '') removedAddons}
+  #   ${lib.concatMapStringsSep "\n" (addon: ''
+  #     ADDON_SRC="${addon.src}/${addon.sourcedir}"
+  #     ADDON_DEST="$ADDONS_DIR/${addon.id}"
+  #     if [[ -d $ADDON_SRC ]]; then
+  #       if [[ -d $ADDON_DEST && ${
+  #         if addon.force or false then "1" else "0"
+  #       } -eq 0 ]]; then
+  #         echo "Skipping ${addon.id} (already installed)"
+  #       else
+  #         rm -rf "$ADDON_DEST"
+  #         cp -r "$ADDON_SRC" "$ADDON_DEST"
+  #         chmod -R u+w "$ADDON_DEST"
+  #         echo "Installed ${addon.id} to $ADDON_DEST"
+  #         ${addon.extraRun}
+  #       fi
+  #     else
+  #       echo "Warning: Source directory not found for ${addon.id}"
+  #     fi
+  #   '') addons}
+  # '';
+  #
+  # # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
+  # # https://devotd.wordpress.com/2021/02/10/anki-decks-in-python-import-export/
+  # initAnkiConfig = pkgs.writeShellScript "init-anki-config" ''
+  #   if [[ ! -f "${cfgDir}/prefs21.db" ]]; then
+  #     mkdir -p "${cfgDir}"
+  #     echo "sh: Initializing Anki configuration..."
+  #     export PYTHONPATH="${pkgs.anki.lib}/lib/python${pkgs.python3.pythonVersion}/site-packages:$PYTHONPATH"
+  #     ${pkgs.python3}/bin/python3 <<'EOF'
     import os, sys, glob
     from aqt.profiles import ProfileManager
     from aqt.theme import Theme, WidgetStyle, theme_manager
@@ -224,11 +285,11 @@ in
   '';
 
   home.packages = with pkgs; [
-    (pkgs.writeShellScriptBin "gtt" ''
-      export ALSA_PLUGIN_DIR=${pkgs.alsa-plugins}/lib/alsa-lib
-      exec ${pkgs.gtt}/bin/gtt "$@"
+    (writeShellScriptBin "gtt" ''
+      export ALSA_PLUGIN_DIR=${alsa-plugins}/lib/alsa-lib
+      exec ${gtt}/bin/gtt "$@"
     '')
-    anki
+    ankiPkg
   ];
   home.activation.installAnkiAddons =
     inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ]
@@ -241,33 +302,15 @@ in
     text =
       builtins.replaceStrings
         [ "Exec=anki %f" ]
-        [ "Exec=sh -c '${closeAnkiUpdateDialog} & anki'" ]
+        [ "Exec=sh -c '${closeAnkiUpdateDialog} & ${ankiPkg}/bin/anki'" ]
         (builtins.readFile "${pkgs.anki}/share/applications/anki.desktop");
   };
-
-  programs.which-key = {
-    entries = [
-      {
-        key = "a";
-        desc = "Anki";
-        cmd = "gtk-launch anki";
-      }
-      {
-        key = "T";
-        desc = "Translate";
-        submenu = [
-          {
-            key = "x";
-            desc = "Extract";
-            cmd = "~/.local/bin/executer/.gtt.sh --extract";
-          }
-          {
-            key = "a";
-            desc = "Anki";
-            cmd = "~/.local/bin/executer/.gtt.sh --anki";
-          }
-        ];
-      }
-    ];
-  };
+  # programs.which-key.entries = [
+  #   (entry "a" "Anki" "gtk-launch anki")
+  #   (menu "T" "Translate" [
+  #     (gtt "x" "Extract")
+  #     (gtt "a" "Anki")
+  #     (gtt "o" "Obsidian")
+  #   ])
+  # ];
 }
