@@ -8,12 +8,12 @@
 }:
 let
 
-  # lowerFirst =
-  #   s: lib.toLower (lib.substring 0 1 s) + lib.substring 1 (lib.stringLength s) s;
-  # entry = key: desc: cmd: { inherit key desc cmd; };
-  # menu = key: desc: submenu: { inherit key desc submenu; };
-  # gtt =
-  #   key: desc: entry key desc "~/.local/bin/executer/.gtt.sh --${lowerFirst desc}";
+  lowerFirst =
+    s: lib.toLower (lib.substring 0 1 s) + lib.substring 1 (lib.stringLength s) s;
+  entry = key: desc: cmd: { inherit key desc cmd; };
+  menu = key: desc: submenu: { inherit key desc submenu; };
+  gtt =
+    key: desc: entry key desc "~/.local/bin/executer/.gtt.sh --${lowerFirst desc}";
 
   profileName = config.home.username;
   cfgDir = "${config.xdg.dataHome}/Anki2";
@@ -305,12 +305,12 @@ in
         [ "Exec=sh -c '${closeAnkiUpdateDialog} & ${ankiPkg}/bin/anki'" ]
         (builtins.readFile "${pkgs.anki}/share/applications/anki.desktop");
   };
-  # programs.which-key.entries = [
-  #   (entry "a" "Anki" "gtk-launch anki")
-  #   (menu "T" "Translate" [
-  #     (gtt "x" "Extract")
-  #     (gtt "a" "Anki")
-  #     (gtt "o" "Obsidian")
-  #   ])
-  # ];
+  programs.which-key.entries = [
+    (entry "a" "Anki" "gtk-launch anki")
+    (menu "T" "Translate" [
+      (gtt "x" "Extract")
+      (gtt "a" "Anki")
+      (gtt "o" "Obsidian")
+    ])
+  ];
 }
