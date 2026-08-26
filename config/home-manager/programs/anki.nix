@@ -108,37 +108,37 @@ let
       '';
     }
 
-    # # https://github.com/sajee05/anki_obsidian_sync
-    # # One-way Anki -> Obsidian mirror: exports the collection to markdown so
-    # # cards are searchable/linkable in the vault. Nothing flows back; edits to
-    # # generated files are overwritten on the next run.
-    # #
-    # # NOTE: obsolete notes are removed with Path.unlink(), i.e. deleted
-    # # outright, not sent to the recycle bin as the README claims. Deletion is
-    # # scoped to obsidianSyncPath, so that folder must be one the addon owns
-    # # exclusively -- never a folder holding hand-written notes.
-    # {
-    #   id = "1162061440";
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "sajee05";
-    #     repo = "anki_obsidian_sync";
-    #     rev = "22e48e4debe541269fe917ad0d005eec5bc88b87";
-    #     hash = "sha256-c62wmjK7u7RVjczuSul6HXgqM15WRDj6i82xM0+vfTM=";
-    #   };
-    #   sourcedir = "";
-    #   extraRun = ''
-    #     # 36MB of demo media that would otherwise live in addons21 forever.
-    #     rm -f "$ADDON_DEST/demo.gif" "$ADDON_DEST"/SS*.png
-    #     # Upstream ships the author's own Windows path and UPSC deck list as
-    #     # defaults. Blank it so a sync cannot run until it is pointed
-    #     # somewhere deliberately, via Tools -> Add-ons -> Config.
-    #     echo '{"obsidianSyncPath": "", "excludedDecks": []}' \
-    #       > "$ADDON_DEST/config.json"
-    #     # Keep [sound:...] out of generated filenames; see the script header.
-    #     ${pkgs.python3}/bin/python3 ${./anki-obsidian-sync-filename.py} \
-    #       "$ADDON_DEST/state_builder.py"
-    #   '';
-    # }
+    # https://github.com/sajee05/anki_obsidian_sync
+    # One-way Anki -> Obsidian mirror: exports the collection to markdown so
+    # cards are searchable/linkable in the vault. Nothing flows back; edits to
+    # generated files are overwritten on the next run.
+    #
+    # NOTE: obsolete notes are removed with Path.unlink(), i.e. deleted
+    # outright, not sent to the recycle bin as the README claims. Deletion is
+    # scoped to obsidianSyncPath, so that folder must be one the addon owns
+    # exclusively -- never a folder holding hand-written notes.
+    {
+      id = "1162061440";
+      src = pkgs.fetchFromGitHub {
+        owner = "sajee05";
+        repo = "anki_obsidian_sync";
+        rev = "22e48e4debe541269fe917ad0d005eec5bc88b87";
+        hash = "sha256-c62wmjK7u7RVjczuSul6HXgqM15WRDj6i82xM0+vfTM=";
+      };
+      sourcedir = "";
+      extraRun = ''
+        # 36MB of demo media that would otherwise live in addons21 forever.
+        rm -f "$ADDON_DEST/demo.gif" "$ADDON_DEST"/SS*.png
+        # Upstream ships the author's own Windows path and UPSC deck list as
+        # defaults. Blank it so a sync cannot run until it is pointed
+        # somewhere deliberately, via Tools -> Add-ons -> Config.
+        echo '{"obsidianSyncPath": "", "excludedDecks": []}' \
+          > "$ADDON_DEST/config.json"
+        # Keep [sound:...] out of generated filenames; see the script header.
+        ${pkgs.python3}/bin/python3 ${./anki-obsidian-sync-filename.py} \
+          "$ADDON_DEST/state_builder.py"
+      '';
+    }
 
     # Real window transparency: the compositor's wallpaper and blur show
     # through Anki, rather than a wallpaper being painted inside the window
