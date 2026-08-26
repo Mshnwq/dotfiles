@@ -23,8 +23,8 @@ goto_gtt() {
   wid=$(hyprctl clients -j | jq -r --arg title "$TITLE" '
     .[] | select(.title | contains($title)) | .workspace.id' | head -n1)
   [[ -n $wid ]] && {
-    hyprctl dispatch workspace "$wid"
-    hyprctl dispatch focuswindow "title:$TITLE"
+    hyprctl dispatch "hl.dsp.focus({workspace = $wid})"
+    hyprctl dispatch "hl.dsp.focus({window = \"title:.*$TITLE.*\"})"
     return 0
   }
   return 1
