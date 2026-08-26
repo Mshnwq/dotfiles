@@ -5,6 +5,10 @@ TITLE="TranTerm"
 ANKI_ADDRESS="localhost:8765"
 ANKI_AUDIO_DIR="$HOME/.local/share/Anki2/$USER/collection.media"
 DATA_DIR="$HOME/Documents/GTT"
+# Which vault --obsidian writes into. Point this at Home once you are done
+# testing in Dummy.
+OBSIDIAN_VAULT="${GTT_OBSIDIAN_VAULT:-$HOME/Documents/Obsidian/Dummy}"
+OBSIDIAN_HELPER="${0%/*}/gtt-obsidian.py"
 DST_FILE="$DATA_DIR/.dst"
 REPO_DIR="$DATA_DIR/repo"
 REPO="https://github.com/eeeXun/gtt"
@@ -32,7 +36,7 @@ extract_gtt() {
   sleep 0.1 && src=$(wl-paste)
   ydotool key 97:1 19:1 97:0 19:0
   sleep 0.1 && dst=$(wl-paste)
-  lang=$(grep -w "$1" "$TRAN_FILE"| awk -F'"' '{print $2}')
+  lang=$(grep -w "$1" "$TRAN_FILE" | awk -F'"' '{print $2}')
   lang_dir="$DATA_DIR/$lang"
   [[ -d $lang_dir ]] || mkdir -p "$lang_dir"
   date_file="$lang_dir/$(date '+%Y-%m-%d').md"
@@ -58,7 +62,7 @@ select_gtt() {
   declare -A langs
   while IFS='=' read -r code lang; do
     [[ -n $lang && -n $code ]] && langs["$lang"]="$code"
-  done <"$LANGS_FILE" 
+  done <"$LANGS_FILE"
   ((${#langs[@]} == 0)) && {
     echo "Error: No langs defined $LANGS_FILE"
     exit 1
@@ -71,9 +75,9 @@ select_gtt() {
     ((++selected_index))
   done
   local selected_gtt
-  selected_gtt=${ _rofi_menu; }
+  selected_gtt=${ _rofi_menu;}
   [[ -n $selected_gtt ]] && {
-    echo "${langs[$selected_gtt]}" > "$DST_FILE"
+    echo "${langs[$selected_gtt]}" >"$DST_FILE"
   }
   if pgrep -f TranTerm >/dev/null; then
     pkill -f TranTerm
@@ -87,34 +91,77 @@ launch_gtt() {
     "$(grep -w "$1" "$TRAN_FILE" | awk -F'"' '{print $2}')"
 }
 
-anki_gtt() {
-  local src dst date_file lang lang_dir audio
+# Ctrl+G copies the source pane, Ctrl+R the destination -- see the gtt keymap
+# in programs/anki.nix. Sets the globals `src` and `dst`.
+grab_gtt() {
   ydotool key 97:1 34:1 97:0 34:0
   sleep 0.1 && src=$(wl-paste)
   ydotool key 97:1 19:1 97:0 19:0
   sleep 0.1 && dst=$(wl-paste)
-  audio="$ANKI_AUDIO_DIR/${dst}.mp3"
+}
+
+# Ctrl+P speaks the destination; capture the sink monitor while it plays.
+# TODO: still a fixed 8s window -- detect the trailing silence and stop early.
+record_gtt() {
+  local out=$1
   ydotool key 97:1 25:1 97:0 25:0
   sleep 0.1
   # https://www.reddit.com/r/archlinux/comments/x2kej0/recording_output_audio_using_pipewire/
-  pw-record -P '{ stream.capture.sink=true }' --format s16 --rate 44100 --channels 2 - | \
-    ffmpeg -f s16le -ar 44100 -ac 2 -i pipe:0 \
+  # -y matters: mktemp pre-creates the target, and without it ffmpeg stops
+  # with "File already exists" and leaves a 0-byte mp3.
+  pw-record -P '{ stream.capture.sink=true }' --format s16 --rate 44100 --channels 2 - |
+    ffmpeg -y -f s16le -ar 44100 -ac 2 -i pipe:0 \
       -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,silenceremove=stop_periods=-1:stop_duration=0.5:stop_threshold=-50dB" \
-      -acodec mp3 "$audio" &
-  # local ffmpeg_pid=$!
-  # ( sleep 8; pkill -x pw-record ) &
-  # local safety_pid=$!
-  # wait $ffmpeg_pid
-  # kill $safety_pid 2>/dev/null
-  # pkill -x pw-record 2>/dev/null
-  # TODO: have it autodetect a silence and stop
-  # Monitor the audio levels and stop recording once silence over 2 secods is detected
-  # tee > stream to 2 ffmpegs 1 record, 1 detects silnce
+      -acodec mp3 "$out" &
   sleep 8
-  pkill -x pw-record
+  pkill -x pw-record || true
   sleep 1
+}
+
+# src -> the vault as a word note, then on to Anki using the deck, note type
+# and field mapping recorded on that language's note. Anki still owns
+# scheduling; the vault owns the prose and the audio file.
+obsidian_gtt() {
+  local src dst lang audio
+  grab_gtt
+  [[ -z $src || -z $dst ]] && {
+    dunstify "GTT: nothing to capture"
+    return 1
+  }
+  lang=$(grep -w "$1" "$TRAN_FILE" | awk -F'"' '{print $2}')
+  audio=$(mktemp --suffix=.mp3)
+  record_gtt "$audio"
+
+  local out rc
+  # --term is the foreign side, --translation the English one; the note is
+  # filed under the translation.
+  out=$("$OBSIDIAN_HELPER" \
+    --vault "$OBSIDIAN_VAULT" \
+    --language "$lang" \
+    --term "$dst" \
+    --translation "$src" \
+    --audio "$audio" \
+    --src-code "en" \
+    --dst-code "$1" \
+    --source "gtt" 2>&1) && rc=0 || rc=$?
+  rm -f "$audio"
+  echo "$out"
+
+  case $rc in
+  0) dunstify "GTT → Obsidian" "$dst — $src\nin Anki" ;;
+  3) dunstify -u critical "GTT → Obsidian" "Note written, Anki push failed" ;;
+  *) dunstify -u critical "GTT → Obsidian failed" "$out" ;;
+  esac
+  return 0
+}
+
+anki_gtt() {
+  local src dst lang lang_dir audio
+  grab_gtt
+  audio="$ANKI_AUDIO_DIR/${dst}.mp3"
+  record_gtt "$audio"
   # make a copy incase
-  lang=$(grep -w "$1" "$TRAN_FILE"| awk -F'"' '{print $2}')
+  lang=$(grep -w "$1" "$TRAN_FILE" | awk -F'"' '{print $2}')
   lang_dir="$DATA_DIR/Anki/$lang"
   [[ -d $lang_dir ]] || mkdir -p "$lang_dir"
   cp "$audio" "$lang_dir/${src}|${dst}.mp3"
@@ -138,7 +185,6 @@ anki_gtt() {
   }' | curl "$ANKI_ADDRESS" -X POST -d @- | jq
 }
 
-
 dst="$(<"$DST_FILE")"
 case $1 in
 --launch) launch_gtt "$dst" ;;
@@ -155,6 +201,13 @@ case $1 in
   if goto_gtt; then
     anki_gtt "$dst"
     dunstify "GTT: Ankied"
+  else
+    dunstify "GTT: Not Active"
+  fi
+  ;;
+--obsidian)
+  if goto_gtt; then
+    obsidian_gtt "$dst"
   else
     dunstify "GTT: Not Active"
   fi
