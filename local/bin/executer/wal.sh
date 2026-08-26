@@ -209,30 +209,6 @@ _anki() {
     done
   }
 
-  local bg_theme_file="$HOME/.cache/wal/custom-anki-bg.json"
-  sed -i 's#"\(/[^"]*/\)\([^"/]*\.\(jpg\|png\|webp\)\)"#"\2"#g' "$bg_theme_file"
-
-  local heatmap_theme_file="$HOME/.local/share/Anki2/addons21/1771074083/web/anki-review-heatmap.js"
-  local heatmap_theme_block="$HOME/.cache/wal/custom-anki-heatmap.json"
-  local base_gradient steps=10
-
-  base_gradient="$(grep -om1 '[0-9A-Fa-f]\{6\}' "$heatmap_theme_block")"
-  mapfile -t gradient_colors < <(_gradient "$base_gradient" $steps 13)
-
-  for ((i = 0; i < steps; i++)); do
-    col_num=$((11 + i))
-    new_color="${gradient_colors[$i]}"
-    sed -i "s/\(\.q${col_num}{fill: \)#[0-9A-Fa-f]\{6\}/\1#${new_color}/g" "$heatmap_theme_block"
-    sed -i "s/\(\.rh-col${col_num}{color: \)#[0-9A-Fa-f]\{6\}/\1#${new_color}/g" "$heatmap_theme_block"
-  done
-
-  awk -v block="$(<"$heatmap_theme_block")" '
-    /\/\* lime \*\// { print; print block; skip=1; next }
-    /\/\* end \*\// { skip=0; print; next }
-    !skip
-  ' "$heatmap_theme_file" >"${heatmap_theme_file}.tmp" &&
-    mv "${heatmap_theme_file}.tmp" "$heatmap_theme_file"
-
   _relaunch \
     --kind class \
     --window-filter "anki" \
