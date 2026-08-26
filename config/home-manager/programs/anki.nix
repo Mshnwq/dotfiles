@@ -24,15 +24,15 @@ let
   # the media server comes up. Disabling only GPU *compositing* dodges the
   # shared-texture import while leaving rasterisation and video decode on GPU
   # (--disable-gpu also works but forces full software rendering).
-  # ankiPkg = pkgs.symlinkJoin {
-  #   name = "anki-${pkgs.anki.version}-wrapped";
-  #   paths = [ pkgs.anki ];
-  #   nativeBuildInputs = [ pkgs.makeWrapper ];
-  #   postBuild = ''
-  #     wrapProgram $out/bin/anki \
-  #       --prefix QTWEBENGINE_CHROMIUM_FLAGS " " "--disable-gpu-compositing"
-  #   '';
-  # };
+  ankiPkg = pkgs.symlinkJoin {
+    name = "anki-${pkgs.anki.version}-wrapped";
+    paths = [ pkgs.anki ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/anki \
+        --prefix QTWEBENGINE_CHROMIUM_FLAGS " " "--disable-gpu-compositing"
+    '';
+  };
   # Locally authored add-on, assembled here because Anki wants a directory
   # with __init__.py + manifest.json while the source lives as one flat file
   # next to this module (programs/ subdirectories are auto-imported as Nix
@@ -56,16 +56,6 @@ let
   # https://github.com/alyssabedard/mpv2anki/blob/master/docs/note_types/basic/Sentence%20Mining.apkg
 
   addons = [
-    # https://github.com/glutanimate/review-heatmap
-    {
-      id = "1771074083";
-      src = pkgs.ankiAddons.review-heatmap;
-      sourcedir = "share/anki/addons/review-heatmap";
-      extraRun = ''
-        sed -i '484a /* end */' "$ADDON_DEST/web/anki-review-heatmap.js"
-      '';
-    }
-
     # https://github.com/lambdadog/passfail2
     {
       id = "876946123";
@@ -164,51 +154,51 @@ let
     }
   ];
 
-  # # Add-ons that were installed by an earlier revision of this module. The
-  # # install step below only ever copies, so dropping an entry from `addons`
-  # # would otherwise leave it running forever in the live profile.
-  # removedAddons = [
-  #   "1210908941" # AnKing Custom-background-image-and-gear-icon
-  # ];
-  #
-  # installAddons = pkgs.writeShellScript "install-anki-addons" ''
-  #   ADDONS_DIR="${cfgDir}/addons21"
-  #   mkdir -p "$ADDONS_DIR"
-  #   ${lib.concatMapStringsSep "\n" (id: ''
-  #     if [[ -d "$ADDONS_DIR/${id}" ]]; then
-  #       rm -rf "$ADDONS_DIR/${id}"
-  #       echo "Removed ${id} (no longer managed)"
-  #     fi
-  #   '') removedAddons}
-  #   ${lib.concatMapStringsSep "\n" (addon: ''
-  #     ADDON_SRC="${addon.src}/${addon.sourcedir}"
-  #     ADDON_DEST="$ADDONS_DIR/${addon.id}"
-  #     if [[ -d $ADDON_SRC ]]; then
-  #       if [[ -d $ADDON_DEST && ${
-  #         if addon.force or false then "1" else "0"
-  #       } -eq 0 ]]; then
-  #         echo "Skipping ${addon.id} (already installed)"
-  #       else
-  #         rm -rf "$ADDON_DEST"
-  #         cp -r "$ADDON_SRC" "$ADDON_DEST"
-  #         chmod -R u+w "$ADDON_DEST"
-  #         echo "Installed ${addon.id} to $ADDON_DEST"
-  #         ${addon.extraRun}
-  #       fi
-  #     else
-  #       echo "Warning: Source directory not found for ${addon.id}"
-  #     fi
-  #   '') addons}
-  # '';
-  #
-  # # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
-  # # https://devotd.wordpress.com/2021/02/10/anki-decks-in-python-import-export/
-  # initAnkiConfig = pkgs.writeShellScript "init-anki-config" ''
-  #   if [[ ! -f "${cfgDir}/prefs21.db" ]]; then
-  #     mkdir -p "${cfgDir}"
-  #     echo "sh: Initializing Anki configuration..."
-  #     export PYTHONPATH="${pkgs.anki.lib}/lib/python${pkgs.python3.pythonVersion}/site-packages:$PYTHONPATH"
-  #     ${pkgs.python3}/bin/python3 <<'EOF'
+  # Add-ons that were installed by an earlier revision of this module. The
+  # install step below only ever copies, so dropping an entry from `addons`
+  # would otherwise leave it running forever in the live profile.
+  removedAddons = [
+    "1210908941" # AnKing Custom-background-image-and-gear-icon
+  ];
+
+  installAddons = pkgs.writeShellScript "install-anki-addons" ''
+    ADDONS_DIR="${cfgDir}/addons21"
+    mkdir -p "$ADDONS_DIR"
+    ${lib.concatMapStringsSep "\n" (id: ''
+      if [[ -d "$ADDONS_DIR/${id}" ]]; then
+        rm -rf "$ADDONS_DIR/${id}"
+        echo "Removed ${id} (no longer managed)"
+      fi
+    '') removedAddons}
+    ${lib.concatMapStringsSep "\n" (addon: ''
+      ADDON_SRC="${addon.src}/${addon.sourcedir}"
+      ADDON_DEST="$ADDONS_DIR/${addon.id}"
+      if [[ -d $ADDON_SRC ]]; then
+        if [[ -d $ADDON_DEST && ${
+          if addon.force or false then "1" else "0"
+        } -eq 0 ]]; then
+          echo "Skipping ${addon.id} (already installed)"
+        else
+          rm -rf "$ADDON_DEST"
+          cp -r "$ADDON_SRC" "$ADDON_DEST"
+          chmod -R u+w "$ADDON_DEST"
+          echo "Installed ${addon.id} to $ADDON_DEST"
+          ${addon.extraRun}
+        fi
+      else
+        echo "Warning: Source directory not found for ${addon.id}"
+      fi
+    '') addons}
+  '';
+
+  # https://github.com/nix-community/home-manager/blob/master/modules/programs/anki/helper.nix
+  # https://devotd.wordpress.com/2021/02/10/anki-decks-in-python-import-export/
+  initAnkiConfig = pkgs.writeShellScript "init-anki-config" ''
+    if [[ ! -f "${cfgDir}/prefs21.db" ]]; then
+      mkdir -p "${cfgDir}"
+      echo "sh: Initializing Anki configuration..."
+      export PYTHONPATH="${pkgs.anki.lib}/lib/python${pkgs.python3.pythonVersion}/site-packages:$PYTHONPATH"
+      ${pkgs.python3}/bin/python3 <<'EOF'
     import os, sys, glob
     from aqt.profiles import ProfileManager
     from aqt.theme import Theme, WidgetStyle, theme_manager
