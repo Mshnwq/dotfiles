@@ -116,7 +116,7 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(media .. " --previous"), { locked = tru
 -- ─────────────────────────────────────────────
 -- WM — window control
 -- ─────────────────────────────────────────────
-hl.bind(M .. " + CTRL + q", hl.dsp.window.close({ force = true }))
+hl.bind(M .. " + CTRL + q", hl.dsp.window.kill())
 hl.bind(M .. " + CTRL + w", hl.dsp.window.close())
 hl.bind(M .. " + CTRL + r", hl.dsp.exec_cmd("hyprctl reload"))
 
